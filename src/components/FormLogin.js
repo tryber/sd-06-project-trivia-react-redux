@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import login from '../actions'
 
 class FormLogin extends Component {
   constructor() {
@@ -11,6 +13,7 @@ class FormLogin extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.verifyFields = this.verifyFields.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -26,6 +29,13 @@ class FormLogin extends Component {
         isDisabled: false,
       });
     }
+  }
+
+  handleClick() {
+    const { dispatchEmail } = this.props;
+    const { inputEmail } = this.state;
+
+    dispatchEmail(inputEmail);
   }
 
   render() {
@@ -58,6 +68,7 @@ class FormLogin extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ isDisabled }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
@@ -76,4 +87,8 @@ class FormLogin extends Component {
   }
 }
 
-export default FormLogin;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchEmail: (email) => dispatch(login(email)),
+})
+
+export default connect(null, mapDispatchToProps)(FormLogin);
