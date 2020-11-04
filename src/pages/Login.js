@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import reqToken from '../services';
 // import { connect } from 'react-redux';
 // import setUserInfo from '../actions';
 
@@ -15,6 +17,7 @@ class Login extends Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   validateFields() {
@@ -32,11 +35,19 @@ class Login extends Component {
     });
   }
 
+  async handleSubmit(e) {
+    e.preventDefault();
+    const { history } = this.props;
+    const token = await reqToken().then((data) => data.token);
+    localStorage.setItem('token', token);
+    history.push('/game');
+  }
+
   render() {
     const { name, email, isDisable } = this.state;
     return (
       <div>
-        <form onSubmit={ () => console.log('submit') }>
+        <form onSubmit={ this.handleSubmit }>
           <input
             type="text"
             value={ name }
@@ -72,5 +83,13 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape(PropTypes.string),
+};
+
+Login.defaultProps = {
+  history: '',
+};
 
 export default Login;
