@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { login } from '../actions';
+import getToken from '../service/API';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.checkButton = this.checkButton.bind(this);
+    this.fetchToken = this.fetchToken.bind(this);
     this.state = {
-      buttonDisable: true,
+      buttonDisable: false,
       name: '',
       email: '',
     }
@@ -25,6 +28,13 @@ class Login extends React.Component {
     }
   }
 
+  async fetchToken() {
+    const responseAPI = await getToken();
+    localStorage.setItem('token', JSON.stringify(responseAPI));
+    const lclStorage = JSON.parse(localStorage.getItem('token'));
+    console.log(lclStorage);
+  }
+
   render() {
     const { buttonDisable, email } = this.state;
     const { getEmail } = this.props;
@@ -38,7 +48,7 @@ class Login extends React.Component {
           Email:
           <input id="email-input" type="text" data-testid="input-gravatar-email" onChange={ this.checkButton } />
         </label>
-        <button type="submit" data-testid="btn-play" disabled={ buttonDisable } onClick={(email) => getEmail(email) }>Jogar</button>
+        <button type="submit" data-testid="btn-play" disabled={ buttonDisable } onClick={ this.fetchToken }>Jogar</button>
       </div>
     )
   };
