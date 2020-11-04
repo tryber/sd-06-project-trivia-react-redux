@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import fetchToken from '../services/api';
 
 class Login extends React.Component {
   constructor() {
@@ -9,6 +11,7 @@ class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -20,6 +23,11 @@ class Login extends React.Component {
         this.setState({ btnDisabled: true });
       }
     });
+  }
+
+  async handleClick() {
+    const token = await fetchToken();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -46,13 +54,16 @@ class Login extends React.Component {
             name="email"
           />
         </label>
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ btnDisabled }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            data-testid="btn-play"
+            type="button"
+            disabled={ btnDisabled }
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
