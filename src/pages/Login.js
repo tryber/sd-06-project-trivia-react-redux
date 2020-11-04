@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import logo from '../trivia.png';
 
@@ -22,46 +22,53 @@ class Login extends Component {
     const { name, value } = target;
     const { nome, email } = this.state;
     const regexp = /^[a-zA-Z0-9.!#$%&_-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    const three = 4;
 
     this.setState({ [name]: value }, () => {
       let disabled = true;
-
-      if (regexp.test(email) && nome.length <= three ) disabled = false;
-
+      if (regexp.test(email) && nome.length) disabled = false;
       this.setState({ disabled });
     });
   }
 
   handleLogin() {
-    
     this.setState({
       isLoged: true,
     });
   }
 
   render() {
-    const { isLoged, disabled } = this.state;
-
+    const { isLoged, disabled, email } = this.state;
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    console.log(gravatar);
     if (!isLoged) {
       return (
         <section>
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
+            <img src={ logo } className="App-logo" alt="logo" />
           </header>
-          <label>
+          <label htmlFor="email">
             Email do Gravatar:
-            <input data-testid="input-gravatar-email" name="email" onChange={ this.handleChange } />
+            <input
+              id="email"
+              data-testid="input-gravatar-email"
+              name="email"
+              onChange={ this.handleChange }
+            />
           </label>
-          <label>
+          <label htmlFor="nome">
             Nome do Jogador:
-            <input data-testid="input-player-name" name="nome" onChange={this.handleChange} />
+            <input
+              id="nome"
+              data-testid="input-player-name"
+              name="nome"
+              onChange={ this.handleChange }
+            />
           </label>
           <button
-            disabled={disabled}
+            disabled={ disabled }
             type="button"
             data-testid="btn-play"
-            onClick={this.handleLogin}
+            onClick={ this.handleLogin }
           >
             Jogar
           </button>
