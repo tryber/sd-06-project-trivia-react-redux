@@ -1,4 +1,5 @@
 import React from 'react';
+import fetchApi from '../services';
 
 class Login extends React.Component {
   constructor() {
@@ -38,6 +39,7 @@ class Login extends React.Component {
 
   render() {
     const { validEmail, validName } = this.state;
+    fetchApi();
     return (
       <div>
         <div>
@@ -64,6 +66,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ !(validName && validEmail) }
+          onClick={ () => fetchApi }
         >
           Jogar!
         </button>
