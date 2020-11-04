@@ -1,8 +1,8 @@
 //  import fetchAPI from '../services/fetchAPI';
 
-export const EMAIL_INPUT = 'EMAIL_INPUT';
+export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 
-export const emailSaveToState = (email) => ({
-  type: EMAIL_INPUT,
-  email,
+export const tokenRequest = (token) => ({
+  type: TOKEN_REQUEST,
+  token,
 });
