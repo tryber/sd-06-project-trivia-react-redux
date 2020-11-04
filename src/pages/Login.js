@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getToken } from '../actions';
 
-
 class Login extends Component {
   constructor() {
     super();
