@@ -6,8 +6,6 @@ class Login extends React.Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
     this.state = {
-      email: '',
-      name: '',
       validEmail: false,
       validName: false,
     };
@@ -22,9 +20,6 @@ class Login extends React.Component {
     } else {
       this.setState({ validEmail: false });
     }
-    this.setState({
-      email: target.value,
-    });
   }
 
   validateName({ target }) {
@@ -32,7 +27,6 @@ class Login extends React.Component {
     const minLength = 2;
     if (name >= minLength) {
       this.setState({
-        name: target.value,
         validName: true,
       });
     } else {
@@ -47,16 +41,30 @@ class Login extends React.Component {
     return (
       <div>
         <div>
-          <label>
+          <label htmlFor="input-player-name">
             Nome:
-            <input data-testid="input-player-name" onChange={this.validateName} />
+            <input
+              data-testid="input-player-name"
+              id="input-player-name"
+              onChange={ this.validateName }
+              type="text"
+            />
           </label>
-          <label>
+          <label htmlFor="input-player-email">
             Email:
-            <input data-testid="input-gravatar-email" onChange={this.validateEmail} />
+            <input
+              data-testid="input-gravatar-email"
+              id="input-player-email"
+              onChange={ this.validateEmail }
+              type="email"
+            />
           </label>
         </div>
-        <button data-testid="btn-play" disabled={!(validName && validEmail)}>
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ !(validName && validEmail) }
+        >
           Jogar!
         </button>
       </div>
