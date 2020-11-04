@@ -5,6 +5,7 @@ export default class Login extends Component {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.validadeLogin = this.validadeLogin.bind(this);
+    this.onRequest = this.onRequest.bind(this);
     this.state = {
       name: '',
       email: '',
@@ -30,6 +31,13 @@ export default class Login extends Component {
     }
   }
 
+  async onRequest() {
+    const triviaRequest = await fetch('https://opentdb.com/api_token.php?command=request');
+    const triviaJson = await triviaRequest.json();
+    const token = triviaJson.token;
+    localStorage.setItem('token', token);
+  }
+
   render() {
     const { disabled } = this.state;
     return (
@@ -51,6 +59,7 @@ export default class Login extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
+          onClick={ this.onRequest }
         >
           Jogar
         </button>
