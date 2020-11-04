@@ -2,9 +2,7 @@ import { combineReducers } from 'redux';
 
 const INITIAL_STATE = { nada: 'nada' };
 
-export const reducer = (state = INITIAL_STATE, action) => {
-  return state;
-}
+export const reducer = (state = INITIAL_STATE) => state;
 
 const rootReducers = combineReducers({ reducer });
 
