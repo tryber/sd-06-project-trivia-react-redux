@@ -27,12 +27,6 @@ class Login extends React.Component {
     this.setState({ email: inputEmail, name: inputName });
   }
 
-  // handleChange({ target }) {
-  //   const { name, value } = target;
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // }
 
   render() {
     const { disabled } = this.state;
