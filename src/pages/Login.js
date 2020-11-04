@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions';
 
-import logo from '../trivia.png';
+// import logo from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -21,25 +21,23 @@ class Login extends React.Component {
 
   handleOnChange({ target }) {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    }, () => {
-      // console.log(this.state);
-      const { email, playerName } = this.state;
-      // Found function of test to validate email on:
-      // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-      const validateEmail = (/\S+@\S+\.\S+/).test(email);
-      const validatePlayer = 3;
-      if (validateEmail && validatePlayer <= playerName.length) {
-        this.setState(
-          { disabled: false },
-        );
-      } else {
-        this.setState(
-          { disabled: true },
-        );
-      }
-    });
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        // console.log(this.state);
+        const { email, playerName } = this.state;
+        // Found function of test to validate email on:
+        // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+        // const validateEmail = (/\S+@\S+\.\S+/).test(email);
+        if (email.length > 0 && playerName.length > 0) {
+          this.setState({ disabled: false });
+        } else {
+          this.setState({ disabled: true });
+        }
+      },
+    );
   }
 
   render() {
@@ -48,47 +46,50 @@ class Login extends React.Component {
     const { saveUserEmail } = this.props;
 
     return (
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-        SUA VEZ
-        </p>
-      </header>
-      // <div>
-      //   <label for="email">Email do Gravatar:</label>
-      //   <input
-      //     id="email"
-      //     data-testid="email-input"
-      //     type="text"
-      //     placeholder="Enter Email"
-      //     name="email"
-      //     value={ email }
-      //     onChange={ this.handleOnChange }
-      //   />
-      //   <br />
-      //   <label for="playerName">Nome do Jogador:</label>
-      //   <input
-      //     data-testid="playerName-input"
-      //     type="text"
-      //     placeholder="Enter your name"
-      //     name="playerName"
-      //     value={ playerName }
-      //     onChange={ this.handleOnChange }
-      //   />
-      //   <br />
-      //   <Link
-      //     to="/questions"
-      //   >
-      //     <button
-      //       type="button"
-      //       disabled={ disabled }
-      //       // Clicking at button disparates dispatch function to save state email at /actions/index
-      //       onClick={ () => saveUserEmail(email) }
-      //     >
-      //       Entrar
-      //     </button>
-      //   </Link>
-      // </div>
+      // <header className="App-header">
+      //   <img src={ logo } className="App-logo" alt="logo" />
+      //   <p>
+      //   SUA VEZ
+      //   </p>
+      // </header>
+      <div>
+        <label htmlFor="playerName">
+        Escreve o nome da pessoa jogadora
+          <input
+            data-testid="input-player-name"
+            type="text"
+            placeholder="Enter your name"
+            name="playerName"
+            value={ playerName }
+            onChange={ this.handleOnChange }
+          />
+        </label>
+        <label htmlFor="email">
+          Email do Gravatar:
+          <input
+            id="email"
+            data-testid="input-gravatar-email"
+            type="text"
+            placeholder="Enter Email"
+            name="email"
+            value={ email }
+            onChange={ this.handleOnChange }
+          />
+        </label>
+        <br />
+        <br />
+        <Link to="/questions">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ disabled }
+            // Clicking at button disparates dispatch function to save state email at /actions/index
+            onClick={ () => saveUserEmail(email) }
+          >
+            Jogar
+          </button>
+        </Link>
+      </div>
     );
   }
 }

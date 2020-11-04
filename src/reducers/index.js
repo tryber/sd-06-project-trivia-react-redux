@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import userLogin from './userLogin.js';
+import userLogin from './userLogin';
 
 export default combineReducers({
   userLogin,
