@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class Ranking extends Component {
+class NoMatch extends Component {
   render() {
     return (
       <div>
-        Ranking
+        Página não encontrada.
       </div>
     );
   }
 }
 
-export default Ranking;
+export default NoMatch;

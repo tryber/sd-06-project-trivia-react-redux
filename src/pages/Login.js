@@ -1,4 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { propTypes } from 'prop-types';
+import fetchToken from '../services/fetchToken';
+import { saveToken } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -12,6 +17,7 @@ class Login extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkValidity = this.checkValidity.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   checkValidity() {
@@ -32,6 +38,16 @@ class Login extends React.Component {
     });
 
     this.checkValidity();
+  }
+
+  async handleButtonClick() {
+    const API_RESPONSE = await fetchToken();
+    const TOKEN = API_RESPONSE.token;
+
+    localStorage.setItem('token', TOKEN);
+
+    const { dispatchSaveToken } = this.props;
+    dispatchSaveToken(TOKEN);
   }
 
   render() {
@@ -61,16 +77,33 @@ class Login extends React.Component {
           />
         </label>
 
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ isDisabled }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ isDisabled }
+            onClick={ this.handleButtonClick }
+          >
+            Jogar
+          </button>
+        </Link>
+
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
+
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSaveToken: (token) => dispatch(saveToken(token)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

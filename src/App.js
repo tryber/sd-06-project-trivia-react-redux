@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
+import { Route, Switch } from 'react-router-dom';
 
-export default function App() {
-  return (
-    <BrowserRouter>
+import { Login,
+  Settings,
+  Feedback,
+  Game,
+  NoMatch,
+  Ranking } from './pages';
+
+class App extends Component {
+  render() {
+    return (
       <Switch>
-        <Route path="/" component={ Login } />
+        <Route path="/game" component={ Game } />
+        <Route path="/feedback" component={ Feedback } />
+        <Route path="/ranking" component={ Ranking } />
+        <Route path="/settings" component={ Settings } />
+        <Route exact path="/" component={ Login } />
+        <Route component={ NoMatch } />
       </Switch>
-    </BrowserRouter>
-
-  );
+    );
+  }
 }
+
+export default App;
