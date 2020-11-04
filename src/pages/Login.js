@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { getToken } from '../actions';
 
+
 class Login extends Component {
   constructor() {
     super();
@@ -79,6 +80,11 @@ class Login extends Component {
             Jogar
           </button>
         </Link>
+        <div>
+          <Link data-testid="btn-settings" to="/settings">
+            Configurações
+          </Link>
+        </div>
       </div>
     );
   }
