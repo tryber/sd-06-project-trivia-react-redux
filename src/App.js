@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-// import logo from './trivia.png';
 import Login from './pages/Login';
 import './App.css';
 

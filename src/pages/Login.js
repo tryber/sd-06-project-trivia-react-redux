@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions';
 
-// import logo from '../trivia.png';
+import logo from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -26,11 +26,8 @@ class Login extends React.Component {
         [name]: value,
       },
       () => {
-        // console.log(this.state);
         const { email, playerName } = this.state;
-        // Found function of test to validate email on:
-        // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-        // const validateEmail = (/\S+@\S+\.\S+/).test(email);
+
         if (email.length > 0 && playerName.length > 0) {
           this.setState({ disabled: false });
         } else {
@@ -46,36 +43,37 @@ class Login extends React.Component {
     const { saveUserEmail } = this.props;
 
     return (
-      // <header className="App-header">
-      //   <img src={ logo } className="App-logo" alt="logo" />
-      //   <p>
-      //   SUA VEZ
-      //   </p>
-      // </header>
       <div>
-        <label htmlFor="playerName">
-        Escreve o nome da pessoa jogadora
-          <input
-            data-testid="input-player-name"
-            type="text"
-            placeholder="Enter your name"
-            name="playerName"
-            value={ playerName }
-            onChange={ this.handleOnChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email do Gravatar:
-          <input
-            id="email"
-            data-testid="input-gravatar-email"
-            type="text"
-            placeholder="Enter Email"
-            name="email"
-            value={ email }
-            onChange={ this.handleOnChange }
-          />
-        </label>
+        <div>
+          <img src={ logo } alt="Logo do Trivia" width="400" />
+        </div>
+        <div>
+          <label htmlFor="playerName">
+          Player:
+            <input
+              data-testid="input-player-name"
+              type="text"
+              placeholder="Enter your name"
+              name="playerName"
+              value={ playerName }
+              onChange={ this.handleOnChange }
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="email">
+            Email:
+            <input
+              id="email"
+              data-testid="input-gravatar-email"
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              value={ email }
+              onChange={ this.handleOnChange }
+            />
+          </label>
+        </div>
         <br />
         <br />
         <Link to="/questions">
