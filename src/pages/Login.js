@@ -6,7 +6,7 @@ class Login extends React.Component {
     super();
     this.state = {
       email: '',
-      password: '',
+      user: '',
       disabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -20,10 +20,10 @@ class Login extends React.Component {
   }
 
   inputValidate() {
-    const { email, password } = this.state;
+    const { email, user } = this.state;
     const validEmail = (/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email);
-    const validPassword = (/.{5,}/).test(password);
-    if (validEmail && validPassword === true) {
+    const userValid = (/.{0,}/).test(user);
+    if (validEmail && userValid === true) {
       return this.setState({ disabled: false });
     }
     return this.setState({ disabled: true });
@@ -34,32 +34,32 @@ class Login extends React.Component {
     const { emailSaving } = this.props;
     return (
       <div>
+        <label htmlFor="user">
+          User:
+          <input
+            name="user"
+            type="text"
+            data-testid="input-player-name"
+            onChange={ (e) => this.handleChange(e) }
+          />
+        </label>
+        <br />
         <label htmlFor="email">
           E-mail:
           <input
             value={ email }
             name="email"
             type="email"
-            data-testid="email-input"
-            onChange={ (e) => this.handleChange(e) }
-          />
-        </label>
-        <br />
-        <label htmlFor="password">
-          Password:
-          <input
-            name="password"
-            type="password"
-            data-testid="password-input"
+            data-testid="input-gravatar-email"
             onChange={ (e) => this.handleChange(e) }
           />
         </label>
         <br />
         <button
-        //  onClick={ () => emailSaving(email) }
           disabled={ disabled }
           onClick={ () => emailSaving(email) }
           type="button"
+          data-test="btn-play"
         >
           Entrar
         </button>
