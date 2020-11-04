@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../actions';
+import { fetchToken } from '../actions';
 
 import logo from '../trivia.png';
 
@@ -40,7 +40,7 @@ class Login extends React.Component {
   render() {
     const { email, playerName, disabled } = this.state;
     // Destruturate my login action as a props
-    const { saveUserEmail } = this.props;
+    const { requestToken } = this.props;
 
     return (
       <div>
@@ -82,7 +82,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             disabled={ disabled }
             // Clicking at button disparates dispatch function to save state email at /actions/index
-            onClick={ () => saveUserEmail(email) }
+            onClick={ () => requestToken(email) }
           >
             Jogar
           </button>
@@ -94,11 +94,11 @@ class Login extends React.Component {
 
 // Function that make dispatch to my /actions/index
 const mapDispatchToProps = (dispatch) => ({
-  saveUserEmail: (inputedEmail) => dispatch(login(inputedEmail)),
+  requestToken: (email) => dispatch(fetchToken(email)),
 });
 
 Login.propTypes = {
-  saveUserEmail: PropTypes.func.isRequired,
+  requestToken: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
