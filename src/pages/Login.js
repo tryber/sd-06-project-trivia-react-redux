@@ -18,8 +18,9 @@ class Login extends Component {
 
   validateFields() {
     const { name, email } = this.state;
+    const emailFormat = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/.test(email);
 
-    if (email.length !== 0 && name.length !== 0) {
+    if (emailFormat && name.length !== 0) {
       this.setState({ isDisable: false });
     } else this.setState({ isDisable: true });
   }
