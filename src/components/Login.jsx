@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import login from '../actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.validadeLogin = this.validadeLogin.bind(this);
     this.onRequest = this.onRequest.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
       name: '',
       email: '',
@@ -19,6 +23,15 @@ export default class Login extends Component {
     const triviaJson = await triviaRequest.json();
     const { token } = triviaJson;
     localStorage.setItem('token', token);
+  }
+
+  async handleClick() {
+    console.log('click');
+    const { globalLogin, history } = this.props;
+    const { name, email } = this.state;
+    globalLogin(name, email);
+    history.push('/game');
+    await this.onRequest();
   }
 
   handleChange(e) {
@@ -59,7 +72,7 @@ export default class Login extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
-          onClick={ this.onRequest }
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
@@ -75,3 +88,9 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  globalLogin: (name, email) => dispatch(login(name, email)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
