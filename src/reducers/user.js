@@ -1,14 +1,14 @@
-import { EMAIL_INPUT } from '../actions';
+import { TOKEN_REQUEST } from '../actions';
 
 const INITIAL_STATE = {
-  email: '',
+  token: '',
 };
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case EMAIL_INPUT:
+  case TOKEN_REQUEST:
     return {
-      ...state, email: action.email,
+      ...state, token: action.token,
     };
   default:
     return state;

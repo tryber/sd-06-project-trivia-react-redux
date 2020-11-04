@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { tokenRequest } from '../actions';
+import fetchAPI from '../services/fetchAPI';
 
 class Login extends React.Component {
   constructor() {
@@ -18,10 +21,14 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
-    const { email, password } = this.state;
-    console.log(email, password);
+    const { myTokenRequest, history } = this.props;
+    const requestedToken = (await fetchAPI()).token;
+    myTokenRequest(requestedToken);
+    const { token } = this.props;
+    localStorage.setItem('token', token);
+    history.push('/game');
   }
 
   render() {
@@ -67,4 +74,18 @@ class Login extends React.Component {
   }
 }
 
-export default connect(null, null)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  myTokenRequest: (e) => dispatch(tokenRequest(e)),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+});
+
+Login.propTypes = {
+  myTokenRequest: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+  token: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
