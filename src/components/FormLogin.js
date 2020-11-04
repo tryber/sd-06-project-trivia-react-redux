@@ -62,6 +62,14 @@ class FormLogin extends Component {
               Jogar
             </button>
           </Link>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Settings
+            </button>
+          </Link>
         </form>
       </div>
     );
