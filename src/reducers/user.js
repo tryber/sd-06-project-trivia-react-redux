@@ -1,4 +1,5 @@
 const INITIAL_STATE = { email: '' };
+const LOGIN = 'LOGIN';
 
 export default function (state = INITIAL_STATE , action) {
   switch (action.type) {

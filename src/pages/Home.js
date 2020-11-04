@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './trivia.png';
-import './App.css';
+import '../App.css';
+import logo from '../trivia.png';
 import { Link } from 'react-router-dom';
 
 class Home extends React.Component{
