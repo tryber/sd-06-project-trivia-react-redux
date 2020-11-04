@@ -1,7 +1,9 @@
 export const HANDLE_USER = 'HANDLE_USER';
 
-export const setUserInfo = (email) => ({
+const setUserInfo = (name) => ({
   type: HANDLE_USER,
-  email,
+  name,
   // avatar: template string,
 });
+
+export default setUserInfo;

@@ -1,7 +1,7 @@
 import { HANDLE_USER } from '../actions';
 
 const INITIAL_STATE = {
-  email: '',
+  name: '',
   avatar: '',
 };
 
@@ -10,7 +10,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
   case HANDLE_USER:
     return {
       ...state,
-      email: action.email,
+      name: action.email,
       avatar: action.avatar,
     };
   default:

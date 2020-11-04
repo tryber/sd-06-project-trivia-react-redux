@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import setUserInfo from '../actions';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import setUserInfo from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -29,6 +30,15 @@ class Login extends Component {
     this.setState({ [target.name]: target.value }, () => {
       this.validateFields();
     });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const { setName } = this.props;
+    const { name } = this.state;
+    setName(name);
+    const { history } = this.props;
+    history.push('/game');
   }
 
   render() {
@@ -67,4 +77,13 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setName: (name) => dispatch(setUserInfo(name)),
+});
+
+Login.propTypes = {
+  setName: propTypes.func.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
