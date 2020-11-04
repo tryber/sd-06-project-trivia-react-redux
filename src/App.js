@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Login } from './pages/';
+import { Login } from './pages';
 
 class App extends React.Component {
-  render () {
+  render() {
     return (
       <Switch>
         <Route exact path="/" render={ () => <Login /> } />

@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 class Login extends React.Component {
   constructor() {
     super();
@@ -36,11 +34,11 @@ class Login extends React.Component {
       this.setState({
         name: target.value,
         validName: true,
-      })
+      });
     } else {
       this.setState({
         validName: false,
-      })
+      });
     }
   }
 
@@ -51,14 +49,14 @@ class Login extends React.Component {
         <div>
           <label>
             Nome:
-            <input data-testid="input-player-name" onChange={ this.validateName }/>
+            <input data-testid="input-player-name" onChange={this.validateName} />
           </label>
           <label>
             Email:
-            <input data-testid="input-gravatar-email" onChange={ this.validateEmail }/>
+            <input data-testid="input-gravatar-email" onChange={this.validateEmail} />
           </label>
         </div>
-        <button data-testid="btn-play" disabled={!(validName && validEmail)} >
+        <button data-testid="btn-play" disabled={!(validName && validEmail)}>
           Jogar!
         </button>
       </div>
