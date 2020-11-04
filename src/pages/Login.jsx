@@ -20,9 +20,9 @@ class Login extends React.Component {
     const inputName = document.getElementById('input-player-name').value;
     const one = 1;
     if (regex.test(inputEmail) === true && inputName >= one) {
-      this.setState({ isDisabled: false });
+      this.setState({ disabled: false });
     } else {
-      this.setState({ isDisabled: true });
+      this.setState({ disabled: true });
     }
     this.setState({ email: inputEmail, name: inputName });
   }
@@ -41,7 +41,7 @@ class Login extends React.Component {
         <h1>Login - Play Trivia</h1> 
         <form>
           <label htmlFor="input-player-name"> Name
-            <input 
+            <input
               id ="input-player-name"
               type="text"
               name="name"
