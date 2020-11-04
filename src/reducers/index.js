@@ -1,9 +1,6 @@
 import { combineReducers } from 'redux';
+import player from './player';
 
-const INITIAL_STATE = { nada: 'nada' };
-
-export const reducer = (state = INITIAL_STATE) => state;
-
-const rootReducers = combineReducers({ reducer });
+const rootReducers = combineReducers({ player });
 
 export default rootReducers;

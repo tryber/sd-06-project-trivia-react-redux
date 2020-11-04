@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { getToken } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -67,16 +69,27 @@ class Login extends Component {
             data-testid="input-player-name"
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ handleDisableButton() }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ handleDisableButton() }
+            onClick={  }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getPlayerToken: () => dispatch(getToken)
+});
+
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
