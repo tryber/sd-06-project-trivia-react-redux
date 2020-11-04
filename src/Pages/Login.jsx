@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class Login extends React.Component {
   }
 
   render() {
-    const { buttonDisable } = this.state;
+    const { buttonDisable, email } = this.state;
+    const { getEmail } = this.props;
     return (
       <div>
         <label htmlFor="name-input">
@@ -36,10 +38,14 @@ class Login extends React.Component {
           Email:
           <input id="email-input" type="text" data-testid="input-gravatar-email" onChange={ this.checkButton } />
         </label>
-        <button type="submit" data-testid="btn-play" disabled={ buttonDisable }>Jogar</button>
+        <button type="submit" data-testid="btn-play" disabled={ buttonDisable } onClick={(email) => getEmail(email) }>Jogar</button>
       </div>
     )
   };
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getEmail: (email) => dispatch(login(email))
+})
+
+export default connect(null, mapDispatchToProps)(Login);
