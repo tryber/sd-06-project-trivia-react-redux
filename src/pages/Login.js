@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../actions';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       name: '',
@@ -17,14 +19,19 @@ class Login extends Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    }, () => this.verifyNameAndEmail());
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => this.verifyNameAndEmail(),
+    );
   }
 
   verifyNameAndEmail() {
     const { name, email } = this.state;
+    const { sendName } = this.props;
     this.setState({ isDisabled: !(name !== '' && email !== '') });
+    sendName(name);
   }
 
   render() {
@@ -35,6 +42,7 @@ class Login extends Component {
         <input
           value={ name }
           name="name"
+          placeholder="Digite seu nome"
           onChange={ this.handleChange }
           data-testid="input-player-name"
         />
@@ -52,4 +60,12 @@ class Login extends Component {
   }
 }
 
-export default connect(null, null)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  sendName: (name) => dispatch(login(name)),
+});
+
+Login.propTypes = {
+  sendName: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
