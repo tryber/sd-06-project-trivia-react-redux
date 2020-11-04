@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import Input from '../components/Input';
 import { actionLogin, fetchToken } from '../actions';
 
@@ -66,6 +67,15 @@ class Login extends Component {
             // onClick={ history.push('/game') }
           >
             Jogar
+          </button>
+        </Link>
+        <Link to="/settings">
+          <button
+            className="btn-settings"
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
           </button>
         </Link>
       </section>
