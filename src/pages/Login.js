@@ -15,7 +15,7 @@ class Login extends React.Component {
     };
   }
 
-  async validateEmail({ target }) {
+  validateEmail({ target }) {
     const email = target.value;
     const validator = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const isValid = validator.test(String(email).toLowerCase());
@@ -24,12 +24,12 @@ class Login extends React.Component {
     } else {
       this.setState({ validEmail: false });
     }
-    await this.setState({
+    this.setState({
       email: target.value,
     });
   }
 
-  async validateName({ target }) {
+  validateName({ target }) {
     const name = target.value.length;
     const minLength = 2;
     if (name >= minLength) {
