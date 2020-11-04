@@ -1,9 +1,9 @@
 export const LOGIN = 'LOGIN';
 export const JOGAR = 'JOGAR';
 
-export const loginUsers = (nome, email) => ({
+export const loginUsers = (name, email) => ({
   type: LOGIN,
-  nome,
+  name,
   email,
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
-// import propTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import { loginUsers } from '../actions';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUsers } from '../actions';
 // import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -15,6 +15,7 @@ class Login extends React.Component {
     };
     this.validadorDeCampos = this.validadorDeCampos.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.enviaDados = this.enviaDados.bind(this);
   }
 
   validadorDeCampos() {
@@ -28,6 +29,13 @@ class Login extends React.Component {
     });
   }
 
+  enviaDados(event) {
+    event.preventDefault();
+    const { dispatchDados } = this.props;
+    const { name, email } = this.state;
+    dispatchDados(name, email);
+  }
+
   render() {
     const { name, email, isDisable } = this.state;
     return (
@@ -35,7 +43,7 @@ class Login extends React.Component {
         {/* <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header> */}
-        <form>
+        <form onSubmit={ this.enviaDados }>
           <input
             type="text"
             placeholder="nome"
@@ -54,16 +62,25 @@ class Login extends React.Component {
           />
           <button
             type="submit"
+            data-testid="btn-play"
             disabled={ isDisable }
           >
             Entrar
           </button>
         </form>
-
       </div>
 
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchDados: (name, email) => dispatch(loginUsers(name, email)),
+});
+
+Login.propTypes = ({
+  dispatchDados: propTypes.func.isRequired,
+
+});
+
+export default connect(null, mapDispatchToProps)(Login);
