@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Settings from './Settings';
+// import fetchApi from '../services';
 
 class LoginForm extends Component {
   render() {
@@ -38,6 +39,7 @@ class LoginForm extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ !(validName && validEmail) }
+          // onClick={ () => fetchApi() }
         >
           Jogar!
         </button>
