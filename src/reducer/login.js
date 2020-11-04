@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   email: '',
   token: '',
-}
+};
 
 export default function loginReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
