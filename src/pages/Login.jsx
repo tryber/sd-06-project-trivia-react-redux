@@ -1,16 +1,15 @@
-const { Component } = require("react")
-
-import React, { Component } from 'react';
-
+import React from 'react';
+import { userLogin } from '../actions';
+import { connect } from 'react-redux';
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      disabled: true,
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     name: '',
+  //     email: '',
+  //     disabled: true,
+  //   }
+  // }
 
   render() {
     return (
@@ -39,3 +38,8 @@ class Login extends React.Component {
     );
   };
 }
+
+// mapStateToProps, mapDispatchToProps
+export default connect(
+  null,
+  null)(Login);
