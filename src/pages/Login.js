@@ -33,10 +33,18 @@ class Login extends React.Component {
 
   render() {
     const { email, name } = this.state;
+    const { history } = this.props;
     return (
       <div>
         <form>
           <div>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ () => history.push('/settings') }
+            >
+              Configurações
+            </button>
             <label htmlFor="email">
               <input
                 data-testid="input-gravatar-email"
