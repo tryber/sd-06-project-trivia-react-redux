@@ -13,7 +13,7 @@ class Login extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.validateFields();
+    this.validateFields = this.validateFields.bind(this);
   }
 
   validateFields() {
