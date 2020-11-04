@@ -1,13 +1,16 @@
 import React from 'react';
+import { LoginForm } from '../components';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
     this.state = {
       validEmail: false,
       validName: false,
+      showSettings: false,
     };
   }
 
@@ -36,44 +39,23 @@ class Login extends React.Component {
     }
   }
 
+  handleSettings() {
+    this.setState((prevState) => ({
+      showSettings: !prevState.showSettings,
+    }));
+  }
+
   render() {
-    const { validEmail, validName } = this.state;
+    const { validEmail, validName, showSettings } = this.state;
     return (
-      <div>
-        <div>
-          <label htmlFor="input-player-name">
-            Nome:
-            <input
-              data-testid="input-player-name"
-              id="input-player-name"
-              onChange={ this.validateName }
-              type="text"
-            />
-          </label>
-          <label htmlFor="input-player-email">
-            Email:
-            <input
-              data-testid="input-gravatar-email"
-              id="input-player-email"
-              onChange={ this.validateEmail }
-              type="email"
-            />
-          </label>
-        </div>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !(validName && validEmail) }
-        >
-          Jogar!
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-        >
-          Configurações
-        </button>
-      </div>
+      <LoginForm
+        handleSettings={ this.handleSettings }
+        validateName={ this.validateName }
+        validateEmail={ this.validateEmail }
+        validName={ validName }
+        validEmail={ validEmail }
+        showSettings={ showSettings }
+      />
     );
   }
 }
