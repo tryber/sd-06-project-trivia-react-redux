@@ -61,6 +61,7 @@ class Login extends Component {
           >
             Jogar
           </button>
+          {/* Botão que leva para tela de configurações */}
         </form>
       </div>
     );
