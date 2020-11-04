@@ -45,6 +45,16 @@ class Login extends React.Component {
     return (
       <div>
         <div>
+          <Link to="/config">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Jogar
+            </button>
+          </Link>
+        </div>
+        <div>
           <img src={ logo } alt="Logo do Trivia" width="400" />
         </div>
         <div>
