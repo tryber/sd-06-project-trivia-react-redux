@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getToken } from '../actions';
 
 
@@ -44,6 +46,7 @@ class Login extends Component {
   }
 
   render() {
+    const { getPlayerToken } = this.props;
     const { handleChange, handleDisableButton } = this;
     const { email, name } = this.state;
     return (
@@ -75,7 +78,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ handleDisableButton() }
-            onClick={  }
+            onClick={ getPlayerToken() }
           >
             Jogar
           </button>
@@ -91,11 +94,11 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getPlayerToken: () => dispatch(getToken)
+  getPlayerToken: () => dispatch(getToken),
 });
 
 Login.propTypes = {
-  getToken: PropTypes.func.isRequired,
+  getPlayerToken: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

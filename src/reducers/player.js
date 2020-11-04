@@ -1,15 +1,9 @@
-import { UPDATE_PLAYER_INFO, UPDATE_PLAYER_TOKEN } from '..actions/';
+import { UPDATE_PLAYER_TOKEN } from '../actions';
 
-const INITIAL_STATE = { name: '', email: '', token: '' };
+const INITIAL_STATE = { token: '' };
 
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case UPDATE_PLAYER_INFO:
-    return {
-      ...state,
-      email: action.email,
-      name: action.name,
-    };
   case UPDATE_PLAYER_TOKEN:
     return {
       ...state,
