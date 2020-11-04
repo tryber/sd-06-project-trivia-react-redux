@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { login } from '../actions';
+import { user } from '../actions';
 import getToken from '../service/API';
 
 class Login extends React.Component {
@@ -30,14 +30,22 @@ class Login extends React.Component {
 
   async fetchToken() {
     const responseAPI = await getToken();
+    console.log(responseAPI);
     localStorage.setItem('token', JSON.stringify(responseAPI));
-    const lclStorage = JSON.parse(localStorage.getItem('token'));
-    console.log(lclStorage);
+    const { email } = this.state;
+    const { getUser } = this.props;
+    const tokenObj = JSON.parse(localStorage.getItem('token'));
+    getUser(email, tokenObj);
+  }
+
+  onClick(event) {
+    event.preventDefault();
+    const { history } = this.props;
+    history.push('/jogo');
   }
 
   render() {
-    const { buttonDisable, email } = this.state;
-    const { getEmail } = this.props;
+    const { buttonDisable } = this.state;
     return (
       <div>
         <label htmlFor="name-input">
@@ -55,7 +63,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getEmail: (email) => dispatch(login(email))
+  getUser: (email, token) => dispatch(user(email, token))
 })
 
 export default connect(null, mapDispatchToProps)(Login);
