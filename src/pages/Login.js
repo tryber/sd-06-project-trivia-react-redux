@@ -15,6 +15,7 @@ class Login extends Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   validateFields() {
@@ -45,7 +46,7 @@ class Login extends Component {
     const { name, email, isDisable } = this.state;
     return (
       <div>
-        <form onSubmit={ () => console.log('submit') }>
+        <form onSubmit={ this.handleSubmit }>
           <input
             type="text"
             value={ name }
