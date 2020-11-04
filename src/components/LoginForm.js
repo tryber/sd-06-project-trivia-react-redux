@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Settings } from '../components';
+import PropTypes from 'prop-types';
+import Settings from './Settings';
 
 class LoginForm extends Component {
   render() {
@@ -33,10 +34,18 @@ class LoginForm extends Component {
             />
           </label>
         </div>
-        <button type="button" data-testid="btn-play" disabled={ !(validName && validEmail) }>
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ !(validName && validEmail) }
+        >
           Jogar!
         </button>
-        <button type="button" data-testid="btn-settings" onClick={ () => handleSettings() }>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => handleSettings() }
+        >
           Configurações
         </button>
         { showSettings ? <Settings /> : '' }
@@ -44,5 +53,14 @@ class LoginForm extends Component {
     );
   }
 }
+
+LoginForm.propTypes = {
+  handleSettings: PropTypes.func.isRequired,
+  validateName: PropTypes.func.isRequired,
+  validateEmail: PropTypes.func.isRequired,
+  validName: PropTypes.bool.isRequired,
+  validEmail: PropTypes.bool.isRequired,
+  showSettings: PropTypes.bool.isRequired,
+};
 
 export default LoginForm;
