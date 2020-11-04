@@ -1,6 +1,7 @@
 import React from 'react';
 import { userLogin } from '../actions';
 import { connect } from 'react-redux';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -13,10 +14,6 @@ class Login extends React.Component {
     // this.handleClick = this.handleClick.bind(this);
   }
 
-  // handleClick () {
-  
-  // }
-  
   handleChange() {
     const inputEmail = document.getElementById('input-gravatar-name').value;
     const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -30,14 +27,12 @@ class Login extends React.Component {
     this.setState({ email: inputEmail, name: inputName });
   }
 
-
   // handleChange({ target }) {
   //   const { name, value } = target;
   //   this.setState({
   //     [name]: value,
   //   });
   // }
-
 
   render() {
     const { disabled } = this.state;
