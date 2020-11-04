@@ -16,6 +16,8 @@ class Login extends React.Component {
       const { name, email } = this.state;
       if (name && email) {
         this.setState({ btnDisabled: false });
+      } else {
+        this.setState({ btnDisabled: true });
       }
     });
   }
