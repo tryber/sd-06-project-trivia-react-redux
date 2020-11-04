@@ -1,16 +1,13 @@
-import React, { Component } from 'react'
-import logo from '../trivia.png';
+import React, { Component } from 'react';
+import LoginButton from '../Components/LoginButton';
 
 class Login extends Component {
   render() {
     return (
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    )
+      <div>
+        <LoginButton />
+      </div>
+    );
   }
 }
-export default Login
+export default Login;
