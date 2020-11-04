@@ -65,7 +65,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             disabled={ isDisable }
           >
-            Entrar
+            Jogar
           </button>
         </form>
       </div>
