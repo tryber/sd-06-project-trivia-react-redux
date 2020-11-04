@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import setUserInfo from '../actions';
 
@@ -61,8 +62,12 @@ class Login extends Component {
           >
             Jogar
           </button>
-          {/* Botão que leva para tela de configurações */}
         </form>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            TELA DE CONFIGURAÇÃO
+          </button>
+        </Link>
       </div>
     );
   }
