@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { propTypes } from 'prop-types';
+import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
 import { saveToken } from '../actions';
 
@@ -101,6 +101,10 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = {
+  dispatchSaveToken: propTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveToken: (token) => dispatch(saveToken(token)),
