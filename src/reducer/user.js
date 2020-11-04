@@ -2,6 +2,7 @@ import { HANDLE_USER } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
+  avatar: '',
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       email: action.email,
+      avatar: action.avatar,
     };
   default:
     return state;
