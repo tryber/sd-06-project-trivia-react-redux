@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { savePlayer } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -28,6 +31,7 @@ class Login extends React.Component {
 
   render() {
     const { name, email, validFieldsOk } = this.state;
+    const { saveUser } = this.props;
     return (
       <div>
         <h1>Project Trivia</h1>
@@ -52,6 +56,7 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ !(validFieldsOk) }
+            onClick={ () => saveUser(name, email) }
           >
             Jogar
           </button>
@@ -61,4 +66,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => (
+  { saveUser: (name, email) => dispatch(savePlayer(name, email)) }
+);
+
+Login.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
