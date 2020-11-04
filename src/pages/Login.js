@@ -33,7 +33,7 @@ class Login extends React.Component {
     return (
       <div>
         <img
-          src = { trivia }
+          src={ trivia }
           alt="Logo"
           className="img-logo"
         />
