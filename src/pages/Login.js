@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import trivia from '../images/trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -31,13 +32,13 @@ class Login extends React.Component {
     const { email, username, disabled } = this.state;
     return (
       <div>
+        <img
+          src = { trivia }
+          alt="Logo"
+          className="img-logo"
+        />
+        <br />
         <div>
-          <img
-            src="trivia.png"
-            alt="Logo"
-            className="img-logo"
-          />
-          <br />
           <input
             name="email"
             id="email"
