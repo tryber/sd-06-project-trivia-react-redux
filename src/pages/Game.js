@@ -19,6 +19,7 @@ class Game extends Component {
   async componentDidMount() {
     const API_RESPONSE = await fetchGameQuestions();
     const QUESTIONS = API_RESPONSE.results;
+
     this.saveQuestionsToState(QUESTIONS);
   }
 
@@ -81,7 +82,7 @@ class Game extends Component {
                 </button>
                 : <button
                   type="button"
-                  data-testid={ answer.index }
+                  data-testid={ `wrong-answer-${answer.index}` }
                 >
                   {answer.answer}
                 </button>
