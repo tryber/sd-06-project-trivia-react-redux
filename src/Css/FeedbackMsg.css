@@ -1,0 +1,34 @@
+.Feedback-Msg {
+  align-items: center;
+  background-color: rgb(200, 220, 210);
+  border-radius: 28px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin: auto;
+  padding: 0;
+  width: 24%;
+}
+
+.green-bg {
+  background-color: rgb(129, 218, 172);
+}
+
+.orange-bg {
+  background-color: rgb(223, 182, 171);
+}
+
+.Feedback-Msg p {
+  font-size: 2em;
+  font-style: italic;
+  text-align: center;
+}
+
+.feeback-emoji {
+  display: block;
+  font-size: 2.5em;
+  font-style: normal;
+  margin-top: -10px;
+  margin-bottom: -85px;
+  text-shadow: 0px 0px 6px rgb(250, 255, 252);
+}
