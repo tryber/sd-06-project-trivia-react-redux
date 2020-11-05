@@ -58,8 +58,8 @@ class LoginForm extends Component {
                 >
                   <img src={ configLogo } width="50" alt="config" />
                 </button>
-                { showSettings ? <Settings /> : '' }
               </div>
+              { showSettings ? <Settings /> : '' }
             </div>
           </div>
         </form>
