@@ -2,12 +2,13 @@ import { LOGIN } from '../Action/actionLogin';
 
 const initialState = {
   name: '',
-  email: '',
+  hash: '',
+  score: 0,
 };
 
 function reducerLogin(state = initialState, action) {
   switch (action.type) {
-  case LOGIN: return { ...state, email: action.email };
+  case LOGIN: return { ...state, hash: action.hash, name: action.name };
 
   default: return state;
   }
