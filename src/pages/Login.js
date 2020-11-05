@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { userLogin, thunkToken } from '../actions';
 import { Link } from 'react-router-dom';
+import { userLogin, thunkToken } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -83,6 +84,15 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(thunkToken()),
   saveLogin: (info) => dispatch(userLogin(info)),
-})
+});
+
+Login.propTypes = {
+  fetchToken: PropTypes.string.isRequired,
+  saveLogin: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    disabled: PropTypes.bool,
+  }).isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
