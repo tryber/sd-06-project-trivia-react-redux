@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../Components/Header';
 
 class Game extends React.Component {
   constructor() {
@@ -29,7 +30,10 @@ class Game extends React.Component {
 
   render() {
     return (
-      <span>Começo do jogo</span>
+      <div>
+        <Header />
+        <span>Começo do jogo</span>
+      </div>
     );
   }
 }
