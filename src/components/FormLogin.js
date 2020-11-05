@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getToken } from '../services';
+import { fetchToken } from '../actions';
 
 class FormLogin extends Component {
   constructor() {
     super();
     this.state = {
-      inputEmail: '',
-      inputName: '',
+      email: '',
+      name: '',
       isDisabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.verifyFields = this.verifyFields.bind(this);
+    this.handleUserTokenAndEmail = this.handleUserTokenAndEmail.bind(this);
   }
 
   handleChange({ target }) {
@@ -20,12 +25,18 @@ class FormLogin extends Component {
   }
 
   verifyFields() {
-    const { inputEmail, inputName } = this.state;
-    if (inputEmail.length > 0 && inputName.length > 0) {
+    const { email, name } = this.state;
+    if (email.length > 0 && name.length > 0) {
       this.setState({
         isDisabled: false,
       });
     }
+  }
+
+  handleUserTokenAndEmail() {
+    const token = getToken();
+    const { saveToken } = this.props;
+    saveToken(token);
   }
 
   render() {
@@ -38,7 +49,7 @@ class FormLogin extends Component {
             <input
               type="text"
               id="playerGravatar"
-              name="inputEmail"
+              name="email"
               data-testid="input-gravatar-email"
               onChange={ this.handleChange }
             />
@@ -48,7 +59,7 @@ class FormLogin extends Component {
             <input
               type="text"
               id="playerName"
-              name="inputName"
+              name="name"
               data-testid="input-player-name"
               onChange={ this.handleChange }
             />
@@ -58,6 +69,7 @@ class FormLogin extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ isDisabled }
+              onClick={ this.handleUserTokenAndEmail }
             >
               Jogar
             </button>
@@ -76,4 +88,12 @@ class FormLogin extends Component {
   }
 }
 
-export default FormLogin;
+const mapDisPatchToProps = (dispatch) => ({
+  saveToken: (token) => dispatch(fetchToken(token)),
+});
+
+FormLogin.propTypes = {
+  saveToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDisPatchToProps)(FormLogin);
