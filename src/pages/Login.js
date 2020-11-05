@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setUserInfo } from '../actions';
 import reqToken from '../services';
-// import { connect } from 'react-redux';
-// import setUserInfo from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -38,8 +38,11 @@ class Login extends Component {
   async handleSubmit(e) {
     e.preventDefault();
     const { history } = this.props;
+    const { setName } = this.props;
+    const { name, email } = this.state;
+    setName(name, email);
     const token = await reqToken().then((data) => data.token);
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
 
@@ -84,12 +87,17 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user.name,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setName: (playerName, playerEmail) => dispatch(setUserInfo(playerName, playerEmail)),
+});
+
 Login.propTypes = {
-  history: PropTypes.shape(PropTypes.string),
+  setName: propTypes.func.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
 };
 
-Login.defaultProps = {
-  history: '',
-};
-
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
