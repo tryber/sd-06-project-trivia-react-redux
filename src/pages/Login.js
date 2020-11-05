@@ -34,36 +34,41 @@ class Login extends React.Component {
     const { btnDisabled } = this.state;
     return (
       <div>
-        <label htmlFor="name">
-          Nome:
-          <input
-            data-testid="input-player-name"
-            id="name"
-            type="text"
-            onChange={ this.handleChange }
-            name="name"
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            type="text"
-            onChange={ this.handleChange }
-            name="email"
-          />
-        </label>
-        <Link to="/game">
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ btnDisabled }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+        <Link to="/settings" data-testid="btn-settings">
+          Configurações
         </Link>
+        <form>
+          <label htmlFor="name">
+          Nome:
+            <input
+              data-testid="input-player-name"
+              id="name"
+              type="text"
+              onChange={ this.handleChange }
+              name="name"
+            />
+          </label>
+          <label htmlFor="email">
+          Email:
+            <input
+              data-testid="input-gravatar-email"
+              id="email"
+              type="text"
+              onChange={ this.handleChange }
+              name="email"
+            />
+          </label>
+          <Link to="/game">
+            <button
+              data-testid="btn-play"
+              type="button"
+              disabled={ btnDisabled }
+              onClick={ this.handleClick }
+            >
+            Jogar
+            </button>
+          </Link>
+        </form>
       </div>
     );
   }
