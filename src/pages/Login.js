@@ -93,7 +93,7 @@ class Login extends Component {
       );
     }
     return (
-      <Redirect to="/jogar" />
+      <Redirect to="/trivia-game" />
     );
   }
 }
