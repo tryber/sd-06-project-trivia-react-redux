@@ -25,7 +25,7 @@ Header.defaultProps = {
 Header.propTypes = {
   avatar: propTypes.string,
   name: propTypes.string,
-  score: propTypes.string,
+  score: propTypes.number,
 };
 
 function mapStateToProps(state) {

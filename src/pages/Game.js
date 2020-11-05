@@ -20,15 +20,15 @@ class Game extends Component {
   componentDidMount() {
     const { info, isFetching, APIQuestions } = this.props;
     localStorage.setItem('token', info.token);
-    if (isFetching) {
-      console.log('Lading');
-    } else {
-      console.log(APIQuestions.results[0]);
-    }
+    // if (isFetching) {
+    //   console.log('Lading');
+    // } else {
+    //   console.log(APIQuestions.results[0]);
+    // }
   }
 
   render() {
-    const { APIQuestions } = this.props;
+    const { isFetching } = this.props;
     return (
       <section className="game-container">
         <section className="game-header">
@@ -38,7 +38,9 @@ class Game extends Component {
           <section className="game-category">categoria</section>
           <section className="game-text">texto da pergunta</section>
         </section>
-        {/* <section className="game-answers">{results[0].category}</section> */}
+        {/* { isFetching
+          ? <p>Carregando...</p>
+          : <section className="game-answers">{teste.incorrect_answers.map((i) => <p>{i}</p>)}</section>} */}
       </section>
     );
   }
