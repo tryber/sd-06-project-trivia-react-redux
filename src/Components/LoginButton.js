@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getToken } from '../Action/actionToken';
+import { responseToken } from '../Action/actionToken';
 
 class LoginButton extends Component {
   constructor() {
@@ -11,37 +11,46 @@ class LoginButton extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidUpdate() {
+    const { token } = this.props;
+
+    localStorage.setItem('token', token);
+  }
+
   handleClick() {
     const { requestToken } = this.props;
     requestToken();
   }
 
   render() {
-    const { isDisabled, email } = this.props;
+    const { isDisabled } = this.props;
 
     return (
-      <Link to="/play">
-        <button
-          type="button"
-          email={ email }
-          disabled={ isDisabled }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
-      </Link>
+      // <Link to="/play">
+      <button
+        type="button"
+        disabled={ isDisabled }
+        onClick={ this.handleClick }
+      >
+        Jogar
+      </button>
+      // </Link>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  requestToken: () => dispatch(getToken()),
+  requestToken: () => dispatch(responseToken()),
 });
 
-export default connect(null, mapDispatchToProps)(LoginButton);
+const mapStateToProps = (state) => ({
+  token: state.tokenReducer.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginButton);
 
 LoginButton.propTypes = {
   requestToken: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool.isRequired,
-  email: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
