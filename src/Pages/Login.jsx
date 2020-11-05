@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import user from '../actions';
 import getToken from '../service/API';
+import '../styles/Login.css';
+import music from '../styles/audio/music.mp3';
 
 class Login extends React.Component {
   constructor(props) {
@@ -51,30 +53,35 @@ class Login extends React.Component {
     const { history } = this.props;
     const { buttonDisable } = this.state;
     return (
-      <div>
-        <label htmlFor="name-input">
-          Nome:
+      <div className="login-box">
+        <audio src={ music } autoPlay loop></audio>
+        <h1>Login</h1>
+        <div className="textbox">
+          <i class="fas fa-user"></i>
           <input
             id="name-input"
             type="text"
             data-testid="input-player-name"
             onChange={ this.checkButton }
+            placeholder="Name"
           />
-        </label>
-        <label htmlFor="email-input">
-          Email:
+        </div>
+        <div className="textbox">
+          <i class="fas fa-user"></i>
           <input
             id="email-input"
             type="text"
             data-testid="input-gravatar-email"
             onChange={ this.checkButton }
+            placeholder="Email"
           />
-        </label>
+        </div>
         <button
           type="submit"
           data-testid="btn-play"
           disabled={ buttonDisable }
           onClick={ this.onClick }
+          className="btn"
         >
           Jogar
         </button>
@@ -82,6 +89,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-settings"
           onClick={ () => history.push('/settings') }
+          className="btn"
         >
           Configurações
         </button>
