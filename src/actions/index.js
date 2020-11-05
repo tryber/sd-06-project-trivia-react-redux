@@ -10,7 +10,11 @@ payload é convenção. está email como no Readme.
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
+<<<<<<< HEAD
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
+=======
+export const PLAYER_DATA = 'PLAYER_DATA';
+>>>>>>> e2ff988784b45415f30ec7d86d28a70776876ebb
 
 export const actionLogin = ({ email, name }) => ({
   type: LOGIN,
@@ -23,9 +27,9 @@ const tokenAction = (payload) => ({
   payload,
 });
 
-const getQuestionsAction = (data) => ({
+export const getQuestionsAction = (payload) => ({
   type: GET_QUESTIONS,
-  payload: data,
+  payload,
 });
 
 const requestQuestions = () => ({

@@ -9,7 +9,6 @@ const rootReducer = combineReducers({
   token,
   allQuestions,
   playerData,
-
 });
 
 export default rootReducer;

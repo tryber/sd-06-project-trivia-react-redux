@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getQuestions } from '../actions';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor() {
@@ -31,13 +32,13 @@ class Game extends Component {
     return (
       <section className="game-container">
         <section className="game-header">
-          {/* <Header /> */}
+          <Header />
         </section>
         <section className="game-question">
           <section className="game-category">categoria</section>
           <section className="game-text">texto da pergunta</section>
         </section>
-        <section className="game-answers">aqui vem o map dos buttons</section>
+        {/* <section className="game-answers">{results[0].category}</section> */}
       </section>
     );
   }
