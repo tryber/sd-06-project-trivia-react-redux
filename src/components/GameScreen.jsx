@@ -59,9 +59,17 @@ class GameScreen extends Component {
   }
 
   handleClick() {
-    this.setState((state) => ({
-      index: state.index + 1,
-    }));
+    // this.setState((state) => ({
+    //   index: state.index + 1,
+    // }));
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+      if (button.className === 'wrong') {
+        button.className += ' red';
+      } else if (button.className === 'correct') {
+        button.className += ' green';
+      }
+    });
   }
 
   render() {
@@ -85,6 +93,7 @@ class GameScreen extends Component {
             {questions[index].incorrect_answers.map((answer, i) => (
               <button
                 type="button"
+                className="wrong"
                 key={ i }
                 data-testid={ `wrong-answer-${i}` }
                 onClick={ this.handleClick }
@@ -94,6 +103,7 @@ class GameScreen extends Component {
             ))}
             <button
               type="button"
+              className="correct"
               data-testid="correct-answer"
               onClick={ this.handleClick }
 
