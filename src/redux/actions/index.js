@@ -47,6 +47,21 @@ export function fetchQuestions(token) {
         localStorage.setItem('token', validToken);
       }
 
+      questions = questions.map((question) => {
+        const correctAnswer = {
+          answer: question.correct_answer,
+          correct: true,
+        };
+        const incorrectAnswers = question.incorrect_answers.map((incorrect) => ({
+          answer: incorrect,
+          correct: false,
+        }));
+        const answers = [...incorrectAnswers, correctAnswer];
+        const randomizer = 0.5;
+        answers.sort(() => Math.random() - randomizer);
+        return { ...question, answers };
+      });
+
       dispatch(loadQuestions({
         questions,
         token: validToken,
