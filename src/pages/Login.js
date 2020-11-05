@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import md5 from 'crypto-js/md5';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -81,6 +81,14 @@ class Login extends Component {
           >
             Jogar
           </button>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Settings
+            </button>
+          </Link>
         </section>
       );
     }
