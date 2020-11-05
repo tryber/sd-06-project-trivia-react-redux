@@ -10,6 +10,7 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
+      validated: true,
     };
 
     this.validateFields = this.validateFields.bind(this);
@@ -18,16 +19,25 @@ class Login extends Component {
 
   validateFields() {
     const { name, email } = this.state;
-    return (name.length > 0 && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)));
+    if (name.length > 0 && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+      this.setState(
+        { validated: false },
+      );
+    } else {
+      this.setState(
+        { validated: true },
+      );
+    }
   }
 
   handleChange({ target }) {
     const { value } = target;
     this.setState({ [target.name]: value });
+    this.validateFields();
   }
 
   render() {
-    const validated = this.validateFields();
+    const { validated } = this.state;
 
     return (
       <div className="App">
@@ -55,7 +65,7 @@ class Login extends Component {
               data-testid="input-gravatar-email"
             />
           </label>
-          <LoginButton disabled={ validated } />
+          <LoginButton isDisabled={ validated } />
         </form>
         <ButtonSettings />
       </div>
