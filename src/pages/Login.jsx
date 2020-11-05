@@ -33,10 +33,11 @@ class Login extends React.Component {
 
   enviaDados() {
     console.log('teste');
-    const { dispatchDados, dispatchToken } = this.props;
+    const { dispatchDados, dispatchToken, history } = this.props;
     const { name, email } = this.state;
     dispatchDados(name, email);
     dispatchToken();
+    history.push("/jogo");
   }
 
   render() {
@@ -67,16 +68,14 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          {/* <Link to="/jogo"> */}
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ isDisable }
-              onClick={ this.enviaDados }
-            >
-              Jogar
-            </button>
-          {/* </Link> */}
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ isDisable }
+            onClick={ this.enviaDados }
+          >
+            Jogar
+          </button>
           <Link to="/configuracoes">
             <button
               type="button"
