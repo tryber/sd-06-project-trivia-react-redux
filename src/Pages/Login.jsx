@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { user } from '../actions';
+import user from '../actions';
 import getToken from '../service/API';
 
 class Login extends React.Component {
@@ -8,8 +8,9 @@ class Login extends React.Component {
     super(props);
     this.checkButton = this.checkButton.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.state = {
-      buttonDisable: false,
+      buttonDisable: true,
       name: '',
       email: '',
     }
@@ -30,17 +31,15 @@ class Login extends React.Component {
 
   async fetchToken() {
     const responseAPI = await getToken();
-    console.log(responseAPI);
     localStorage.setItem('token', JSON.stringify(responseAPI));
-    const { email } = this.state;
-    const { getUser } = this.props;
-    const tokenObj = JSON.parse(localStorage.getItem('token'));
-    getUser(email, tokenObj);
   }
-
+  
   onClick(event) {
     event.preventDefault();
-    const { history } = this.props;
+    const { email } = this.state;
+    const { getUser, history } = this.props;
+    getUser(email);
+    this.fetchToken();
     history.push('/jogo');
   }
 
@@ -56,14 +55,14 @@ class Login extends React.Component {
           Email:
           <input id="email-input" type="text" data-testid="input-gravatar-email" onChange={ this.checkButton } />
         </label>
-        <button type="submit" data-testid="btn-play" disabled={ buttonDisable } onClick={ this.fetchToken }>Jogar</button>
+        <button type="submit" data-testid="btn-play" disabled={ buttonDisable } onClick={ this.onClick }>Jogar</button>
       </div>
     )
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getUser: (email, token) => dispatch(user(email, token))
+  getUser: (email) => dispatch(user(email))
 })
 
 export default connect(null, mapDispatchToProps)(Login);

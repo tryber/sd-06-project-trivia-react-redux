@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
   email: '',
-  token: '',
 };
 
 export default function loginReducer(state = INITIAL_STATE, action) {
@@ -9,7 +8,6 @@ export default function loginReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       email: action.email,
-      token: action.token,
     };
   default:
     return state;
