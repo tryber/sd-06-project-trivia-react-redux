@@ -24,8 +24,8 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    avatar: state.payload.avatar,
-    name: state.payload.name,
+    avatar: state.imageProfile,
+    name: state.name,
     score: state.payload.score,
   };
 }
