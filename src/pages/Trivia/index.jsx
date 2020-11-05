@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from './Components/Header';
+import { updateScore } from '../../redux/actions';
 
 import './styles.css';
 
@@ -22,17 +23,38 @@ class Trivia extends React.Component {
     };
   }
 
-  handleAnswerClick() {
+  componentDidMount() {
+    const { userEmail, name } = this.props;
+
+    const user = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: userEmail,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(user));
+  }
+
+  handleAnswerClick({ timer, difficulty, correct }) {
+    const { setScore } = this.props;
+
+    if (correct) {
+      setScore({ timer, difficulty });
+    }
+
     this.setState({
       answered: true,
     });
   }
 
   timerOut() {
-    const { timer } = this.state;
+    const { timer, answered } = this.state;
     const oneSecond = 1000;
-    if (timer > 0) {
-      newTimer = timer - 1;
+    if (timer > 0 && !answered) {
+      const newTimer = timer - 1;
 
       this.setState({
         timer: timer - 1,
@@ -54,7 +76,7 @@ class Trivia extends React.Component {
     }
 
     return (
-      <div className="trivia" onLoad={ timerOut }>
+      <div className="trivia" onLoad={ this.timerOut }>
         <Header />
         <div>
           <p>
@@ -67,26 +89,31 @@ class Trivia extends React.Component {
           <p data-testid="question-text">{ questions[currentQuestion].question }</p>
 
           <div>
-            { questions[currentQuestion].answers.map((answer) => {
+            { questions[currentQuestion].answers.map(({ correct, answer }) => {
               const correctAnswerId = 'correct-answer';
 
               const incorrectIndex = questions[currentQuestion]
-                .incorrect_answers.findIndex((a) => a === answer.answer);
+                .incorrect_answers.findIndex((a) => a === answer);
 
               const incorrectAnswerId = `wrong-answer-${incorrectIndex}`;
+              const { difficulty } = questions[currentQuestion];
 
               return (
-                <div key={ answer.answer }>
+                <div key={ answer }>
                   <button
                     type="button"
                     className={ answered && (
-                      answer.correct ? 'correct-answer' : 'wrong-answer'
+                      correct ? 'correct-answer' : 'wrong-answer'
                     ) }
-                    data-testid={ answer.correct ? correctAnswerId : incorrectAnswerId }
-                    onClick={ this.handleAnswerClick }
+                    data-testid={ correct ? correctAnswerId : incorrectAnswerId }
+                    onClick={ () => this.handleAnswerClick({
+                      timer,
+                      correct,
+                      difficulty,
+                    }) }
                     disabled={ answered }
                   >
-                    { answer.answer }
+                    { answer }
                   </button>
                 </div>
               );
@@ -107,7 +134,16 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(Trivia);
+function mapDispatchToProps(dispatch) {
+  return {
+    setScore: ({ difficulty, timer }) => dispatch(updateScore({
+      difficulty,
+      timer,
+    })),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
 
 Trivia.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
