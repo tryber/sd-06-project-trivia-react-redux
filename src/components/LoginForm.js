@@ -7,7 +7,6 @@ import { fetchApi } from '../actions';
 import logo from '../trivia.png';
 import configLogo from '../img/config.png';
 import '../App.css';
-// import { fetchAPI } from '../actions';
 
 class LoginForm extends Component {
   render() {

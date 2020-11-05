@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../services';
+import fetchQuestions from '../services';
 
 class Game extends React.Component {
   constructor() {
@@ -59,5 +60,9 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   userToken: state.user.token,
 });
+
+Game.propTypes = {
+  userToken: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps)(Game);
