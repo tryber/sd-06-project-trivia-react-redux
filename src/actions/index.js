@@ -1,7 +1,7 @@
 export const LOGIN = 'LOGIN';
 
-export const loginAction = (email, name) => ({
+export const loginAction = (email, username) => ({
   type: LOGIN,
   email,
-  name,
+  username,
 });
