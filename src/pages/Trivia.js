@@ -2,11 +2,11 @@ import React from 'react';
 
 class Trivia extends React.Component {
   render() {
-    return(
+    return (
       <div>
         Página de Jogo
       </div>
-    )
+    );
   }
 }
 
