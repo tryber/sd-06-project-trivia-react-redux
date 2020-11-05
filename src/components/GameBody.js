@@ -59,32 +59,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
 // data-testid="question-category"
 // data-testid="question-text"
 // data-testid="correct-answer"
-// data-testid="wrong-answer-${index}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// data-testid="wrong-answer-${index}".
