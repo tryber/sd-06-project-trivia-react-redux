@@ -1,7 +1,6 @@
 import React from 'react';
 import { LoginForm } from '../components';
 
-
 class Login extends React.Component {
   constructor() {
     super();
@@ -56,7 +55,7 @@ class Login extends React.Component {
         validName={ validName }
         validEmail={ validEmail }
         showSettings={ showSettings }
-      />  
+      />
     );
   }
 }
