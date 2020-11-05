@@ -46,6 +46,17 @@ class Login extends React.Component {
         />
         <br />
         <div>
+          <Link
+            to="/settings"
+          >
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+          <br />
           <input
             name="email"
             id="email"
