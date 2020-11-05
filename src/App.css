@@ -23,11 +23,11 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
+  height: 100vh;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -54,3 +54,79 @@
   }
 }
 
+.login-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-div input {
+  font-size: 30px;
+  height: 60px;
+  margin: 15px;
+  width: 500px;
+  margin-bottom: 15px;
+  border: 2px solid rgba(10, 10, 10, 0.325);;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.login-div input:hover{
+  border: 3px solid rgb(170, 165, 165);
+  box-shadow: 0 0 3px #ddd;
+}
+
+.login-div button {
+  height: 30px;
+  margin-top: 35px;
+  border-radius: 4px;
+  background-color: #0d8117;
+  color: white;
+  width: 400px;
+  height: 65px;
+  font-weight: 700;
+  font-size: 27.5px;
+  text-shadow: rgba(0, 0, 0, 0.5) 0 1px 2px;
+  border: 1px solid rgba(10, 10, 10, 0.125);
+  box-shadow: 0 0 5px #ddd;
+}
+
+.login-div button:hover:enabled {
+  background: linear-gradient(#0d8117, #0a7713);
+  box-shadow: 0 0 10px #ddd;
+  transform: scale(1.0575);
+}
+
+.login-div button:disabled {
+  background-color: rgba(173, 12, 44, 0.774);
+  color: #666666;
+  box-shadow: 0 0 3px #ddd;
+}
+
+.buttons-div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 550px;
+}
+
+.buttons-div .button-b {
+  width: 70px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #56585d;
+}
+
+.buttons-div .button-b:hover:enabled {
+  background: linear-gradient(#56585d, #56585d);
+  box-shadow: 0 0 10px #ddd;
+  transform: scale(1.0575);
+}
+
+.config-login-div {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+}

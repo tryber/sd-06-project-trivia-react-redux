@@ -1,10 +1,10 @@
-const INITIAL_STATE = { email: '' };
-const LOGIN = 'LOGIN';
+const INITIAL_STATE = { token: '' };
+const TOKEN = 'TOKEN';
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case LOGIN:
-    return { ...state, email: action.email };
+  case TOKEN:
+    return { ...state, token: action.token };
   default:
     return state;
   }
