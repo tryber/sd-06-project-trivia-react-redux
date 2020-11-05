@@ -1,22 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { fetchQuestion } from '../actions';
 
 class Questions extends React.Component {
+  componentDidMount() {
+    console.log('ola');
+    const { token, requestQuestion } = this.props;
+    requestQuestion(token);
+  }
+
   render() {
-    const { nomeDoExemploIcaro } = this.props;
-    return <div>{ nomeDoExemploIcaro }</div>;
+    // const { nomeDoExemploIcaro } = this.props;
+    return <div>Hello</div>;
   }
 }
 
 const mapStateToProps = (state) => ({
-  nomeDoExemploIcaro: state.questions.helloWorld,
+  token: state.userLogin.token.token,
+  questions: state.questions.questions.results,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  requestQuestion: (token) => dispatch(fetchQuestion(token)),
 });
 
 Questions.propTypes = {
-  nomeDoExemploIcaro: PropTypes.shape.isRequired,
+  token: PropTypes.string.isRequired,
+  requestQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(Questions);
