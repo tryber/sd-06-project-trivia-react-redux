@@ -11,6 +11,7 @@ class Login extends Component {
     super();
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       name: '',
@@ -23,14 +24,20 @@ class Login extends Component {
     const { name, email } = this.state;
     if (newState.name !== name || newState.email !== email) {
       this.handleChange();
+      // console.log(name);
     }
+  }
+
+  handleClick() {
+    const { getToken, history } = this.props;
+    getToken();
+    return history.push('/game');
   }
 
   handleChange() {
     const { name, email } = this.state;
-    const { getToken, login } = this.props;
+    const { login } = this.props;
     const reg = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
-    getToken();
     login(this.state);
     this.setState({ disabled: reg.test(email) && name.length > 1 });
   }
@@ -62,7 +69,7 @@ class Login extends Component {
               onChange={ (e) => this.setState({ email: e.target.value }) }
             />
             <button
-              onClick={ () => history.push('/game') }
+              onClick={ () => this.handleClick() }
               disabled={ !disabled }
               className="btn-play"
               type="button"
