@@ -2,7 +2,7 @@ import { GET_API } from '../actions';
 
 const initialState = {
   responseCode: '',
-  results: [],
+  results: '',
 };
 
 export default function user(state = initialState, action) {
