@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setUserInfo } from '../actions';
+import Header from '../components/Header';
 
 class Login extends Component {
   constructor() {
@@ -46,6 +47,7 @@ class Login extends Component {
     const { name, email, isDisable } = this.state;
     return (
       <div>
+        <Header />
         <form onSubmit={ this.handleSubmit }>
           <input
             type="text"
