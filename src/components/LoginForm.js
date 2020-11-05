@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTokenAPI } from '../redux/actions'
+import { fetchTokenAPI } from '../redux/actions';
 
 class LoginForm extends React.Component {
   constructor() {
@@ -79,3 +80,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(LoginForm);
+
+LoginForm.propTypes = {
+  fetchToken: PropTypes.func.isRequired,
+};

@@ -10,4 +10,4 @@ export const fetchTokenAPI = () => async (dispatch) => {
   const data = await response.json();
   dispatch(receiveTokenSuccess(data.token));
   localStorage.setItem('token', data.token);
-}
+};

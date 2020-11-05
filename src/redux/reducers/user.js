@@ -9,8 +9,8 @@ function user(state = initialState, action) {
   case TOKEN_SUCCESS:
     return {
       ...state,
-      token: action.data
-    }
+      token: action.data,
+    };
   default:
     return state;
   }
