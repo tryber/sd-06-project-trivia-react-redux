@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getToken } from '../actions';
+import { getLogin, getToken } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -12,6 +12,7 @@ class Login extends Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
     this.handleDisableButton = this.handleDisableButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       name: '',
@@ -44,9 +45,15 @@ class Login extends Component {
     });
   }
 
+  handleClick() {
+    const { getPlayerToken, getPlayerLogin } = this.props;
+    const { name, email } = this.state;
+    getPlayerToken();
+    getPlayerLogin(name, email);
+  }
+
   render() {
-    const { getPlayerToken } = this.props;
-    const { handleChange, handleDisableButton } = this;
+    const { handleChange, handleDisableButton, handleClick } = this;
     const { email, name } = this.state;
     return (
       <div>
@@ -77,7 +84,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ handleDisableButton() }
-            onClick={ getPlayerToken() }
+            onClick={ handleClick }
           >
             Jogar
           </button>
@@ -93,11 +100,13 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getPlayerToken: () => dispatch(getToken),
+  getPlayerToken: () => dispatch(getToken()),
+  getPlayerLogin: (name, email) => dispatch(getLogin(name, email)),
 });
 
 Login.propTypes = {
   getPlayerToken: PropTypes.func.isRequired,
+  getPlayerLogin: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

@@ -10,6 +10,7 @@ export function getLogin(name, email) {
     email,
   };
 }
+
 export function playerScore(score) {
   return {
     type: GET_SCORE,
@@ -27,7 +28,7 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const getToken = (dispatch) => async () => {
+export const getToken = (dispatch) => async (dispatch) => {
   const apiEndpoint = 'https://opentdb.com/api_token.php?command=request';
   const tokenJson = await (await fetch(apiEndpoint)).json();
   dispatch(updatePlayerToken(tokenJson.token));
