@@ -1,14 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { userLogin } from '../actions';
+import { Link } from 'react-router-dom';
+import { userLogin, thunkToken } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
-      // name: '',
-      // email: '',
+      name: '',
+      email: '',
       disabled: true,
     };
   }
@@ -19,11 +22,21 @@ class Login extends React.Component {
     const inputName = document.getElementById('input-player-name').value;
     const one = 1;
     if (regex.test(inputEmail) === true && inputName.length >= one) {
-      this.setState({ disabled: false });
+      this.setState({
+        disabled: false,
+        name: inputName,
+        email: inputEmail,
+      });
     } else {
       this.setState({ disabled: true });
     }
     // this.setState({ email: inputEmail, name: inputName });
+  }
+
+  handleClick() {
+    const { fetchToken, saveLogin } = this.props;
+    fetchToken();
+    saveLogin(this.state);
   }
 
   render() {
@@ -52,20 +65,30 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <button
-            disabled={ disabled }
-            type="button"
-            data-testid="btn-play"
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+          <Link to="/game-screen">
+            <button
+              disabled={ disabled }
+              type="button"
+              data-testid="btn-play"
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
       </section>
     );
   }
 }
 
-// mapStateToProps, mapDispatchToProps
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: () => dispatch(thunkToken()),
+  saveLogin: (info) => dispatch(userLogin(info)),
+});
 
-export default connect(null, null)(Login);
+Login.propTypes = {
+  fetchToken: PropTypes.func.isRequired,
+  saveLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

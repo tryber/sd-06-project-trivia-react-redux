@@ -3,10 +3,9 @@ import { LOGIN } from '../actions/index';
 const INITIAL_STATE = {
   name: '',
   email: '',
-  token: '',
 };
 
-const login = (state = INITIAL_STATE, action) => {
+const loginReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case LOGIN:
     return { ...state, ...action.payload };
@@ -15,4 +14,4 @@ const login = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default login;
+export default loginReducer;
