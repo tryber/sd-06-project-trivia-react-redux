@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CryptoJs from 'crypto-js';
 import fetchToken from '../services/api';
 
 class Login extends React.Component {
@@ -12,6 +13,26 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  hash() {
+    const { email } = this.state;
+    const hash = CryptoJs.MD5(email).toString().trim().toLowerCase();
+    console.log(hash);
+    localStorage.setItem('hash', hash);
+  }
+
+  player() {
+    const { name, email } = this.state;
+    const state = {
+      player: {
+        // assertions,
+        name,
+        // score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   handleChange(event) {
@@ -28,6 +49,8 @@ class Login extends React.Component {
   async handleClick() {
     const token = await fetchToken();
     localStorage.setItem('token', token);
+    this.player();
+    this.hash();
   }
 
   render() {
