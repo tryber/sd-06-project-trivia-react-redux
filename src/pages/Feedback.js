@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { FeedbackHeader } from '../components';
+import { FeedbackHeader, PlayAgain } from '../components';
 
 class Feedback extends Component {
   render() {
     return (
       <div>
         <FeedbackHeader />
-        Feedback
+        <PlayAgain />
       </div>
     );
   }
