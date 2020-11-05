@@ -66,9 +66,17 @@ class Login extends Component {
             className="btn-play"
             type="button"
             data-testid="btn-play"
-            // onClick={ () => this.handleClick() }
           >
             Jogar
+          </button>
+        </Link>
+        <Link to="/settings">
+          <button
+            className="btn-settings"
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
           </button>
         </Link>
       </section>
