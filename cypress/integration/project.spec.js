@@ -140,6 +140,7 @@ describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informaç
   });
 
   it('A categoria da pergunta está presente', () => {
+    cy.wait(7000);
     cy.get(QUESTION_CATEGORY_SELECTOR).should('exist');
   });
 
