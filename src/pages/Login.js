@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getToken, getLogin } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -8,6 +12,7 @@ class Login extends Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
     this.handleDisableButton = this.handleDisableButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       name: '',
@@ -40,7 +45,15 @@ class Login extends Component {
     });
   }
 
+  handleClick() {
+    const { getGlobalLogin, history } = this.props;
+    const { email, name } = this.state;
+    getGlobalLogin(name, email);
+    history.push('/game');
+  }
+
   render() {
+    const { getPlayerToken } = this.props;
     const { handleChange, handleDisableButton } = this;
     const { email, name } = this.state;
     return (
@@ -71,12 +84,30 @@ class Login extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ handleDisableButton() }
+          onClick={ getPlayerToken() && this.handleClick }
         >
-          Jogar
+            Jogar
         </button>
+        <div>
+          <Link data-testid="btn-settings" to="/settings">
+            Configurações
+          </Link>
+        </div>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getPlayerToken: () => dispatch(getToken),
+  getGlobalLogin: (name, email) => dispatch(getLogin(name, email)),
+});
+
+Login.propTypes = {
+  getPlayerToken: PropTypes.func.isRequired,
+  getGlobalLogin: PropTypes.func.isRequired,
+  history: PropTypes.string.isRequired,
+
+};
+
+export default connect(null, mapDispatchToProps)(Login);
