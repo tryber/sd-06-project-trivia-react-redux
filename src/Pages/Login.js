@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
 import ButtonSettings from '../Components/ButtonSettings';
+import { responseToken } from '../Action/actionToken';
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +17,19 @@ class Login extends Component {
 
     this.validateFields = this.validateFields.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { token } = this.props;
+
+    localStorage.setItem('token', token);
+  }
+
+  handleClick() {
+    const { history, requestToken } = this.props;
+    requestToken();
+    history.push('/game');
   }
 
   validateFields() {
@@ -65,11 +80,32 @@ class Login extends Component {
               data-testid="input-gravatar-email"
             />
           </label>
-          <LoginButton isDisabled={ validated } />
+          <LoginButton
+            onClick={ this.handleClick }
+            disabled={ validated }
+            title="Jogar"
+          />
         </form>
         <ButtonSettings />
       </div>
     );
   }
 }
-export default Login;
+
+const mapDispatchToProps = (dispatch) => ({
+  requestToken: () => dispatch(responseToken()),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.reducerLogin.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  requestToken: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  token: PropTypes.string.isRequired,
+};
