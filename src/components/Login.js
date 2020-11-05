@@ -1,5 +1,9 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
+// import { fetchTokenTrivia } from '../services/fetchApi';
+import propType from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchApiToken } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -7,7 +11,10 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      // redirect: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   // verifyName(e) {
@@ -32,6 +39,18 @@ class Login extends React.Component {
   //   const { invalidEmail, invalidName } = this.state;
   //   if
   // }
+  async handleClick() {
+    // const { name, email } = this.state;
+    const { getToken } = this.props;
+    const response = await getToken();
+    const { data } = response;
+    const { token } = data;
+    localStorage.setItem('token', token);
+    console.log(token);
+    // this.setState({
+    //   redirect: true,
+    // });
+  }
 
   render() {
     const { name, email } = this.state;
@@ -59,9 +78,10 @@ class Login extends React.Component {
             />
           </label>
           <button
-            type="submit"
+            type="button"
             data-testid="btn-play"
             disabled={ !(name && email) }
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -71,4 +91,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapsDispatchToProps = (dispatch) => ({
+  getToken: (e) => dispatch(fetchApiToken(e)),
+});
+
+Login.propTypes = {
+  getToken: propType.func.isRequired,
+};
+
+export default connect(null, mapsDispatchToProps)(Login);
