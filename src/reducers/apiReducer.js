@@ -12,7 +12,7 @@ const apiReducer = (state = INITIAL_STATE, action) => {
       ...state,
     };
   case FETCH_TOKEN_SUCESS:
-    localStorage.setItem('token', JSON.stringify(action.token.token));
+    localStorage.setItem('token', JSON.stringify(action.token));
     return {
       ...state,
       token: action.token,
