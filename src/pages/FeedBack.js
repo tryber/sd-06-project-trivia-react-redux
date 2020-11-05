@@ -1,14 +1,12 @@
 import React from 'react';
 import FeedHeader from '../components/FeedHeader';
 
-class Game extends React.Component {
+class FeedBack extends React.Component {
   render() {
     return (
-      <div>
-        <FeedHeader />
-      </div>
+      <FeedHeader />
     );
   }
 }
 
-export default Game;
+export default FeedBack;
