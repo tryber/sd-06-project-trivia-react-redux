@@ -1,15 +1,6 @@
-// import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
+import user from './user';
 
-const initialState = {
-  email: '',
-};
+const rootReducer = combineReducers({ user });
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-  default:
-    return state;
-  }
-}
-
-export default reducer;
-// const rootReducer = combineReducers({  });
+export default rootReducer;
