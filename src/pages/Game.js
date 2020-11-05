@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
+import Header from '../components/Header';
 
 class Game extends React.Component {
 
@@ -14,6 +15,9 @@ class Game extends React.Component {
     const index = 0;
     return (
       <div>
+        <div>
+          <Header />
+        </div>
         <div>
           <div data-testid="question-category">Category</div>
           <div data-testid="question-text">Question</div>
@@ -29,7 +33,7 @@ class Game extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getAPIQuestions: () => dispatch(fetchQuestions),
+  getAPIQuestions: () => dispatch(fetchQuestions()),
 });
 
 Game.propTypes = {

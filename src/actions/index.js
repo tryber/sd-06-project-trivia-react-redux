@@ -1,5 +1,21 @@
+export const LOGIN = 'LOGIN';
+export const GET_SCORE = 'GET_SCORE';
 export const UPDATE_PLAYER_TOKEN = 'UPDATE_PLAYER_TOKEN';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+
+export function getLogin(name, email) {
+  return {
+    type: LOGIN,
+    name,
+    email,
+  };
+}
+export function playerScore(score) {
+  return {
+    type: GET_SCORE,
+    score,
+  };
+}
 
 export const updatePlayerToken = (token) => ({
   type: UPDATE_PLAYER_TOKEN,
@@ -32,5 +48,5 @@ export const fetchQuestions = () => async (dispatch) => {
   const token = localStorage.getItem('token');
   const apiEndpoint = `https://opentdb.com/api.php?amount=5&token=${token}`;
   const questions = await (await fetch(apiEndpoint)).json();
-  dispatch(addQuestions(questions));
+  dispatch(addQuestions(questions.results));
 };
