@@ -28,6 +28,7 @@ class LoginButton extends Component {
     return (
       // <Link to="/play">
       <button
+        data-testid="btn-play"
         type="button"
         disabled={ isDisabled }
         onClick={ this.handleClick }
