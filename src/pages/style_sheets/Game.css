@@ -1,0 +1,11 @@
+.game-board {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center
+}
+
+.game-board-container {
+  height: 50%;
+}
