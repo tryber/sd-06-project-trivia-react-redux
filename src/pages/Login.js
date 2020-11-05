@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../actions';
+import { login, handleToken } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +15,15 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.verifyNameAndEmail = this.verifyNameAndEmail.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+  }
+
+  handleSignUp(event) {
+    event.preventDefault();
+    const { sendUser, getToken, history } = this.props;
+    getToken();
+    sendUser(this.state);
+    history.push('/game');
   }
 
   handleChange({ target }) {
@@ -29,9 +38,7 @@ class Login extends Component {
 
   verifyNameAndEmail() {
     const { name, email } = this.state;
-    const { sendName } = this.props;
     this.setState({ isDisabled: !(name !== '' && email !== '') });
-    sendName(name);
   }
 
   render() {
@@ -39,29 +46,33 @@ class Login extends Component {
     return (
       <div>
         FORM
-        <input
-          value={ name }
-          name="name"
-          placeholder="Digite seu nome"
-          onChange={ this.handleChange }
-          data-testid="input-player-name"
-        />
-        <input
-          value={ email }
-          name="email"
-          onChange={ this.handleChange }
-          data-testid="input-gravatar-email"
-        />
-        <button disabled={ isDisabled } type="submit" data-testid="btn-play">
-          Jogar
-        </button>
+        <form onSubmit={ this.handleSignUp }>
+          <input
+            value={ name }
+            name="name"
+            placeholder="Your name"
+            onChange={ this.handleChange }
+            data-testid="input-player-name"
+          />
+          <input
+            value={ email }
+            name="email"
+            placeholder="Your email"
+            onChange={ this.handleChange }
+            data-testid="input-gravatar-email"
+          />
+          <button disabled={ isDisabled } type="submit" data-testid="btn-play">
+            Jogar
+          </button>
+        </form>
       </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  sendName: (name) => dispatch(login(name)),
+  sendUser: (dataUser) => dispatch(login(dataUser)),
+  getToken: () => dispatch(handleToken()),
 });
 
 Login.propTypes = {
