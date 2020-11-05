@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import logo from '../trivia.png';
 import { getUserAction, getUserToken } from '../actions';
 
