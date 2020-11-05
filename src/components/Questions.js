@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import Timer from './Timer';
+import './Questions.css';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
@@ -8,9 +9,11 @@ class Questions extends Component {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
     this.disableButtons = this.disableButtons.bind(this);
+    this.addClass = this.addClass.bind(this);
     this.state = {
       questions: [],
       loading: true,
+      checked: false,
       disable: false,
     };
   }
@@ -47,8 +50,14 @@ class Questions extends Component {
     this.setState({ disable: true });
   }
 
+  addClass() {
+    this.setState({
+      checked: true,
+    });
+  }
+
   render() {
-    const { questions, loading, disable } = this.state;
+    const { questions, loading, checked, disable } = this.state;
     const randomNumber = 0.5;
     if (loading) {
       return <h1>Carregando...</h1>;
@@ -65,6 +74,8 @@ class Questions extends Component {
                 data-testid="correct-answer"
                 key={ answer }
                 disabled={ disable }
+                onClick={ this.addClass }
+                className={ checked ? 'correctAnswer' : null }
               >
                 {answer}
               </button>);
@@ -75,6 +86,8 @@ class Questions extends Component {
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
               disabled={ disable }
+              onClick={ this.addClass }
+              className={ checked ? 'incorrectAnswer' : null }
             >
               {answer}
             </button>);
