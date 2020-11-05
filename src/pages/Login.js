@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import apiToken from '../services/request';
-import { tokenLogin } from '../redux/actions';
+import { apiToken } from '../services/request';
+import { questions, tokenLogin, user } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -15,6 +15,7 @@ class Login extends Component {
       isDisable: true,
       email: '',
       name: '',
+      // hash: '',
     };
   }
 
@@ -35,10 +36,12 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history, saveToken } = this.props;
+    const { history, saveToken, saveQuestion, saveUser } = this.props;
+    const objTokenQuestion = await apiToken();
+    saveUser(this.state);
+    saveToken(objTokenQuestion.token);
+    saveQuestion(objTokenQuestion.questions);
     history.push('/game');
-    const objToken = await apiToken();
-    saveToken(objToken.token);
     // Após clicar no botão "Jogar", a pessoa deve ser redirecionada para a tela do jogo
     // Ao clicar no botão "Jogar", um requisição para a API do Trivia deve ser feita para obter o token de jogador
     // O token deve ser armazenado na aplicação e enviado em todas as requisições seguintes.
@@ -48,7 +51,6 @@ class Login extends Component {
   render() {
     const { isDisable, name, email } = this.state;
     // console.log('login', apiGravatar('anacris.higo@gmail.com'))
-    // console.log('token', apiToken())
     return (
       <div>
         <Link to="/configuration">
@@ -96,6 +98,8 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveToken: (token) => dispatch(tokenLogin(token)),
+  saveQuestion: (question) => dispatch(questions(question)),
+  saveUser: (login) => dispatch(user(login)),
 });
 
 Login.propTypes = {
@@ -103,6 +107,8 @@ Login.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   saveToken: PropTypes.func.isRequired,
+  saveQuestion: PropTypes.func.isRequired,
+  saveUser: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

@@ -1,12 +1,25 @@
 // import MD5 from 'crypto-js/hmac-md5';
 
 const TOKEN_API = 'https://opentdb.com/api_token.php?command=request';
+const five = 5;
 
-export default async function apiToken() {
+export async function apiQuestions(token, numberQuestions = five) {
+  const requestApiQuestions = await fetch(`https://opentdb.com/api.php?amount=${numberQuestions}&token=${token}`);
+  const requestJsonQuestions = await requestApiQuestions.json();
+
+  console.log('requestApiQuestions', requestApiQuestions);
+  return requestJsonQuestions;
+}
+
+export async function apiToken() {
   const requestApiToken = await fetch(TOKEN_API);
   const requestJsonToken = await requestApiToken.json();
 
-  return requestJsonToken;
+  const { token } = requestJsonToken;
+  const questions = await apiQuestions(token);
+  console.log('questions', questions);
+
+  return { token, questions };
 }
 
 // export async function apiGravatar(email) {
@@ -14,7 +27,7 @@ export default async function apiToken() {
 
 //   const hash = CryptoJS.MD5(email);
 //   console.log('hash', hash);
-//   // const requestApiGravatar = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+//   // const requestApiGravatar = await fetch(`https://www.gravatar.com/avatar/${md5(email)`);
 //   // const requestJsonGravatar = await requestApiGravatar.json();
 
 //   return hash;

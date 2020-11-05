@@ -28,6 +28,7 @@ const store = createStore(
 );
 
 store.subscribe(() => {
+  console.log(store.getState());
   saveState(store.getState().userInformation.token, 'token');
 });
 
