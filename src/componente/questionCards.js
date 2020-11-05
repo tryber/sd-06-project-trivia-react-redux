@@ -18,8 +18,8 @@ class QuestionCards extends Component {
   correctAnswer() {
     this.setState({
       correct: 'buttonTrue',
-      incorrect: 'buttonFalse'
-    })
+      incorrect: 'buttonFalse',
+    });
   }
 
   render() {
@@ -38,19 +38,19 @@ class QuestionCards extends Component {
                   type="button"
                   data-testid="correct-answer"
                   id="correct"
-                  className={correct}
-                  onClick={this.correctAnswer}
+                  className={ correct }
+                  onClick={ this.correctAnswer }
                 >
                   {questionCard[1].correct_answer}
                 </button>
                 {questionCard[1].incorrect_answers.map((el, idx) => (
                   <button
-                    data-testid={`wrong-answer-${idx}`}
+                    data-testid={ `wrong-answer-${idx}` }
                     type="button"
                     key="1"
                     id="incorrect"
-                    className={incorrect}
-                    onClick={this.correctAnswer}
+                    className={ incorrect }
+                    onClick={ this.correctAnswer }
                   >
                     {el}
                   </button>
