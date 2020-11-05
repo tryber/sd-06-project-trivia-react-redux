@@ -76,19 +76,18 @@ class Game extends React.Component {
                   { answer }
                 </button>
               );
-            } else {
-              return (
-                <button
-                  className={ answered ? 'wrong-answer' : null }
-                  type="button"
-                  onClick={ chooseAnswer }
-                  data-testid={ `wrong-answer-${index}` }
-                  key={ index }
-                >
-                  { answer }
-                </button>
-              );
             }
+            return (
+              <button
+                className={ answered ? 'wrong-answer' : null }
+                type="button"
+                onClick={ chooseAnswer }
+                data-testid={ `wrong-answer-${index}` }
+                key={ index }
+              >
+                { answer }
+              </button>
+            );
           })
         }
       </div>
@@ -101,17 +100,16 @@ class Game extends React.Component {
 
     if (loading) {
       return <p>loading...</p>;
-    } else {
-      return (
-        <div>
-          <div>
-            <Header />
-          </div>
-          { renderQuestions() }
-          { renderAnswers() }
-        </div>
-      );
     }
+    return (
+      <div>
+        <div>
+          <Header />
+        </div>
+        { renderQuestions() }
+        { renderAnswers() }
+      </div>
+    );
   }
 }
 
