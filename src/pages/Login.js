@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import reqToken from '../services';
 // import { connect } from 'react-redux';
@@ -73,6 +74,11 @@ class Login extends Component {
             Jogar
           </button>
         </form>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            TELA DE CONFIGURAÇÃO
+          </button>
+        </Link>
       </div>
     );
   }
