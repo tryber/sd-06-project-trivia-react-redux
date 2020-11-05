@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUserInfo } from '../actions';
+import reqToken from '../services';
 
 class Login extends Component {
   constructor() {
@@ -33,12 +35,14 @@ class Login extends Component {
     });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  async handleSubmit(e) {
+    e.preventDefault();
+    const { history } = this.props;
     const { setName } = this.props;
     const { name, email } = this.state;
     setName(name, email);
-    const { history } = this.props;
+    const token = await reqToken().then((data) => data.token);
+    localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
 
@@ -73,6 +77,11 @@ class Login extends Component {
             Jogar
           </button>
         </form>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            TELA DE CONFIGURAÇÃO
+          </button>
+        </Link>
       </div>
     );
   }
