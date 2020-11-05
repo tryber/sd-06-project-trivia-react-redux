@@ -63,27 +63,33 @@ class Game extends React.Component {
     return (
       <div>
         {
-          answers
-            .map((answer, index) => ((answer === questions[questionNumber].correct_answer)
-              ? <button
-                className={ answered ? 'correct-answer' : null }
-                type="button"
-                onClick={ chooseAnswer }
-                data-testid="correct-answer"
-                key={ index }
-              >
-                { answer }
+          answers.map((answer, index) => {
+            if (answer === questions[questionNumber].correct_answer) {
+              return (
+                <button
+                  className={ answered ? 'correct-answer' : null }
+                  type="button"
+                  onClick={ chooseAnswer }
+                  data-testid="correct-answer"
+                  key={ index }
+                >
+                  { answer }
                 </button>
-              : <button
-                className={ answered ? 'wrong-answer' : null }
-                type="button"
-                onClick={ chooseAnswer }
-                data-testid={ `wrong-answer-${index}` }
-                key={ index }
-              >
-                { answer }
+              );
+            } else {
+              return (
+                <button
+                  className={ answered ? 'wrong-answer' : null }
+                  type="button"
+                  onClick={ chooseAnswer }
+                  data-testid={ `wrong-answer-${index}` }
+                  key={ index }
+                >
+                  { answer }
                 </button>
-            ))
+              );
+            }
+          })
         }
       </div>
     );
@@ -93,16 +99,19 @@ class Game extends React.Component {
     const { renderAnswers, renderQuestions } = this;
     const { loading } = this.state;
 
-    return (
-      loading ? <p>loading...</p>
-        : <div>
+    if (loading) {
+      return <p>loading...</p>;
+    } else {
+      return (
+        <div>
           <div>
             <Header />
           </div>
           { renderQuestions() }
           { renderAnswers() }
-          </div>
-    );
+        </div>
+      );
+    }
   }
 }
 
