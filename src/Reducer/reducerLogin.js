@@ -4,6 +4,7 @@ const initialState = {
   name: '',
   hash: '',
   score: 0,
+  email: '',
 };
 
 function reducerLogin(state = initialState, action) {
