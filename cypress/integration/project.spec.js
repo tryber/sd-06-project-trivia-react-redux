@@ -90,7 +90,7 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe.skip('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
