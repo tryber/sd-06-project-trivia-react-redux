@@ -70,6 +70,17 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
+        <Link
+          to="/settings"
+        >
+          <button
+            type="button"
+            className="btn btn-info btn-block"
+            data-testid="btn-settings"
+          >
+            CONFIGURAÇÕES
+          </button>
+        </Link>
       </div>
     );
   }
