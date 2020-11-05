@@ -55,3 +55,11 @@ export const fetchToken = () => (dispatch) => {
     })
     .then((data) => dispatch(getQuestions(data.token)));
 };
+
+export const playerData = (payload) => ({
+  type: 'PLAYER_DATA',
+  payload: {
+    name: payload.name,
+    score: payload.score,
+  },
+});
