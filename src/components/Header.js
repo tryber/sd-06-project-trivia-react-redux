@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   render() {
-    const hash = localStorage.getItem('hash');
-    const player = JSON.parse(localStorage.getItem('state'));
+    const { hash, name, score } = this.props;
     return (
       <div>
         <img
@@ -13,15 +14,28 @@ class Header extends Component {
         />
         <h2 data-testid="header-player-name">
             Jogador:
-          {player.name}
+          {name}
         </h2>
 
         <h2 data-testid="header-score">
             Pontos:
-          {player.score}
+          {score}
         </h2>
       </div>
     );
   }
 }
-export default Header;
+
+Header.propTypes = {
+  hash: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  hash: state.playerInfoReducer.hash,
+  name: state.playerInfoReducer.name,
+  score: state.playerInfoReducer.score,
+});
+
+export default connect(mapStateToProps)(Header);
