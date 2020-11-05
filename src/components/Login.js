@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // import { Redirect } from 'react-router-dom';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
@@ -78,14 +79,16 @@ class Login extends React.Component {
               onChange={ (e) => this.setState({ name: e.target.value }) }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ !(name && email) }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ !(name && email) }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
         <ButtonConfig />
       </div>
@@ -94,7 +97,7 @@ class Login extends React.Component {
 }
 
 const mapsDispatchToProps = (dispatch) => ({
-  getToken: (e) => dispatch(fetchApiToken(e)),
+  getToken: () => dispatch(fetchApiToken(e)),
 });
 
 Login.propTypes = {

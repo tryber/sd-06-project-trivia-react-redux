@@ -35,3 +35,21 @@ export function fetchApiToken() {
       (error) => dispatch(requestFailure(error.message)));
   };
 }
+
+export const RECEIVE_HASH = 'RECEIVE_HASH';
+
+export function receiveHash(hash) {
+  return {
+    type: RECEIVE_HASH,
+    hash,
+  };
+}
+
+export const PLAYER_NAME = 'PLAYER_NAME';
+
+export function playerName(name) {
+  return {
+    type: PLAYER_NAME,
+    name,
+  };
+}
