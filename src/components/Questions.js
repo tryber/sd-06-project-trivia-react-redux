@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Questions extends Component {
   constructor() {
@@ -35,6 +36,8 @@ class Questions extends Component {
   handleQuestions() {
     const { gameQuestions } = this.props;
     const { questionNumber } = this.state;
+    const initialIndex = -1;
+    let answerIndex = initialIndex;
 
     if (gameQuestions) {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
@@ -45,7 +48,9 @@ class Questions extends Component {
       console.log(newArr);
       return (
         <div>
-          <h4 data-testid="question-category">{gameQuestions[questionNumber].category}</h4>
+          <h4 data-testid="question-category">
+            {gameQuestions[questionNumber].category}
+          </h4>
           <p data-testid="question-text">{gameQuestions[questionNumber].question}</p>
           {newArr.map((question) => {
             if (question === CORRECT_ANSWER) {
@@ -55,11 +60,16 @@ class Questions extends Component {
                 </button>
               );
             }
-            return (
-              <button key={ this.applyIndexToIncorrectAnswers() } type="button" data-testid="wrong-answers">
+            const wrongButton = (
+              <button
+                key="qualquer"
+                type="button"
+                data-testid={ `wrong-answers-${answerIndex += 1}` }
+              >
                 {question}
               </button>
             );
+            return wrongButton;
           })}
         </div>
       );
@@ -68,8 +78,6 @@ class Questions extends Component {
   }
 
   render() {
-    const { gameQuestions } = this.props;
-    const { questionNumber } = this.state;
     return (
       <div>
         {this.handleQuestions()}
@@ -84,3 +92,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Questions);
+
+Questions.propTypes = {
+  gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

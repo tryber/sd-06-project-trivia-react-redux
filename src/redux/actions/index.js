@@ -12,7 +12,7 @@ export const receiveTokenSuccess = (data) => ({
 export const requestToken = () => ({
   type: TOKEN_REQUEST,
   loading: true,
-})
+});
 
 export const fetchTokenAPI = () => async (dispatch) => {
   dispatch(requestToken());
