@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import trivia from '../images/trivia.png';
+import triviaAPI from '../services/triviaAPI';
 
 class Login extends React.Component {
   constructor() {
@@ -13,6 +14,7 @@ class Login extends React.Component {
     };
 
     this.checkInputsValidity = this.checkInputsValidity.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   checkInputsValidity({ target }) {
@@ -26,6 +28,11 @@ class Login extends React.Component {
       }
       return this.setState({ disabled: true });
     });
+  }
+
+  async handleClick() {
+    const token = await triviaAPI();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -62,14 +69,14 @@ class Login extends React.Component {
           />
           <br />
           <Link
-            to="/"
+            to="/gamepage"
           >
             <button
               id="button"
               type="button"
               disabled={ disabled }
               data-testid="btn-play"
-              // onClick={ ONCLICK FUNCTION IF NEEDED }
+              onClick={ () => this.handleClick() }
             >
               JOGAR!
             </button>
