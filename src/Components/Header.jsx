@@ -6,6 +6,7 @@ class Header extends React.Component {
   render() {
     const { getUser } = this.props;
     const gravatarUrl = `https://www.gravatar.com/avatar/${md5(getUser.email).toString()}`;
+    const score = 0;
     return (
       <header>
         <img
@@ -15,7 +16,7 @@ class Header extends React.Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{getUser.name}</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{score}</p>
       </header>
     );
   }
