@@ -31,7 +31,7 @@ class Login extends React.Component {
   render() {
     const { email, username, disabled } = this.state;
     return (
-      <div>
+      <div className="login-container">
         <img
           src={ trivia }
           alt="Logo"
