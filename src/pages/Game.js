@@ -25,25 +25,25 @@ class Game extends React.Component {
     const { questions } = this.state;
     return (
       <div className="game-container">
-        {questions.map((element, index) => {
-          return (
-            <div className="square" key={ element.results[index].question }>
-              <header>
-                <img
-                  data-testid="header-profile-picture"
-                  alt="profile"
-                />
-                <p data-testid="header-player-name">Jogador</p>
-                <p data-testid="header-score">0</p>
-              </header>
-              <div className="questions">
-                <h3 data-testid="question-category">{ element.results[index].category }</h3>
-                <p data-testid="question-text">{ element.results[index].question }</p>
-              </div>
-              <div className="answers">a</div>
+        {questions.map((element, index) => (
+          <div className="square" key={ index }>
+            <header>
+              <img
+                data-testid="header-profile-picture"
+                alt="profile"
+              />
+              <p data-testid="header-player-name">Nome da pessoa</p>
+              <p data-testid="header-score">0</p>
+            </header>
+            <div className="questions">
+              <h3 data-testid="question-category">{ }</h3>
+              <p data-testid="question-text">{ }</p>
             </div>
-          );
-        })}
+            <div className="answers">a</div>
+            <div data-testid="correct-answer"> </div>
+            <div data-testid="wrong-answer"> </div>
+          </div>
+        ))}
       </div>
     );
   }
