@@ -153,7 +153,7 @@ describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informaç
   });
 });
 
-describe.skip('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
+describe('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

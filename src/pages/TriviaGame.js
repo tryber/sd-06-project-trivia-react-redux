@@ -5,13 +5,6 @@ import { getQuestion } from '../actions';
 import QuestionCard from '../componente/questionCards';
 
 class TriviaGame extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentIdx: 0,
-    };
-
-  }
   componentDidMount() {
     const { questionCards, questionToken } = this.props;
     questionCards(questionToken);
@@ -51,6 +44,7 @@ const mapStateToProps = (state) => ({
   userImage: state.loginReducer.image,
   questionToken: state.tokenReducer.token,
 });
+
 const mapDispatchToProps = (dispatch) => ({
   questionCards: (token) => dispatch(getQuestion(token)),
 });
@@ -58,6 +52,8 @@ const mapDispatchToProps = (dispatch) => ({
 TriviaGame.propTypes = {
   userName: propTypes.string.isRequired,
   userImage: propTypes.string.isRequired,
+  questionToken: propTypes.string.isRequired,
+  questionCards: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TriviaGame);
