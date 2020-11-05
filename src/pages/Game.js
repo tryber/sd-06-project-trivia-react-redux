@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import PropTypes from 'prop-types';
+import Header from '../components/header';
+import store from '../store';
 
 class Game extends Component {
   componentDidMount() {
@@ -11,7 +13,11 @@ class Game extends Component {
   render() {
     const { info } = this.props;
     console.log(info.response.token);
-    return (<div>Game</div>);
+    return (
+      <Provider store={ store }>
+        <Header />
+      </Provider>
+    );
   }
 }
 
