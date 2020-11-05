@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Input from '../components/Input';
-import { actionLogin, fetchToken } from '../actions';
+import { actionLogin, fetchToken, getQuestions } from '../actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -89,6 +89,7 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => ({
   login: (state) => dispatch(actionLogin(state)),
   getToken: () => dispatch(fetchToken()),
+  questions: (token) => dispatch(getQuestions(token)),
 });
 
 Login.propTypes = {

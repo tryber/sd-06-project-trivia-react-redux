@@ -28,10 +28,12 @@ Header.propTypes = {
   score: propTypes.string,
 };
 
-const mapStateToProps = (state) => ({
-  avatar: state.imageProfile,
-  name: state.name,
-  score: state.score,
-});
+function mapStateToProps(state) {
+  return {
+    avatar: state.login.imageProfile,
+    name: state.login.name,
+    score: state.playerData.payload.score,
+  };
+}
 
 export default connect(mapStateToProps)(Header);

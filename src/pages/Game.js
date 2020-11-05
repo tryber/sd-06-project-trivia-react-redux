@@ -21,13 +21,6 @@ class Game extends Component {
     const { info, questions } = this.props;
     localStorage.setItem('token', info.token);
     questions(info.token);
-    // this.setState({
-    //   first: results[0],
-    //   second: results[1],
-    //   third: results[2],
-    //   fourth: results[3],
-    //   fifth: results[4],
-    // });
   }
 
   render() {
@@ -55,7 +48,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   questions: (token) => dispatch(getQuestions(token)),
-  // questionAction: () => dispatch(getQuestionsAction()),
 });
 
 Game.propTypes = {
