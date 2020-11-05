@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions';
-import { Link} from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -57,9 +57,9 @@ class Login extends Component {
           Jogar
         </button>
         <Link to="/settings">
-        <button data-testid="btn-settings">
-          Settings
-        </button>
+          <button data-testid="btn-settings">
+            Settings
+          </button>
         </Link>
       </div>
     );
