@@ -1,9 +1,10 @@
-import { TOKEN_SUCCESS, SAVE_PLAYER_DATA } from '../actions';
+import { TOKEN_SUCCESS, SAVE_PLAYER_DATA, TOKEN_REQUEST } from '../actions';
 
 const initialState = {
-  token: '',
+  tokenResponse: '',
   name: '',
   email: '',
+  loading: true,
 };
 
 function user(state = initialState, action) {
@@ -17,7 +18,13 @@ function user(state = initialState, action) {
   case TOKEN_SUCCESS:
     return {
       ...state,
-      token: action.data,
+      tokenResponse: action.data,
+      loading: action.loading,
+    };
+  case TOKEN_REQUEST:
+    return {
+      ...state,
+      loading: action.loading,
     };
   default:
     return state;
