@@ -1,4 +1,6 @@
 .App {
+  background-color: #282c34;
+  min-height: 100vh;
   text-align: center;
 }
 
@@ -15,6 +17,52 @@
   border: 1px solid green;
 }
 
+.login-form {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 1em;
+  justify-content: center;
+  margin: 20px 0 0;
+}
+
+.login-form button {
+  background-color: rgb(6, 17, 51);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  font-size: 1.1em;
+  margin: 0 4px;
+  padding: 6px 12px;
+}
+
+.login-form button:hover {
+  background-color: rgb(8, 25, 77);
+}
+
+.login-form button:active {
+  background-color: rgb(33, 51, 107);
+}
+
+.login-form button:disabled {
+  background-color: rgb(55, 62, 70);
+}
+
+.login-form label {
+  border: 0;
+  color: white;
+  margin: 0 4px;
+  padding: 6px 12px;
+}
+
+.login-form input {
+  border: 0;
+  border-radius: 5px;
+  margin: 0 8px;
+  padding: 6px 12px;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: shake infinite 0.82s cubic-bezier(.36,.07,.19,.97) both;
@@ -22,8 +70,6 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
