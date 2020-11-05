@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { fetchToken } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -14,7 +18,6 @@ class Login extends React.Component {
   }
 
   handleChange({ target }) {
-    console.log('entrei no change');
     const { name, value } = target;
     this.setState({ [name]: value });
     this.inputValidate();
@@ -31,8 +34,8 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disabled, email } = this.state;
-    const { emailSaving } = this.props;
+    const { disabled, user, email } = this.state;
+    const { infoSave } = this.props;
     return (
       <div>
         <label htmlFor="user">
@@ -55,23 +58,27 @@ class Login extends React.Component {
           />
         </label>
         <br />
-        <button
-          disabled={ disabled }
-          onClick={ () => emailSaving(email) }
-          type="button"
-          data-testid="btn-play"
-        >
-          Entrar
-        </button>
+        <Link to="/game">
+          <button
+            disabled={ disabled }
+            type="button"
+            data-testid="btn-play"
+            onClick={ () => infoSave(user, email) }
+          >
+            Entrar
+          </button>
+        </Link>
       </div>
     );
   }
 }
-// const mapDispatchToProps = (dispatch) => ({
-//   emailSaving: (email) => dispatch(login(email)),
-// });
-// export default connect(null, mapDispatchToProps)(Login);
+
+const mapDispatchToProps = (dispatch) => ({
+  infoSave: (user, email) => dispatch(fetchToken(user, email)),
+});
+
 Login.propTypes = {
-  emailSaving: PropTypes.func.isRequired,
+  infoSave: PropTypes.func.isRequired,
 };
-export default Login;
+
+export default connect(null, mapDispatchToProps)(Login);
