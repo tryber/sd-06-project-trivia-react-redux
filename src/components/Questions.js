@@ -69,7 +69,7 @@ class Questions extends Component {
               {answer}
             </button>);
         }).sort(() => Math.random() - randomNumber)}
-      </div>
+      </div> //comentário
     );
   }
 }
