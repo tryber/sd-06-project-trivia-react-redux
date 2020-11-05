@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
+import GameHeader from '../components/GameHeader';
+
 
 class Game extends Component {
   constructor() {
@@ -97,6 +99,7 @@ class Game extends Component {
     const { isLoading } = this.state;
     return (
       <div>
+        <GameHeader />
         {isLoading ? <p>Loading</p> : this.renderGameBoard()}
       </div>
     );
