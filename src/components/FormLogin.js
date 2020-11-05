@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchToken } from '../actions';
+import { fetchToken, login } from '../actions';
 
 class FormLogin extends Component {
   constructor() {
@@ -13,6 +13,7 @@ class FormLogin extends Component {
       isDisabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.verifyFields = this.verifyFields.bind(this);
   }
 
@@ -20,6 +21,13 @@ class FormLogin extends Component {
     this.setState({
       [target.name]: target.value,
     }, () => this.verifyFields());
+  }
+
+  handleClick() {
+    const { dispatchEmail, saveToken } = this.props;
+    const { email, name } = this.state;
+    dispatchEmail(email, name);
+    saveToken();
   }
 
   verifyFields() {
@@ -33,7 +41,7 @@ class FormLogin extends Component {
 
   render() {
     const { isDisabled } = this.state;
-    const { saveToken } = this.props;
+    // const { saveToken } = this.props;
     return (
       <div>
         <form>
@@ -62,7 +70,7 @@ class FormLogin extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ isDisabled }
-              onClick={ saveToken }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
@@ -82,6 +90,7 @@ class FormLogin extends Component {
 }
 
 const mapDisPatchToProps = (dispatch) => ({
+  dispatchEmail: (email, name) => dispatch(login(email, name)),
   saveToken: () => dispatch(fetchToken()),
 });
 
