@@ -23,7 +23,7 @@ function mapStateToProps(state) {
     name: state.user.name,
   };
 }
-Trivia.propTypes = {
+Header.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };

@@ -61,7 +61,7 @@ class SignIn extends React.Component {
               id="email"
               name="email"
               type="text"
-              data-testid="input-player-email"
+              data-testid="input-gravatar-email"
               value={ email }
               onChange={ ({ target }) => this.handleInputChange(target) }
             />
@@ -69,6 +69,7 @@ class SignIn extends React.Component {
           <button
             type="submit"
             disabled={ !name || !email }
+            data-testid="btn-play"
           >
             Jogar
           </button>
