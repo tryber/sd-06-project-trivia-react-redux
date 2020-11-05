@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Questions } from '../components';
 
 class Game extends Component {
   render() {
     return (
       <div>
         Tela de jogo: Pergunta e respostas e botão de próxima pergunta
+        <Questions />
       </div>
     );
   }
 }
 
-export default connect(null, null)(Game);
+export default (Game);
