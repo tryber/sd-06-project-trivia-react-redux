@@ -2,7 +2,7 @@ import { LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
-  player: '',
+  playerName: '',
   token: '',
 };
 
