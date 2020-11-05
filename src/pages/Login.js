@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import fetchApi from '../services';
+import logo from '../trivia.png';
+import '../App.css';
 
 class Login extends React.Component {
   constructor() {
@@ -40,35 +43,42 @@ class Login extends React.Component {
   render() {
     const { validEmail, validName } = this.state;
     return (
-      <div>
-        <div>
-          <label htmlFor="input-player-name">
-            Nome:
-            <input
-              data-testid="input-player-name"
-              id="input-player-name"
-              onChange={ this.validateName }
-              type="text"
-            />
-          </label>
-          <label htmlFor="input-player-email">
-            Email:
-            <input
-              data-testid="input-gravatar-email"
-              id="input-player-email"
-              onChange={ this.validateEmail }
-              type="email"
-            />
-          </label>
+      <div className="login-container">
+        <div className="App">
+          <header className="App-header">
+            <img src={ logo } className="App-logo" alt="logo" />
+            <div className="login-div">
+              <label htmlFor="input-player-name">
+                <input
+                  data-testid="input-player-name"
+                  id="input-player-name"
+                  onChange={ this.validateName }
+                  type="text"
+                  placeholder="Nome"
+                />
+              </label>
+              <label htmlFor="input-player-email">
+                <input
+                  data-testid="input-gravatar-email"
+                  id="input-player-email"
+                  onChange={ this.validateEmail }
+                  type="email"
+                  placeholder="Email"
+                />
+              </label>
+              <Link to="/game">
+                <button
+                  type="button"
+                  data-testid="btn-play"
+                  disabled={ !(validName && validEmail) }
+                  onClick={ () => fetchApi() }
+                >
+                  Jogar!
+                </button>
+              </Link>
+            </div>
+          </header>
         </div>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !(validName && validEmail) }
-          onClick={ () => fetchApi() }
-        >
-          Jogar!
-        </button>
       </div>
     );
   }
