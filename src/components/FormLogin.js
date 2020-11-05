@@ -95,6 +95,7 @@ const mapDisPatchToProps = (dispatch) => ({
 });
 
 FormLogin.propTypes = {
+  dispatchEmail: PropTypes.func.isRequired,
   saveToken: PropTypes.func.isRequired,
 };
 
