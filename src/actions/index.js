@@ -11,11 +11,21 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const getToken = () => async (dispatch) => {
+// export function getToken(dispatch) {
+//   const apiEndpoint = 'https://opentdb.com/api_token.php?command=request';
+//   return async (dispatch) => {
+//     const tokenResponse = await fetch(apiEndpoint);
+//     const tokenJson = await tokenResponse.json();
+//     localStorage.setItem('token', tokenJson.token);
+//     return dispatch(updatePlayerToken(tokenJson.token));
+//   };
+// }
+
+export const getToken = (dispatch) => async () => {
   const apiEndpoint = 'https://opentdb.com/api_token.php?command=request';
   const tokenJson = await (await fetch(apiEndpoint)).json();
-  localStorage.setItem('token', tokenJson.token);
   dispatch(updatePlayerToken(tokenJson.token));
+  localStorage.setItem('token', tokenJson.token);
 };
 
 export const fetchQuestions = () => async (dispatch) => {

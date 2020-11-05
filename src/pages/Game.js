@@ -1,9 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
-// import { fetchQuestions } from '../actions';
+import PropTypes from 'prop-types';
+import { fetchQuestions } from '../actions';
 
 class Game extends React.Component {
+
+  componentDidMount() {
+    const { getAPIQuestions } = this.props;
+    getAPIQuestions();
+  }
+
   render() {
     const index = 0;
     return (
@@ -22,16 +28,12 @@ class Game extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.game.questions,
+const mapDispatchToProps = (dispatch) => ({
+  getAPIQuestions: () => dispatch(fetchQuestions),
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchQuestions: () => dispatch(fetchQuestions()),
-// });
+Game.propTypes = {
+  getAPIQuestions: PropTypes.func.isRequired,
+};
 
-// Game.PropTypes = {
-//   fetchQuestions: PropTypes.func.isRequired,
-// }
-
-export default connect(mapStateToProps, null)(Game);
+export default connect(null, mapDispatchToProps)(Game);
