@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getQuestions } from '../actions';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor() {
@@ -16,11 +17,10 @@ class Game extends Component {
     };
   }
 
-  async componentDidMount() {
-    const { info, questions, results } = this.props;
+  componentDidMount() {
+    const { info, questions } = this.props;
     localStorage.setItem('token', info.token);
-    await questions(info.token);
-    console.log(results);
+    questions(info.token);
     // this.setState({
     //   first: results[0],
     //   second: results[1],
@@ -31,18 +31,18 @@ class Game extends Component {
   }
 
   render() {
-    // const { results } = this.props;
-    // console.log(results);
+    // const { apiQuestions, questionAction } = this.props;
+    // console.log(apiQuestions, questionAction);
     return (
       <section className="game-container">
         <section className="game-header">
-          {/* <Header /> */}
+          <Header />
         </section>
         <section className="game-question">
           <section className="game-category">categoria</section>
           <section className="game-text">texto da pergunta</section>
         </section>
-        <section className="game-answers">aqui vem o map dos buttons</section>
+        {/* <section className="game-answers">{results[0].category}</section> */}
       </section>
     );
   }
@@ -50,11 +50,12 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   info: state.token.response,
-  results: state.allQuestions.results,
+  apiQuestions: state.allQuestions.questions.results,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   questions: (token) => dispatch(getQuestions(token)),
+  // questionAction: () => dispatch(getQuestionsAction()),
 });
 
 Game.propTypes = {

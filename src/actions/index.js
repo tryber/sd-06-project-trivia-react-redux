@@ -10,6 +10,7 @@ payload é convenção. está email como no Readme.
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const PLAYER_DATA = 'PLAYER_DATA';
 
 export const actionLogin = ({ email, name }) => ({
   type: LOGIN,
@@ -22,9 +23,9 @@ const tokenAction = (payload) => ({
   payload,
 });
 
-const getQuestionsAction = (data) => ({
+export const getQuestionsAction = (payload) => ({
   type: GET_QUESTIONS,
-  payload: data,
+  payload,
 });
 
 export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
@@ -35,7 +36,15 @@ export function getQuestions(token) {
   return async (dispatch) => {
     const response = await fetch(`https://opentdb.com/api.php?amount=5&category=31&token=${token}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data, 'console do getQuestions ACTION');
     return dispatch(getQuestionsAction(data));
   };
 }
+
+export const playerData = (payload) => ({
+  type: PLAYER_DATA,
+  payload: {
+    name: payload.name,
+    score: payload.score,
+  },
+});
