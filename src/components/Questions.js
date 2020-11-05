@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import './Questions.css';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
+    this.addClass = this.addClass.bind(this);
 
     this.state = {
       questions: [],
       loading: true,
+      checked: false,
     };
   }
 
@@ -39,8 +42,14 @@ class Questions extends Component {
     }
   }
 
+  addClass() {
+    this.setState({
+      checked: true,
+    });
+  }
+
   render() {
-    const { questions, loading } = this.state;
+    const { questions, loading, checked } = this.state;
     const randomNumber = 0.5;
 
     if (loading) {
@@ -57,6 +66,8 @@ class Questions extends Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ answer }
+                onClick={ this.addClass }
+                className={ checked ? 'correctAnswer' : null }
               >
                 {answer}
               </button>);
@@ -66,6 +77,8 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
+              onClick={ this.addClass }
+              className={ checked ? 'incorrectAnswer' : null }
             >
               {answer}
             </button>);
