@@ -3,6 +3,7 @@ import './Game.css';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
+import { fetchApi } from '../actions';
 
 class Game extends React.Component {
   constructor(props) {
@@ -12,9 +13,14 @@ class Game extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { questionFetch } = this.props;
+    questionFetch();
+  }
+
   render() {
     const { placar } = this.state;
-    const { name, email } = this.props;
+    const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
     return (
@@ -45,19 +51,17 @@ class Game extends React.Component {
 Game.propTypes = {
   name: PropTypes.func.isRequired,
   email: PropTypes.func.isRequired,
+  questionFetch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   name: state.user.player.name,
   email: state.user.player.email,
+  results: state.game.results,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   currencyFetch: () => dispatch(currenciesThunk()),
-//   expensesAction: (expenses) => dispatch(fetchExchangeRates(expenses)),
-// });
-// const mapDispatchToProps = (dispatch) => ({
-//   sendFields: (name, email) => dispatch(enterUser(name, email)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  questionFetch: () => dispatch(fetchApi()),
+});
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
