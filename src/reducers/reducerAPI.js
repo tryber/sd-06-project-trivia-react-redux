@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   questions: [],
 };
 
-function reducerAPI (state = INITIAL_STATE, action) {
+function reducerAPI(state = INITIAL_STATE, action) {
   switch (action.type) {
   case FETCH_TOKEN:
     return {
@@ -18,12 +18,12 @@ function reducerAPI (state = INITIAL_STATE, action) {
     return {
       ...state,
       token: action.token,
-    }
+    };
   case TOKEN_ERROR:
     return {
       ...state,
       error: action.error,
-    }
+    };
   default:
     return state;
   }

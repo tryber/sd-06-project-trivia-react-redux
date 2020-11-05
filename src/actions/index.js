@@ -27,11 +27,11 @@ export const tokenError = (error) => ({
 
 export const solicitacaoToken = () => async (dispatch) => {
   dispatch(requestToken());
-    const retornoDaAPI = await getToken();
-    const { token } = retornoDaAPI ;
-    try {
-      dispatch(tokenSucess(token));
-    } catch (error) {
-      dispatch(tokenError(error.message));
-    }
+  const retornoDaAPI = await getToken();
+  const { token } = retornoDaAPI;
+  try {
+    dispatch(tokenSucess(token));
+  } catch (error) {
+    dispatch(tokenError(error.message));
+  }
 };
