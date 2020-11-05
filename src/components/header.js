@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 class Header extends React.Component {
   render() {
     const { avatar, name, score } = this.props;
-    console.log(avatar);
+    // console.log(avatar);
     return (
       <header>
         <img alt="Player Initials" data-testid="header-profile-picture" src={ avatar } />

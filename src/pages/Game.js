@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getQuestions } from '../actions';
-import Header from '../components/Header';
+// import { getQuestions } from '../actions';
+import Header from '../components/header';
 
 class Game extends Component {
   constructor() {
@@ -18,14 +18,17 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { info, questions } = this.props;
+    const { info, isFetching, APIQuestions } = this.props;
     localStorage.setItem('token', info.token);
-    questions(info.token);
+    if (isFetching) {
+      console.log('Lading');
+    } else {
+      console.log(APIQuestions.results[0]);
+    }
   }
 
   render() {
-    // const { apiQuestions, questionAction } = this.props;
-    // console.log(apiQuestions, questionAction);
+    const { APIQuestions } = this.props;
     return (
       <section className="game-container">
         <section className="game-header">
@@ -43,16 +46,17 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   info: state.token.response,
-  apiQuestions: state.allQuestions.questions.results,
+  APIQuestions: state.allQuestions.results,
+  isFetching: state.allQuestions.isFetching,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  questions: (token) => dispatch(getQuestions(token)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+
+// });
 
 Game.propTypes = {
   info: PropTypes.shape().isRequired,
-  questions: PropTypes.func.isRequired,
+  // questions: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);
