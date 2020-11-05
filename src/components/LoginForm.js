@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Settings from './Settings';
 import fetchApi from '../services';
 import logo from '../trivia.png';
@@ -42,14 +43,16 @@ class LoginForm extends Component {
                   />
                 </label>
                 <div className="buttons-div">
-                  <button
-                    type="button"
-                    data-testid="btn-play"
-                    disabled={ !(validName && validEmail) }
-                    onClick={ () => fetchApi() }
-                  >
-                    Jogar!
-                  </button>
+                  <Link to="/game">
+                    <button
+                      type="button"
+                      data-testid="btn-play"
+                      disabled={ !(validName && validEmail) }
+                      onClick={ () => fetchApi() }
+                    >
+                      Jogar!
+                    </button>
+                  </Link>
                   <button
                     className="button-b"
                     type="button"

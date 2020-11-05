@@ -130,3 +130,7 @@
   justify-content: space-around;
   align-items: baseline;
 }
+
+.config-login-div {
+  font-size: 20px;
+}
