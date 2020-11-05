@@ -1,5 +1,6 @@
 import React from 'react';
 import trivia from '../images/trivia.png';
+import Questions from '../components/Questions';
 
 class Gamepage extends React.Component {
   render() {
@@ -23,6 +24,7 @@ class Gamepage extends React.Component {
             Placar: 0
           </span>
         </header>
+        <Questions />
       </div>
     );
   }
