@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
 import Header from '../components/Header';
+import '../css/Game.css';
 
 class Game extends React.Component {
   constructor() {
@@ -11,53 +12,85 @@ class Game extends React.Component {
     this.state = {
       questionNumber: 0,
       loading: true,
+      answered: false,
     }
 
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
+    this.chooseAnswer = this.chooseAnswer.bind(this);
   }
 
   async componentDidMount() {
     const { getAPIQuestions } = this.props;
     await getAPIQuestions();
-    this.setState({ loading: false })
+    this.setState({ loading: false });
   }
 
   renderQuestions() {
-    
+    const { questions } = this.props;
+    const { questionNumber } = this.state;
+    return (
+      <div>
+        <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
+        <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
+      </div>
+    );
+  }
+
+  chooseAnswer() {
+    this.setState({ answered: true });
   }
 
   renderAnswers() {
+    const { questionNumber, answered } = this.state;
+    const { chooseAnswer } = this;
     const { questions } = this.props;
-    const { questionNumber } = this.state;
     const correctAnswerPosition = Math
     .floor(Math
       .random() * questions[questionNumber].incorrect_answers.length + 1);
     const answers = questions[questionNumber].incorrect_answers;
-    answers.splice(correctAnswerPosition, 0, questions[questionNumber].correct_answer);
+      
+    if (!answered) {
+      answers.splice(correctAnswerPosition, 0, questions[questionNumber].correct_answer);
+    }    
+
     return (
-      <div>{ answers.map((answer) => <h4>{ answer }</h4>) }</div>
+      <div>{ answers.map((answer, index) => {
+        return (answer === questions[questionNumber].correct_answer)
+        ? <button
+          className={ answered ? 'correct-answer' : null }
+          type="button"
+          onClick={ chooseAnswer }
+          data-testid="correct-answer"
+          key={ index }
+        >
+          { answer }
+        </button>
+        : <button
+          className={ answered ? 'wrong-answer' : null }
+          type="button"
+          onClick={ chooseAnswer }
+          data-testid={ `wrong-answer-${index}` }
+          key={ index }
+        >
+          { answer }
+        </button>;
+      }
+      ) }</div>
     );
   }
 
   render() {
-    const { renderAnswers } = this;
+    const { renderAnswers, renderQuestions } = this;
     const { loading } = this.state;
-    const index = 0;
     if (loading) {return (<p>loading...</p>)};
     return (
       <div>
         <div>
           <Header />
         </div>
-        <div>
-          <div data-testid="question-category">Category</div>
-          <div data-testid="question-text">Question</div>
-        </div>
-        <div>
-          { renderAnswers() }
-          <button type="button" data-testid="correct-answer">true</button>
-          <button type="button" data-testid={ `wrong-answer-${index}` }>false</button>
-        </div>
+        { renderQuestions() }
+        { renderAnswers() }
       </div>
     );
   }
@@ -73,7 +106,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   getAPIQuestions: PropTypes.func.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
