@@ -7,11 +7,11 @@ class Game extends Component {
     super();
 
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
+    this.randomizeAnswers = this.randomizeAnswers.bind(this);
 
     this.state = {
       questions: [],
       index: 0,
-      maxIndex: 0,
       isLoading: true,
     };
   }
@@ -23,12 +23,41 @@ class Game extends Component {
   }
 
   saveQuestionsToState(questions) {
-    this.setState({ questions, maxIndex: questions.length - 1, isLoading: false });
+    this.setState({ questions, isLoading: false });
+  }
+
+  insertIndexIntoAnswers(array) {
+    const arrayWithIndexes = [];
+
+    array.forEach((item, index) => {
+      const newItem = { answer: item, index };
+      arrayWithIndexes.push(newItem);
+    });
+
+    return arrayWithIndexes;
+  }
+
+  randomizeAnswers(correctAnswer, wrongAnswers) {
+    const withIndex = this.insertIndexIntoAnswers(wrongAnswers);
+
+    const RANDOM_ANSWERS = [{ correctAnswer, isCorrect: true }, ...withIndex];
+
+    for (let i = RANDOM_ANSWERS.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * i);
+      const temp = RANDOM_ANSWERS[i];
+      RANDOM_ANSWERS[i] = RANDOM_ANSWERS[j];
+      RANDOM_ANSWERS[j] = temp;
+    }
+
+    return RANDOM_ANSWERS;
   }
 
   renderGameBoard() {
     const { questions, index } = this.state;
     const currentQuestion = questions[index];
+    const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
+    const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
+    console.log(randomizedAnswers);
 
     return (
       <main className="game-board">
@@ -42,7 +71,21 @@ class Game extends Component {
         </section>
         <section className="game-board-container">
           <div className="game-answers">
-            Answers
+            {randomizedAnswers.map((answer) => (
+              answer.isCorrect
+                ? <button
+                  type="button"
+                  data-testid="correct-answer"
+                >
+                  {answer.correctAnswer}
+                </button>
+                : <button
+                  type="button"
+                  data-testid={ answer.index }
+                >
+                  {answer.answer}
+                </button>
+            ))}
           </div>
         </section>
       </main>

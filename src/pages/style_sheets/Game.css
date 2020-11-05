@@ -9,3 +9,10 @@
 .game-board-container {
   height: 50%;
 }
+
+.game-answers {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
