@@ -13,7 +13,7 @@ class Header extends Component {
             src={ avatar }
             alt="Imagem gravatar"
           />
-          <p data-testid="header-player-name">{ name }</p>
+          <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">0</p>
         </header>
       </div>
@@ -23,7 +23,7 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   name: state.user.name,
-  avatar: state.user.avatar,
+  // avatar: state.user.avatar,
 });
 
 Header.propTypes = {

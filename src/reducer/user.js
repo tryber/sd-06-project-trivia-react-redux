@@ -10,7 +10,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
   case HANDLE_USER:
     return {
       ...state,
-      name: action.email,
+      name: action.name,
     };
   case HANDLE_AVATAR:
     return {

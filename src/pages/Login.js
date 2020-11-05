@@ -78,8 +78,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user.name,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  setName: (name) => dispatch(setUserInfo(name)),
+  setName: (playerName) => dispatch(setUserInfo(playerName)),
 });
 
 Login.propTypes = {
@@ -87,4 +91,4 @@ Login.propTypes = {
   history: propTypes.shape({ push: propTypes.func }).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
