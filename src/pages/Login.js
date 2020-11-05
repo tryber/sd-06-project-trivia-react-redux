@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { savePlayer, gettingTokenThunk } from '../redux/actions';
+import BtnSettings from '../components/BtnSettings';
 
 class Login extends React.Component {
   constructor() {
@@ -56,6 +57,7 @@ class Login extends React.Component {
     return (
       <div>
         <h1>Project Trivia</h1>
+        <BtnSettings />
         <form>
           <input
             type="text"
