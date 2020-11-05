@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
+// import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
+import { getUserAction, getUserToken } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -31,15 +33,20 @@ class Login extends Component {
   }
 
   handleLogin() {
+    const { email, nome } = this.state;
+    const { getUserActionDispatched, getUserTokenDispatched } = this.props;
+
+    getUserTokenDispatched();
+
+    getUserActionDispatched(email, nome);
     this.setState({
       isLoged: true,
     });
   }
 
   render() {
-    const { isLoged, disabled, email } = this.state;
-    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
-    console.log(gravatar);
+    const { isLoged, disabled } = this.state;
+    // const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     if (!isLoged) {
       return (
         <section>
@@ -81,4 +88,19 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.defaultProps = {
+  getUserActionDispatched: () => {},
+  getUserTokenDispatched: () => {},
+};
+
+Login.propTypes = {
+  getUserActionDispatched: PropTypes.func,
+  getUserTokenDispatched: PropTypes.func,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getUserActionDispatched: (email, username) => dispatch(getUserAction(email, username)),
+  getUserTokenDispatched: () => dispatch(getUserToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
