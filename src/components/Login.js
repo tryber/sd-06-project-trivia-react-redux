@@ -4,6 +4,7 @@ import React from 'react';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchApiToken } from '../actions';
+import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
   constructor(props) {
@@ -86,6 +87,7 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
+        <ButtonConfig />
       </div>
     );
   }

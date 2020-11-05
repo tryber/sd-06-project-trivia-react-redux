@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
+import ScreenConfig from './components/ScreenConfig';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/config" component={ ScreenConfig } />
         <Route exact path="/" component={ Login } />
       </Switch>
     </BrowserRouter>
