@@ -5,7 +5,6 @@ import { fetchQuestions } from '../actions';
 import Header from '../components/Header';
 
 class Game extends React.Component {
-
   componentDidMount() {
     const { getAPIQuestions } = this.props;
     getAPIQuestions();
@@ -25,10 +24,10 @@ class Game extends React.Component {
         <div>
           alternatives
           <button type="button" data-testid="correct-answer">true</button>
-          <button type="button" data-testid={`wrong-answer-${index}`}>false</button>
+          <button type="button" data-testid={ `wrong-answer-${index}` }>false</button>
         </div>
       </div>
-    )
+    );
   }
 }
 

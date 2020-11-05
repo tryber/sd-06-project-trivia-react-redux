@@ -4,7 +4,7 @@ import game from './game';
 
 const rootReducers = combineReducers({
   player,
-  game
+  game,
 });
 
 export default rootReducers;

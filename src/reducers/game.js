@@ -8,9 +8,9 @@ const INITIAL_STATE = {
 };
 
 const game = (state = INITIAL_STATE, action) => {
-  switch(action.type) {
+  switch (action.type) {
   case ADD_QUESTIONS:
-    return { ...state, questions: action.questions }
+    return { ...state, questions: action.questions };
   case LOGIN:
     return { ...state, name: action.name, gravatarEmail: action.email };
   case GET_SCORE:
@@ -21,6 +21,6 @@ const game = (state = INITIAL_STATE, action) => {
   default:
     return state;
   }
-}
+};
 
 export default game;
