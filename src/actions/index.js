@@ -1,7 +1,5 @@
 import { getToken } from '../services';
 
-export const USER_LOGIN = 'USER_LOGIN';
-export const USER_SCORE = 'USER_SCORE';
 export const FETCH_TOKEN = 'FETCH_TOKEN';
 export const FETCH_TOKEN_SUCESS = 'FETCH_TOKEN_SUCESS';
 export const FETCH_TOKEN_ERROR = 'FETCH_TOKEN_ERROR';
