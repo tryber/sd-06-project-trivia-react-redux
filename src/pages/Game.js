@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { fetchQuestions } from '../services';
 
 class Game extends React.Component {
@@ -11,8 +12,9 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const questions = await fetchQuestions(localStorage.getItem('token'));
-    this.getQuestions(questions);
+    const { userToken } = this.props;
+    const questions = await fetchQuestions(userToken);
+    this.getQuestions(questions.results);
   }
 
   getQuestions(questions) {
@@ -36,12 +38,17 @@ class Game extends React.Component {
               <p data-testid="header-score">0</p>
             </header>
             <div className="questions">
-              <h3 data-testid="question-category">{ }</h3>
-              <p data-testid="question-text">{ }</p>
+              <h3 data-testid="question-category">{element[index].category}</h3>
+              <p data-testid="question-text">{element[index].question}</p>
             </div>
-            <div className="answers">a</div>
-            <div data-testid="correct-answer"> </div>
-            <div data-testid="wrong-answer"> </div>
+            <div className="answers">
+              <div data-testid="correct-answer">{element[index].correct_answer}</div>
+              {element[index].incorrect_answers.map((answer, key) => (
+                <div key={ key } data-testid={ `wrong-answer-${key}` }>
+                  {answer}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
@@ -49,4 +56,8 @@ class Game extends React.Component {
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  userToken: state.user.token,
+});
+
+export default connect(mapStateToProps)(Game);

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Settings from './Settings';
-import fetchApi from '../services';
+import { fetchApi } from '../actions';
 import logo from '../trivia.png';
 import configLogo from '../img/config.png';
 import '../App.css';
+// import { fetchAPI } from '../actions';
 
 class LoginForm extends Component {
   render() {
@@ -16,6 +18,7 @@ class LoginForm extends Component {
       validName,
       validEmail,
       showSettings,
+      fetchToken,
     } = this.props;
     return (
       <div className="login-container">
@@ -48,7 +51,7 @@ class LoginForm extends Component {
                       type="button"
                       data-testid="btn-play"
                       disabled={ !(validName && validEmail) }
-                      onClick={ () => fetchApi() }
+                      onClick={ () => fetchToken() }
                     >
                       Jogar!
                     </button>
@@ -72,6 +75,10 @@ class LoginForm extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: () => dispatch(fetchApi()),
+});
+
 LoginForm.propTypes = {
   handleSettings: PropTypes.func.isRequired,
   validateName: PropTypes.func.isRequired,
@@ -79,6 +86,7 @@ LoginForm.propTypes = {
   validName: PropTypes.bool.isRequired,
   validEmail: PropTypes.bool.isRequired,
   showSettings: PropTypes.bool.isRequired,
+  fetchToken: PropTypes.func.isRequired,
 };
 
-export default LoginForm;
+export default connect(null, mapDispatchToProps)(LoginForm);
