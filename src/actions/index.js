@@ -19,10 +19,8 @@ export const actionLogin = ({ email, name }) => ({
 const tokenAction = (payload) => ({
   type: TOKEN,
   payload,
-})
+});
 
-export const fetchToken = () => {
-  return (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
-    .then(response => response.json()
-      .then(data => dispatch(tokenAction(data))));
-}
+export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
+  .then((response) => response.json()
+    .then((data) => dispatch(tokenAction(data))));

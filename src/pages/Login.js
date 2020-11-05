@@ -29,6 +29,9 @@ class Login extends Component {
     }
   }
 
+  handleClick() {
+  }
+
   handleChange() {
     const { name, email } = this.state;
     const reg = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
@@ -63,7 +66,7 @@ class Login extends Component {
             className="btn-play"
             type="button"
             data-testid="btn-play"
-            // onClick={ history.push('/game') }
+            // onClick={ () => this.handleClick() }
           >
             Jogar
           </button>
@@ -73,18 +76,14 @@ class Login extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   info: state,
-// });
-
 const mapDispatchToProps = (dispatch) => ({
   login: (state) => dispatch(actionLogin(state)),
   token: () => dispatch(fetchToken()),
 });
 
 Login.propTypes = {
-  // info: PropTypes.objectOf().isRequired,
   login: PropTypes.func.isRequired,
   token: PropTypes.func.isRequired,
-}
+};
+
 export default connect(null, mapDispatchToProps)(Login);
