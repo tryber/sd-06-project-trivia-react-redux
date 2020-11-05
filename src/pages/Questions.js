@@ -12,7 +12,7 @@ class Questions extends React.Component {
 
   render() {
     // const { nomeDoExemploIcaro } = this.props;
-    return <div>Hello</div>;
+    return <div>Hello!</div>;
   }
 }
 
