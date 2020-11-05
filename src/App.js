@@ -5,7 +5,6 @@ import Login from './Pages/Login';
 import Feedback from './Pages/Feedback';
 import Settings from './Pages/Settings';
 
-
 export default function App() {
   return (
     <Switch>
