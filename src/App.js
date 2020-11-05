@@ -9,8 +9,8 @@ function App() {
     <div>
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route exact patch="/settings" component={ Settings } />
-        <Route exact path="/game-screen" component={ GameScreen } />
+        <Route path="/game-screen" component={ GameScreen } />
+        <Route patch="/settings" component={ Settings } />
       </Switch>
     </div>
   );
