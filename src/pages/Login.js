@@ -1,6 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CryptoJs from 'crypto-js';
+import { connect } from 'react-redux';
 import fetchToken from '../services/api';
+import { savePlayerInfo } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -12,6 +16,14 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.player = this.player.bind(this);
+  }
+
+  player() {
+    const { name, email } = this.state;
+    const { savePlayerInfoToStore } = this.props;
+    const hash = CryptoJs.MD5(email).toString().trim().toLowerCase();
+    savePlayerInfoToStore(name, email, hash);
   }
 
   handleChange(event) {
@@ -28,6 +40,7 @@ class Login extends React.Component {
   async handleClick() {
     const token = await fetchToken();
     localStorage.setItem('token', token);
+    this.player();
   }
 
   render() {
@@ -74,4 +87,14 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  savePlayerInfoToStore: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  savePlayerInfoToStore: (name, email, hash) => {
+    dispatch(savePlayerInfo(name, email, hash));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(Login);
