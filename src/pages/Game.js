@@ -21,14 +21,15 @@ class Game extends React.Component {
     this.handleLoading = this.handleLoading.bind(this);
   }
 
-  handleLoading() {
-    this.setState({ loading: false });
-  }
-
   async componentDidMount() {
+    const { handleLoading } = this;
     const { getAPIQuestions } = this.props;
     await getAPIQuestions();
     handleLoading();
+  }
+
+  handleLoading() {
+    this.setState({ loading: false });
   }
 
   renderQuestions() {
@@ -90,9 +91,10 @@ class Game extends React.Component {
   render() {
     const { renderAnswers, renderQuestions } = this;
     const { loading } = this.state;
-    if (loading) (<p>loading...</p>);
+
     return (
-      <div>
+      loading ? <p>loading...</p>
+      : <div>
         <div>
           <Header />
         </div>
