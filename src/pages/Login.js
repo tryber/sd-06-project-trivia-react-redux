@@ -36,8 +36,8 @@ class Login extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { setName } = this.props;
-    const { name } = this.state;
-    setName(name);
+    const { name, email } = this.state;
+    setName(name, email);
     const { history } = this.props;
     history.push('/game');
   }
@@ -83,7 +83,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setName: (playerName) => dispatch(setUserInfo(playerName)),
+  setName: (playerName, playerEmail) => dispatch(setUserInfo(playerName, playerEmail)),
 });
 
 Login.propTypes = {
