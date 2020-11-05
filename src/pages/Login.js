@@ -20,25 +20,22 @@ class Login extends Component {
 
   componentDidUpdate(_previouState, newState) {
     const { name, email } = this.state;
-
     if (newState.name !== name || newState.email !== email) {
-      const { token, login } = this.props;
-      token();
-      login(this.state);
       this.handleChange();
     }
   }
 
-  handleClick() {
-  }
-
   handleChange() {
     const { name, email } = this.state;
+    const { getToken, login } = this.props;
     const reg = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    getToken();
+    login(this.state);
     this.setState({ disabled: reg.test(email) && name.length > 1 });
   }
 
   render() {
+    const { history } = this.props;
     const { disabled } = this.state;
     return (
       <section>
@@ -60,16 +57,15 @@ class Login extends Component {
           place="Digite seu Email"
           onChange={ (e) => this.setState({ email: e.target.value }) }
         />
-        <Link to="/game">
-          <button
-            disabled={ !disabled }
-            className="btn-play"
-            type="button"
-            data-testid="btn-play"
-          >
+        <button
+          onClick={ () => history.push('/game') }
+          disabled={ !disabled }
+          className="btn-play"
+          type="button"
+          data-testid="btn-play"
+        >
             Jogar
-          </button>
-        </Link>
+        </button>
         <Link to="/settings">
           <button
             className="btn-settings"
@@ -86,12 +82,13 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (state) => dispatch(actionLogin(state)),
-  token: () => dispatch(fetchToken()),
+  getToken: () => dispatch(fetchToken()),
 });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  token: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
