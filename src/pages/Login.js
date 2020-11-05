@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { enterUser } from '../actions/index';
 import logo from '../trivia.png';
 import './Login.css';
 
@@ -31,6 +35,7 @@ class Login extends React.Component {
 
   render() {
     const { name, email } = this.state;
+    const { sendFields } = this.props;
     return (
       <div className="container">
         <img src={ logo } className="App-logo" alt="logo" />
@@ -50,17 +55,32 @@ class Login extends React.Component {
           onChange={ this.handleChange }
           data-testid="input-player-name"
         />
-        <button
-          type="button"
-          className="btn btn-success"
-          disabled={ this.verifyFields() }
-          data-testid="btn-play"
+        <Link
+          to="/game"
+          onClick={ () => {
+            sendFields(name, email);
+          } }
         >
-          JOGAR!
-        </button>
+          <button
+            type="button"
+            className="btn btn-success btn-block"
+            disabled={ this.verifyFields() }
+            data-testid="btn-play"
+          >
+            JOGAR!
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  sendFields: (name, email) => dispatch(enterUser(name, email)),
+});
+
+Login.propTypes = {
+  sendFields: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
