@@ -75,7 +75,7 @@ describe('1 - [TELA DE LOGIN] Crie a tela de login, onde a pessoa que joga deve 
   });
 });
 
-describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
+describe.only('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
