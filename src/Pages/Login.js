@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
 import ButtonSettings from '../Components/ButtonSettings';
 
@@ -54,19 +55,7 @@ class Login extends Component {
               data-testid="input-gravatar-email"
             />
           </label>
-          {
-            (validated)
-              ? (
-                <button type="button" data-testid="btn-play">
-                  Jogar
-                </button>
-              )
-              : (
-                <button type="button" data-testid="btn-play" disabled>
-                  Jogar
-                </button>
-              )
-          }
+          <LoginButton disabled={ validated } />
         </form>
         <ButtonSettings />
       </div>
