@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
+import ButtonSettings from '../Components/ButtonSettings';
 
 
 class Login extends Component {
@@ -57,6 +58,7 @@ class Login extends Component {
           </label>
          <LoginButton disabled={ validated } />
         </form>
+        <ButtonSettings />
       </div>
     );
   }
