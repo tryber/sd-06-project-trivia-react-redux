@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 import Input from '../components/Input';
+import { actionLogin, fetchToken } from '../actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -18,9 +20,16 @@ export default class Login extends Component {
 
   componentDidUpdate(_previouState, newState) {
     const { name, email } = this.state;
+
     if (newState.name !== name || newState.email !== email) {
+      const { token, login } = this.props;
+      token();
+      login(this.state);
       this.handleChange();
     }
+  }
+
+  handleClick() {
   }
 
   handleChange() {
@@ -51,14 +60,16 @@ export default class Login extends Component {
           place="Digite seu Email"
           onChange={ (e) => this.setState({ email: e.target.value }) }
         />
-        <button
-          disabled={ !disabled }
-          className="btn-play"
-          type="button"
-          data-testid="btn-play"
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            disabled={ !disabled }
+            className="btn-play"
+            type="button"
+            data-testid="btn-play"
+          >
+            Jogar
+          </button>
+        </Link>
         <Link to="/settings">
           <button
             className="btn-settings"
@@ -72,3 +83,15 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (state) => dispatch(actionLogin(state)),
+  token: () => dispatch(fetchToken()),
+});
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  token: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
