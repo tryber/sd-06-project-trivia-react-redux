@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import Timer from './Timer';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
-
+    this.disableButtons = this.disableButtons.bind(this);
     this.state = {
       questions: [],
       loading: true,
+      disable: false,
     };
   }
 
   componentDidMount() {
+    const TIMES = 30000;
     this.fetchAPIQuestions();
+    setTimeout(() => this.disableButtons(), TIMES);
   }
 
   async fetchAPIQuestions() {
@@ -39,10 +43,13 @@ class Questions extends Component {
     }
   }
 
-  render() {
-    const { questions, loading } = this.state;
-    const randomNumber = 0.5;
+  disableButtons() {
+    this.setState({ disable: true });
+  }
 
+  render() {
+    const { questions, loading, disable } = this.state;
+    const randomNumber = 0.5;
     if (loading) {
       return <h1>Carregando...</h1>;
     }
@@ -57,6 +64,7 @@ class Questions extends Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ answer }
+                disabled={ disable }
               >
                 {answer}
               </button>);
@@ -66,10 +74,12 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
+              disabled={ disable }
             >
               {answer}
             </button>);
         }).sort(() => Math.random() - randomNumber)}
+        <Timer />
       </div>
     );
   }
