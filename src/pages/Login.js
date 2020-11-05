@@ -87,12 +87,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  fetchToken: PropTypes.string.isRequired,
-  saveLogin: PropTypes.shape({
-    name: PropTypes.string,
-    email: PropTypes.string,
-    disabled: PropTypes.bool,
-  }).isRequired,
+  fetchToken: PropTypes.func.isRequired,
+  saveLogin: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
