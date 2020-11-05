@@ -1,16 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getQuestions } from '../actions';
 
 class Game extends Component {
-  componentDidMount() {
-    const { info } = this.props;
+  constructor() {
+    super();
+
+    this.state = {
+      first: {},
+      second: {},
+      third: {},
+      fourth: {},
+      fifth: {},
+    };
+  }
+
+  async componentDidMount() {
+    const { info, questions, results } = this.props;
     localStorage.setItem('token', info.token);
+    await questions(info.token);
+    console.log(results);
+    // this.setState({
+    //   first: results[0],
+    //   second: results[1],
+    //   third: results[2],
+    //   fourth: results[3],
+    //   fifth: results[4],
+    // });
   }
 
   render() {
-    const { info } = this.props;
-    console.log(info);
+    // const { results } = this.props;
+    // console.log(results);
     return (
       <section className="game-container">
         <section className="game-header">
@@ -28,10 +50,16 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   info: state.token.response,
+  results: state.allQuestions.results,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  questions: (token) => dispatch(getQuestions(token)),
 });
 
 Game.propTypes = {
   info: PropTypes.shape().isRequired,
+  questions: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
