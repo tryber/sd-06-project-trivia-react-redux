@@ -20,9 +20,9 @@ class Login extends React.Component {
 
   onClick(event) {
     event.preventDefault();
-    const { email } = this.state;
-    const { getUser, history } = this.props;
-    getUser(email);
+    const { email, name } = this.state;
+    const { setUser, history } = this.props;
+    setUser(email, name);
     this.fetchToken();
     history.push('/game');
   }
@@ -99,7 +99,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getUser: (email) => dispatch(user(email))
-})
+  setUser: (email, name) => dispatch(user(email, name))
+});
 
 export default connect(null, mapDispatchToProps)(Login);
