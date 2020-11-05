@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   token: '',
   name: '',
   gravatarEmail: '',
- };
+};
 
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {

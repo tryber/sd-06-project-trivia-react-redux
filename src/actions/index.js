@@ -28,7 +28,7 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const getToken = (dispatch) => async (dispatch) => {
+export const getToken = () => async (dispatch) => {
   const apiEndpoint = 'https://opentdb.com/api_token.php?command=request';
   const tokenJson = await (await fetch(apiEndpoint)).json();
   dispatch(updatePlayerToken(tokenJson.token));
