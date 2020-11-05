@@ -13,5 +13,6 @@ export function handleToken() {
   return async (dispatch) => {
     const tokenResponse = await fetchAPITrivia();
     dispatch(sendToken(tokenResponse));
+    localStorage.setItem('token', tokenResponse.token);
   };
 }
