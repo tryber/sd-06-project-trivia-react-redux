@@ -124,3 +124,9 @@
   box-shadow: 0 0 10px #ddd;
   transform: scale(1.0575);
 }
+
+.config-login-div {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+}
