@@ -10,6 +10,7 @@ class Trivia extends React.Component {
     super(props);
 
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.timerOut = this.timerOut.bind(this);
 
     const { questions } = this.props;
 
@@ -17,6 +18,7 @@ class Trivia extends React.Component {
       currentQuestion: 0,
       lastQuestion: questions.length - 1,
       answered: false,
+      timer: 30,
     };
   }
 
@@ -26,9 +28,24 @@ class Trivia extends React.Component {
     });
   }
 
+  timerOut() {
+    const { timer } = this.state;
+    const oneSecond = 1000;
+    if (timer > 0) {
+      newTimer = timer - 1;
+
+      this.setState({
+        timer: timer - 1,
+        answered: (newTimer === 0),
+      });
+
+      setTimeout(this.timerOut, oneSecond);
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { currentQuestion, lastQuestion, answered } = this.state;
+    const { currentQuestion, lastQuestion, answered, timer } = this.state;
 
     console.log(lastQuestion);
 
@@ -37,9 +54,12 @@ class Trivia extends React.Component {
     }
 
     return (
-      <div className="trivia">
+      <div className="trivia" onLoad={ timerOut }>
         <Header />
         <div>
+          <p>
+            { timer }
+          </p>
           <span data-testid="question-category">
             { questions[currentQuestion].category }
           </span>
