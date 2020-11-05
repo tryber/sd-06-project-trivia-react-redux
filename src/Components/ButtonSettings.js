@@ -6,7 +6,7 @@ class ButtonSettings extends Component {
     return (
       <div className="ButtonSetting">
         <button data-testid="btn-settings" type="button">
-          <Link to="/Seetings">
+          <Link to="/Settings">
             Config
           </Link>
         </button>
