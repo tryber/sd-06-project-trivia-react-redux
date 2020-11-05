@@ -27,12 +27,24 @@ class GameScreen extends Component {
     }, async () => {
       const token = localStorage.getItem('token');
       const quantity = 5;
-      const resp = await fetch(`https://opentdb.com/api.php?amount=${quantity}&token=${token}`);
-      const result = await resp.json();
-      this.setState({
-        questions: result.results,
-        loading: false,
-      });
+      if (!token) {
+        const triviaRequest = await fetch('https://opentdb.com/api_token.php?command=request');
+        const triviaJson = await triviaRequest.json();
+        const { token: token2 } = triviaJson;
+        const resp2 = await fetch(`https://opentdb.com/api.php?amount=${quantity}&token=${token2}`);
+        const result2 = await resp2.json();
+        this.setState({
+          questions: result2.results,
+          loading: false,
+        });
+      } else {
+        const resp = await fetch(`https://opentdb.com/api.php?amount=${quantity}&token=${token}`);
+        const result = await resp.json();
+        this.setState({
+          questions: result.results,
+          loading: false,
+        });
+      }
     });
   }
 
