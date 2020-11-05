@@ -10,6 +10,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        {/* Header para testes, deve ser retirado do App */}
         <Header />
         <Switch>
           <Route exact path="/" component={ Login } />
