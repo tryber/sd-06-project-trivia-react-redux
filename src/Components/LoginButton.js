@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  token: state.tokenReducer.token,
+  token: state.reducerLogin.token,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginButton);
