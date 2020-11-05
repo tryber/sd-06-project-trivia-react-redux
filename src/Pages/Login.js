@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../trivia.png';
+import ButtonSettings from './ButtonSettings'
 
 class Login extends Component {
   constructor(props) {
@@ -67,6 +68,7 @@ class Login extends Component {
               )
           }
         </form>
+        <ButtonSettings />
       </div>
     );
   }
