@@ -1,4 +1,4 @@
-import { SAVE_USER, REQUEST_FETCH_API, RECEIVED_RESPONSE_API } from '../actions';
+import { SAVE_USER, REQUEST_FETCH_API, RECEIVED_RESPONSE_API, RECEIVED_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -23,6 +23,11 @@ function userReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       token: action.token,
+    };
+  case RECEIVED_QUESTIONS:
+    return {
+      ...state,
+      questions: action.questions,
     };
   default:
     return state;
