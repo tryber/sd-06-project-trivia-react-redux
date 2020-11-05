@@ -38,23 +38,29 @@ class Login extends React.Component {
     const { sendFields } = this.props;
     return (
       <div className="container">
-        <img src={ logo } className="App-logo" alt="logo" />
-        Email do Gravatar:
-        <input
-          type="email"
-          name="email"
-          value={ email }
-          onChange={ this.handleChange }
-          data-testid="input-gravatar-email"
-        />
-        Nome do Jogador:
-        <input
-          type="text"
-          name="name"
-          value={ name }
-          onChange={ this.handleChange }
-          data-testid="input-player-name"
-        />
+        <img src={ logo } className="App-logo img-fluid p-3 mt-2" alt="logo" />
+        <div className="form-group">
+          Email do Gravatar:
+          <input
+            type="email"
+            className="form-control"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+            data-testid="input-gravatar-email"
+          />
+        </div>
+        <div className="form-group">
+          Nome do Jogador:
+          <input
+            type="text"
+            name="name"
+            className="form-control"
+            value={ name }
+            onChange={ this.handleChange }
+            data-testid="input-player-name"
+          />
+        </div>
         <Link
           style={ { textDecoration: 'none' } }
           to="/game"
@@ -64,7 +70,7 @@ class Login extends React.Component {
         >
           <button
             type="button"
-            className="btn btn-success btn-block"
+            className="btn btn-success btn-block mt-4"
             disabled={ this.verifyFields() }
             data-testid="btn-play"
           >
@@ -77,7 +83,7 @@ class Login extends React.Component {
         >
           <button
             type="button"
-            className="btn btn-info btn-block"
+            className="btn btn-info btn-block mt-2"
             data-testid="btn-settings"
           >
             CONFIGURAÇÕES
