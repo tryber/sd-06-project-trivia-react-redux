@@ -1,7 +1,7 @@
 import { GET_QUESTIONS } from '../Action/actionFetchQuestions';
 
 const initialState = {
-  question: [],
+  questions: [],
 };
 
 export default function reducerQuestions(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function reducerQuestions(state = initialState, action) {
   case GET_QUESTIONS:
     return ({
       ...state,
-      question: action.question,
+      questions: action.questions,
     });
 
   default: return state;
