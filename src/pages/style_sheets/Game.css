@@ -1,0 +1,18 @@
+.game-board {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center
+}
+
+.game-board-container {
+  height: 50%;
+}
+
+.game-answers {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
