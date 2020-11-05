@@ -23,6 +23,7 @@ function mapStateToProps(state) {
     name: state.user.name,
   };
 }
+
 Header.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
