@@ -24,29 +24,24 @@ class Questions extends Component {
   }
 
   render () {
-    const { questions } = this.state;
-    const categories = questions.map((question) => question.category);
-    const tasks = questions.map((question) => question.question);
-    const correct_answer = questions.map((question) => question.correct_answer);
-    const incorrect_answers = questions.map((question) => question.incorrect_answers);
-    const questionNumber = 0;
-    console.log(questions);
-
-    return (
-      <div>
-        <div data-testid="question-category">
-          { categories[questionNumber] }
-        </div>
-        <div data-testid="question-text">
-          { tasks[questionNumber] }
-        </div>
+    const { questions } = this.props;
+      const questionNumber = 0;
+      return (
+        questions === undefined ? <p>Teste</p> : (
         <div>
-          <button data-testid="correct-answer">{ correct_answer[questionNumber] }</button>
-          <button>{ incorrect_answers[questionNumber] }</button>
+          <div data-testid="question-category">
+            { questions.results[questionNumber].category }
+          </div>
+          <div data-testid="question-text">
+            { questions.results[questionNumber].question }
+          </div>
+          <div>
+            <button data-testid="correct-answer">{ questions.results[questionNumber].correct_answer }</button>
+            { questions.results[questionNumber].incorrect_answers.map((answer, index) => <button data-testid={ `incorrect_answer${index}` } key={ answer }>{ answer }</button>) }
+          </div>
         </div>
-      </div>
-    );
-  }
+      ));
+    }    
 }
 
 const mapStateToProps = (state) => ({
