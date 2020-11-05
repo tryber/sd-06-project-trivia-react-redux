@@ -4,6 +4,13 @@ export const SAVE_INFO = 'SAVE_INFO';
 
 export const SAVE_TOKEN = 'SAVE_TOKEN';
 
+export const TOKEN_QUESTION = 'TOKEN_QUESTION';
+
+const tokenQuestion = (question) => ({
+  type: TOKEN_QUESTION,
+  question,
+});
+
 const getUser = (email, image, username) => ({
   type: SAVE_INFO,
   email,
@@ -15,6 +22,11 @@ const getToken = (token) => ({
   type: SAVE_TOKEN,
   token,
 });
+export const getQuestion = (token) => async (dispatch) => {
+  const fetchQuestion = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+  const questionResponse = await fetchQuestion.json();
+  await dispatch(tokenQuestion(questionResponse));
+};
 
 export const getUserToken = () => async (dispatch) => {
   const fetchToken = await fetch('https://opentdb.com/api_token.php?command=request');
