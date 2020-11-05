@@ -11,7 +11,6 @@ export function fetchAPIQuestions() {
   // action: verificar response code = 3
   // export function handleQuestions() {
   //   //checar o resultado fetchQuestions response === 3
-  
   //   // handleToken()
   // }
   return '';
