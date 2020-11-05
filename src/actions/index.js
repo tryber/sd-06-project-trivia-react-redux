@@ -15,7 +15,7 @@ export const actionLogin = (email) => ({
 });
 
 export const playerData = (payload) => ({
-  type: PLAYER_DATA,
+  type: 'PLAYER_DATA',
   payload: {
     avatar: payload.avatar,
     name: payload.name,
