@@ -34,4 +34,4 @@ const mapStateToProps = (state) => ({
 //   fetchQuestions: PropTypes.func.isRequired,
 // }
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, null)(Game);
