@@ -2,7 +2,7 @@ import { LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
-  player: '',
+  playerName: '',
   token: '',
 };
 
@@ -10,7 +10,10 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOGIN:
-    return { ...state, email: action.email, token: action.token };
+    return { ...state,
+      email: action.email,
+      token: action.token,
+      playerName: action.playerName };
   default:
     return state;
   }
