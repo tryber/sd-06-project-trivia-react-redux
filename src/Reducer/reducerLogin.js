@@ -9,6 +9,7 @@ const initialState = {
 
 function reducerLogin(state = initialState, action) {
   switch (action.type) {
+
   case LOGIN:
     return {
       ...state,
@@ -24,4 +25,5 @@ function reducerLogin(state = initialState, action) {
   }
   }
 }
+
 export default reducerLogin;
