@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
@@ -26,9 +27,9 @@ class Login extends Component {
     localStorage.setItem('token', token);
   }
 
-  handleClick() {
+  async handleClick() {
     const { history, requestToken } = this.props;
-    requestToken();
+    await requestToken();
     history.push('/game');
   }
 
