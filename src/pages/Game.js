@@ -30,7 +30,7 @@ class Game extends React.Component {
       <div className="game-container">
         {questions.map((element, index) => (
           <div className="square" key={ index }>
-            <header>
+            <header className="profile-header">
               <img
                 data-testid="header-profile-picture"
                 alt="profile"
