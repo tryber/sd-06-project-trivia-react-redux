@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   render() {
@@ -23,5 +23,9 @@ function mapStateToProps(state) {
     name: state.user.name,
   };
 }
+Trivia.propTypes = {
+  avatar: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps, null)(Header);
