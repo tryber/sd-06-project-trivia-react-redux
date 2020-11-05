@@ -38,7 +38,7 @@ class Login extends Component {
     e.preventDefault();
     const { history } = this.props;
     const token = await reqToken().then((data) => data.token);
-    localStorage.setItem('token', token);
+    window.localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
 
