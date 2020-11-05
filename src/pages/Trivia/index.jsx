@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Header from './Components/Header'
 
 class Trivia extends React.Component {
   render() {
@@ -9,11 +10,7 @@ class Trivia extends React.Component {
 
     return (
       <div className="trivia">
-        Trivia Started! Email:
-        {' '}
-        { userEmail }
-        { avatar }
-        { name }
+       <Header />
       </div>
     );
   }
