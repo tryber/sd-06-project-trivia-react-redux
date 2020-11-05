@@ -56,6 +56,7 @@ class Login extends React.Component {
           data-testid="input-player-name"
         />
         <Link
+          style={ { textDecoration: 'none' } }
           to="/game"
           onClick={ () => {
             sendFields(name, email);
@@ -71,6 +72,7 @@ class Login extends React.Component {
           </button>
         </Link>
         <Link
+          style={ { textDecoration: 'none' } }
           to="/settings"
         >
           <button
