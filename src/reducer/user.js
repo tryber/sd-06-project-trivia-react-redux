@@ -1,7 +1,9 @@
-import { HANDLE_USER } from '../actions';
+import { HANDLE_USER, HANDLE_AVATAR } from '../actions';
 
 const INITIAL_STATE = {
+  name: '',
   email: '',
+  avatar: '',
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -9,7 +11,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
   case HANDLE_USER:
     return {
       ...state,
+      name: action.name,
       email: action.email,
+    };
+  case HANDLE_AVATAR:
+    return {
+      ...state,
+      avatar: action.avatar,
     };
   default:
     return state;
