@@ -24,3 +24,11 @@ const tokenAction = (payload) => ({
 export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
   .then((response) => response.json()
     .then((data) => dispatch(tokenAction(data))));
+
+export const playerData = (payload) => ({
+  type: 'PLAYER_DATA',
+  payload: {
+    name: payload.name,
+    score: payload.score,
+  },
+});
