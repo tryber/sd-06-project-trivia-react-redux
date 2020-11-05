@@ -22,7 +22,7 @@ const composeWithDevTools = (
     }
 );
 
-export const store = createStore(
+const store = createStore(
   rootReducer,
   composeWithDevTools(
     applyMiddleware(thunk),
