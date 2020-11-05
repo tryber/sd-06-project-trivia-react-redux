@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GameHeader from '../components/GameHeader';
+import { GameHeader } from '../components';
 
 class Game extends Component {
   render() {
