@@ -3,4 +3,4 @@ export default function user(email) {
     type: 'LOGIN_USER',
     email,
   };
-};
+}
