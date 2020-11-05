@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import user from '../actions';
+import { user } from '../actions';
 import getToken from '../service/API';
 import '../styles/Login.css';
 import music from '../styles/audio/music.mp3';
@@ -21,8 +21,8 @@ class Login extends React.Component {
   onClick(event) {
     event.preventDefault();
     const { email } = this.state;
-    const { getUser, history } = this.props;
-    getUser(email);
+    const { setUser, history } = this.props;
+    setUser(email);
     this.fetchToken();
     history.push('/game');
   }
@@ -99,7 +99,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getUser: (email) => dispatch(user(email))
+  setUser: (email) => dispatch(user(email)),
 })
 
 export default connect(null, mapDispatchToProps)(Login);
