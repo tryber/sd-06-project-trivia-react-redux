@@ -1,7 +1,9 @@
 const INITIAL_STATE = {
-  avatar: '',
-  name: '',
-  score: 0,
+  payload: {
+    avatar: '',
+    name: '',
+    score: 0,
+  },
 };
 
 export default function (state = INITIAL_STATE, action) {
