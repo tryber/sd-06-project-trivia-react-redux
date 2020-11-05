@@ -1,0 +1,14 @@
+const INITIAL_STATE = {
+  avatar: '',
+  name: '',
+  score: 0,
+};
+
+export default function (state = INITIAL_STATE, action) {
+  switch (action.type) {
+  case 'PLAYER_DATA':
+    return { ...state, payload: action };
+  default:
+    return state;
+  }
+}

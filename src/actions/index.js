@@ -13,3 +13,12 @@ export const actionLogin = (email) => ({
   type: LOGIN,
   email,
 });
+
+export const playerData = (payload) => ({
+  type: PLAYER_DATA,
+  payload: {
+    avatar: payload.avatar,
+    name: payload.name,
+    score: payload.score,
+  }
+});
