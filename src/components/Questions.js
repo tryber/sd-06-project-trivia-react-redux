@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 // import { fetchAPIQuestions } from '../services';
 
-class Game extends Component {
+class Questions extends Component {
   constructor(props) {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
-    this.randomizeArray = this.randomizeArray.bind(this);
+
     this.state = {
       questions: [],
       loading: true,
@@ -13,18 +13,12 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    // const { fetchAPIQuestions } = this.props;
     this.fetchAPIQuestions();
-  }
-
-  randomizeArray(array) {
-    const RANDON_NUM = 0.5;
-    array.sort(() => Math.random() - RANDON_NUM);
   }
 
   async fetchAPIQuestions() {
     const tokenStorage = localStorage.getItem('token');
-    const token = JSON.parse(tokenStorage); // https://pt.stackoverflow.com/questions/191522/como-pegar-setar-pegar-objeto-no-localstorage
+    const token = JSON.parse(tokenStorage);
     const apiQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const responseQuestions = await apiQuestions.json();
     const limite = 3;
@@ -32,30 +26,37 @@ class Game extends Component {
       {
         ...el, answers: [...el.incorrect_answers, el.correct_answer],
       })); // colocando um array no fim de cada 'question' para randomizar as respostas
-    console.log(questions);
     if (responseQuestions.response_code === limite) {
       localStorage.removeItem('token');
-      // const { history } = this.props;
-      // window.alert('Tempo expirado - Faça login novamente');
-      // history.push('/');
+      const { history } = this.props;
+      window.alert('Tempo expirado - Faça login novamente');
+      history.push('/');
     } else {
-      this.setState({ questions: responseQuestions.results, loading: false });
+      this.setState({ questions: questions, loading: false });
     }
   }
 
   render() {
     const { questions, loading } = this.state;
+    const randomNumber = 0.5;
 
     if (loading) {
       return <h1>Carregando...</h1>;
     }
     return (
       <div>
-        <p data-testid="question-category">{ questions[1].category }</p>
-        <p data-testid="question-text">{ questions[1].question }</p>
+        <p data-testid="question-category">{questions[1].category}</p>
+        <p data-testid="question-text">{questions[1].question}</p>
+        {questions[1].answers.map((answer, index) => {
+          if (answer === questions[1].correct_answer) {
+            return <button data-testid={ `correct-answer`} key={answer}>{answer}</button>
+          } else {
+            return <button data-testid={ `wrong-answer-${index}`} key={answer}>{answer}</button>
+          }
+        }).sort(() => Math.random() - randomNumber)}
       </div>
     );
   }
 }
 
-export default Game;
+export default Questions;
