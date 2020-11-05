@@ -3,6 +3,7 @@ import Question from '../components/Question';
 import { questionsAction } from '../actions';
 import { connect } from 'react-redux';
 import '../styles/Game.css';
+import Header from '../Components/Header';
 
 class Game extends React.Component {
   constructor() {
@@ -35,7 +36,12 @@ class Game extends React.Component {
 
   render() {
     return (
-      <Question />
+     
+      <div>
+        <Header />
+        <Question />
+        <span>Começo do jogo</span>
+      </div>
     );
   }
 }
