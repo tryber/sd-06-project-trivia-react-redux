@@ -68,6 +68,8 @@ class GameScreen extends Component {
         button.className += ' red';
       } else if (button.className === 'correct') {
         button.className += ' green';
+      } else if (button.className === 'hidden') {
+        button.className += ' show';
       }
     });
   }
@@ -109,6 +111,14 @@ class GameScreen extends Component {
 
             >
               {questions[index].correct_answer}
+            </button>
+            <button
+              type="button"
+              className="hidden"
+              data-testid="btn-next"
+              onClick={ this.handleClick }
+            >
+              Próxima
             </button>
           </div>)}
       </div>
