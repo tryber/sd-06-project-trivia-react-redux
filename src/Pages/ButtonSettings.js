@@ -5,9 +5,9 @@ class ButtonSettings extends Component {
   render() {
     return (
       <div className="ButtonSetting">
-        <button data-testid='btn-settings' type='button'>
-          <Link to="/Seetings"> 
-            Config  
+        <button data-testid="'tn-settings" type="button">
+          <Link to="/Seetings">
+            Config
           </Link>
         </button>
       </div>

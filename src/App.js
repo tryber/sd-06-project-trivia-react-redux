@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import Login from './Pages/Login';
-import Seetings from './Pages/Settings'
+import Seetings from './Pages/Settings';
 
 export default function App() {
   return (
