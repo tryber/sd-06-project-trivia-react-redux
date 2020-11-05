@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-import { loginActionCreator } from '../../redux/actions';
+import { Link } from 'react-router-dom';
+import { fetchQuestions, loginActionCreator } from '../../redux/actions';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -11,9 +11,12 @@ class SignIn extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
 
+    const token = localStorage.getItem('token');
+
     this.state = {
       name: '',
       email: '',
+      token,
     };
   }
 
@@ -25,10 +28,12 @@ class SignIn extends React.Component {
 
   handleLogin(submitEvent) {
     submitEvent.preventDefault();
-    const { email, name } = this.state;
-    const { logIn, history } = this.props;
+    const { email, name, token } = this.state;
+    const { logIn, history, loadQuestions } = this.props;
 
     logIn({ name, email });
+
+    loadQuestions(token);
 
     history.push('/trivia');
   }
@@ -68,6 +73,7 @@ class SignIn extends React.Component {
             Jogar
           </button>
         </form>
+        <Link to="/settings">Configurações</Link>
       </div>
     );
   }
@@ -76,6 +82,7 @@ class SignIn extends React.Component {
 function mapDispatchToProps(dispatch) {
   return {
     logIn: ({ name, email }) => dispatch(loginActionCreator({ name, email })),
+    loadQuestions: (token) => dispatch(fetchQuestions(token)),
   };
 }
 
@@ -83,6 +90,7 @@ export default connect(null, mapDispatchToProps)(SignIn);
 
 SignIn.propTypes = {
   logIn: PropTypes.func.isRequired,
+  loadQuestions: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

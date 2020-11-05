@@ -5,7 +5,8 @@ import Header from './Components/Header'
 
 class Trivia extends React.Component {
   render() {
-    const { userEmail, avatar, name } = this.props;
+    const { userEmail, avatar, name, questions } = this.props;
+    console.log(questions);
 
     return (
       <div className="trivia">
@@ -20,6 +21,7 @@ function mapStateToProps(state) {
     userEmail: state.user.email,
     avatar: state.user.avatar,
     name: state.user.name,
+    questions: state.trivia.questions,
   };
 }
 
