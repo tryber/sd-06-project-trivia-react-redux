@@ -28,7 +28,6 @@ export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_tok
 export const playerData = (payload) => ({
   type: 'PLAYER_DATA',
   payload: {
-    avatar: payload.avatar,
     name: payload.name,
     score: payload.score,
   },

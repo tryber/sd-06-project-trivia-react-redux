@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
   payload: {
-    avatar: '',
     name: '',
     score: 0,
   },
