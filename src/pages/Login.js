@@ -50,7 +50,7 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-settings"
             >
-              Jogar
+              Settings
             </button>
           </Link>
         </div>
