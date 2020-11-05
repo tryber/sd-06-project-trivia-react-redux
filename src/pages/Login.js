@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions';
+import { Link} from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -55,6 +56,11 @@ class Login extends Component {
         <button disabled={ isDisabled } type="submit" data-testid="btn-play">
           Jogar
         </button>
+        <Link to="/settings">
+        <button data-testid="btn-settings">
+          Settings
+        </button>
+        </Link>
       </div>
     );
   }
