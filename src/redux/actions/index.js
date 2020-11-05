@@ -42,6 +42,6 @@ export function gettingQuestionsThunk() {
     dispatch(requestApi());
 
     const response = await apiQuestionsFetch();
-    dispatch(responseQuestions(response))
+    dispatch(responseQuestions(response));
   };
 }
