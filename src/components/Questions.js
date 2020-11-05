@@ -17,7 +17,6 @@ class Questions extends Component {
   }
 
   async fetchAPIQuestions() {
-    const { questions } = this.state;
     const tokenStorage = localStorage.getItem('token');
     const token = JSON.parse(tokenStorage);
     const apiQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
@@ -34,7 +33,7 @@ class Questions extends Component {
     } else {
       this.setState({
         questions: questionsAPI,
-        loading: false
+        loading: false,
       });
     }
   }
@@ -52,21 +51,23 @@ class Questions extends Component {
         <p data-testid="question-text">{questions[1].question}</p>
         {questions[1].answers.map((answer, index) => {
           if (answer === questions[1].correct_answer) {
-            return <button 
-            type="button" 
-            data-testid={`correct-answer`} 
-            key={answer}
+            return (
+              <button
+                type="button"
+                data-testid="correct-answer"
+                key={ answer }
+              >
+                {answer}
+              </button>);
+          }
+          return (
+            <button
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+              key={ answer }
             >
               {answer}
-            </button>
-          }
-          return <button 
-          type="button" 
-          data-testid={`wrong-answer-${index}`} 
-          key={answer}
-          >
-            {answer}
-          </button>
+            </button>);
         }).sort(() => Math.random() - randomNumber)}
       </div>
     );
