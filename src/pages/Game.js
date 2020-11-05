@@ -3,7 +3,6 @@ import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import GameHeader from '../components/GameHeader';
 
-
 class Game extends Component {
   constructor() {
     super();
