@@ -1,19 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { savePlayer } from '../redux/actions';
+import { savePlayer, gettingTokenThunk } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.validFields = this.validFields.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.setLocalStorage = this.setLocalStorage.bind(this);
 
     this.state = {
       name: '',
       email: '',
       validFieldsOk: false,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { tokenLocalStorage } = this.props;
+    if (prevProps.tokenLocalStorage !== tokenLocalStorage) {
+      this.setLocalStorage();
+    }
+  }
+
+  setLocalStorage() {
+    const { tokenLocalStorage } = this.props;
+    localStorage.setItem('token', tokenLocalStorage);
   }
 
   handleChange({ name, value }) {
@@ -29,9 +43,15 @@ class Login extends React.Component {
     return this.setState({ validFieldsOk: false });
   }
 
+  handleOnClick() {
+    const { saveUser, getToken } = this.props;
+    const { name, email } = this.state;
+    saveUser(name, email);
+    getToken();
+  }
+
   render() {
     const { name, email, validFieldsOk } = this.state;
-    const { saveUser } = this.props;
     return (
       <div>
         <h1>Project Trivia</h1>
@@ -48,7 +68,7 @@ class Login extends React.Component {
             type="text"
             value={ email }
             name="email"
-            placeholder="Enter your name"
+            placeholder="Enter your email"
             data-testid="input-gravatar-email"
             onChange={ (e) => this.handleChange(e.target) }
           />
@@ -56,7 +76,7 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ !(validFieldsOk) }
-            onClick={ () => saveUser(name, email) }
+            onClick={ this.handleOnClick }
           >
             Jogar
           </button>
@@ -66,12 +86,19 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => (
-  { saveUser: (name, email) => dispatch(savePlayer(name, email)) }
-);
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (name, email) => dispatch(savePlayer(name, email)),
+  getToken: () => dispatch(gettingTokenThunk()),
+});
+
+const mapStateToProps = (state) => ({
+  tokenLocalStorage: state.userReducer.token.token,
+});
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
+  tokenLocalStorage: PropTypes.string.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
