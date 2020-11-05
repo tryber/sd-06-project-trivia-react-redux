@@ -6,7 +6,6 @@ const INITIAL_STATE = {
   token: '',
 };
 
-// Esse reducer será responsável por tratar as informações da pessoa usuária
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOGIN:

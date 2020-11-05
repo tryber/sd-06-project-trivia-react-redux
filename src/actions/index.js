@@ -22,7 +22,6 @@ export function fetchToken(email) {
 }
 
 export function fetchQuestion(token) {
-  console.log('fetch' + token);
   return async (dispatch) => {
     const questionsData = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const questionsJSON = await questionsData.json();

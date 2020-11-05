@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestion } from '../actions';
+import { QuestionCard } from '../components';
 
 class Questions extends React.Component {
   componentDidMount() {
@@ -12,7 +13,9 @@ class Questions extends React.Component {
 
   render() {
     // const { nomeDoExemploIcaro } = this.props;
-    return <div>Hello!</div>;
+    return (
+      <div>Hello!</div>
+    );
   }
 }
 
