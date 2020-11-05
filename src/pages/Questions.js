@@ -5,16 +5,17 @@ import { fetchQuestion } from '../actions';
 import { QuestionCard } from '../components';
 
 class Questions extends React.Component {
-  componentDidMount() {
-    console.log('ola');
+  async componentDidMount() {
     const { token, requestQuestion } = this.props;
-    requestQuestion(token);
+    await requestQuestion(token);
   }
 
   render() {
-    // const { nomeDoExemploIcaro } = this.props;
+    const { questions } = this.props;
     return (
-      <div>Hello!</div>
+      <div>
+        <QuestionCard question={ questions } />
+      </div>
     );
   }
 }
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
 Questions.propTypes = {
   token: PropTypes.string.isRequired,
   requestQuestion: PropTypes.func.isRequired,
+  questions: PropTypes.shape({}).isRequired,
 };
 
 export default connect(

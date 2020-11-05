@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 export default class QuestionCard extends Component {
   render() {
     const { question } = this.props;
+    console.log(question)
     return (
       <div>
-        <p data-testid="question-category"></p>
+        <p data-testid="question-category">oi</p>
       </div>
     );
   }
 }
 
 QuestionCard.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  question: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
