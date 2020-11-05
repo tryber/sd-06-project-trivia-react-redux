@@ -20,5 +20,5 @@ export const playerData = (payload) => ({
     avatar: payload.avatar,
     name: payload.name,
     score: payload.score,
-  }
+  },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 
-class Header extends React.Component { 
+class Header extends React.Component {
   render() {
     const { avatar, name, score } = this.props;
 
