@@ -13,17 +13,22 @@ class Game extends React.Component {
       questionNumber: 0,
       loading: true,
       answered: false,
-    }
+    };
 
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
+    this.handleLoading = this.handleLoading.bind(this);
+  }
+
+  handleLoading() {
+    this.setState({ loading: false });
   }
 
   async componentDidMount() {
     const { getAPIQuestions } = this.props;
     await getAPIQuestions();
-    this.setState({ loading: false });
+    handleLoading();
   }
 
   renderQuestions() {
@@ -46,44 +51,46 @@ class Game extends React.Component {
     const { chooseAnswer } = this;
     const { questions } = this.props;
     const correctAnswerPosition = Math
-    .floor(Math
-      .random() * questions[questionNumber].incorrect_answers.length + 1);
+      .floor(Math
+        .random() * questions[questionNumber].incorrect_answers.length + 1);
     const answers = questions[questionNumber].incorrect_answers;
-      
+
     if (!answered) {
       answers.splice(correctAnswerPosition, 0, questions[questionNumber].correct_answer);
-    }    
+    }
 
     return (
-      <div>{ answers.map((answer, index) => {
-        return (answer === questions[questionNumber].correct_answer)
-        ? <button
-          className={ answered ? 'correct-answer' : null }
-          type="button"
-          onClick={ chooseAnswer }
-          data-testid="correct-answer"
-          key={ index }
-        >
-          { answer }
-        </button>
-        : <button
-          className={ answered ? 'wrong-answer' : null }
-          type="button"
-          onClick={ chooseAnswer }
-          data-testid={ `wrong-answer-${index}` }
-          key={ index }
-        >
-          { answer }
-        </button>;
-      }
-      ) }</div>
+      <div>
+        {
+          answers.map((answer, index) => ((answer === questions[questionNumber].correct_answer)
+            ? <button
+              className={ answered ? 'correct-answer' : null }
+              type="button"
+              onClick={ chooseAnswer }
+              data-testid="correct-answer"
+              key={ index }
+            >
+              { answer }
+            </button>
+            : <button
+              className={ answered ? 'wrong-answer' : null }
+              type="button"
+              onClick={ chooseAnswer }
+              data-testid={ `wrong-answer-${ index }` }
+              key={ index }
+            >
+              { answer }
+            </button>
+          ))
+        }
+      </div>
     );
   }
 
   render() {
     const { renderAnswers, renderQuestions } = this;
     const { loading } = this.state;
-    if (loading) {return (<p>loading...</p>)};
+    if (loading) (<p>loading...</p>);
     return (
       <div>
         <div>
