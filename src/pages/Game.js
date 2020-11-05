@@ -32,6 +32,10 @@ class Game extends React.Component {
     this.setState({ loading: false });
   }
 
+  chooseAnswer() {
+    this.setState({ answered: true });
+  }
+
   renderQuestions() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
@@ -41,10 +45,6 @@ class Game extends React.Component {
         <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
       </div>
     );
-  }
-
-  chooseAnswer() {
-    this.setState({ answered: true });
   }
 
   renderAnswers() {
@@ -66,23 +66,23 @@ class Game extends React.Component {
           answers
             .map((answer, index) => ((answer === questions[questionNumber].correct_answer)
               ? <button
-                className={ answered ? 'correct-answer' : null }
-                type="button"
-                onClick={ chooseAnswer }
-                data-testid="correct-answer"
-                key={ index }
-              >
-                { answer }
-              </button>
+                  className={ answered ? 'correct-answer' : null }
+                  type="button"
+                  onClick={ chooseAnswer }
+                  data-testid="correct-answer"
+                  key={ index }
+                >
+                  { answer }
+                </button>
               : <button
-                className={ answered ? 'wrong-answer' : null }
-                type="button"
-                onClick={ chooseAnswer }
-                data-testid={ `wrong-answer-${index}` }
-                key={ index }
-              >
-                { answer }
-              </button>
+                  className={ answered ? 'wrong-answer' : null }
+                  type="button"
+                  onClick={ chooseAnswer }
+                  data-testid={ `wrong-answer-${index}` }
+                  key={ index }
+                >
+                  { answer }
+                </button>
             ))
         }
       </div>
@@ -96,12 +96,12 @@ class Game extends React.Component {
     return (
       loading ? <p>loading...</p>
         : <div>
-          <div>
-            <Header />
+            <div>
+              <Header />
+            </div>
+            { renderQuestions() }
+            { renderAnswers() }
           </div>
-          { renderQuestions() }
-          { renderAnswers() }
-        </div>
     );
   }
 }
