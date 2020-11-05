@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 export default class QuestionCard extends Component {
   render() {
-    const { question } = this.props;
-    console.log(question)
+    // const { question } = this.props;
     return (
       <div>
         <p data-testid="question-category">oi</p>
@@ -13,6 +12,6 @@ export default class QuestionCard extends Component {
   }
 }
 
-QuestionCard.propTypes = {
-  question: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+// QuestionCard.propTypes = {
+//   question: PropTypes.arrayOf(PropTypes.object).isRequired,
+// };

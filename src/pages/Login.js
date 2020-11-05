@@ -92,7 +92,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             disabled={ disabled }
             // Clicking at button disparates dispatch function to save state email at /actions/index
-            onClick={ () => requestToken(email) }
+            onClick={ () => requestToken(email, playerName) }
           >
             Jogar
           </button>
@@ -104,7 +104,7 @@ class Login extends React.Component {
 
 // Function that make dispatch to my /actions/index
 const mapDispatchToProps = (dispatch) => ({
-  requestToken: (email) => dispatch(fetchTokenAndLogin(email)),
+  requestToken: (email, playerName) => dispatch(fetchTokenAndLogin(email, playerName)),
 });
 
 Login.propTypes = {

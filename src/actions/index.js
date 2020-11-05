@@ -1,10 +1,11 @@
 export const LOGIN = 'LOGIN';
 export const QUESTIONS = 'QUESTIONS';
 
-export const login = (email, token) => ({
+export const login = (email, token, playerName) => ({
   type: LOGIN,
   email,
   token,
+  playerName,
 });
 
 export const receiveQuestions = (questions) => ({
@@ -22,7 +23,8 @@ const fetchToken = async () => {
 const fetchQuestionsFromAPI = async (token) => {
   const questionsData = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
   const questionsJSON = await questionsData.json();
-  if (questionsJSON.response_code === 3) {
+  const RESPONSE_CODE_TOKEN_EXPIRED = 3;
+  if (questionsJSON.response_code === RESPONSE_CODE_TOKEN_EXPIRED) {
     const newToken = await fetchToken();
     const newQuestionsData = await fetch(`https://opentdb.com/api.php?amount=5&token=${newToken}`);
     const newQuestionsJSON = await newQuestionsData.json();
@@ -33,10 +35,10 @@ const fetchQuestionsFromAPI = async (token) => {
   return questionsJSON;
 };
 
-export function fetchTokenAndLogin(email) {
+export function fetchTokenAndLogin(email, playerName) {
   return async (dispatch) => {
     const token = await fetchToken();
-    dispatch(login(email, token));
+    dispatch(login(email, token, playerName));
   };
 }
 

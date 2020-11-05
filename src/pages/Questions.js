@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestion } from '../actions';
 import { QuestionCard } from '../components';
+import Header from '../components/Header';
 
 class Questions extends React.Component {
   async componentDidMount() {
@@ -14,6 +15,7 @@ class Questions extends React.Component {
     const { questions } = this.props;
     return (
       <div>
+        <Header />
         <QuestionCard question={ questions } />
       </div>
     );
