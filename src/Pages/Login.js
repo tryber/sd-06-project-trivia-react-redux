@@ -3,7 +3,6 @@ import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
 import ButtonSettings from '../Components/ButtonSettings';
 
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +56,7 @@ class Login extends Component {
             />
           </label>
          <LoginButton disabled={ validated } />
-        </form>
+         </form>
         <ButtonSettings />
       </div>
     );
