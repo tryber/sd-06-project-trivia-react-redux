@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import login from './login';
-import tokenReduce from './token';
+import token from './token';
+import allQuestions from './allQuestions';
 import playerData from './playerData';
 
 const rootReducer = combineReducers({
   login,
-  tokenReduce,
+  token,
+  allQuestions,
   playerData,
 });
 
