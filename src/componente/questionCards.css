@@ -5,3 +5,7 @@
 .buttonFalse {
   border: 3px solid rgb(255, 0, 0);
 }
+
+.button-visibility {
+  visibility: hidden;
+}
