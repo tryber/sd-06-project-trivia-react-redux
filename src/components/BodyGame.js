@@ -12,15 +12,17 @@ class BodyGame extends Component {
     this.disableAnswerButtons = this.disableAnswerButtons.bind(this);
     this.handleCounter = this.handleCounter.bind(this);
     this.handleScoreToLocalStorage = this.handleScoreToLocalStorage.bind(this);
+    this.handleQuestionIndex = this.handleQuestionIndex.bind(this);
 
     this.state = {
       isDisabled: false,
       score: 0,
       counter: 30,
+      questionIndex: 0,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { email, name } = this.props;
     const { score } = this.state;
     const assertions = 1;
@@ -36,15 +38,15 @@ class BodyGame extends Component {
     const { questionsFunction, getToken } = this.props;
 
     if (getToken !== '') {
-      questionsFunction();
+      await questionsFunction();
     }
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     const { getToken, questionsFunction } = this.props;
 
     if (getToken !== prevProps.getToken && getToken !== '') {
-      questionsFunction();
+      await questionsFunction();
     }
   }
 
@@ -55,6 +57,8 @@ class BodyGame extends Component {
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.className = 'wrong-question';
     });
+    const nextButton = document.querySelector('#next-button');
+    nextButton.style = 'display: block';
   }
 
   disableAnswerButtons() {
@@ -118,9 +122,14 @@ class BodyGame extends Component {
     localStorage.setItem('state', JSON.stringify(localStoragePlayerInfo));
   }
 
+  handleQuestionIndex() {
+    const { questionIndex } = this.state;
+    this.setState({ questionIndex: questionIndex + 1 });
+  }
+
   render() {
     const { questions } = this.props;
-    const { isDisabled, counter } = this.state;
+    const { isDisabled, counter, questionIndex } = this.state;
     return (
       <div className="container">
         {questions.map((question, index) => (
@@ -135,6 +144,15 @@ class BodyGame extends Component {
             </div>
             <div className="box-alternatives">
               <div>
+                <button
+                  type="button"
+                  id="next-button"
+                  data-testid="btn-next"
+                  onClick={ this.handleQuestionIndex }
+                  style={ { display: 'none' } }
+                >
+                  Próxima
+                </button>
                 <button
                   id="right-answer"
                   type="button"
@@ -164,7 +182,7 @@ class BodyGame extends Component {
               </div>
             </div>
           </div>
-        )).filter((_, index) => index === 0)}
+        )).filter((_, index) => index === questionIndex)}
         <Timer
           counter={ counter }
           handleCounter={ this.handleCounter }
