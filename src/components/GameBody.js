@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { thunkQuestions } from '../actions';
 
@@ -6,26 +7,34 @@ class GameBody extends React.Component {
   constructor() {
     super();
     this.state = {
-      loading: true,
-      category: '',
       index: 0,
-    }
+      answers: [],
+    };
     this.handleNext = this.handleNext.bind(this);
+    this.createQuestions = this.createQuestions.bind(this);
   }
 
   async componentDidMount() {
     const { getQuestions } = this.props;
     await getQuestions();
-    const { questions } = this.props;
-    const { index } = this.state;
+    this.createQuestions();
+  }
 
-    if(questions.length > 0  ) {
+  createQuestions(index = 0) {
+    const { questions } = this.props;
+    const answersArray = [];
+
+    if (questions.length > 0) {
+      const question = questions[index];
+      answersArray.push(question.correct_answer, ...question.incorrect_answers);
+
       this.setState({
-        loading: false,
-        category: questions[index].category,
-        question: questions[index].question,
-        correct_answer: questions[index].correct_answer,
-        incorrect_answer: questions[index].incorrect_answer,
+        index,
+        category: question.category,
+        question: question.question,
+        correctAnswer: question.correct_answer,
+        // incorrectAnswer: question.incorrect_answers,
+        answers: answersArray,
       });
     }
   }
@@ -34,34 +43,49 @@ class GameBody extends React.Component {
     const { questions } = this.props;
     let { index } = this.state;
     index += 1;
-    if(questions.length > 0 && index < questions.length ) {
-      this.setState({
-        index,
-        category: questions[index].category,
-        question: questions[index].question,
-        correct_answer: questions[index].correct_answer,
-        incorrect_answer: questions[index].incorrect_answer,
-      })
+    if (questions.length > 0 && index < questions.length) {
+      this.createQuestions(index);
     }
   }
 
   render() {
-    const { loading, category, question, correct_answer, incorrect_answer } = this.state;
+    const { category, question, correctAnswer, answers } = this.state;
+    const randomNumber = 0.5;
 
     return (
       <div>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
-        <button data-testid="correct-answer">{ correct_answer }</button>
-        <button data-testid="wrong-answer-${index}">{ incorrect_answer }</button>
+        { answers.map((answer, index) => {
+          if (answer === correctAnswer) {
+            return (
+              <button
+                type="button"
+                key={ answer }
+                data-testid="correct-answer"
+              >
+                { answer }
+              </button>);
+          }
+          return (
+            <button
+              type="button"
+              key={ answer }
+              data-testid={ `wrong-answer-${index - 1}` }
+            >
+              { answer }
+            </button>);
+        }).sort(() => Math.random() - randomNumber) }
         <button
+          type="button"
           onClick={ () => this.handleNext() }
         >
           Next
         </button>
       </div>
-    )
-  }}
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
   questions: state.questionReducer.questions,
@@ -71,10 +95,9 @@ const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(thunkQuestions()),
 });
 
+GameBody.propTypes = {
+  getQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf.isRequired,
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
-
-// data-testid="question-category"
-// data-testid="question-text"
-// data-testid="correct-answer"
-// data-testid="wrong-answer-${index}".
-

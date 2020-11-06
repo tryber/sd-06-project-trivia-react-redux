@@ -20,16 +20,14 @@ export const tokenAction = (token) => ({
   token,
 });
 
-//fazer uma ação para guardar perguntas e respostas
 export const questionAction = (questions) => ({
   type: QUESTIONS,
   questions,
 });
 
-//dúvida? teste async await
 export function thunkToken() {
   return async (dispatch) => (
-    await fetchTokenApi()
+    fetchTokenApi()
       .then((tokenInfo) => {
         dispatch(tokenAction(tokenInfo.token));
         localStorage.setItem('token', tokenInfo.token);
@@ -37,19 +35,17 @@ export function thunkToken() {
   );
 }
 
-//1. consultar perguntas - 2. if response_code 3 fazer nova req. a api
 export function thunkQuestions() {
   const tokenExpire = 3;
-  const token = localStorage.getItem('token'); // retorna: Um DOMString contendo o nome da chave cujo valor você quer obter.
+  const token = localStorage.getItem('token');
   return async (dispatch) => (
-    await fetchQuestionsApi(token)
+    fetchQuestionsApi(token)
       .then((questionInfo) => {
-        if(questionInfo.response_code === tokenExpire) {
-          thunkToken(); //tlz dê erro pq é func assincorna e tô chamando ela de novo aqui??? async? no sei?
+        if (questionInfo.response_code === tokenExpire) {
+          thunkToken();
         } else {
           dispatch(questionAction(questionInfo.results));
         }
       })
-  )
+  );
 }
-
