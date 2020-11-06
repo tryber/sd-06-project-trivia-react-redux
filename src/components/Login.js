@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { fetchApiQuestions, fetchApiToken } from '../actions';
 import ButtonConfig from './ButtonConfig';
+import ScreenGame from './ScreenGame';
 
 class Login extends React.Component {
   constructor(props) {
@@ -19,28 +20,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // verifyName(e) {
-  //   const name = e.target.value;
-  //   if (name.length > 0) {
-  //     this.setState({
-  //       invalidName: false,
-  //     });
-  //   }
-  // }
-
-  // verifyEmail(e) {
-  //   const email = e.target.value;
-  //   if (email.length > 0) {
-  //     this.setState({
-  //       invalidEmail: false,
-  //     });
-  //   }
-  // }
-
-  // verifyEmailAndName(e) {
-  //   const { invalidEmail, invalidName } = this.state;
-  //   if
-  // }
   handleClick() {
     // const { name, email } = this.state;
     const { getToken } = this.props;
@@ -60,6 +39,11 @@ class Login extends React.Component {
 
   render() {
     const { name, email, redirect } = this.state;
+
+    if (redirect === true) {
+      return <ScreenGame />;
+    }
+
     return (
       <div className="container">
         <form className="formLogin">
@@ -100,7 +84,7 @@ class Login extends React.Component {
 }
 
 const mapsDispatchToProps = (dispatch) => ({
-  getToken: (e) => dispatch(fetchApiToken(e)),
+  getToken: () => dispatch(fetchApiToken()),
   getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
 });
 

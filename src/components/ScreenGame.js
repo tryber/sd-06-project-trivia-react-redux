@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propType from 'prop-types';
 import { fetchApiQuestions, requestQuestionsSuccess } from '../actions';
+import FeedbackHeader from './FeedbackHeader';
 import '../App.css';
 
 class ScreenGame extends React.Component {
@@ -23,7 +24,10 @@ class ScreenGame extends React.Component {
     const { questions } = this.props;
     const { answered } = this.state;
     return (
-      <div>
+      <div className="game-container">
+        <div className="header">
+          <FeedbackHeader />
+        </div>
         <div className="category">
           { questions && questions.results && questions.results.map((item) => (
             <p

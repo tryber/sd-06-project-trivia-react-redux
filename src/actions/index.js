@@ -2,6 +2,8 @@ export const REQUEST = 'REQUEST';
 export const DATA = 'DATA';
 export const DATA_QUESTIONS = 'DATA_QUESTIONS';
 export const FAILURE = 'FAILURE';
+export const RECEIVE_HASH = 'RECEIVE_HASH';
+export const PLAYER_NAME = 'PLAYER_NAME';
 const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 export function request() {
@@ -28,6 +30,20 @@ export function requestQuestionsSuccess(questions) {
   return {
     type: DATA_QUESTIONS,
     questions,
+  };
+}
+
+export function receiveHash(hash) {
+  return {
+    type: RECEIVE_HASH,
+    hash,
+  };
+}
+
+export function playerName(name) {
+  return {
+    type: PLAYER_NAME,
+    name,
   };
 }
 
