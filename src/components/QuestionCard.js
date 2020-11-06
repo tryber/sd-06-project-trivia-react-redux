@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+
 class QuestionCard extends Component {
   render() {
-    const { questions } = this.props;
-    const { category, question } = questions[0];
+    const { onClick, currentQuestion } = this.props;
+    const { category, question } = currentQuestion;
     return (
       <div>
         QUESTION CARD
@@ -17,16 +18,16 @@ class QuestionCard extends Component {
           <button
             data-testid="correct-answer"
             type="button"
+            onClick={onClick}
           >
-            { questions[0].correct_answer }
+            { question.correct_answer }
           </button>
-          {questions[0].incorrect_answers.map((answer, index) => (
-            <button data-testid={ `wrong-answer-${index}` } type="button" key={ index }>
+          {question.incorrect_answers.map((answer, index) => (
+            <button data-testid={ `wrong-answer-${index}` } type="button" key={ index } onClick={onClick}>
               { answer }
             </button>
           ))}
         </div>
-        <button type="button">Próxima</button>
       </div>
     );
   }

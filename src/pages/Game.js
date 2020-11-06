@@ -9,28 +9,56 @@ class Game extends Component {
     super(props);
     this.state = {
       isLoading: true,
+      questionAnswer: false,
+      question: questions[0],
     };
-    this.updateState = this.updateState.bind(this);
-  }
 
+    this.updateState = this.updateState.bind(this);
+    this.handleClickAnswer = this.handleClickAnswer.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
+  }
+  
   async componentDidMount() {
-    const { token, dispatchQuestions } = this.props;
+    const { token, dispatchQuestions} = this.props;
     await dispatchQuestions(token);
     this.updateState();
   }
-
+  
   updateState() {
     this.setState({
       isLoading: false,
     });
   }
-
-  render() {
-    const { isLoading } = this.state;
+  
+  handleClickAnswer() {
+    this.setState({
+      questionAnswer: true,
+    });
+  }
+  
+  handleClickNext() {
+      this.setState({
+        questionAnswer: false,
+      });
+    }
+    
+    render() {
+      const { questions } = this.props;
+      console.log(questions);
+      const { isLoading,questionAnswer, question } = this.state;
     return (
       <div>
         <Header />
-        {isLoading ? <Loading /> : <QuestionCard />}
+        {/* {isLoading ? <Loading /> : <QuestionCard onClick={this.handleClickAnswer} currentQuestion={question}/>} */}
+        { questionAnswer ?  <button
+        type="button"
+        data-testid="btn-next"
+        onClick={this.handleClickNext}
+        >
+        Próxima
+        </button> 
+        : " "
+        }
       </div>
     );
   }
@@ -38,6 +66,7 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
+  questions: state.game.questions.results,
 });
 
 const mapDispatchToProps = (dispatch) => ({
