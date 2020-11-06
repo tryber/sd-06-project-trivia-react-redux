@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 
 export class FeedbackHeader extends Component {
   render() {
-    const { hash, name, score } = this.props;
+    const { hash, name } = this.props;
+    const score = 0;
     console.log(name);
     return (
       <div>
