@@ -11,10 +11,12 @@ class Game extends Component {
     this.state = {
       // respondida: false,
       index: 0,
+      desabled: false,
       // results: [],
     };
 
     // this.setQuestion = this.setQuestion.bind(this);
+    this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +36,33 @@ class Game extends Component {
   //       : results
   //   );
   // }
+
+  handleClickButtonNext() {
+    this.setState(((prevState) => ({
+      index: prevState.index + 1,
+    })), () => {
+      const { index } = this.state;
+      const QUATRO = 4;
+      if (index === QUATRO) {
+        this.setState({ desabled: true });
+      } else {
+        this.setState({ desabled: false });
+      }
+    });
+  }
+
+  handleButton() {
+    const { desabled } = this.state;
+    return (
+      <button
+        type="button"
+        onClick={ this.handleClickButtonNext }
+        data-testid="btn-next"
+        disabled={ desabled }
+      >
+        Próxima
+      </button>);
+  } 
 
   render() {
     const { isFetching, APIQuestions } = this.props;
@@ -85,17 +114,10 @@ class Game extends Component {
                     </button>
                   ))
                   .sort(() => Math.random() - random)
-
               }
-              {/* {
-                questionArray.push(...APIQuestions[index].incorrect_answers,
-                  APIQuestions[index].correct_answer)
-              }
-              {
-                questionArray.map
-              } */}
-              {/* {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)} */}
-            </section>)}
+            </section>
+          )}
+        { this.handleButton() }
       </section>
     );
   }
