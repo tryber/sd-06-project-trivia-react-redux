@@ -38,7 +38,6 @@ class Game extends Component {
   render() {
     const { isFetching, APIQuestions } = this.props;
     const { index } = this.state;
-    
     const random = 0.5;
     return (
       <section className="game-container">
