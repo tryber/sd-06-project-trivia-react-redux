@@ -4,6 +4,7 @@ import Game from './pages/Game';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import './App.css';
+import './styles/Game.css';
 
 export default function App() {
   return (
