@@ -1,5 +1,8 @@
 import React from 'react';
 import { LoginForm } from '../components';
+import md5 from 'crypto-js/md5'
+import { connect } from 'react-redux';
+import { addName } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -8,6 +11,7 @@ class Login extends React.Component {
     this.validateName = this.validateName.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
     this.state = {
+      hash: '',
       validEmail: false,
       validName: false,
       showSettings: false,
@@ -16,19 +20,27 @@ class Login extends React.Component {
 
   validateEmail({ target }) {
     const email = target.value;
+    const hash = md5(email);
     const validator = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const isValid = validator.test(String(email).toLowerCase());
     if (isValid) {
-      this.setState({ validEmail: true });
+      this.setState({ 
+        validEmail: true ,
+        hash: hash.words,
+      });
     } else {
-      this.setState({ validEmail: false });
+      this.setState({ 
+        validEmail: false,
+        hash: '',
+      });
     }
   }
 
   validateName({ target }) {
-    const name = target.value.length;
+    const name = target.value;
+    const { userName }  = this.props
     const minLength = 2;
-    if (name >= minLength) {
+    if (name.length >= minLength) {
       this.setState({
         validName: true,
       });
@@ -37,6 +49,7 @@ class Login extends React.Component {
         validName: false,
       });
     }
+    userName(name)
   }
 
   handleSettings() {
@@ -46,7 +59,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { validEmail, validName, showSettings } = this.state;
+    const { validEmail, validName, showSettings, name } = this.state;
     return (
       <LoginForm
         handleSettings={ this.handleSettings }
@@ -55,9 +68,15 @@ class Login extends React.Component {
         validName={ validName }
         validEmail={ validEmail }
         showSettings={ showSettings }
+        showSettings={ this.emailToHash }
       />
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  userName: (name) => dispatch(addName(name)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+

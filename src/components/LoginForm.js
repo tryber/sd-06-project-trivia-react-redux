@@ -19,6 +19,7 @@ class LoginForm extends Component {
       showSettings,
       fetchToken,
     } = this.props;
+    
     return (
       <div className="login-container">
         <form className="App">
@@ -65,7 +66,7 @@ class LoginForm extends Component {
                   </button>
                 </div>
               </div>
-              { showSettings ? <Settings /> : '' }
+                { showSettings ? <Settings /> : '' }
             </div>
           </div>
         </form>

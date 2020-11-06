@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
+import user from '../reducers/user';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.getQuestions = this.getQuestions.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
       questions: [],
       seconds: '30',
       points: '0',
+      difficulty: '1',
     };
   }
 
@@ -31,9 +34,9 @@ class Game extends React.Component {
     });
   }
 
-  correctAnswer() {
-    // const { points, seconds } = this.state;
-    // const ten = 10;
+  handleClick({target}) {
+     const { points, seconds, difficulty } = this.state;
+     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
     const correctClass = correctButton.className;
     const wrongButton = document.querySelectorAll('.wrong-answer');
@@ -46,11 +49,26 @@ class Game extends React.Component {
         element.disabled = true;
       });
     }
-    // if (target.className.includes('correct-answer')) {
-    //   this.setState({
-    //     points: Number(points) + Number(ten) + Number(seconds),
-    //   });
-    // }
+    if (target.className.includes('correct-answer')) {
+      this.setState({
+        points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
+      });
+    }
+  }
+
+  correctAnswer() {
+    const correctButton = document.querySelector('.correct-answer');
+    const correctClass = correctButton.className;
+    const wrongButton = document.querySelectorAll('.wrong-answer');
+    const wrongClass = wrongButton.className;
+    if (correctClass.includes('correct-answer') || wrongClass.includes('wrong-answer')) {
+      correctButton.classList.add('correct');
+      correctButton.disabled = true;
+      wrongButton.forEach((element) => {
+        element.classList.add('wrong');
+        element.disabled = true;
+      });
+    }
   }
 
   timer() {
@@ -80,26 +98,25 @@ class Game extends React.Component {
 
   render() {
     const { questions, seconds, points } = this.state;
+    const { userName } = this.props;
     return (
       <div className="game-container">
         {questions.map((element, index) => (
           <div className="square" key={ index }>
             <header className="profile-header">
               <div className="profile-div">
-                <img
-                  data-testid="header-profile-picture"
-                  alt="profile"
-                  src={ profile }
-                  width="120"
-                />
                 <div className="profile-rightside">
-                  <p data-testid="header-player-name">Nome da pessoa:</p>
-                  <p data-testid="header-score">Pontuação: 0</p>
+                  <img
+                    data-testid="header-profile-picture"
+                    alt="profile"
+                    src={ profile }
+                    width="120"
+                  />
+                  <p data-testid="header-player-name">Nome da pessoa: {userName}</p>
                 </div>
               </div>
               <h1 className="score">
-                <p>Placar</p>
-                {points}
+                <p data-testid="header-score">Placar {points}</p>
               </h1>
             </header>
             <div className="questions-answers-container">
@@ -112,7 +129,7 @@ class Game extends React.Component {
                   type="button"
                   data-testid="correct-answer"
                   className="each-answer correct-answer"
-                  onClick={ this.correctAnswer }
+                  onClick={ this.handleClick }
                 >
                   {element[index].correct_answer}
                 </button>
@@ -122,7 +139,7 @@ class Game extends React.Component {
                     key={ key }
                     className="each-answer wrong-answer"
                     data-testid={ `wrong-answer-${key}` }
-                    onClick={ this.correctAnswer }
+                    onClick={ this.handleClick }
                   >
                     {answer}
                   </button>
@@ -149,6 +166,7 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   userToken: state.user.token,
+  userName: state.user.user,
 });
 
 Game.propTypes = {
