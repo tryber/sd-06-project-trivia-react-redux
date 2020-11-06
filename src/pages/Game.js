@@ -78,16 +78,16 @@ class Game extends Component {
                     return (
                       <button
                         type="button"
-                        data-testid={ `wrong-answer-${i}`}
+                        data-testid={ `wrong-answer-${i}` }
                         key={ i }
                         disabled={ disabled }
                         className={ clicked ? 'wrong-answer' : null }
-                        onClick= { this.handleStyle }
+                        onClick={ this.handleStyle }
                       >
                         {question}
                       </button>
                     );
-                  }
+                  },
                   // {
                   //   APIQuestions[index]
                   //     .incorrect_answers.concat(APIQuestions[index].correct_answer)
