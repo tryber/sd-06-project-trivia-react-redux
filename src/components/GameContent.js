@@ -15,6 +15,7 @@ class GameContent extends React.Component {
       answer: false,
       sort: [],
       results: [],
+      btnDisabled: false,
     };
 
     this.shuffle = this.shuffle.bind(this);
@@ -38,18 +39,18 @@ class GameContent extends React.Component {
   async setCounter() {
     const thirtySeconds = 30000;
     setTimeout(() => {
-      const thirty = 30;
-      let i = thirty;
-      while (i > 0) {
-        i = countSeconds(i);
-
-        console.log('durante', i);
-      }
-    }, thirtySeconds);
+      this.setState({ btnDisabled: true });
+      this.setResult(false);
+    },
+    thirtySeconds);
   }
 
-  setResult(target) {
-    return target.className === 'correct';
+  setResult(result) {
+    const { results } = this.state;
+    this.setState(() => ({ answer: true }), async () => {
+      this.setState({ results: [...results, result], isLoading: true });
+      this.fetchApi();
+    });
   }
 
   resetAnswer() {
@@ -66,13 +67,8 @@ class GameContent extends React.Component {
 
   async handleClickAnswer(event) {
     const { target } = event;
-    const { results } = this.state;
-
-    this.setState(() => ({ answer: true }), async () => {
-      const result = this.setResult(target);
-      this.setState({ results: [...results, result], isLoading: true });
-      this.fetchApi();
-    });
+    const result = target.className === 'correct';
+    this.setResult(result);
   }
 
   shuffle(array) {
@@ -90,7 +86,7 @@ class GameContent extends React.Component {
   }
 
   render() {
-    const { element, current, isLoading, answer, sort, results } = this.state;
+    const { element, current, isLoading, answer, sort, results, btnDisabled } = this.state;
     console.log('results:', results);
     if (isLoading) {
       return <p>Carregando...</p>;
@@ -100,6 +96,7 @@ class GameContent extends React.Component {
     const questions = [...questionsDataARR.incorrect_answers, correctQuestion];
     const correctAnswer = (item, index) => (
       <button
+        disabled={ btnDisabled }
         key={ `btn${index}` }
         id={ `order-${sort[index]}` }
         type="button"
@@ -112,6 +109,7 @@ class GameContent extends React.Component {
     );
     const wrongAnswer = (item, index) => (
       <button
+        disabled={ btnDisabled }
         key={ `btn${index}` }
         id={ `order-${sort[index]}` }
         type="button"
