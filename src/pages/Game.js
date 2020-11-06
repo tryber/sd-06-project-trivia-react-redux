@@ -98,6 +98,11 @@ class Game extends Component {
               } */}
               {/* {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)} */}
             </section>)}
+        <section>
+          <Provider store={ store }>
+            <Timer />
+          </Provider>
+        </section>
       </section>
     );
   }

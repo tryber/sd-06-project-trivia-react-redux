@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import propTypes from 'prop-types';
 import { playerData } from '../actions';
-// import propTypes from 'prop-types';
 
 class Timer extends React.Component {
   constructor() {
@@ -21,10 +21,16 @@ class Timer extends React.Component {
 
   componentDidUpdate() {
     const { timeLeft } = this.state;
-    const action = { timeout: true };
+    const { name, score, playerDataAction } = this.props;
+    const action = {
+      timeout: true,
+      name,
+      score,
+    };
     const oneSecond = 1000;
-    if (timeLeft === 0) {
-      playerData(action);
+    if (timeLeft < 1) {
+      playerDataAction(action);
+      return;
     }
     setTimeout(this.decreaseTime, oneSecond);
   }
@@ -37,16 +43,34 @@ class Timer extends React.Component {
   render() {
     const { timeLeft } = this.state;
     return (
-      <h4> Tempo: {timeLeft} </h4>
+      <h4>
+Tempo:
+        {timeLeft}
+      </h4>
     );
   }
 }
 
-// Timer.propTypes = {
-// };
-
-const mapDispatchToProps = {
-  playerData,
+Timer.defaultProps = {
+  name: 'Player',
+  score: 0,
 };
 
-export default connect(null, mapDispatchToProps)(Timer);
+Timer.propTypes = {
+  name: propTypes.string,
+  score: propTypes.number,
+  playerDataAction: propTypes.func.isRequired,
+};
+
+const mapDispatchToProps = {
+  playerDataAction: playerData,
+};
+
+function mapStateToProps(state) {
+  return {
+    name: state.login.name,
+    score: state.playerData.payload.score,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
