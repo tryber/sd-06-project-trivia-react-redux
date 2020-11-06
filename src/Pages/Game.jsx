@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from '../components/Question';
+import Question from '../Components/Question';
 import { questionsAction } from '../actions';
 import { connect } from 'react-redux';
 import '../styles/Game.css';
