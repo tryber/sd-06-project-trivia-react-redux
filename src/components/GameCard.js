@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class GameCard extends Component {
   constructor() {
     super();
-    this.state = { addClass: false, timer: 30, disable: false };
+    this.state = { addClass: false, timer: 30, disable: false, hidden: true };
     this.handleClick = this.handleClick.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
@@ -24,13 +24,14 @@ class GameCard extends Component {
     } else {
       this.setState({
         disable: true,
+        hidden: false,
       });
     }
     console.log(timer);
   }
 
   handleClick() {
-    this.setState({ addClass: true });
+    this.setState({ addClass: true, hidden: false });
   }
 
   handleNextQuestion() {
@@ -40,11 +41,12 @@ class GameCard extends Component {
       timer: 30,
       disable: false,
       addClass: false,
+      hidden: true,
     });
   }
 
   render() {
-    const { addClass, disable, timer } = this.state;
+    const { addClass, disable, timer, hidden } = this.state;
     const { question } = this.props;
     const correctAnswer = question.correct_answer;
     const options = [...question.incorrect_answers, correctAnswer].sort();
@@ -70,7 +72,14 @@ class GameCard extends Component {
           </div>
         ))}
         {timer}
-        <button type="button" onClick={ this.handleNextQuestion }>Próxima</button>
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.handleNextQuestion }
+          className={ hidden === true ? 'hidden' : '' }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
