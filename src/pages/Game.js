@@ -30,9 +30,8 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <GameCard question={ currentCard } />
+        <GameCard question={ currentCard } nextQuestion={ this.nextQuestion } />
         <br />
-        <button type="button" onClick={ this.nextQuestion }>Próxima</button>
       </div>
     );
   }

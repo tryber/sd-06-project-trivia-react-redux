@@ -7,6 +7,7 @@ class GameCard extends Component {
     this.state = { addClass: false, timer: 30, disable: false };
     this.handleClick = this.handleClick.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,16 @@ class GameCard extends Component {
 
   handleClick() {
     this.setState({ addClass: true });
+  }
+
+  handleNextQuestion() {
+    const { nextQuestion } = this.props;
+    nextQuestion();
+    this.setState({
+      timer: 30,
+      disable: false,
+      addClass: false,
+    });
   }
 
   render() {
@@ -59,6 +70,7 @@ class GameCard extends Component {
           </div>
         ))}
         {timer}
+        <button type="button" onClick={ this.handleNextQuestion }>Próxima</button>
       </div>
     );
   }
@@ -71,6 +83,7 @@ GameCard.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     question: PropTypes.string.isRequired,
   }).isRequired,
+  nextQuestion: PropTypes.func.isRequired,
 };
 
 export default GameCard;
