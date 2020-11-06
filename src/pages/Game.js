@@ -12,7 +12,6 @@ class Game extends React.Component {
     this.state = {
       questionNumber: 0,
       answered: false,
-      timer: false,
       generatedAnswer: false,
     };
 
@@ -29,13 +28,15 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { createInterval } = this;
-    createInterval();
+    setTimeout(createInterval(), 5000)
   }
 
   componentDidUpdate() {
     const { timer } = this.props;
+    const { interval } = this.state;
+    const { clearIntervalTimer } = this;
     if (timer === 0) {
-      this.clearInterval(this.interval);
+      clearIntervalTimer(interval);
     }
   }
 
@@ -51,28 +52,38 @@ class Game extends React.Component {
   }
 
   handleScore({ target: { innerText } }) {
-    const { difficulty, toUpdateScore, timer, score, questions } = this.props;
+    const {
+      difficulty,
+      toUpdateScore,
+      timer,
+      assertions,
+      questions,
+    } = this.props;
     const { clearIntervalTimer } = this;
     const { questionNumber } = this.state;
+    const baseScore = 10;
+    const easy = 1;
+    const hard = 1;
+    const medium = 1;
 
     let difficultyMultiplier = 0;
 
     switch (difficulty) {
     case 'easy':
-      difficultyMultiplier = 1;
+      difficultyMultiplier = easy;
       break;
     case 'hard':
-      difficultyMultiplier = 3;
+      difficultyMultiplier = hard;
       break;
     default:
-      difficultyMultiplier = 2;
+      difficultyMultiplier = medium;
     }
-    if (innerText === questions[questionNumber].correct_answer) {
-      const addScore = 10 + (timer * difficultyMultiplier);
-      toUpdateScore(addScore);
-    };
 
-    localStorage.setItem('score', score);
+    if (innerText === questions[questionNumber].correct_answer) {
+      const addScore = baseScore + (timer * difficultyMultiplier);
+      toUpdateScore(addScore, assertions);
+    }
+
     clearIntervalTimer();
   }
 
@@ -81,7 +92,7 @@ class Game extends React.Component {
   }
 
   stopCreatingCorrectAnswer() {
-    this.setState({ generatedAnswer: true })
+    this.setState({ generatedAnswer: true });
   }
 
   chooseNextQuestion() {
@@ -123,7 +134,7 @@ class Game extends React.Component {
     }
 
     return (
-      <div onClick={ handleScore }>
+      <div role="button" onClick={ handleScore } onKeyUp={handleScore}>
         {
           answers.map((answer, index) => {
             if (answer === questions[questionNumber].correct_answer) {
@@ -186,10 +197,10 @@ class Game extends React.Component {
       <div>
         <div>
           <Header />
-        <div>
-          Tempo:
-          { timer }
-        </div>
+          <div>
+            Tempo:
+            { timer }
+          </div>
         </div>
         { renderQuestions() }
         { renderAnswers() }
@@ -204,6 +215,7 @@ const mapStateToProps = (state) => ({
   difficulty: state.game.difficulty,
   timer: state.game.timer,
   score: state.game.timer,
+  assertions: state.game.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -220,6 +232,7 @@ Game.propTypes = {
   difficulty: PropTypes.string.isRequired,
   timer: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

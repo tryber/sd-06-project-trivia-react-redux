@@ -6,6 +6,7 @@ export const RENDER_TIME = 'RENDER_TIME';
 export const RESET_TIME = 'RESET_TIME';
 
 export function getLogin(name, email) {
+  localStorage.setItem('state', { player: { name, gravatarEmail: email } });
   return {
     type: LOGIN,
     name,
@@ -23,9 +24,10 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const updateScore = (score) => ({
+export const updateScore = (score, assertions) => ({
   type: UPDATE_SCORE,
   score,
+  assertions,
 });
 
 export const renderTime = () => ({
