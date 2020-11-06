@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Timer from './Timer';
 import './Questions.css';
 import NextButton from './NextButton';
+import { reqQuestions } from '../services';
+import { getQuestions } from '../actions';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
@@ -13,7 +16,6 @@ class Questions extends Component {
     this.addClass = this.addClass.bind(this);
 
     this.state = {
-      questions: [],
       loading: true,
       checked: false,
       disable: false,
@@ -27,22 +29,22 @@ class Questions extends Component {
   }
 
   async fetchAPIQuestions() {
+    const { handleApi } = this.props;
     const tokenStorage = localStorage.getItem('token');
     const token = JSON.parse(tokenStorage);
-    const apiQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const responseQuestions = await apiQuestions.json();
+    const apiQuestions = await reqQuestions(token);
     const limite = 3;
-    const questionsAPI = responseQuestions.results.map((el) => (
+    const questionsAPI = apiQuestions.results.map((el) => (
       {
         ...el, answers: [...el.incorrect_answers, el.correct_answer],
       })); // colocando um array no fim de cada 'question' para randomizar as respostas
-    if (responseQuestions.response_code === limite) {
+    if (apiQuestions.response_code === limite) {
       localStorage.removeItem('token');
       const { history } = this.props;
       history.push('/');
     } else {
+      handleApi(questionsAPI);
       this.setState({
-        questions: questionsAPI,
         loading: false,
       });
     }
@@ -59,7 +61,8 @@ class Questions extends Component {
   }
 
   render() {
-    const { questions, loading, checked, disable } = this.state;
+    const { loading, checked, disable } = this.state;
+    const { questions } = this.props;
     const randomNumber = 0.5;
     const nextButton = <NextButton />;
     const renderNextButton = checked ? nextButton : null;
@@ -70,10 +73,10 @@ class Questions extends Component {
 
     return (
       <div>
-        <p data-testid="question-category">{questions[1].category}</p>
-        <p data-testid="question-text">{questions[1].question}</p>
-        {questions[1].answers.map((answer, index) => {
-          if (answer === questions[1].correct_answer) {
+        <p data-testid="question-category">{questions[0].category}</p>
+        <p data-testid="question-text">{questions[0].question}</p>
+        {questions[0].answers.map((answer, index) => {
+          if (answer === questions[0].correct_answer) {
             return (
               <button
                 type="button"
@@ -109,6 +112,20 @@ class Questions extends Component {
 
 Questions.propTypes = {
   history: propTypes.shape({ push: propTypes.func }).isRequired,
+  questions: propTypes.arrayOf(propTypes.object).isRequired,
+  handleApi: propTypes.func.isRequired,
 };
 
-export default Questions;
+const mapStateToProps = (state) => (
+  {
+    questions: state.questions,
+  }
+);
+
+const mapDispatchToProps = (dispatch) => (
+  {
+    handleApi: (state) => dispatch(getQuestions(state)),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
