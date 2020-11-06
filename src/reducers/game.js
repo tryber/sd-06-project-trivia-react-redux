@@ -1,8 +1,9 @@
-import { GET_SCORE, ADD_QUESTIONS } from '../actions';
+import { GET_SCORE, ADD_QUESTIONS, RENDER_TIME } from '../actions';
 
 const INITIAL_STATE = {
   score: 0,
   questions: [],
+  timer: 30,
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,8 @@ const game = (state = INITIAL_STATE, action) => {
       ...state,
       score: action.score,
     };
+  case RENDER_TIME:
+    return { ...state, timer: state.timer -1 }
   default:
     return state;
   }
