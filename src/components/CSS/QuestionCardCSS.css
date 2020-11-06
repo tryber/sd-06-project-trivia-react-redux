@@ -1,0 +1,34 @@
+.question-card {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 70%;
+  border: 3px solid green;
+  padding: 10px;
+}
+.category {
+  margin: 20px;
+  display: table-row;
+}
+.category-content {
+  display: flex;
+  text-decoration: underline;
+}
+.question {
+  display: flex;
+  margin: 20px;
+}
+.answers {
+  margin: 10px;
+  border: none;
+}
+.correct-answer {
+  display: flex;
+  border: 3px solid rgb(6, 240, 15);
+  margin: 10px;
+}
+.wrong-answer{
+  display: flex;
+  border: 3px solid rgb(255, 0, 0);
+  margin: 10px;
+}

@@ -2,21 +2,33 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './CSS/HeaderCSS.css';
 
 class Header extends Component {
   render() {
     const { playerName, email } = this.props;
     const hashGravatar = md5(email);
     return (
-      <header>
-        <div>
+      <header className="header">
+        <div className="header-container">
           <img
+            className="gravatar-image"
             data-testid="header-profile-picture"
             src={ `https://www.gravatar.com/avatar/${hashGravatar}` }
             alt="User Gravatar"
           />
-          <h4 data-testid="header-player-name">{ playerName }</h4>
-          <h6 data-testid="header-score">0</h6>
+          <p
+            className="player-name"
+            data-testid="header-player-name"
+          >
+            { playerName }
+          </p>
+          <p
+            className="score"
+            data-testid="header-score"
+          >
+            Score: 0
+          </p>
         </div>
       </header>
     );
