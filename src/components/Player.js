@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './player.css';
+import { prettyDOM } from '@testing-library/react';
 
 const Player = ({ entry, index }) => {
   const { name, picture, score } = entry;
@@ -12,6 +14,11 @@ const Player = ({ entry, index }) => {
       </div>
     </li>
   );
+};
+
+Player.propTypes = {
+  entry: PropTypes.instanceOf(Object),
+  index: PropTypes.number,
 };
 
 export default Player;
