@@ -12,15 +12,17 @@ function ScreenRanking() {
 		const hash = MD5(item.picture).toString();
 		return (
 		<div>
-			<span data-test={`player-name-${index}`}>{item.name}</span>
-			<span data-test={`player-name-${index}`}>{item.score}</span>
-		  <img src={`https://www.gravatar.com/avatar/${hash}`} alt="image" />
+			<span data-test={`player-name-${ index }`}>{ item.name }</span>
+  <span data-test={`player-name-${ index }`}>{ item.score }</span>
+  <img src={`https://www.gravatar.com/avatar/${hash}`} alt="image" />
     </div>);
-  })}
-		<div>
-			<Link to="/"><button data-testid="btn-go-home">VOLTAR AO INÍCIO</button></Link>
-		</div>
-		</div>)
+      })}
+      <div>
+      <Link to="/">
+        <button data-testid="btn-go-home">VOLTAR AO INÍCIO</button>
+      </Link>
+      </div>
+    </div>);
 }
 
 export default ScreenRanking;
