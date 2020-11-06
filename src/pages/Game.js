@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import GameHeader from '../components/GameHeader';
@@ -9,6 +10,7 @@ class Game extends Component {
 
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
     this.randomizeAnswers = this.randomizeAnswers.bind(this);
+    this.nextButton = this.nextButton.bind(this);
 
     this.state = {
       questions: [],
@@ -54,6 +56,17 @@ class Game extends Component {
     return RANDOM_ANSWERS;
   }
 
+  nextButton() {
+    let { index } = this.state;
+    index += 1;
+    const numberFour = 4;
+    if (index > numberFour) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
+    this.setState({ index });
+  }
+
   renderGameBoard() {
     const { questions, index } = this.state;
     const currentQuestion = questions[index];
@@ -89,6 +102,13 @@ class Game extends Component {
                 </button>
             ))}
           </div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextButton }
+          >
+            Próxima
+          </button>
         </section>
       </main>
     );
@@ -104,5 +124,9 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  history: PropTypes.func.isRequired,
+};
 
 export default Game;
