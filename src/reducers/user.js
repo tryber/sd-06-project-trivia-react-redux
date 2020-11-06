@@ -10,6 +10,7 @@ function userReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       name: action.name,
+      email: action.email,
     };
   default:
     return state;

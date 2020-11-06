@@ -47,9 +47,10 @@ export function receiveHash(hash) {
 
 export const PLAYER_NAME = 'PLAYER_NAME';
 
-export function playerName(name) {
+export function playerName(name, email) {
   return {
     type: PLAYER_NAME,
     name,
+    email,
   };
 }

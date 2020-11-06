@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { MD5 } from 'crypto-js/md5';
+// import { MD5 } from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 
 export class FeedbackHeader extends Component {
@@ -22,8 +22,8 @@ export class FeedbackHeader extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.userReducer.name,
-  hash: MD5(state.user.player.gravatarEmail).toString(),
+  name: state.name,
+  hash: state.hash,
   score: state.user.player.score,
 });
 

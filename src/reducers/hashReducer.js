@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 const hashReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case RECEIVE_HASH:
-    return { ...state, hash: action.hash, isFetching: f };
+    return { ...state, hash: action.hash, isFetching: true };
   default:
     return state;
   }

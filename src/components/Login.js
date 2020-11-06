@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CryptoJs from 'crypto-js';
 // import { Redirect } from 'react-router-dom';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchApiToken } from '../actions';
+import { fetchApiToken, playerName, receiveHash } from '../actions';
 import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
@@ -19,28 +20,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // verifyName(e) {
-  //   const name = e.target.value;
-  //   if (name.length > 0) {
-  //     this.setState({
-  //       invalidName: false,
-  //     });
-  //   }
-  // }
-
-  // verifyEmail(e) {
-  //   const email = e.target.value;
-  //   if (email.length > 0) {
-  //     this.setState({
-  //       invalidEmail: false,
-  //     });
-  //   }
-  // }
-
-  // verifyEmailAndName(e) {
-  //   const { invalidEmail, invalidName } = this.state;
-  //   if
-  // }
   async handleClick() {
     // const { name, email } = this.state;
     const { getToken } = this.props;
@@ -49,9 +28,13 @@ class Login extends React.Component {
     const { token } = data;
     localStorage.setItem('token', token);
     console.log(token);
-    // this.setState({
-    //   redirect: true,
-    // });
+
+    const { name, email } = this.state;
+    const { infoUser, hashGravatar } = this.props;
+    const hash = CryptoJs.MD5(email).toString();
+    console.log(hash);
+    infoUser(name, email);
+    hashGravatar(hash);
   }
 
   render() {
@@ -97,7 +80,9 @@ class Login extends React.Component {
 }
 
 const mapsDispatchToProps = (dispatch) => ({
-  getToken: () => dispatch(fetchApiToken(e)),
+  getToken: () => dispatch(fetchApiToken()),
+  infoUser: (name, email) => dispatch(playerName(name, email)),
+  hashGravatar: (hash) => dispatch(receiveHash(hash)),
 });
 
 Login.propTypes = {
