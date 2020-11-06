@@ -2,6 +2,7 @@ import { PLAYER_NAME } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
+  email: '',
 };
 
 function userReducer(state = INITIAL_STATE, action) {
@@ -10,6 +11,7 @@ function userReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       name: action.name,
+      email: action.email,
     };
   default:
     return state;

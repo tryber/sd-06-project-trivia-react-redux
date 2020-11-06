@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
 import ScreenConfig from './components/ScreenConfig';
-import ScreenGame from './pages/ScreenGame';
+import ScreenGame from './components/ScreenGame';
 
 export default function App() {
   return (
