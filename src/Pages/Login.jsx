@@ -70,7 +70,7 @@ class Login extends React.Component {
     const { buttonDisable } = this.state;
     return (
       <div className="login-box">
-        <audio src={ music } autoPlay loop></audio>
+        {/* <audio src={ music } autoPlay loop></audio> */}
         <h1>Login</h1>
         <div className="textbox">
           <i class="fas fa-user"></i>
