@@ -5,20 +5,41 @@ import PropTypes from 'prop-types';
 import Header from '../components/header';
 
 class Game extends Component {
-  // constructor() {
-  //   super();
+  constructor() {
+    super();
 
-  //   this.state = {
-  //   };
-  // }
+    this.state = {
+      respondida: false,
+      index: 0,
+      results: [],
+    };
+
+    // this.setQuestion = this.setQuestion.bind(this);
+  }
 
   componentDidMount() {
     const { info } = this.props;
     localStorage.setItem('token', info.token);
+    // this.setQuestion();
   }
+
+  // setQuestion() {
+  //   const { isFetching, APIQuestions } = this.props;
+  //   const { results } = this.state;
+  //   return (
+  //     !isFetching
+  //       ? this.setState({
+  //         results: [...APIQuestions],
+  //       })
+  //       : results
+  //   );
+  // }
 
   render() {
     const { isFetching, APIQuestions } = this.props;
+    const { results, index } = this.state;
+    const questionArray = [];
+    const random = 0.5;
     return (
       <section className="game-container">
         <section className="game-header">
@@ -26,19 +47,20 @@ class Game extends Component {
         </section>
         <section className="game-question">
           <section className="game-category">
-            { isFetching
+            {isFetching
               ? <p>Carregando...</p>
               : (
-                <section className="game-answers">
-                  {APIQuestions[0].category}
-                </section>)}
+                <h3 data-testid="question-category">
+                  {APIQuestions[index].category}
+                </h3>
+              )}
           </section>
           <section className="game-text">
             { isFetching
               ? <p>Carregando...</p>
               : (
-                <section className="game-answers">
-                  {APIQuestions[0].question}
+                <section data-testid="question-text">
+                  {APIQuestions[index].question}
                 </section>)}
           </section>
         </section>
@@ -46,7 +68,34 @@ class Game extends Component {
           ? <p>Carregando...</p>
           : (
             <section className="game-answers">
-              {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)}
+
+              {
+                APIQuestions[index]
+                  .incorrect_answers.concat(APIQuestions[index].correct_answer)
+                  .map((question, i) => (
+                    <button
+                      data-testid={
+                        APIQuestions[index].correct_answer === question
+                          ? 'correct-answer'
+                          : `wrong-answer-${i}`
+                      }
+                      key={ i }
+                      type="button"
+                    >
+                      {question}
+                    </button>
+                  ))
+                  .sort(() => Math.random() - random)
+
+              }
+              {/* {
+                questionArray.push(...APIQuestions[index].incorrect_answers,
+                  APIQuestions[index].correct_answer)
+              }
+              {
+                questionArray.map
+              } */}
+              {/* {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)} */}
             </section>)}
       </section>
     );
