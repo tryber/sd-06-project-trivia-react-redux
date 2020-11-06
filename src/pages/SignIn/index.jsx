@@ -74,7 +74,7 @@ class SignIn extends React.Component {
             Jogar
           </button>
         </form>
-        <Link to="/settings">Configurações</Link>
+        <Link to="/settings" data-testid="btn-settings">Configurações</Link>
       </div>
     );
   }

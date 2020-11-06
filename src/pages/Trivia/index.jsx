@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from './Components/Header';
+
+import Header from '../../components/Header';
+
 import { updateScore } from '../../redux/actions';
 
 import './styles.css';
@@ -170,6 +172,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
 Trivia.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
     answers: PropTypes.arrayOf(PropTypes.shape({
       answer: PropTypes.string.isRequired,
@@ -179,4 +182,14 @@ Trivia.propTypes = {
       PropTypes.string,
     ).isRequired,
   })).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  name: PropTypes.string.isRequired,
+
+  userEmail: PropTypes.string.isRequired,
+
+  setScore: PropTypes.func.isRequired,
 };
