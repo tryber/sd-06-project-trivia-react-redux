@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { updateScore } from '../actions';
-import Timer from '../components/Timer';
+import { updateScore, resetTimer, renderTime } from '../actions';
 import '../css/Game.css';
 
 class Game extends React.Component {
@@ -14,6 +13,7 @@ class Game extends React.Component {
       questionNumber: 0,
       answered: false,
       timer: false,
+      generatedAnswer: false,
     };
 
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -22,47 +22,78 @@ class Game extends React.Component {
     this.chooseAnswer = this.chooseAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
     this.chooseNextQuestion = this.chooseNextQuestion.bind(this);
-    this.stateTimer = this.stateTimer.bind(this);
+    this.createInterval = this.createInterval.bind(this);
+    this.clearIntervalTimer = this.clearIntervalTimer.bind(this);
+    this.stopCreatingCorrectAnswer = this.stopCreatingCorrectAnswer.bind(this);
   }
 
-  handleScore({ target }) {
-    const { difficulty, toUpdateScore, timer, score } = this.props;
+  componentDidMount() {
+    const { createInterval } = this;
+    createInterval();
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.props;
+    if (timer === 0) {
+      this.clearInterval(this.interval);
+    }
+  }
+
+  createInterval() {
+    const { timeController } = this.props;
+    const oneSec = 1000;
+    this.setState({ interval: setInterval(() => timeController(), oneSec) });
+  }
+
+  clearIntervalTimer() {
+    const { interval } = this.state;
+    clearInterval(interval);
+  }
+
+  handleScore({ target: { innerText } }) {
+    const { difficulty, toUpdateScore, timer, score, questions } = this.props;
+    const { clearIntervalTimer } = this;
+    const { questionNumber } = this.state;
+
     let difficultyMultiplier = 0;
 
     switch (difficulty) {
     case 'easy':
       difficultyMultiplier = 1;
+      break;
     case 'hard':
       difficultyMultiplier = 3;
+      break;
     default:
       difficultyMultiplier = 2;
     }
- 
-    if (target.className === 'correct-answer') {
+    if (innerText === questions[questionNumber].correct_answer) {
       const addScore = 10 + (timer * difficultyMultiplier);
       toUpdateScore(addScore);
-    }
+    };
 
     localStorage.setItem('score', score);
-  }
-
-  componentDidMount() {
-    const maxTime = 30000;
-    setTimeout(() => this.stateTimer(), maxTime);
-  }
-
-  stateTimer() {
-    this.setState({ answered: true, timer: true });
+    clearIntervalTimer();
   }
 
   chooseAnswer() {
     this.setState({ answered: true });
   }
 
+  stopCreatingCorrectAnswer() {
+    this.setState({ generatedAnswer: true })
+  }
+
   chooseNextQuestion() {
+    const { createInterval, clearIntervalTimer } = this;
+    const { toResetTimer } = this.props;
+    toResetTimer();
+    clearIntervalTimer();
+    createInterval();
     this.setState((prevState) => ({
       questionNumber: prevState.questionNumber + 1,
       answered: false,
+      generatedAnswer: false,
     }));
   }
 
@@ -78,20 +109,21 @@ class Game extends React.Component {
   }
 
   renderAnswers() {
-    const { questionNumber, answered, timer } = this.state;
-    const { chooseAnswer } = this;
-    const { questions } = this.props;
+    const { questionNumber, answered, generatedAnswer } = this.state;
+    const { chooseAnswer, stopCreatingCorrectAnswer, handleScore } = this;
+    const { questions, timer } = this.props;
     const correctAnswerPosition = Math
       .floor(Math
         .random() * questions[questionNumber].incorrect_answers.length + 1);
     const answers = questions[questionNumber].incorrect_answers;
 
-    if (!answered) {
+    if (!generatedAnswer) {
       answers.splice(correctAnswerPosition, 0, questions[questionNumber].correct_answer);
+      stopCreatingCorrectAnswer();
     }
 
     return (
-      <div>
+      <div onClick={ handleScore }>
         {
           answers.map((answer, index) => {
             if (answer === questions[questionNumber].correct_answer) {
@@ -101,8 +133,9 @@ class Game extends React.Component {
                   type="button"
                   onClick={ chooseAnswer }
                   data-testid="correct-answer"
+                  name="correct"
                   key={ index }
-                  disabled={ timer }
+                  disabled={ (timer === 0 || answered) }
                 >
                   { answer }
                 </button>
@@ -114,8 +147,9 @@ class Game extends React.Component {
                 type="button"
                 onClick={ chooseAnswer }
                 data-testid={ `wrong-answer-${index}` }
+                name="wrong"
                 key={ index }
-                disabled={ timer }
+                disabled={ (timer === 0 || answered) }
               >
                 { answer }
               </button>
@@ -146,12 +180,16 @@ class Game extends React.Component {
 
   render() {
     const { renderAnswers, renderQuestions, renderNext } = this;
+    const { timer } = this.props;
 
     return (
       <div>
         <div>
           <Header />
-          <Timer />
+        <div>
+          Tempo:
+          { timer }
+        </div>
         </div>
         { renderQuestions() }
         { renderAnswers() }
@@ -170,11 +208,15 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toUpdateScore: (score) => dispatch(updateScore(score)),
+  toResetTimer: () => dispatch(resetTimer()),
+  timeController: () => dispatch(renderTime()),
 });
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   toUpdateScore: PropTypes.func.isRequired,
+  toResetTimer: PropTypes.func.isRequired,
+  timeController: PropTypes.func.isRequired,
   difficulty: PropTypes.string.isRequired,
   timer: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
