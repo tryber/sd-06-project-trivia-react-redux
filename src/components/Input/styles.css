@@ -1,0 +1,40 @@
+.input-container {
+  width: 100%;
+  padding: 0 12px;
+  background-color: white;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid white;
+
+  display: flex;
+  align-items: center;
+}
+
+.input-container svg {
+  color: black;
+  margin-right: 8px;
+
+  transition: color 0.2s;
+}
+
+.input-container.has-text svg {
+  color: rgb(54, 193, 212);
+}
+
+.input-container + div {
+  margin-top: 12px;
+}
+
+.input-container input {
+  width: 100%;
+  border: none;
+  outline: none;
+  height: 100%;
+  border-radius: 5px;
+
+  padding: 0 8px;
+}
+
+.input-container input::placeholder {
+  color: rgb(75, 75, 75);
+}
