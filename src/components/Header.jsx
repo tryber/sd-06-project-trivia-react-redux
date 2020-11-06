@@ -6,6 +6,7 @@ import md5 from 'crypto-js/md5';
 class Header extends React.Component {
   render() {
     const { nome, email } = this.props;
+    // referência: thread Isabella Joviano - 05/11/20
     const avatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`
     return (
         <header>
