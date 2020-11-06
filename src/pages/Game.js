@@ -153,7 +153,11 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                <button className="next" type="button">
+                <button
+                  className="next"
+                  type="button"
+                  data-testid="btn-next"
+                >
                   <span>Proxima</span>
                 </button>
               </div>
