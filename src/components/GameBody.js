@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { thunkQuestions } from '../actions';
+import './gameBody.css';
 
 class GameBody extends React.Component {
   constructor() {
