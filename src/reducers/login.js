@@ -5,7 +5,6 @@ const initialState = {
     user: '',
     email: '',
   },
-  token: '',
 };
 
 export default function (state = initialState, action) {
@@ -18,7 +17,6 @@ export default function (state = initialState, action) {
         user: action.user,
         email: action.email,
       },
-      token: action.token,
     };
   default:
     return state;

@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getSession } from '../services/api';
 
 import { fetchToken } from '../actions';
 
@@ -12,9 +13,11 @@ class Login extends React.Component {
       email: '',
       user: '',
       disabled: true,
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.inputValidate = this.inputValidate.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   handleChange({ target }) {
@@ -33,9 +36,21 @@ class Login extends React.Component {
     return this.setState({ disabled: true });
   }
 
+  async handleRedirect() {
+    await getSession()
+      .then((json) => json.token)
+      .then((token) => localStorage.setItem('token', token));
+    const { history } = this.props;
+    history.push('/game');
+    return <Redirect to="/game" />;
+  }
+
   render() {
-    const { disabled, user, email } = this.state;
+    const { disabled, user, email, redirect } = this.state;
     const { infoSave } = this.props;
+    if (redirect === true) {
+      this.handleRedirect();
+    }
     return (
       <div>
         <label htmlFor="user">
@@ -58,16 +73,14 @@ class Login extends React.Component {
           />
         </label>
         <br />
-        <Link to="/game">
-          <button
-            disabled={ disabled }
-            type="button"
-            data-testid="btn-play"
-            onClick={ () => infoSave(user, email) }
-          >
-            Entrar
-          </button>
-        </Link>
+        <button
+          disabled={ disabled }
+          type="button"
+          data-testid="btn-play"
+          onClick={ () => infoSave(user, email) && this.setState({ redirect: true }) }
+        >
+          Entrar
+        </button>
         <br />
         <Link to="/settings">
           <button
@@ -88,7 +101,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  infoSave: PropTypes.func.isRequired,
+  infoSave: propTypes.func.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
