@@ -11,6 +11,7 @@ export default function Routes() {
       <Route path="/" exact component={ SignIn } />
       <Route path="/trivia" component={ Trivia } />
       <Route path="/settings" component={ Settings } />
+      <Route path="/results" component={ Settings } />
     </Switch>
   );
 }

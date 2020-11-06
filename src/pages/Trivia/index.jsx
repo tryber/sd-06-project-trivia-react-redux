@@ -12,12 +12,10 @@ class Trivia extends React.Component {
 
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.timerOut = this.timerOut.bind(this);
-
-    const { questions } = this.props;
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
 
     this.state = {
       currentQuestion: 0,
-      lastQuestion: questions.length - 1,
       answered: false,
       timer: 30,
     };
@@ -65,11 +63,26 @@ class Trivia extends React.Component {
     }
   }
 
+  handleNextQuestion() {
+    const { currentQuestion } = this.state;
+    const { history, questions } = this.props;
+
+    if (questions.length - 1 === currentQuestion) {
+      history.push('/results');
+    } else {
+      this.setState({
+        currentQuestion: currentQuestion + 1,
+        answered: false,
+        timer: 30,
+      }, () => {
+        this.timerOut();
+      });
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { currentQuestion, lastQuestion, answered, timer } = this.state;
-
-    console.log(lastQuestion);
+    const { currentQuestion, answered, timer } = this.state;
 
     if (!questions[currentQuestion]) {
       return <div>Loading</div>;
@@ -119,6 +132,15 @@ class Trivia extends React.Component {
               );
             })}
           </div>
+          { answered && (
+            <button
+              onClick={ this.handleNextQuestion }
+              type="button"
+              data-testid="btn-next"
+            >
+                Proxima
+            </button>
+          )}
         </div>
       </div>
     );
