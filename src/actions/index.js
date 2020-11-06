@@ -4,6 +4,7 @@ export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const USER_INFO = 'USER_INFO';
 export const USER_SCORE = 'USER_SCORE';
 export const USER_RANKING = 'USER_RANKING';
+export const QUESTION_LIST = 'QUESTION_LIST';
 
 export const tokenRequest = (token) => ({
   type: TOKEN_REQUEST,
@@ -25,4 +26,9 @@ export const userScore = (score, assertions) => ({
 export const userRanking = (ranking) => ({
   type: USER_RANKING,
   ranking,
+});
+
+export const requestQuestions = (questions) => ({
+  type: QUESTION_LIST,
+  questions,
 });
