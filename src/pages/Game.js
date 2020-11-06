@@ -156,6 +156,7 @@ class Game extends Component {
 
 Game.propTypes = {
   history: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
