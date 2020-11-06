@@ -8,46 +8,54 @@ class GameBody extends React.Component {
     super();
     this.state = {
       loading: true,
+      category: '',
+      index: 0,
     }
-    //this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
-  // quando chegar nessa tela, preciso dar um loading e depois torná-lo falso, assim que chamar a api de questões.
-  // componentDidMount() {
-  //   this.fetchApiQuestions();
-  // }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getQuestions } = this.props;
-    getQuestions();
+    await getQuestions();
+    const { questions } = this.props;
+    const { index } = this.state;
     this.setState({
       loading: false,
+      category: questions[index].category,
     });
   }
-  // <Loading/>
+
+  handleNext() {
+    const { questions } = this.props;
+    let { index } = this.state;
+    index += 1;
+    if(index < questions.length) {
+      this.setState({
+        index,
+        category: questions[index].category,
+      })
+    }
+  }
+
   render() {
-    const { loading } = this.state;
+    const { loading, category } = this.state;
     if (loading) {
       return <Loading/>
     }
     return (
       <div>
-        <div>
-          <section id="questions"/>
-          <section id="answer"/>
-        </div>
-        <div>
-          <time></time>
-          <button
-            // OnClick={ fetchApiQuestions() }
-          >next</button>
-        </div>
+        <p data-testid="question-category">{ category }</p>
+        <button
+          onClick={ () => this.handleNext() }
+        >
+          Next
+        </button>
       </div>
     )
-  }
-}
+  }}
 
 const mapStateToProps = (state) => ({
-  questions: state.questions,
+  questions: state.questionReducer.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -60,3 +68,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
 // data-testid="question-text"
 // data-testid="correct-answer"
 // data-testid="wrong-answer-${index}".
+
