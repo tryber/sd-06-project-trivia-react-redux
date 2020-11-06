@@ -5,6 +5,7 @@ import LoginButton from '../Components/LoginButton';
 import logo from '../trivia.png';
 import ButtonSettings from '../Components/ButtonSettings';
 import { responseToken } from '../Action/actionToken';
+import { playerLogin } from '../Action/actionLogin';
 
 class Login extends Component {
   constructor(props) {
@@ -28,8 +29,10 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history, requestToken } = this.props;
+    const { history, requestToken, loginSucess } = this.props;
+    const { name, email } = this.state;
     await requestToken();
+    loginSucess(name, email);
     history.push('/game');
   }
 
@@ -95,6 +98,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   requestToken: () => dispatch(responseToken()),
+  loginSucess: (name, email) => dispatch(playerLogin(name, email)),
 });
 
 const mapStateToProps = (state) => ({
