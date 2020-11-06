@@ -15,7 +15,10 @@ const composeWithDevTools = (
 
 const INITIAL_STATE = {
   userInformation: {
-    token: loadState(),
+    token: loadState('token'),
+  },
+  questionsInformation: {
+    score: loadState('score'),
   },
 };
 
@@ -30,6 +33,7 @@ const store = createStore(
 store.subscribe(() => {
   console.log(store.getState());
   saveState(store.getState().userInformation.token, 'token');
+  saveState(store.getState().questionsInformation.score, 'score');
 });
 
 export default store;

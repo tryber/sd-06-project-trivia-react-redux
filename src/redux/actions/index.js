@@ -22,6 +22,14 @@ export const user = (login) => ({
   },
 });
 
+export const SCORE = 'SCORE';
+export const questionScore = (score) => ({
+  type: SCORE,
+  payload: {
+    score,
+  },
+});
+
 // function fetchToken() {
 //   return (dispatch) => {
 //     fetchAPI()
