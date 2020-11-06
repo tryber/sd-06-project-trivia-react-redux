@@ -31,5 +31,6 @@ function ScreenRanking() {
     </div>
   );
 }
+// teste
 
 export default ScreenRanking;
