@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import Timer from './Timer';
 import './Questions.css';
+import NextButton from './NextButton';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
@@ -60,6 +61,8 @@ class Questions extends Component {
   render() {
     const { questions, loading, checked, disable } = this.state;
     const randomNumber = 0.5;
+    const nextButton = <NextButton />;
+    const renderNextButton = checked ? nextButton : null;
 
     if (loading) {
       return <h1>Carregando...</h1>;
@@ -96,6 +99,9 @@ class Questions extends Component {
             </button>);
         }).sort(() => Math.random() - randomNumber)}
         <Timer />
+        <div>
+          {renderNextButton}
+        </div>
       </div>
     );
   }
