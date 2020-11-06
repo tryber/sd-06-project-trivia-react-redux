@@ -39,7 +39,6 @@ class Game extends React.Component {
   renderQuestions() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
-    console.log(questions)
     if (questions[questionNumber] === undefined) return null;
     return (
       <div>
