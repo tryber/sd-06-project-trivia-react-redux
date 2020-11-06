@@ -3,6 +3,12 @@ import { fetchTokenApi, fetchQuestionsApi } from '../services/fetchApi';
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const QUESTIONS = 'QUESTIONS';
+export const GRAVATAR = 'GRAVATAR';
+
+export const gravatar = (gravatarInfos) => ({
+  type: GRAVATAR,
+  payload: gravatarInfos,
+});
 
 export const userLogin = (userInfo) => ({
   type: LOGIN,
@@ -47,5 +53,3 @@ export function thunkQuestions() {
   )
 }
 
-//perái to tentando uma solução pensando, pq não deu certo o q pensei, tu pensou em algo?
-// quando puder me liga

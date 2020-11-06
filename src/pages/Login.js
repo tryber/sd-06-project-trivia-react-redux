@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userLogin, thunkToken } from '../actions';
+import { userLogin, thunkToken, gravatar } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.gravatarTransform = this.gravatarTransform.bind(this);
     this.state = {
       name: '',
       email: '',
@@ -30,13 +32,21 @@ class Login extends React.Component {
     } else {
       this.setState({ disabled: true });
     }
-    // this.setState({ email: inputEmail, name: inputName });
+  }
+
+  gravatarTransform() {
+    const { gravatarData } = this.props;
+    const { email } = this.state;
+    const hash = md5(email);
+    const linkGravatar = `https://www.gravatar.com/avatar/${hash}`;
+    gravatarData(linkGravatar);
   }
 
   handleClick() {
     const { fetchToken, saveLogin } = this.props;
     fetchToken();
     saveLogin(this.state);
+    this.gravatarTransform();
   }
 
   render() {
@@ -75,6 +85,14 @@ class Login extends React.Component {
               Jogar
             </button>
           </Link>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
         </form>
       </section>
     );
@@ -82,6 +100,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  gravatarData: (hash) => dispatch(gravatar(hash)),
   fetchToken: () => dispatch(thunkToken()),
   saveLogin: (info) => dispatch(userLogin(info)),
 });
@@ -89,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   fetchToken: PropTypes.func.isRequired,
   saveLogin: PropTypes.func.isRequired,
+  gravatarData: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
