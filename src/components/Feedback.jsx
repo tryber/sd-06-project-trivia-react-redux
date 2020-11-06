@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Feedback extends Component {
   constructor() {
@@ -35,6 +36,14 @@ class Feedback extends Component {
         >
           Jogar Novamente
         </button>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </header>
     );
   }
