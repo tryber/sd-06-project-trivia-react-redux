@@ -2,6 +2,7 @@ export const LOGIN = 'LOGIN';
 export const GET_SCORE = 'GET_SCORE';
 export const UPDATE_PLAYER_TOKEN = 'UPDATE_PLAYER_TOKEN';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export function getLogin(name, email) {
   return {
@@ -26,6 +27,11 @@ export const updatePlayerToken = (token) => ({
 export const addQuestions = (questions) => ({
   type: ADD_QUESTIONS,
   questions,
+});
+
+export const updateScore = (score) => ({
+  type: UPDATE_SCORE,
+  score,
 });
 
 export const getToken = () => async (dispatch) => {

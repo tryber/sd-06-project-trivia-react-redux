@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import { updateScore } from '../actions';
 import '../css/Game.css';
 
 class Game extends React.Component {
@@ -16,6 +17,28 @@ class Game extends React.Component {
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
+    this.handleScore = this.handleScore.bind(this);
+  }
+
+  handleScore({ target }) {
+    const { difficulty, toUpdateScore, timer, score } = this.props;
+    let difficultyMultiplier = 0;
+
+    switch (difficulty) {
+    case 'easy':
+      difficultyMultiplier = 1;
+    case 'hard':
+      difficultyMultiplier = 3;
+    default:
+      difficultyMultiplier = 2;
+    }
+ 
+    if (target.className === 'correct-answer') {
+      const addScore = 10 + (timer * difficultyMultiplier);
+      toUpdateScore(addScore);
+    }
+
+    localStorage.setItem('score', score);
   }
 
   chooseAnswer() {
@@ -94,13 +117,24 @@ class Game extends React.Component {
     );
   }
 }
-// fiz refatoração do parâmetro da função para ficar legível
+
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  difficulty: state.game.difficulty,
+  timer: state.game.timer,
+  score: state.game.timer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  toUpdateScore: (score) => dispatch(updateScore(score)),
 });
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  toUpdateScore: PropTypes.func.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  timer: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
