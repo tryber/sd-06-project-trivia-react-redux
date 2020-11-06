@@ -11,11 +11,13 @@ class Game extends Component {
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
     this.randomizeAnswers = this.randomizeAnswers.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.visibleButton = this.visibleButton.bind(this);
 
     this.state = {
       questions: [],
       index: 0,
       isLoading: true,
+      nextButtonClass: 'button-invisible',
     };
   }
 
@@ -67,8 +69,12 @@ class Game extends Component {
     this.setState({ index });
   }
 
+  visibleButton() {
+    this.setState({ nextButtonClass: 'button-visible' });
+  }
+
   renderGameBoard() {
-    const { questions, index } = this.state;
+    const { questions, index, nextButtonClass } = this.state;
     const currentQuestion = questions[index];
     const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
     const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
@@ -91,12 +97,14 @@ class Game extends Component {
                 ? <button
                   type="button"
                   data-testid="correct-answer"
+                  onClick={ this.visibleButton }
                 >
                   {answer.correctAnswer}
                 </button>
                 : <button
                   type="button"
                   data-testid={ `wrong-answer-${answer.index}` }
+                  onClick={ this.visibleButton }
                 >
                   {answer.answer}
                 </button>
@@ -106,6 +114,7 @@ class Game extends Component {
             type="button"
             data-testid="btn-next"
             onClick={ this.nextButton }
+            className={ nextButtonClass }
           >
             Próxima
           </button>
