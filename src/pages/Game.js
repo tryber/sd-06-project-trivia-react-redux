@@ -10,12 +10,20 @@ class Game extends Component {
     this.shufflesAnswer = this.shufflesAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.colorButton = this.colorButton.bind(this);
+    this.timer = this.timer.bind(this);
     this.state = {
       index: 0,
       green: '',
       red: '',
       respondeu: false,
+      time: 30,
+      seiLa: null,
+      disableAnwsers: false,
     };
+  }
+
+  componentDidMount() {
+    this.timer();
   }
 
   colorButton() {
@@ -28,7 +36,7 @@ class Game extends Component {
 
   shufflesAnswer(question) {
     // const { incorrect_answers, correct_answer } = question;
-    const { green, red } = this.state;
+    const { green, red, disableAnwsers } = this.state;
     const allAnswers = question.incorrect_answers.concat(question.correct_answer);
     const sortAnswers = allAnswers.sort();
     let index = 0 - 1;
@@ -41,6 +49,7 @@ class Game extends Component {
             data-testid="correct-answer"
             className={ green }
             onClick={ () => this.colorButton() }
+            disabled={ disableAnwsers }
           >
             {element}
           </button>
@@ -54,6 +63,7 @@ class Game extends Component {
           key={ countoString }
           className={ red }
           onClick={ () => this.colorButton() }
+          disabled={ disableAnwsers }
         >
           {element}
         </button>
@@ -67,12 +77,40 @@ class Game extends Component {
       green: '',
       red: '',
       respondeu: false,
-    }));
+      time: 30,
+      disableAnwsers: false,
+    }), () => {
+      const { seiLa } = this.state;
+      clearInterval(seiLa);
+      this.timer();
+    });
+  }
+
+  timer() {
+    const countTime = 1000;
+    const seiLa = setInterval(() => {
+      this.setState((state) => ({
+        time: state.time - 1,
+      }), () => {
+        const { time } = this.state;
+        if (time <= 0) {
+          console.log('para');
+          this.setState({
+            disableAnwsers: true,
+          });
+          clearInterval(seiLa);
+          this.colorButton();
+        }
+      });
+    }, countTime);
+    this.setState({
+      seiLa,
+    });
   }
 
   render() {
     const { arrayQuestion } = this.props;
-    const { index, respondeu } = this.state;
+    const { index, respondeu, time } = this.state;
     // const { category, question } = arrayQuestion[index];
     if (arrayQuestion.length === 0) {
       return (
@@ -82,8 +120,8 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="question-category">{ arrayQuestion[index].category }</p>
-        <p data-testid="question-text">{ arrayQuestion[index].question }</p>
+        <p data-testid="question-category">{arrayQuestion[index].category}</p>
+        <p data-testid="question-text">{arrayQuestion[index].question}</p>
         {this.shufflesAnswer(arrayQuestion[index])}
         {respondeu && (
           <button
@@ -93,6 +131,7 @@ class Game extends Component {
           >
             Próxima
           </button>)}
+        <span>{ time }</span>
       </div>
     );
   }
@@ -103,7 +142,7 @@ const mapStateToProps = (state) => ({
 });
 
 Game.propTypes = {
-  arrayQuestion: PropTypes.arrayOf().isRequired,
+  arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(Game);
