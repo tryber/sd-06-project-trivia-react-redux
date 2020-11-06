@@ -639,7 +639,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe.only('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
   it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
