@@ -9,7 +9,6 @@ class Header extends Component {
     super(props);
     this.state = {
       score: 0,
-      timer: 30,
     };
   }
 
@@ -17,30 +16,17 @@ class Header extends Component {
     const { dispatchScore } = this.props;
     const { score } = this.state;
     dispatchScore(score);
-    setInterval(() => this.counting(), 1000);
-  }
-
-  counting() {
-    const { timer } = this.state;
-    if (timer <= 30 && timer > 0) {
-      this.setState((prevState) => ({
-        timer: prevState.timer - 1,
-      }));
-    }
   }
 
   render() {
     const { email, name, score } = this.props;
-    const { timer } = this.state;
     const hash = md5(email).toString();
-
     return (
       <div>
         <p data-testid="header-player-name">{name}</p>
-        <p>{timer}</p>
         <img
           data-testid="header-profile-picture"
-          src={`https://www.gravatar.com/avatar/${hash}`}
+          src={ `https://www.gravatar.com/avatar/${hash}` }
           alt="imgProfile"
         />
         <span data-testid="header-score">{score}</span>

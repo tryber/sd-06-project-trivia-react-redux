@@ -1,11 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../css/AnswersButton.css';
 
 class QuestionCard extends Component {
+  constructor() {
+    super();
+    this.state = {
+      correct: false,
+      incorrect: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      correct: 'correct-answer',
+      incorrect: 'wrong-answer',
+    });
+  }
+
   render() {
     const { questions } = this.props;
     const { category, question } = questions[0];
+    const { correct, incorrect } = this.state;
+
     return (
       <div>
         QUESTION CARD
@@ -21,7 +41,6 @@ class QuestionCard extends Component {
             { questions[0].correct_answer }
           </button>
           {questions[0].incorrect_answers.map((answer, index) => (
-            <button data-testid={ `wrong-answer-${index}` } type="button" key={ index }>
               { answer }
             </button>
           ))}

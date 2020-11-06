@@ -6,9 +6,9 @@ const INITIAL_STATE = {
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case QUESTIONS:
-      return { ...state, questions: action.questions };
-    default:
-      return state;
+  case QUESTIONS:
+    return { ...state, questions: action.questions };
+  default:
+    return state;
   }
 }
