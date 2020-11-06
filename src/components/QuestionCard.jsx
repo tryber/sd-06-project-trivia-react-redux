@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Timer } from '.';
 import './CSS/QuestionCardCSS.css';
 
 export default class QuestionCard extends Component {
@@ -8,11 +9,15 @@ export default class QuestionCard extends Component {
 
     this.updateStates = this.updateStates.bind(this);
     this.activateBorders = this.activateBorders.bind(this);
+    this.activateQuestions = this.activateQuestions.bind(this);
+    this.timeUp = this.timeUp.bind(this);
 
     this.state = {
       answers: [],
       updatedStates: false,
       answersBorderActive: false,
+      playing: false,
+      timeIsUp: false,
     };
   }
 
@@ -50,11 +55,19 @@ export default class QuestionCard extends Component {
     });
   }
 
+  activateQuestions() {
+    this.setState({ playing: true });
+  }
+
+  timeUp() {
+    this.setState({ timeIsUp: true });
+  }
+
   render() {
     const {
       question: { category, question, correct_answer: correctAnswer },
     } = this.props;
-    const { answers, updatedStates, answersBorderActive } = this.state;
+    const { answers, updatedStates, answersBorderActive, playing, timeIsUp } = this.state;
 
     if (!updatedStates) {
       return <p>Loading...</p>;
@@ -71,8 +84,18 @@ export default class QuestionCard extends Component {
           <p className="category-title">Category</p>
           <p className="category-content">{category}</p>
         </p>
-        <div className="question-container">
-          <p className="question" data-testid="question-text">{question}</p>
+        <Timer timeUp={ this.timeUp } activateQuestions={ this.activateQuestions } />
+        <div
+          className="question-container"
+          hidden={ !playing }
+        >
+          <p
+            className="question"
+            data-testid="question-text"
+            hidden={ !playing }
+          >
+            { question }
+          </p>
           <div className="answers">
             {answers.map((item, index) => {
               if (index === correctAnswerIdx) {
@@ -82,6 +105,7 @@ export default class QuestionCard extends Component {
                     data-testid="correct-answer"
                     type="button"
                     onClick={ this.activateBorders }
+                    disabled={ timeIsUp }
                   >
                     {correctAnswer}
                   </button>
@@ -95,6 +119,7 @@ export default class QuestionCard extends Component {
                   data-testid={ `wrong-answer-${currentIdx}` }
                   type="button"
                   onClick={ this.activateBorders }
+                  disabled={ timeIsUp }
                 >
                   {item}
                 </button>
