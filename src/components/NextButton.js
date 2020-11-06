@@ -2,8 +2,8 @@ import React from 'react';
 import propTypes from 'prop-types';
 
 class NextButton extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionsAnswer: 0,
     };
