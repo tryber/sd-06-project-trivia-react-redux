@@ -1,59 +1,94 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 class Questions extends React.Component {
-  render() {
-    const { question } = this.props;
-    const arrayButtons = [
-      <button
-        key={ 3 }
-        type="button"
-        data-testid="correct-answer"
-      >
-        { question.correct_answer }
-      </button>,
-    ];
+  constructor() {
+    super();
 
-    question.incorrect_answers.map((incorret, indexIncorret) => (
-      arrayButtons.push(
-        <button
-          type="button"
-          key={ indexIncorret }
-          data-testid={ `wrong-answer-${indexIncorret}` }
-        >
-          { incorret }
-        </button>,
-      )
-    ));
+    this.state = {
+      disable: false,
+      // resposta: '',
+      // dificuldade: '',
+      // tempo: 30,
+      currentQuestion: 0,
+    };
 
-    function shuffle(array) {
-      let currentIndex = array.length;
-      let temporaryValue;
-      let randomIndex;
-      while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  nextQuestion() {
+    this.setState((prev) => (
+      {
+        currentQuestion: prev.currentQuestion + 1,
+        disable: false,
       }
-      return array;
-    }
+    ));
+    const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
+    const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
+    buttonsCorrect.forEach((button) => {
+      button.style.border = '';
+    });
+    buttonsWrong.forEach((button) => {
+      button.style.border = '';
+    });
+  }
 
+  choosed() {
+    // resposta: target.value
+    this.setState({ disable: true });
+    const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
+    const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
+    buttonsCorrect.forEach((button) => {
+      button.style.border = '3px solid rgb(6, 240, 15)';
+    });
+    buttonsWrong.forEach((button) => {
+      button.style.border = '3px solid rgb(255, 0, 0)';
+    });
+  }
+
+  render() {
+    const { currentQuestion, disable } = this.state;
+    const { question } = this.props;
+    if (currentQuestion === question.length) {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <div>
         <h3 data-testid="question-category">
           Categoria:
-          { question.category }
+          { question[currentQuestion].category }
         </h3>
 
         <p data-testid="question-text">
           Pergunta:
-          { question.question }
+          { question[currentQuestion].question }
         </p>
 
         <p>Alternativas:  </p>
-        {shuffle(arrayButtons).map((button) => button) }
+        {question[currentQuestion].respostas.map((resposta, index) => (
+          <button
+            key={ index }
+            type="button"
+            value={ resposta.value }
+            data-testid={ resposta.dataTestid }
+            disabled={ disable }
+            onClick={ (event) => this.choosed(event) }
+          >
+            { resposta.resposta }
+          </button>
+        )) }
+        {
+          (disable
+            && (
+              <button
+                data-testid="btn-next"
+                onClick={ this.nextQuestion }
+                type="button"
+              >
+                Próxima
+              </button>))
+        }
       </div>
     );
   }
