@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import Timer from './Timer';
+import './Questions.css';
 // import { fetchAPIQuestions } from '../services';
 import ReactDOM from 'react-dom';
 import NextButton from './NextButton';
@@ -9,15 +11,21 @@ class Questions extends Component {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
-
+    this.disableButtons = this.disableButtons.bind(this);
+    this.addClass = this.addClass.bind(this);
+    
     this.state = {
       questions: [],
       loading: true,
+      checked: false,
+      disable: false,
     };
   }
 
   componentDidMount() {
+    const TIMES = 30000;
     this.fetchAPIQuestions();
+    setTimeout(() => this.disableButtons(), TIMES);
   }
 
   async fetchAPIQuestions() {
@@ -45,12 +53,21 @@ class Questions extends Component {
   renderNextButton() {
     const nextButton = <NextButton />;
     ReactDOM.render(nextButton, document.getElementById('mae'));
+
+  disableButtons() {
+    this.setState({ disable: true });
+  }
+
+  addClass() {
+    this.setState({
+      checked: true,
+    });
+
   }
 
   render() {
-    const { questions, loading } = this.state;
+    const { questions, loading, checked, disable } = this.state;
     const randomNumber = 0.5;
-
     if (loading) {
       return <h1>Carregando...</h1>;
     }
@@ -66,6 +83,9 @@ class Questions extends Component {
                 data-testid="correct-answer"
                 key={ answer }
                 onClick={ this.renderNextButton }
+                disabled={ disable }
+                onClick={ this.addClass }
+                className={ checked ? 'correctAnswer' : null }
               >
                 {answer}
               </button>);
@@ -76,10 +96,14 @@ class Questions extends Component {
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
               onClick={ this.renderNextButton }
+              disabled={ disable }
+              onClick={ this.addClass }
+              className={ checked ? 'incorrectAnswer' : null }
             >
               {answer}
             </button>);
         }).sort(() => Math.random() - randomNumber)}
+        <Timer />
       </div>
     );
   }
