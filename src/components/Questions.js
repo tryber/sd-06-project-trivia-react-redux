@@ -8,6 +8,8 @@ class Questions extends Component {
   constructor() {
     super();
 
+    this.nextQuestion = this.nextQuestion.bind(this);
+
     this.state = { questionNumber: 0 };
   }
 
@@ -19,14 +21,17 @@ class Questions extends Component {
 
   checkAnswer() {
     const btnArray = document.getElementsByTagName('button');
+    const btnNext = document.getElementById('next');
 
     for (let x = 0; x < btnArray.length; x += 1) {
       if (btnArray[x].id === 'correct') {
         btnArray[x].className = 'correct';
-      } else {
+      } else if (btnArray[x].id !== 'next') {
         btnArray[x].className = 'incorrect';
       }
     }
+
+    btnNext.style.display = 'block';
   }
 
   randomizeAnswers() {
@@ -64,6 +69,7 @@ class Questions extends Component {
       const magicNumber = 5;
       const randomNumber = Math.floor(Math.random() * magicNumber + 1);
       const newArray = [];
+
       if (randomNumber % 2 === 0) {
         newArray.push(answersArray[3], answersArray[2], answersArray[1], answersArray[0]);
       } else {
@@ -73,10 +79,24 @@ class Questions extends Component {
     }
   }
 
+  nextQuestion() {
+    this.setState((prevState) => ({
+      questionNumber: prevState.questionNumber + 1,
+    }), () => {
+      const btnArray = document.getElementsByTagName('button');
+      const btnNext = document.getElementById('next');
+
+      btnNext.style.display = 'none';
+
+      for (let x = 0; x < btnArray.length; x += 1) {
+        btnArray[x].className = '';
+      }
+    });
+  }
+
   render() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
-    this.randomizeAnswers();
 
     return (
       questions === undefined ? <p>Loading...</p> : (
@@ -89,6 +109,17 @@ class Questions extends Component {
           </div>
           <div>
             { this.randomizeAnswers() }
+          </div>
+          <div>
+            <button
+              type="button"
+              data-testid="btn-next"
+              id="next"
+              className="next"
+              onClick={ this.nextQuestion }
+            >
+              Próxima
+            </button>
           </div>
         </div>
       ));
