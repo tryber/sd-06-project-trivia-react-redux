@@ -17,8 +17,10 @@ class LoginButton extends Component {
   }
 
   handleClick() {
-    const { requestToken } = this.props;
+    const { requestToken, history } = this.props;
     requestToken();
+
+    history.push('/play');
   }
 
   render() {
