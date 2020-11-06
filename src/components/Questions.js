@@ -50,7 +50,7 @@ class Questions extends React.Component {
           >
             Categoria:
             <p>
-              {questions[0].category}
+              {questions && questions[0] && questions[0].category}
             </p>
             <br />
           </div>
@@ -61,17 +61,17 @@ class Questions extends React.Component {
             Pergunta:
             <br />
             <div>
-              {questions[0].question}
+              {questions && questions[0] && questions[0].question}
             </div>
           </div>
         </div>
         <div className="gamepage-answer">
-          {questions[0].incorrect_answers.map((result) => (
+          {questions && questions[0] && questions[0].incorrect_answers.map((result, i) => (
             <div key={ result }>
               <button
-                className={ !buttonBorder ? 'none-answer' : 'wrong-answer' }
+                className={ !buttonBorder ? 'none-answer' : 'wrong' }
                 onClick={ this.handleClick }
-                data-testid="wrong-answer-0"
+                data-testid={ `wrong-answer-${i}` }
                 type="button"
                 disabled={ buttonBorder }
               >
@@ -80,13 +80,13 @@ class Questions extends React.Component {
             </div>
           ))}
           <button
-            className={ !buttonBorder ? 'none-answer' : 'correct-answer' }
+            className={ !buttonBorder ? 'none-answer' : 'correct' }
             onClick={ this.handleClick }
             data-testid="correct-answer"
             type="button"
             disabled={ buttonBorder }
           >
-            {questions[0].correct_answer}
+            {questions && questions[0] && questions[0].correct_answer}
           </button>
           <Link to="/feedback">
             <button
