@@ -3,8 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
 import '../App.css';
+import Timer from './Timer';
 
 class BodyGame extends Component {
+  constructor() {
+    super();
+
+    this.disableAnswerButtons = this.disableAnswerButtons.bind(this);
+
+    this.state = {
+      isDisabled: false,
+    };
+  }
+
   componentDidMount() {
     const { questionsFunction, getToken } = this.props;
 
@@ -30,8 +41,13 @@ class BodyGame extends Component {
     });
   }
 
+  disableAnswerButtons() {
+    this.setState({ isDisabled: true });
+  }
+
   render() {
     const { questions } = this.props;
+    const { isDisabled } = this.state;
     return (
       <div className="container">
         {questions.map((question, index) => (
@@ -52,6 +68,7 @@ class BodyGame extends Component {
                   data-testid="correct-answer"
                   name="right-answer"
                   onClick={ this.handleAnswerBorderColor }
+                  disabled={ isDisabled }
                 >
                   {question.correct_answer}
                 </button>
@@ -63,6 +80,7 @@ class BodyGame extends Component {
                     data-testid={ `wrong-answer-${position}` }
                     name="wrong-answer"
                     onClick={ this.handleAnswerBorderColor }
+                    disabled={ isDisabled }
                   >
                     {item}
                   </button>
@@ -71,6 +89,7 @@ class BodyGame extends Component {
             </div>
           </div>
         )).filter((_, index) => index === 0)}
+        <Timer disableAnswerButtons={ this.disableAnswerButtons } />
       </div>
     );
   }
