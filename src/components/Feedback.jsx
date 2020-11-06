@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { history } = this.props;
+    history.push('/');
+  }
+
   render() {
     const { name, score, imagePath, assertions } = this.props;
     const three = 3;
@@ -18,6 +28,13 @@ class Feedback extends Component {
         />
         <p data-testid="header-player-name">{ name }</p>
         <p data-testid="header-score">{ score }</p>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.handleClick }
+        >
+          Jogar Novamente
+        </button>
       </header>
     );
   }
