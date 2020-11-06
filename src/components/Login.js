@@ -97,7 +97,7 @@ class Login extends React.Component {
 }
 
 const mapsDispatchToProps = (dispatch) => ({
-  getToken: () => dispatch(fetchApiToken(e)),
+  getToken: () => dispatch(fetchApiToken()),
 });
 
 Login.propTypes = {
