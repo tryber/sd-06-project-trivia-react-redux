@@ -74,6 +74,7 @@ const mapStateToProps = (state) => ({
 
 Game.propTypes = {
   receivedQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.shape().isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
