@@ -46,8 +46,18 @@ class LoginForm extends React.Component {
 
   handleClick() {
     const { fetchToken, saveData } = this.props;
+    const { name, email } = this.state;
     fetchToken();
     saveData(this.state);
+    const player = {
+      player: {
+        name,
+        assertions: '',
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   render() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addPoints, saveTimeLeft } from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -13,6 +14,26 @@ class Questions extends Component {
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
     this.checkTimer = this.checkTimer.bind(this);
+  }
+
+  componentDidMount() {
+    const { saveTime } = this.props;
+    const startSeconds = 30;
+    let seconds = startSeconds;
+    const interval = 1000;
+    if (seconds > 1) {
+      this.myInterval = setInterval(() => {
+        if (seconds > 0) seconds -= 1;
+        console.log(seconds);
+        // aqui deveria salvar os segundos que faltam
+        saveTime(seconds);
+      }, interval);
+    }
+
+    if (seconds === 0) {
+      // console.log(seconds)
+      clearInterval(this.myInterval);
+    }
   }
 
   changeToNextQuestion() {
@@ -36,13 +57,32 @@ class Questions extends Component {
     return array.sort(() => Math.random() - magic);
   }
 
-  handleAnswerStyle() {
+  checkDifficulty(difficulty) {
+    const THREE = 3;
+    if (difficulty === 'hard') return THREE;
+    if (difficulty === 'medium') return 2;
+    return 1;
+  }
+
+  handleAnswerStyle({ target }, difficulty) {
+    const { addScore, secondsLeft } = this.props;
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
     wrongList.forEach((element) => {
       element.className = 'wrong-question';
     });
     rightQuestion.className = 'right-question';
+
+    // o timer deve receber os segundos que faltam
+    // não está funcionando
+    const TEN = 10;
+    const points = TEN + (secondsLeft * this.checkDifficulty(difficulty));
+    if (target.className === 'right-question') {
+      addScore(points);
+      // salvar no local storage
+      // falta recuperar, atualizar e enviar
+      console.log(JSON.parse(localStorage.getItem('state')));
+    }
   }
 
   checkTimer() {
@@ -56,6 +96,7 @@ class Questions extends Component {
     let answerIndex = initialIndex;
     const timerLimit = 30000;
     setTimeout(this.checkTimer, timerLimit);
+    // this.startCount();
 
     if (gameQuestions) {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
@@ -70,11 +111,12 @@ class Questions extends Component {
           <p data-testid="question-text">{gameQuestions[questionNumber].question}</p>
           {newArr.map((question) => {
             if (question === CORRECT_ANSWER) {
+              const { difficulty } = gameQuestions[questionNumber];
               return (
                 <button
                   type="button"
                   data-testid="correct-answer"
-                  onClick={ this.handleAnswerStyle }
+                  onClick={ (e) => this.handleAnswerStyle(e, difficulty) }
                   className="rquestion"
                   disabled={ timer }
                 >
@@ -103,10 +145,12 @@ class Questions extends Component {
   }
 
   render() {
+    // const { seconds } = this.state;
     return (
       <div>
         {this.handleQuestions()}
         <button type="button" onClick={ this.changeToNextQuestion }>Next Question</button>
+        {/* <p className="timer">{seconds}</p> */}
       </div>
     );
   }
@@ -114,10 +158,19 @@ class Questions extends Component {
 
 const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
+  secondsLeft: state.timer.secondsLeft,
 });
 
-export default connect(mapStateToProps)(Questions);
+const mapDispatchToProps = (dispatch) => ({
+  addScore: (points) => dispatch(addPoints(points)),
+  saveTime: (seconds) => dispatch(saveTimeLeft(seconds)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  saveTime: PropTypes.func.isRequired,
+  addScore: PropTypes.func.isRequired,
+  secondsLeft: PropTypes.number.isRequired,
 };

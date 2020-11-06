@@ -2,6 +2,8 @@ export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const SAVE_PLAYER_DATA = 'SAVE_PLAYER_DATA';
 export const QUESTIONS_SUCCESS = 'QUESTIONS_SUCCESS';
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
+export const SCORE = 'SCORE';
+export const SAVE_TIME_LEFT = 'SAVE_TIME_LEFT';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -37,3 +39,13 @@ export const fetchQuestionsAPI = (endpoint) => async (dispatch) => {
   const data = await response.json();
   dispatch(receiveQuestionsSuccess(data.results));
 };
+
+export const addPoints = (score) => ({
+  type: SCORE,
+  score,
+});
+
+export const saveTimeLeft = (seconds) => ({
+  type: SAVE_TIME_LEFT,
+  seconds,
+});

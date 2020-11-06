@@ -14,9 +14,12 @@ class Game extends React.Component {
 
   render() {
     const { loading } = this.props;
+    if (loading) {
+      return <h2>Loading...</h2>;
+    }
     return (
       <div>
-        { loading ? <h2>Loading...</h2> : <GameHeader /> }
+        <GameHeader />
       </div>
     );
   }
