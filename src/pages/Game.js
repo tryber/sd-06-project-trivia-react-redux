@@ -15,7 +15,9 @@ class Game extends React.Component {
 
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
+    this.renderNext = this.renderNext.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
+    this.chooseNextQuestion = this.chooseNextQuestion.bind(this);
   }
 
   chooseAnswer() {
@@ -80,8 +82,32 @@ class Game extends React.Component {
     );
   }
 
+  renderNext() {
+    const { answered } = this.state;
+    const { chooseNextQuestion } = this;
+    if (answered)
+    return (
+      <div>
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ chooseNextQuestion }
+        >
+          Próxima
+        </button>
+      </div>
+    );
+  }
+
+  chooseNextQuestion() {
+    this.setState((prevState) => ({
+      questionNumber: prevState.questionNumber + 1,
+      answered: false,
+    }));
+  }
+
   render() {
-    const { renderAnswers, renderQuestions } = this;
+    const { renderAnswers, renderQuestions, renderNext } = this;
 
     return (
       <div>
@@ -90,6 +116,7 @@ class Game extends React.Component {
         </div>
         { renderQuestions() }
         { renderAnswers() }
+        { renderNext() }
       </div>
     );
   }
