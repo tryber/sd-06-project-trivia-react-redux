@@ -7,33 +7,32 @@ class Questions extends Component {
     super();
     this.state = {
       questionNumber: 0,
+      disableBTN: false,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
-    this.applyIndexToIncorrectAnswers = this.applyIndexToIncorrectAnswers.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
   }
 
   changeToNextQuestion() {
     const { questionNumber } = this.state;
     const indexLimit = 4;
-    const wrongList = document.querySelectorAll('.wrong-question');
-    const rightQuestion = document.querySelector('.right-question');
 
     this.setState({
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
+      disableBTN: false,
     });
 
-    wrongList.forEach((element) => {
-      element.className = 'wquestion';
-    });
-    rightQuestion.className = 'rquestion';
-  }
+    const wrongList = document.querySelectorAll('.wrong-question');
+      const rightQuestion = document.querySelector('.right-question');
 
-  applyIndexToIncorrectAnswers(index) {
-    index += 1;
-    return index;
+    if (wrongList && rightQuestion) {
+      wrongList.forEach((element) => {
+        element.className = 'wquestion';
+      });
+      rightQuestion.className = 'rquestion';
+    }
   }
 
   shuffle(array) {
@@ -41,18 +40,24 @@ class Questions extends Component {
     return array.sort(() => Math.random() - magic);
   }
 
-  handleAnswerStyle() {
-    const wrongList = document.querySelectorAll('.wquestion');
-    const rightQuestion = document.querySelector('.rquestion');
-    wrongList.forEach((element) => {
-      element.className = 'wrong-question';
-    });
-    rightQuestion.className = 'right-question';
+  handleAnswerStyle({ target }) {
+    if (target.className === 'wquestion' || target.className === 'rquestion') {
+      const wrongList = document.querySelectorAll('.wquestion');
+      const rightQuestion = document.querySelector('.rquestion');
+      wrongList.forEach((element) => {
+        element.className = 'wrong-question';
+      });
+      rightQuestion.className = 'right-question';
+  
+      this.setState({
+        disableBTN: true,
+      });
+    }
   }
 
   handleQuestions() {
     const { gameQuestions } = this.props;
-    const { questionNumber } = this.state;
+    const { questionNumber, disableBTN } = this.state;
     const initialIndex = -1;
     let answerIndex = initialIndex;
 
@@ -77,6 +82,7 @@ class Questions extends Component {
                   onClick={ this.handleAnswerStyle }
                   className="rquestion"
                   key="correct"
+                  disabled={ disableBTN }
                 >
                   {question}
                 </button>
@@ -89,6 +95,7 @@ class Questions extends Component {
                 className="wquestion"
                 onClick={ this.handleAnswerStyle }
                 key={ `wrong${answerIndex}` }
+                disabled={ disableBTN }
               >
                 {question}
               </button>

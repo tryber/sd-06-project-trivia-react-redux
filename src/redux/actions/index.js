@@ -2,6 +2,9 @@ export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const SAVE_PLAYER_DATA = 'SAVE_PLAYER_DATA';
 export const QUESTIONS_SUCCESS = 'QUESTIONS_SUCCESS';
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
+export const TIMER_START = 'TIMER_START';
+export const TIMER_STOP = 'TIMER_STOP';
+export const TIMER_RESET = 'TIMER_RESET';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -37,3 +40,19 @@ export const fetchQuestionsAPI = (endpoint) => async (dispatch) => {
   const data = await response.json();
   dispatch(receiveQuestionsSuccess(data.results));
 };
+
+export const startTimer = (baseTime = 0) => ({
+  type: TIMER_START,
+  baseTime,
+  now: new Date().getTime(),
+});
+
+export const stopTimer = () => ({
+  type: TIMER_STOP,
+  now: new Date().getTime(),
+});
+
+export const timerReset = () => ({
+  type: TIMER_RESET,
+  now: new Date().getTime(),
+});
