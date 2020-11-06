@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import { finishGame } from '../actions';
 
 class GameScreen extends Component {
   constructor() {
@@ -25,6 +26,7 @@ class GameScreen extends Component {
       timer: 30,
       disabled: false,
       click: 0,
+      assertions: 0,
     };
   }
 
@@ -160,10 +162,11 @@ class GameScreen extends Component {
   }
 
   goToFeedback() {
-    const { click } = this.state;
-    const { history } = this.props;
+    const { click, assertions, imageUrl, score } = this.state;
+    const { history, finishGamePlayer } = this.props;
     const four = 4;
     if (click === four) {
+      finishGamePlayer(score, imageUrl, assertions);
       history.push('/feedback');
     }
   }
@@ -233,4 +236,9 @@ const mapStateToProps = (state) => ({
   email: state.player.gravatarEmail,
 });
 
-export default connect(mapStateToProps)(GameScreen);
+const mapDispatchToProps = (dispatch) => ({
+  finishGamePlayer:
+    (score, imagePath, assertions) => dispatch(finishGame(score, imagePath, assertions)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
