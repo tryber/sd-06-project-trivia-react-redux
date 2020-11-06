@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 import '../css/Game.css';
 
 class Game extends React.Component {
@@ -11,13 +12,24 @@ class Game extends React.Component {
     this.state = {
       questionNumber: 0,
       answered: false,
+      timer: false,
     };
 
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.renderNext = this.renderNext.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
+    this.stateTimer = this.stateTimer.bind(this);
     this.chooseNextQuestion = this.chooseNextQuestion.bind(this);
+  }
+
+  componentDidMount() {
+    const maxTime = 30000;
+    setTimeout(() => this.stateTimer(), maxTime);
+  }
+
+  stateTimer() {
+    this.setState({ answered: true, timer: true });
   }
 
   chooseAnswer() {
@@ -43,7 +55,7 @@ class Game extends React.Component {
   }
 
   renderAnswers() {
-    const { questionNumber, answered } = this.state;
+    const { questionNumber, answered, timer } = this.state;
     const { chooseAnswer } = this;
     const { questions } = this.props;
     const correctAnswerPosition = Math
@@ -67,6 +79,7 @@ class Game extends React.Component {
                   onClick={ chooseAnswer }
                   data-testid="correct-answer"
                   key={ index }
+                  disabled={ timer }
                 >
                   { answer }
                 </button>
@@ -79,6 +92,7 @@ class Game extends React.Component {
                 onClick={ chooseAnswer }
                 data-testid={ `wrong-answer-${index}` }
                 key={ index }
+                disabled={ timer }
               >
                 { answer }
               </button>
@@ -114,6 +128,7 @@ class Game extends React.Component {
       <div>
         <div>
           <Header />
+          <Timer />
         </div>
         { renderQuestions() }
         { renderAnswers() }
