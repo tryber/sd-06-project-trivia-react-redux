@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getLogin, getToken } from '../actions';
+import { getLogin, getToken, fetchQuestions } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -45,11 +45,13 @@ class Login extends Component {
     });
   }
 
-  handleClick() {
-    const { getPlayerToken, getPlayerLogin } = this.props;
+  async handleClick() {
+    const { getPlayerToken, getPlayerLogin, getAPIQuestions, history } = this.props;
     const { name, email } = this.state;
     getPlayerToken();
     getPlayerLogin(name, email);
+    await getAPIQuestions();
+    history.push('/game');
   }
 
   render() {
@@ -79,7 +81,7 @@ class Login extends Component {
             data-testid="input-player-name"
           />
         </label>
-        <Link to="/game">
+        {/* <Link to="/game"> */}
           <button
             type="button"
             data-testid="btn-play"
@@ -88,7 +90,7 @@ class Login extends Component {
           >
             Jogar
           </button>
-        </Link>
+        {/* </Link> */}
         <div>
           <Link data-testid="btn-settings" to="/settings">
             Configurações
@@ -102,11 +104,13 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getPlayerToken: () => dispatch(getToken()),
   getPlayerLogin: (name, email) => dispatch(getLogin(name, email)),
+  getAPIQuestions: () => dispatch(fetchQuestions()),
 });
 
 Login.propTypes = {
   getPlayerToken: PropTypes.func.isRequired,
   getPlayerLogin: PropTypes.func.isRequired,
+  getAPIQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

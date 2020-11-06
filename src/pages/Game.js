@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions } from '../actions';
+import { fetchQuestions, updateLoading } from '../actions';
 import Header from '../components/Header';
 import '../css/Game.css';
 
@@ -11,25 +11,17 @@ class Game extends React.Component {
 
     this.state = {
       questionNumber: 0,
-      loading: true,
       answered: false,
     };
 
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
-    this.handleLoading = this.handleLoading.bind(this);
   }
 
-  async componentDidMount() {
-    const { handleLoading } = this;
-    const { getAPIQuestions } = this.props;
-    await getAPIQuestions();
-    handleLoading();
-  }
-
-  handleLoading() {
-    this.setState({ loading: false });
+  componentDidMount() {
+    const { questions } = this.props;
+    console.log('ComponentDidMount: ', questions);
   }
 
   chooseAnswer() {
@@ -38,6 +30,7 @@ class Game extends React.Component {
 
   renderQuestions() {
     const { questions } = this.props;
+    console.log('questions: ', questions);
     const { questionNumber } = this.state;
     if (questions[questionNumber] === undefined) return null;
     return (
@@ -52,6 +45,7 @@ class Game extends React.Component {
     const { questionNumber, answered } = this.state;
     const { chooseAnswer } = this;
     const { questions } = this.props;
+    if (questions[questionNumber] === undefined) return null;
     const correctAnswerPosition = Math
       .floor(Math
         .random() * questions[questionNumber].incorrect_answers.length + 1);
@@ -97,11 +91,7 @@ class Game extends React.Component {
 
   render() {
     const { renderAnswers, renderQuestions } = this;
-    const { loading } = this.state;
 
-    if (loading) {
-      return <p>loading...</p>;
-    }
     return (
       <div>
         <div>
@@ -114,17 +104,20 @@ class Game extends React.Component {
   }
 }
 
-const mapStateToProps = ({ game: { questions } }) => ({
+const mapStateToProps = ({ game: { questions, loading } }) => ({
   questions,
+  loading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getAPIQuestions: () => dispatch(fetchQuestions()),
+  setUpdateLoading: (loading) => dispatch(updateLoading(loading)),
 });
 
 Game.propTypes = {
   getAPIQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  setUpdateLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
