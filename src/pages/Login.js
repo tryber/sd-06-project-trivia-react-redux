@@ -46,12 +46,18 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { getPlayerToken, getPlayerLogin, getAPIQuestions, history, questions } = this.props;
+    const {
+      getPlayerToken,
+      getPlayerLogin,
+      getAPIQuestions,
+      history,
+      questions
+    } = this.props;
     const { name, email } = this.state;
     await getPlayerToken();
     getPlayerLogin(name, email);
     await getAPIQuestions();
-    console.log(questions)
+    console.log(questions);
     history.push('/game');
   }
 
@@ -114,6 +120,7 @@ Login.propTypes = {
   getPlayerToken: PropTypes.func.isRequired,
   getPlayerLogin: PropTypes.func.isRequired,
   getAPIQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
