@@ -3,7 +3,8 @@ import React from 'react';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchApiToken } from '../actions';
+import { Redirect } from 'react-router-dom';
+import { fetchApiQuestions, fetchApiToken } from '../actions';
 import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
@@ -12,7 +13,7 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      // redirect: false,
+      redirect: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -40,21 +41,25 @@ class Login extends React.Component {
   //   const { invalidEmail, invalidName } = this.state;
   //   if
   // }
-  async handleClick() {
+  handleClick() {
     // const { name, email } = this.state;
     const { getToken } = this.props;
-    const response = await getToken();
-    const { data } = response;
-    const { token } = data;
-    localStorage.setItem('token', token);
-    console.log(token);
-    // this.setState({
-    //   redirect: true,
-    // });
+    // getToken()
+    //   .then(() => {
+    //     getTriviaQuestions(token);
+    //     localStorage.setItem('token', token);
+    //     console.log(token);
+    //   });
+    getToken();
+    // const responseTrivia = await getTriviaQuestions(token);
+    // console.log(responseTrivia);
+    this.setState({
+      redirect: true,
+    });
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, redirect } = this.state;
     return (
       <div className="container">
         <form className="formLogin">
@@ -88,6 +93,7 @@ class Login extends React.Component {
           </button>
         </form>
         <ButtonConfig />
+        { redirect ? <Redirect to="/screen" /> : null }
       </div>
     );
   }
@@ -95,6 +101,7 @@ class Login extends React.Component {
 
 const mapsDispatchToProps = (dispatch) => ({
   getToken: (e) => dispatch(fetchApiToken(e)),
+  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
 });
 
 Login.propTypes = {
