@@ -7,12 +7,12 @@ class Questions extends Component {
     super();
     this.state = {
       questionNumber: 0,
+      timer: false,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
-    this.handleQuestions = this.handleQuestions.bind(this);
-    this.applyIndexToIncorrectAnswers = this.applyIndexToIncorrectAnswers.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
+    this.checkTimer = this.checkTimer.bind(this);
   }
 
   changeToNextQuestion() {
@@ -31,11 +31,6 @@ class Questions extends Component {
     rightQuestion.className = 'rquestion';
   }
 
-  applyIndexToIncorrectAnswers(index) {
-    index += 1;
-    return index;
-  }
-
   shuffle(array) {
     const magic = 0.5;
     return array.sort(() => Math.random() - magic);
@@ -50,19 +45,23 @@ class Questions extends Component {
     rightQuestion.className = 'right-question';
   }
 
+  checkTimer() {
+    this.setState({ timer: true });
+  }
+
   handleQuestions() {
     const { gameQuestions } = this.props;
-    const { questionNumber } = this.state;
+    const { questionNumber, timer } = this.state;
     const initialIndex = -1;
     let answerIndex = initialIndex;
+    const timerLimit = 30000;
+    setTimeout(this.checkTimer, timerLimit);
 
     if (gameQuestions) {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
       const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
       const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
-      console.log(questionsArray);
       const newArr = this.shuffle(questionsArray);
-      console.log(newArr);
       return (
         <div>
           <h4 data-testid="question-category">
@@ -77,6 +76,7 @@ class Questions extends Component {
                   data-testid="correct-answer"
                   onClick={ this.handleAnswerStyle }
                   className="rquestion"
+                  disabled={ timer }
                 >
                   {question}
                 </button>
@@ -89,6 +89,7 @@ class Questions extends Component {
                 className="wquestion"
                 onClick={ this.handleAnswerStyle }
                 key={ `wrong${answerIndex}` }
+                disabled={ timer }
               >
                 {question}
               </button>
