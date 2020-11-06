@@ -126,7 +126,6 @@ class GameScreen extends Component {
       click: state.click + 1,
     }));
     const buttons = document.querySelectorAll('button');
-    const { disabled } = this.state;
     buttons.forEach((button) => {
       if (button.className === 'wrong red') {
         button.className = 'wrong';
@@ -144,6 +143,7 @@ class GameScreen extends Component {
     const numberPoints = 10;
     this.setState((beforeSate) => ({
       score: beforeSate.score + numberPoints,
+      assertions: beforeSate.assertions + 1,
     }));
   }
 
