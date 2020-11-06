@@ -14,7 +14,7 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 1;
     const { receivedQuestions } = this.props;
     const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
     receivedQuestions(questions); //  populou o state
