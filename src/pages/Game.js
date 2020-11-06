@@ -74,7 +74,6 @@ class Game extends Component {
     const currentQuestion = questions[index];
     const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
     const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
-    console.log(randomizedAnswers);
 
     return (
       <main className="game-board">
