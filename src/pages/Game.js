@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import { NextButton } from '../components'
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
 
@@ -15,6 +17,7 @@ class Game extends React.Component {
       seconds: '30',
       points: '0',
       difficulty: '1',
+      btnDisable:false,
     };
   }
 
@@ -47,10 +50,14 @@ class Game extends React.Component {
         element.classList.add('wrong');
         element.disabled = true;
       });
+      this.setState({
+        btnDisable:true,
+      })
     }
     if (target.className.includes('correct-answer')) {
       this.setState({
         points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
+        btnDisable:true,
       });
     }
   }
@@ -153,13 +160,7 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                <button
-                  className="next"
-                  type="button"
-                  data-testid="btn-next"
-                >
-                  <span>Proxima</span>
-                </button>
+                {this.state.btnDisable ? <NextButton /> : null}
               </div>
             </footer>
           </div>
