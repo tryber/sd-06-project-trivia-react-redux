@@ -1,5 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+// import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
 import { LoginForm } from '../components';
+import { addName } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -16,19 +20,27 @@ class Login extends React.Component {
 
   validateEmail({ target }) {
     const email = target.value;
+    // const hash = md5(email);
     const validator = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const isValid = validator.test(String(email).toLowerCase());
     if (isValid) {
-      this.setState({ validEmail: true });
+      this.setState({
+        validEmail: true,
+        // hash: hash.words,
+      });
     } else {
-      this.setState({ validEmail: false });
+      this.setState({
+        validEmail: false,
+        // hash: '',
+      });
     }
   }
 
   validateName({ target }) {
-    const name = target.value.length;
+    const name = target.value;
+    const { userName } = this.props;
     const minLength = 2;
-    if (name >= minLength) {
+    if (name.length >= minLength) {
       this.setState({
         validName: true,
       });
@@ -37,6 +49,7 @@ class Login extends React.Component {
         validName: false,
       });
     }
+    userName(name);
   }
 
   handleSettings() {
@@ -55,9 +68,18 @@ class Login extends React.Component {
         validName={ validName }
         validEmail={ validEmail }
         showSettings={ showSettings }
+        emailToHash={ this.emailToHash }
       />
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  userName: PropTypes.string.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  userName: (name) => dispatch(addName(name)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -7,7 +7,9 @@ class App extends React.Component {
     return (
       <Switch>
         <Route exact path="/" render={ () => <Login /> } />
-        <Route exact path="/game" render={ () => <Game /> } />
+        <div className="game-master-container">
+          <Route exact path="/game" render={ () => <Game /> } />
+        </div>
       </Switch>
     );
   }

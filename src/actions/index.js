@@ -1,8 +1,14 @@
 export const TOKEN = 'TOKEN';
+export const USER = 'USER';
 
 export const addToken = (token) => ({
   type: TOKEN,
   token,
+});
+
+export const addName = (name) => ({
+  type: USER,
+  name,
 });
 
 export const fetchApi = () => async (dispatch) => {
