@@ -19,32 +19,42 @@ class GameBody extends React.Component {
     await getQuestions();
     const { questions } = this.props;
     const { index } = this.state;
-    this.setState({
-      loading: false,
-      category: questions[index].category,
-    });
+
+    if(questions.length > 0  ) {
+      this.setState({
+        loading: false,
+        category: questions[index].category,
+        question: questions[index].question,
+        correct_answer: questions[index].correct_answer,
+        incorrect_answer: questions[index].incorrect_answer,
+      });
+    }
   }
 
   handleNext() {
     const { questions } = this.props;
     let { index } = this.state;
     index += 1;
-    if(index < questions.length) {
+    if(questions.length > 0 && index < questions.length ) {
       this.setState({
         index,
         category: questions[index].category,
+        question: questions[index].question,
+        correct_answer: questions[index].correct_answer,
+        incorrect_answer: questions[index].incorrect_answer,
       })
     }
   }
 
   render() {
-    const { loading, category } = this.state;
-    if (loading) {
-      return <Loading/>
-    }
+    const { loading, category, question, correct_answer, incorrect_answer } = this.state;
+
     return (
       <div>
         <p data-testid="question-category">{ category }</p>
+        <p data-testid="question-text">{ question }</p>
+        <button data-testid="correct-answer">{ correct_answer }</button>
+        <button data-testid="wrong-answer-${index}">{ incorrect_answer }</button>
         <button
           onClick={ () => this.handleNext() }
         >
