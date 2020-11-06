@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// import Header from '../components/Header';
 
 class Feedback extends Component {
   ggMessage() {
@@ -38,6 +39,7 @@ class Feedback extends Component {
     const numberOfAnswers = 3;
     return (
       <main>
+        {/* <Header /> */}
         <header data-testid="feedback-text">
           {(correctAnswers >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
         </header>
