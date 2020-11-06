@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class LoginButton extends Component {
+class GenericButton extends Component {
   render() {
     const { disabled, onClick, title } = this.props;
 
@@ -18,9 +18,9 @@ class LoginButton extends Component {
   }
 }
 
-export default LoginButton;
+export default GenericButton;
 
-LoginButton.propTypes = {
+GenericButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,

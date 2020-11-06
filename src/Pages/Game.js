@@ -4,23 +4,46 @@ import PropTypes from 'prop-types';
 import { responseQuestions } from '../Action/actionFetchQuestions';
 import Questions from '../Components/Questions';
 import Header from '../Components/Header';
+import GenericButton from '../Components/GenericButton';
 
 class Game extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      index: 0,
+      isLoading: true,
+    };
+
+    this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
+  }
+
   componentDidMount() {
+    this.getTheFetchQuestions();
+  }
+
+  async getTheFetchQuestions() {
     const { fetchQuestions } = this.props;
-    fetchQuestions();
+    await fetchQuestions();
+    this.setState({ isLoading: false });
   }
 
   render() {
     const { questions } = this.props;
+    const { index, isLoading } = this.state;
     console.log(questions);
 
     return (
       <div>
-        <Header />
-        {questions.map((question, index) => (
-          <Questions key={ index } questionObj={ question } />
-        ))}
+        {isLoading ? <h2>Loading...</h2>
+          : <div>
+            <Header />
+            <Questions questionObj={ questions[index] } />
+            <GenericButton
+              onClick={ this.handleClick }
+              title="Próxima pergunta"
+            />
+          </div>}
       </div>
     );
   }
