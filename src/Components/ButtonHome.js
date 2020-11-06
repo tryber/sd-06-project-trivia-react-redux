@@ -5,11 +5,11 @@ class ButtonHome extends Component {
   render() {
     return (
       <div>
-        <button data-testid="btn-go-home" type="button">
-          <Link to="/">
+        <Link to="/">
+          <button data-testid="btn-go-home" type="button">
             Jogar de Novo
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
     );
   }
