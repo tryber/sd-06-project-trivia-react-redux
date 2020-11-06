@@ -9,6 +9,7 @@
 .category {
   margin: 20px;
   display: table-row;
+  font-size: 30px;
 }
 .category-content {
   display: flex;
@@ -17,10 +18,15 @@
 .question {
   display: flex;
   margin: 20px;
+  font-size: 30px;
+  font-weight: 800;
 }
 .answers {
+  display: list-item;
+  list-style: none;
   margin: 10px;
   border: none;
+  font-size: 20px;
 }
 .correct-answer {
   display: flex;
