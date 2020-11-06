@@ -87,26 +87,7 @@ class Game extends Component {
                         {question}
                       </button>
                     );
-                  },
-                  // {
-                  //   APIQuestions[index]
-                  //     .incorrect_answers.concat(APIQuestions[index].correct_answer)
-                  //     .map((question, i) => (
-                  //       <button
-                  //         data-testid={
-                  //           APIQuestions[index].correct_answer === question
-                  //             ? 'correct-answer'
-                  //             : `wrong-answer-${i}`
-                  //         }
-                  //         key={ i }
-                  //         type="button"
-                  //       >
-                  //         {question}
-                  //       </button>
-                  //     ))
-                  //     .sort(() => Math.random() - random)
-                  // }
-                  ).sort(() => Math.random() - random)
+                  }).sort(() => Math.random() - random)
               }
             </section>)}
       </section>
