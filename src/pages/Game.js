@@ -25,8 +25,9 @@ class Game extends React.Component {
 
   renderQuestions() {
     const { questions } = this.props;
+    console.log(questions);
     const { questionNumber } = this.state;
-    if (questions[questionNumber] === undefined) return null;
+    // if (questions[questionNumber] === undefined) return null;
     return (
       <div>
         <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
@@ -39,7 +40,7 @@ class Game extends React.Component {
     const { questionNumber, answered } = this.state;
     const { chooseAnswer } = this;
     const { questions } = this.props;
-    if (questions[questionNumber] === undefined) return null;
+    // if (questions[questionNumber] === undefined) return null;
     const correctAnswerPosition = Math
       .floor(Math
         .random() * questions[questionNumber].incorrect_answers.length + 1);
@@ -97,17 +98,13 @@ class Game extends React.Component {
     );
   }
 }
-
-const mapStateToProps = ({ game: { questions } }) => ({
-  questions,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getAPIQuestions: () => dispatch(fetchQuestions()),
+// fiz refatoração do parâmetro da função para ficar legível
+const mapStateToProps = (state) => ({
+  questions: state.game.questions,
 });
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, null)(Game);

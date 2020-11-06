@@ -46,11 +46,12 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { getPlayerToken, getPlayerLogin, getAPIQuestions, history } = this.props;
+    const { getPlayerToken, getPlayerLogin, getAPIQuestions, history, questions } = this.props;
     const { name, email } = this.state;
-    getPlayerToken();
+    await getPlayerToken();
     getPlayerLogin(name, email);
     await getAPIQuestions();
+    console.log(questions)
     history.push('/game');
   }
 
@@ -99,6 +100,10 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  questions: state.game.questions,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   getPlayerToken: () => dispatch(getToken()),
   getPlayerLogin: (name, email) => dispatch(getLogin(name, email)),
@@ -114,4 +119,4 @@ Login.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
