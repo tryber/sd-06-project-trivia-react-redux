@@ -6,20 +6,20 @@ class Questions extends React.Component {
     super(props);
 
     this.state = {
-      button: true,
+      buttonBorder: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    const { button } = this.state;
+    const { buttonBorder } = this.state;
     this.setState({
-      button: !button,
+      buttonBorder: !buttonBorder,
     });
   }
 
   render() {
-    const { button } = this.state;
+    const { buttonBorder } = this.state;
     return (
       <div>
         <div className="gamepage-questions">
@@ -46,18 +46,20 @@ class Questions extends React.Component {
         </div>
         <div className="gamepage-answer">
           <button
-            className={ button ? 'none-answer' : 'correct-answer' }
+            className={ !buttonBorder ? 'none-answer' : 'correct-answer' }
             onClick={ this.handleClick }
             data-testid="correct-answer"
             type="button"
+            disabled={ buttonBorder }
           >
             true
           </button>
           <button
-            className={ button ? 'none-answer' : 'wrong-answer' }
+            className={ !buttonBorder ? 'none-answer' : 'wrong-answer' }
             onClick={ this.handleClick }
             data-testid="wrong-answer-0"
             type="button"
+            disabled={ buttonBorder }
           >
             false
           </button>
