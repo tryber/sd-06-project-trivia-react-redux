@@ -20,9 +20,10 @@ class Login extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { tokenLocalStorage } = this.props;
+    const { tokenLocalStorage, history } = this.props;
     if (prevProps.tokenLocalStorage !== tokenLocalStorage) {
       this.setLocalStorage();
+      history.push('/questions');
     }
   }
 
@@ -101,6 +102,7 @@ Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
   getToken: PropTypes.func.isRequired,
   tokenLocalStorage: PropTypes.string.isRequired,
+  history: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
