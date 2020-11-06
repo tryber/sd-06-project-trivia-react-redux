@@ -87,7 +87,6 @@ class QuestionCards extends Component {
     setInterval(() => {
       this.setState(({ time }) => ({
         time: time ? time - 1 : 0,
-        // visibility: time < 0 ? 'button-visibility' : '',
       }));
     }, interval);
   }
