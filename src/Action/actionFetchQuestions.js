@@ -1,7 +1,7 @@
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 
-export function getQuestions(question) {
-  return { type: GET_QUESTIONS, question };
+export function getQuestions(questions) {
+  return { type: GET_QUESTIONS, questions };
 }
 
 export function responseQuestions() {
@@ -9,8 +9,8 @@ export function responseQuestions() {
     const token = localStorage.getItem('token');
     const endpoint = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const responseAPI = await fetch(endpoint);
-    const result = await responseAPI.json();
+    const { results } = await responseAPI.json();
 
-    dispatch(getQuestions(result));
+    return dispatch(getQuestions(results));
   };
 }

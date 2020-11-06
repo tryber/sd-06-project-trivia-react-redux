@@ -9,7 +9,7 @@ export default function reducerQuestions(state = initialState, action) {
   case GET_QUESTIONS:
     return ({
       ...state,
-      questions: action.questions,
+      questions: state.questions.concat(action.questions),
     });
 
   default: return state;
