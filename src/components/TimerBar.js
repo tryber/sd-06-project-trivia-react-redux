@@ -5,29 +5,24 @@ class Timer extends React.Component {
     super();
 
     this.state = {
-      seconds: 30,
-    }
-  }
-
-  componentWillUnmount() {
-    const { seconds } = this.state;
-    
-    if (seconds === 0) {
-      console.log(seconds)
-      clearInterval(this.myInterval)
+      seconds: 5,
     }
   }
 
   componentDidMount() {
-    const { seconds } = this.state;
     const interval = 1000;
-    if (seconds > 1) {
-      this.myInterval = setInterval(() => {
-        this.setState(({ seconds }) => ({
-          seconds: seconds > 1 ? seconds - 1 : 0,
-        }));
-      }, interval);
-    }
+    this.myInterval = setInterval(() => {
+      this.setState(({ seconds }) => ({
+        seconds: seconds > 1 ? seconds - 1 : 0,
+      }));
+    }, interval);
+  }
+
+  componentDidUpdate() {
+    const { seconds } = this.state;
+    if (seconds === 0) {
+      clearInterval(this.myInterval);
+    };
   }
 
   render() {

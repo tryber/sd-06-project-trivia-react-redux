@@ -8,6 +8,8 @@ class Questions extends Component {
     this.state = {
       questionNumber: 0,
       disableBTN: false,
+      questions: [],
+      shuffled: false,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
