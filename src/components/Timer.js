@@ -6,7 +6,7 @@ class Timer extends React.Component {
     this.decreaseTime = this.decreaseTime.bind(this);
     this.handleTimer = this.handleTimer.bind(this);
     this.state = {
-      time: 5,
+      time: 30,
     };
   }
 
@@ -15,12 +15,8 @@ class Timer extends React.Component {
   }
 
   handleTimer() {
-    const { time } = this.state;
     const oneSec = 1000;
-    const timer = setInterval(() => this.decreaseTime(), oneSec);
-    if (time === 0) {
-      clearInterval(timer);
-    }
+    setInterval(() => this.decreaseTime(), oneSec);
   }
 
   decreaseTime() {
@@ -34,7 +30,7 @@ class Timer extends React.Component {
         <p>
           Tempo:
           <span>
-            {time}
+            {time > 0 ? time : 0}
           </span>
         </p>
       </div>
