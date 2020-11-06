@@ -1,6 +1,7 @@
 import { SEND_LOGIN } from '../actions';
 
 const INITIAL_STATE = {
+  name: '',
   email: '',
 };
 
