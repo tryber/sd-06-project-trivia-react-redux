@@ -60,9 +60,8 @@ class Questions extends Component {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
       const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
       const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
-      console.log(questionsArray);
       const newArr = this.shuffle(questionsArray);
-      console.log(newArr);
+
       return (
         <div>
           <h4 data-testid="question-category">
@@ -77,6 +76,7 @@ class Questions extends Component {
                   data-testid="correct-answer"
                   onClick={ this.handleAnswerStyle }
                   className="rquestion"
+                  key="correct"
                 >
                   {question}
                 </button>

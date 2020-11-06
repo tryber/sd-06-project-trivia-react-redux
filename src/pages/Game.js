@@ -1,10 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import GameHeader from '../components/GameHeader';
+import { connect } from 'react-redux';
 import { fetchQuestionsAPI } from '../redux/actions';
+import GameHeader from '../components/GameHeader';
+import Timer from '../components/TimerBar';
+
 
 class Game extends React.Component {
+  constructor() {
+    super();
+
+    this.handlePage = this.handlePage.bind(this);
+  }
   componentDidUpdate() {
     const { fetchQuestions, tokenResponse } = this.props;
     if (tokenResponse) {
@@ -12,11 +19,24 @@ class Game extends React.Component {
     }
   }
 
-  render() {
+  handlePage() {
     const { loading } = this.props;
+    if (loading) {
+      return <h2>Loading...</h2> 
+    } else {
+      return (
+        <div>
+        <GameHeader />
+        <Timer />
+      </div>
+      );
+    }
+  }
+
+  render() {
     return (
       <div>
-        { loading ? <h2>Loading...</h2> : <GameHeader /> }
+        { this.handlePage() }
       </div>
     );
   }
