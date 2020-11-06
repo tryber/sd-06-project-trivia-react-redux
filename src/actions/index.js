@@ -8,7 +8,7 @@ export function updateLoading(loading) {
   return {
     type: UPDATE_LOADING,
     loading,
-  }
+  };
 }
 
 export function getLogin(name, email) {

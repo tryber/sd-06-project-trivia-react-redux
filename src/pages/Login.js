@@ -81,16 +81,14 @@ class Login extends Component {
             data-testid="input-player-name"
           />
         </label>
-        {/* <Link to="/game"> */}
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ handleDisableButton() }
-            onClick={ handleClick }
-          >
-            Jogar
-          </button>
-        {/* </Link> */}
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ handleDisableButton() }
+          onClick={ handleClick }
+        >
+          Jogar
+        </button>
         <div>
           <Link data-testid="btn-settings" to="/settings">
             Configurações
@@ -111,6 +109,9 @@ Login.propTypes = {
   getPlayerToken: PropTypes.func.isRequired,
   getPlayerLogin: PropTypes.func.isRequired,
   getAPIQuestions: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

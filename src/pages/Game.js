@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions, updateLoading } from '../actions';
+import { fetchQuestions } from '../actions';
 import Header from '../components/Header';
 import '../css/Game.css';
 
@@ -98,20 +98,16 @@ class Game extends React.Component {
   }
 }
 
-const mapStateToProps = ({ game: { questions, loading } }) => ({
+const mapStateToProps = ({ game: { questions } }) => ({
   questions,
-  loading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getAPIQuestions: () => dispatch(fetchQuestions()),
-  setUpdateLoading: (loading) => dispatch(updateLoading(loading)),
 });
 
 Game.propTypes = {
-  getAPIQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  setUpdateLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
