@@ -7,6 +7,11 @@ class GameScreen extends Component {
     super();
     this.importImage = this.importImage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
+    this.requestQuestions = this.requestQuestions.bind(this);
+    this.setInfoPlayerStorage = this.setInfoPlayerStorage.bind(this);
+    this.updateInfoPlayerStorage = this.updateInfoPlayerStorage.bind(this);
+    this.handleClickCorrect = this.handleClickCorrect.bind(this);
     this.state = {
       score: 0,
       imageUrl: '',
@@ -19,6 +24,33 @@ class GameScreen extends Component {
   componentDidMount() {
     this.importImage();
     this.requestQuestions();
+    this.setInfoPlayerStorage();
+  }
+
+  componentDidUpdate() {
+    this.updateInfoPlayerStorage();
+  }
+
+  setInfoPlayerStorage() {
+    const { name: player, email } = this.props;
+    const { imageUrl } = this.state;
+    const playGamer = { player: {
+      name: player,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: imageUrl,
+    } };
+    localStorage.setItem('state', JSON.stringify(playGamer));
+  }
+
+  updateInfoPlayerStorage() {
+    const { score: points } = this.state;
+    console.log(points);
+    const statee = localStorage.getItem('state');
+    const result = JSON.parse(statee);
+    result.player.score = points;
+    localStorage.setItem('state', JSON.stringify(result));
+    console.log(result.player.score);
   }
 
   async requestQuestions() {
@@ -74,6 +106,21 @@ class GameScreen extends Component {
     });
   }
 
+  handleClickNext() {
+    this.setState((state) => ({
+      index: state.index + 1,
+    }));
+  }
+
+  async handleClickCorrect() {
+    // 10 + (timer * dificuldade)
+    // hard: 3, medium: 2, easy: 1
+    const numberPoints = 10;
+    this.setState((beforeSate) => ({
+      score: beforeSate.score + numberPoints,
+    }));
+  }
+
   render() {
     const { score, imageUrl, questions, index, loading } = this.state;
     const { name } = this.props;
@@ -107,7 +154,10 @@ class GameScreen extends Component {
               type="button"
               className="correct"
               data-testid="correct-answer"
-              onClick={ this.handleClick }
+              onClick={ () => {
+                this.handleClick();
+                this.handleClickCorrect();
+              } }
 
             >
               {questions[index].correct_answer}
@@ -116,7 +166,7 @@ class GameScreen extends Component {
               type="button"
               className="hidden"
               data-testid="btn-next"
-              onClick={ this.handleClick }
+              onClick={ this.handleClickNext }
             >
               Próxima
             </button>
