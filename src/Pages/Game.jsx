@@ -1,6 +1,6 @@
 import React from 'react';
-import Question from '../components/Question';
-import Header from '../components/Header';
+import Question from '../Components/Question';
+import Header from '../Components/Header';
 
 class Game extends React.Component {
   render() {
