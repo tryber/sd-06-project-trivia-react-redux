@@ -28,7 +28,7 @@ Nesse projeto, você será capaz de:
 
 ## SUMÁRIO
 
-- [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
+- [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido);
   - [Protótipo do projeto](#protótipo-do-projeto)
 - [Data de entrega](#data-de-entrega)
 - [Como desenvolver](#como-desenvolver)
