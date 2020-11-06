@@ -17,9 +17,10 @@ class Game extends React.Component {
       seconds: '30',
       points: '0',
       difficulty: '1',
-      btnDisable:false,
-      indexOfQuestions:0,
+      btnDisable: false,
+      indexNextQuestion: 0,
     };
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -99,8 +100,20 @@ class Game extends React.Component {
     }, interval);
   }
 
+  async handleNextQuestion() {
+    this.setState((previousState) => ({
+      indexNextQuestion: previousState.indexNextQuestion + 1,
+    }));
+    const maximumTime = 30000;
+    const { userToken } = this.props;
+    const questions = await fetchQuestions(userToken);
+    this.getQuestions(questions.results);
+    this.timer();
+    setTimeout(this.correctAnswer, maximumTime);
+  }
+
   render() {
-    const { questions, seconds, points } = this.state;
+    const { questions, seconds, points, btnDisable } = this.state;
     const { userName } = this.props;
     return (
       <div className="game-container">
@@ -161,7 +174,9 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                {this.state.btnDisable ? <NextButton /> : null}
+                {btnDisable
+                ? <NextButton handleNextQuestion={ this.handleNextQuestion } />
+                : null}
               </div>
             </footer>
           </div>
