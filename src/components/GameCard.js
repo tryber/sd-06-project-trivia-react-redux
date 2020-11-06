@@ -4,8 +4,28 @@ import React, { Component } from 'react';
 class GameCard extends Component {
   constructor() {
     super();
-    this.state = { addClass: false };
+    this.state = { addClass: false, timer: 30, disable: false };
     this.handleClick = this.handleClick.bind(this);
+    this.updateTimer = this.updateTimer.bind(this);
+  }
+
+  componentDidMount() {
+    const thousand = 1000;
+    setInterval(this.updateTimer, thousand);
+  }
+
+  updateTimer() {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    } else {
+      this.setState({
+        disable: true,
+      });
+    }
+    console.log(timer);
   }
 
   handleClick() {
@@ -13,7 +33,7 @@ class GameCard extends Component {
   }
 
   render() {
-    const { addClass } = this.state;
+    const { addClass, disable, timer } = this.state;
     const { question } = this.props;
     const correctAnswer = question.correct_answer;
     const options = [...question.incorrect_answers, correctAnswer].sort();
@@ -31,12 +51,14 @@ class GameCard extends Component {
               className={ option === correctAnswer
                 ? `${addClass ? 'correct' : ''}` : `${addClass ? 'incorrect' : ''}` }
               type="button"
+              disabled={ disable }
             >
               {option}
             </button>
             <br />
           </div>
         ))}
+        {timer}
       </div>
     );
   }
