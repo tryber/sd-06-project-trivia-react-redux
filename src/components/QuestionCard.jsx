@@ -61,7 +61,10 @@ export default class QuestionCard extends Component {
   }
 
   timeUp() {
-    this.setState({ timeIsUp: true });
+    this.setState({
+      timeIsUp: true,
+      answersBorderActive: true,
+    });
   }
 
   render() {
@@ -88,12 +91,12 @@ export default class QuestionCard extends Component {
         <Timer timeUp={ this.timeUp } activateQuestions={ this.activateQuestions } />
         <div
           className="question-container"
-          hidden={ !playing }
+          // hidden={ !playing }
         >
           <p
             className="question"
             data-testid="question-text"
-            hidden={ !playing }
+            // hidden={ !playing }
           >
             { question }
           </p>
@@ -106,7 +109,7 @@ export default class QuestionCard extends Component {
                     data-testid="correct-answer"
                     type="button"
                     onClick={ this.activateBorders }
-                    disabled={ timeIsUp }
+                    // disabled={ timeIsUp }
                   >
                     {correctAnswer}
                   </button>
@@ -120,7 +123,7 @@ export default class QuestionCard extends Component {
                   data-testid={ `wrong-answer-${currentIdx}` }
                   type="button"
                   onClick={ this.activateBorders }
-                  disabled={ timeIsUp }
+                  // disabled={ timeIsUp }
                 >
                   {item}
                 </button>

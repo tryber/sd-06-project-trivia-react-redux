@@ -11,6 +11,10 @@ export default class Timer extends Component {
     this.startTimer = this.startTimer.bind(this);
   }
 
+  componentDidMount() {
+    this.startTimer();
+  }
+
   startTimer() {
     const { time } = this.state;
     const { timeUp, activateQuestions } = this.props;
@@ -19,7 +23,6 @@ export default class Timer extends Component {
     const TIMER = Math.floor(Date.now() / INTERVAL) + time;
     activateQuestions();
     setTimeout(() => timeUp(), TIMEISUP);
-    // this.setState({ time });
     this.timer = setInterval(() => this.setState({
       time: Math.floor(Date.now() / INTERVAL) - TIMER < 0
         ? TIMER - Math.floor(Date.now() / INTERVAL)
@@ -29,7 +32,6 @@ export default class Timer extends Component {
 
   render() {
     const { time } = this.state;
-    const START = time === 0 || null;
 
     return (
       <div>
@@ -37,13 +39,6 @@ export default class Timer extends Component {
           timer:
           { time }
         </h3>
-        <button
-          type="button"
-          onClick={ this.startTimer }
-          disabled={ START }
-        >
-          start
-        </button>
       </div>
     );
   }
