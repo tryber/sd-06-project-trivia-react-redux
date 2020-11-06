@@ -197,7 +197,7 @@ describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta,
   });
 });
 
-describe.skip('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
+describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
