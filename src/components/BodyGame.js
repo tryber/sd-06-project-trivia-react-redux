@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
 
 class BodyGame extends Component {
@@ -64,5 +65,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   questionsFunction: () => dispatch(fetchQuestions()),
 });
+
+BodyGame.propTypes = {
+  questionsFunction: PropTypes.func,
+  getToken: PropTypes.string,
+  questions: PropTypes.array,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(BodyGame);
