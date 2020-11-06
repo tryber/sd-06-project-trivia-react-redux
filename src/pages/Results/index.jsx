@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 
 import Header from '../../components/Header';
 
@@ -9,12 +10,33 @@ class Results extends React.Component {
   constructor(props) {
     super(props);
 
-    const { assertions } = JSON.parse(localStorage.getItem('state')).player;
+    this.handleRankingUpdate = this.handleRankingUpdate.bind(this);
+
+    const userScore = JSON.parse(localStorage.getItem('state')).player;
 
     this.state = {
-      assertions,
+      assertions: userScore.assertions,
       breakpoint: 3,
+      userScore,
     };
+  }
+
+  componentDidMount() {
+    this.handleRankingUpdate();
+  }
+
+  handleRankingUpdate() {
+    const { userScore: { name, score, gravatarEmail } } = this.state;
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+
+    const hashedEmail = md5(gravatarEmail);
+    const picture = `https://www.gravatar.com/avatar/${hashedEmail}`;
+
+    ranking.push({ name, score, picture });
+
+    ranking.sort((a, b) => b.score - a.score);
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   render() {
