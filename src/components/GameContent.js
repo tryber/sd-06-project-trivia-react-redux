@@ -47,7 +47,6 @@ class GameContent extends React.Component {
     if (counter <= 0) {
       this.resetTimer();
       this.setResult(false);
-      this.setNextQuestion();
     }
   }
 
@@ -57,6 +56,7 @@ class GameContent extends React.Component {
 
   setTimer() {
     const second = 1000;
+    this.setState({ answer: false });
     this.counterId = setInterval(
       () => this.setState((prevState) => ({ counter: prevState.counter - 1 })), second,
     );
@@ -65,7 +65,7 @@ class GameContent extends React.Component {
   setResult(result) {
     const { results } = this.state;
     this.setState(() => ({ answer: true }), async () => {
-      this.setState({ results: [...results, result] });
+      this.setState({ results: [...results, result], btnDisabled: true });
     });
   }
 
@@ -85,7 +85,6 @@ class GameContent extends React.Component {
   async handleClickAnswer(event) {
     const { target } = event;
     const result = target.className === 'correct';
-    this.setState({ btnDisabled: true });
     this.setResult(result);
     this.resetTimer();
   }
@@ -149,9 +148,10 @@ class GameContent extends React.Component {
             : wrongAnswer(item, index)
         ))}
         <div className="counter">
-          <span>{counter}</span>
+          {!btnDisabled && <span>{counter}</span>}
         </div>
         <button
+          disabled={ !btnDisabled }
           type="button"
           onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
           data-testid="btn-next"
