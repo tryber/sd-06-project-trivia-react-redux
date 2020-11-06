@@ -9,11 +9,27 @@ class QuestionCards extends Component {
     super();
 
     this.correctAnswer = this.correctAnswer.bind(this);
+    this.timeQuestion = this.timeQuestion.bind(this);
+    this.count = this.count.bind(this);
+    this.relo = this.relo.bind(this);
 
     this.state = {
       correct: '',
       incorrect: '',
+      isDisabled: false,
+      time: 30,
     };
+  }
+
+  componentDidMount() {
+    const time = 30000;
+    const timeclear = 31000;
+    setTimeout(this.timeQuestion, time);
+    setTimeout(this.relo, timeclear);
+    const interval = 1000;
+    this.interval = setInterval(() => {
+      this.count();
+    }, interval);
   }
 
   correctAnswer() {
@@ -23,9 +39,26 @@ class QuestionCards extends Component {
     });
   }
 
+  count() {
+    this.setState((prevState) => ({
+      time: prevState.time - 1,
+    }));
+  }
+
+  relo() {
+    clearInterval(this.interval);
+  }
+
+  timeQuestion() {
+    clearInterval(this.relogio);
+    this.setState({
+      isDisabled: true,
+    });
+  }
+
   render() {
     const { questionCard } = this.props;
-    const { correct, incorrect } = this.state;
+    const { correct, incorrect, isDisabled, time } = this.state;
 
     return (
       <div>
@@ -39,6 +72,7 @@ class QuestionCards extends Component {
                   type="button"
                   data-testid="correct-answer"
                   id="correct"
+                  disabled={ isDisabled }
                   className={ correct }
                   onClick={ this.correctAnswer }
                 >
@@ -50,12 +84,14 @@ class QuestionCards extends Component {
                     type="button"
                     key="1"
                     id="incorrect"
+                    disabled={ isDisabled }
                     className={ incorrect }
                     onClick={ this.correctAnswer }
                   >
                     {el}
                   </button>
                 ))}
+                <p>{ time }</p>
               </div>
             </div>
           ) : <img src={ loading } alt="loading-api" />}
