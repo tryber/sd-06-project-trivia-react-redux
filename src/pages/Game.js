@@ -9,8 +9,16 @@ class Game extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      classRight: '',
+      classWrong: '',
+      isDisabled: true,
+    };
+
     this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
+    this.handleDisabled = this.handleDisabled.bind(this);
+    this.randomArray = this.randomArray.bind(this);
   }
 
   async componentDidMount() {
@@ -29,13 +37,69 @@ class Game extends React.Component {
     //   const { questions } = this.props;
   }
 
+  handleDisabled({ target }) {
+    // Lógica para mudar o disabled do botão
+    // Necessita que uma alternativa tenha sido selecionada
+    // target.id ? target.className = 'green' ;
+
+    console.log(target);
+    this.setState({
+      classRight: 'green',
+      classWrong: 'red',
+      isDisabled: false,
+    });
+  }
+
+  randomArray(e) {
+    const correctAnswer = e.correct_answer;
+    const incorrectAnswers = e.incorrect_answers;
+    const newArray = incorrectAnswers.concat(correctAnswer);
+
+    newArray.sort(); // já está alterado
+    const myIndex = newArray.indexOf(correctAnswer); // pego o indice
+    const { classRight, classWrong } = this.state;
+    return (
+      <div id="answers">
+        {newArray.map((element, index) => {
+          if (index === myIndex) {
+            return (
+              <button
+                type="button"
+                key={ index }
+                data-testid="correct-answer"
+                id="correct"
+                className={ classRight }
+                value={ element }
+                onClick={ this.handleDisabled }
+              >
+                { element }
+              </button>);
+          }
+          return (
+            <button
+              type="button"
+              key={ index }
+              data-testid={ `wrong-answer-${index}` }
+              value={ element }
+              className={ classWrong }
+              id="wrong"
+              onClick={ this.handleDisabled }
+            >
+              { element }
+            </button>);
+        })}
+      </div>
+    );
+  }
+
   render() {
+    const { isDisabled } = this.state;
     const { questions } = this.props;
     return (
-      <div>
+      <div onChange={ this.handleDisabled }>
         <Header />
         {questions.map((element, index) => (
-          element.results.map((e, i) => (
+          element.results.map((e) => (
             <div key={ index } id="container">
               <div id="questions">
                 <div data-testid="question-category">
@@ -47,16 +111,15 @@ class Game extends React.Component {
                   <p>{e.question}</p>
                 </div>
               </div>
-              <div id="answers">
-                <div data-testid="correct-answer">
-                RESPOSTA CORRETA:
-                  <p>{e.correct_answer}</p>
-                </div>
-                <div data-testid={ `wrong-answer-${i}` }>
-                RESPOSTAS ERRADAS:
-                  {e.incorrect_answers.map((answer, j) => <p key={ j }>{answer}</p>)}
-                </div>
-              </div>
+              {this.randomArray(e)}
+              <button
+                data-testid="btn-next"
+                type="button"
+                hidden={ isDisabled }
+                // onClick={ this.handleDisabled }
+              >
+                PRÓXIMA
+              </button>
             </div>
           ))))}
       </div>
