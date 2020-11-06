@@ -34,6 +34,7 @@ class QuestionCards extends Component {
     const timeOut = setTimeout(() => (
       this.setState({
         isDisabled: true,
+        visibility: '',
       })), time);
     this.timeOut = timeOut;
   }
@@ -44,7 +45,6 @@ class QuestionCards extends Component {
     setInterval(() => {
       this.setState(({ time }) => ({
         time: time ? time - 1 : 0,
-        visibility: time ? 'button-visibility' : '',
       }));
     }, interval);
   }
