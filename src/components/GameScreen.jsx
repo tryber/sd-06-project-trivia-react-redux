@@ -12,12 +12,16 @@ class GameScreen extends Component {
     this.setInfoPlayerStorage = this.setInfoPlayerStorage.bind(this);
     this.updateInfoPlayerStorage = this.updateInfoPlayerStorage.bind(this);
     this.handleClickCorrect = this.handleClickCorrect.bind(this);
+    this.temporizer = this.temporizer.bind(this);
+    this.timeHandle = this.timeHandle.bind(this);
+
     this.state = {
       score: 0,
       imageUrl: '',
       questions: '',
       index: 0,
       loading: true,
+      timer: 30,
     };
   }
 
@@ -65,6 +69,7 @@ class GameScreen extends Component {
         const { token: token2 } = triviaJson;
         const resp2 = await fetch(`https://opentdb.com/api.php?amount=${quantity}&token=${token2}`);
         const result2 = await resp2.json();
+        this.temporizer();
         this.setState({
           questions: result2.results,
           loading: false,
@@ -72,6 +77,7 @@ class GameScreen extends Component {
       } else {
         const resp = await fetch(`https://opentdb.com/api.php?amount=${quantity}&token=${token}`);
         const result = await resp.json();
+        this.temporizer();
         this.setState({
           questions: result.results,
           loading: false,
@@ -100,6 +106,7 @@ class GameScreen extends Component {
         button.className += ' red';
       } else if (button.className === 'correct') {
         button.className += ' green';
+        button.disabled = 'true';
       } else if (button.className === 'hidden') {
         button.className += ' show';
       }
@@ -121,8 +128,22 @@ class GameScreen extends Component {
     }));
   }
 
+  temporizer() {
+    const interval = 1000;
+    setInterval(() => this.setState((state) => ({
+      timer: state.timer - 1,
+    })), interval);
+  }
+
+  timeHandle() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      this.handleClick();
+    }
+  }
+
   render() {
-    const { score, imageUrl, questions, index, loading } = this.state;
+    const { score, imageUrl, questions, index, loading, timer, disabled } = this.state;
     const { name } = this.props;
     return (
       <div>
@@ -170,6 +191,7 @@ class GameScreen extends Component {
             >
               Próxima
             </button>
+            <p onChange={ this.timeHandle() }>{timer}</p>
           </div>)}
       </div>
     );
