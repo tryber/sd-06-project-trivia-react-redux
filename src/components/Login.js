@@ -3,7 +3,8 @@ import React from 'react';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchApiToken } from '../actions';
+import { Redirect } from 'react-router-dom';
+import { fetchApiQuestions, fetchApiToken, playerName } from '../actions';
 import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
@@ -12,49 +13,39 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      // redirect: false,
+      redirect: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // verifyName(e) {
-  //   const name = e.target.value;
-  //   if (name.length > 0) {
-  //     this.setState({
-  //       invalidName: false,
-  //     });
-  //   }
-  // }
+  handleUserInfo() {
+    const { name, email } = this.state;
+    const { infoUser } = this.props;
+    infoUser(name, email);
+  }
 
-  // verifyEmail(e) {
-  //   const email = e.target.value;
-  //   if (email.length > 0) {
-  //     this.setState({
-  //       invalidEmail: false,
-  //     });
-  //   }
-  // }
-
-  // verifyEmailAndName(e) {
-  //   const { invalidEmail, invalidName } = this.state;
-  //   if
-  // }
-  async handleClick() {
+  handleClick() {
     // const { name, email } = this.state;
     const { getToken } = this.props;
-    const response = await getToken();
-    const { data } = response;
-    const { token } = data;
-    localStorage.setItem('token', token);
-    console.log(token);
-    // this.setState({
-    //   redirect: true,
-    // });
+    // getToken()
+    //   .then(() => {
+    //     getTriviaQuestions(token);
+    //     localStorage.setItem('token', token);
+    //     console.log(token);
+    //   });
+    getToken();
+    // const responseTrivia = await getTriviaQuestions(token);
+    // console.log(responseTrivia);
+    this.handleUserInfo();
+    this.setState({
+      redirect: true,
+    });
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, redirect } = this.state;
+
     return (
       <div className="container">
         <form className="formLogin">
@@ -87,18 +78,24 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
+
         <ButtonConfig />
+
+        { redirect ? <Redirect to="/game" /> : null }
       </div>
     );
   }
 }
 
 const mapsDispatchToProps = (dispatch) => ({
-  getToken: (e) => dispatch(fetchApiToken(e)),
+  getToken: () => dispatch(fetchApiToken()),
+  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
+  infoUser: (name, email) => dispatch(playerName(name, email)),
 });
 
 Login.propTypes = {
   getToken: propType.func.isRequired,
+  infoUser: propType.func.isRequired,
 };
 
 export default connect(null, mapsDispatchToProps)(Login);
