@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { apiToken } from '../services/request';
 import { questions, tokenLogin, user } from '../redux/actions';
+import configuration from '../images/configuration.png';
+import '../style/Login.css';
 
 class Login extends Component {
   constructor() {
@@ -52,17 +54,19 @@ class Login extends Component {
     const { isDisable, name, email } = this.state;
     // console.log('login', apiGravatar('anacris.higo@gmail.com'))
     return (
-      <div>
+      <div className="div-login">
         <Link to="/configuration">
           <button
+            className="bttn-config"
             type="button"
             data-testid="btn-settings"
           >
-            Configurações
+            <img className="img-conf" src={ configuration } alt="Configurações" />
           </button>
         </Link>
         <label htmlFor="name">
           <input
+            className="input"
             type="name"
             data-testid="input-player-name"
             name="name"
@@ -74,6 +78,7 @@ class Login extends Component {
         </label>
         <label htmlFor="email">
           <input
+            className="input"
             type="email"
             data-testid="input-gravatar-email"
             name="email"
@@ -84,6 +89,7 @@ class Login extends Component {
           />
         </label>
         <button
+          className="bttn-play"
           type="button"
           data-testid="btn-play"
           disabled={ isDisable }
