@@ -9,11 +9,13 @@ class Game extends Component {
 
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
     this.randomizeAnswers = this.randomizeAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       questions: [],
       index: 0,
       isLoading: true,
+      answerColor: false,
     };
   }
 
@@ -54,12 +56,24 @@ class Game extends Component {
     return RANDOM_ANSWERS;
   }
 
+  handleClick({ target }) {
+    const { id } = target;
+    if (id === 'correct-answer') {
+      this.setState({
+        answerColor: true,
+      });
+    } else {
+      this.setState({
+        answerColor: true,
+      });
+    }
+  }
+
   renderGameBoard() {
-    const { questions, index } = this.state;
+    const { questions, index, answerColor } = this.state;
     const currentQuestion = questions[index];
     const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
     const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
-    console.log(randomizedAnswers);
 
     return (
       <main className="game-board">
@@ -77,13 +91,19 @@ class Game extends Component {
               answer.isCorrect
                 ? <button
                   type="button"
+                  id="correct-answer"
                   data-testid="correct-answer"
+                  className={ answerColor ? 'correct-answer' : null }
+                  onClick={ this.handleClick }
                 >
                   {answer.correctAnswer}
                 </button>
                 : <button
                   type="button"
+                  id="wrong-answer"
                   data-testid={ `wrong-answer-${answer.index}` }
+                  className={ answerColor ? 'wrong-answer' : null }
+                  onClick={ this.handleClick }
                 >
                   {answer.answer}
                 </button>
