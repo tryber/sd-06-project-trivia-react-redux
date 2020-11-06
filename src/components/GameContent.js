@@ -16,11 +16,13 @@ class GameContent extends React.Component {
       sort: [],
       results: [],
       btnDisabled: false,
+      counter: 30,
     };
 
     this.shuffle = this.shuffle.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
     this.resetAnswer = this.resetAnswer.bind(this);
+    this.setResult = this.setResult.bind(this);
   }
 
   componentDidMount() {
@@ -29,27 +31,39 @@ class GameContent extends React.Component {
     this.setCounter();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps, prevState) {
     const maxNumberOfAnswers = 5;
     const { dispatchResults } = this.props;
-    const { results } = this.state;
+    const { results, current } = this.state;
     if (results.length === maxNumberOfAnswers) dispatchResults(results);
+    if (current !== prevState.current) this.setCounter();
   }
 
-  async setCounter() {
-    const thirtySeconds = 30000;
-    setTimeout(() => {
+  setSecond(counter) {
+    const second = 1000;
+    if (counter === 0) {
       this.setState({ btnDisabled: true });
       this.setResult(false);
-    },
-    thirtySeconds);
+    } else {
+      setTimeout(() => {
+        this.setState({ counter: counter - 1 });
+      }, second);
+    }
+  }
+
+  setCounter() {
+    const { counter, btnDisabled } = this.state;
+    this.setState({ counter: 30 });
+
+    while (!btnDisabled) {
+      this.setSecond(counter);
+    }
   }
 
   setResult(result) {
     const { results } = this.state;
     this.setState(() => ({ answer: true }), async () => {
-      this.setState({ results: [...results, result], isLoading: true });
-      this.fetchApi();
+      this.setState({ results: [...results, result] });
     });
   }
 
@@ -68,6 +82,8 @@ class GameContent extends React.Component {
   async handleClickAnswer(event) {
     const { target } = event;
     const result = target.className === 'correct';
+    this.setState({ btnDisabled: true });
+
     this.setResult(result);
   }
 
@@ -86,7 +102,8 @@ class GameContent extends React.Component {
   }
 
   render() {
-    const { element, current, isLoading, answer, sort, results, btnDisabled } = this.state;
+    const { element,
+      current, isLoading, answer, sort, results, btnDisabled, counter } = this.state;
     console.log('results:', results);
     if (isLoading) {
       return <p>Carregando...</p>;
@@ -128,6 +145,16 @@ class GameContent extends React.Component {
             ? correctAnswer(item, index)
             : wrongAnswer(item, index)
         ))}
+        <div>
+          <span>{counter}</span>
+        </div>
+        <button
+          type="button"
+          onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
+          data-testid="btn-next"
+        >
+          Proxima pergunta
+        </button>
       </div>
     );
   }
