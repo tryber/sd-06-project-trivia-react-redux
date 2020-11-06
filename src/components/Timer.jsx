@@ -5,7 +5,7 @@ export default class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: 30,
+      time: 32,
     };
 
     this.startTimer = this.startTimer.bind(this);
@@ -18,7 +18,7 @@ export default class Timer extends Component {
   startTimer() {
     const { time } = this.state;
     const { timeUp, activateQuestions } = this.props;
-    const TIMEISUP = 30000;
+    const TIMEISUP = 32000;
     const INTERVAL = 1000;
     const TIMER = Math.floor(Date.now() / INTERVAL) + time;
     activateQuestions();
