@@ -1,4 +1,11 @@
-import { FETCH_TOKEN, TOKEN_SUCESS, TOKEN_ERROR } from '../actions';
+import {
+  FETCH_TOKEN,
+  TOKEN_SUCESS,
+  TOKEN_ERROR,
+  FETCH_QUESTIONS,
+  SUCESS_QUESTIONS,
+  QUESTIONS_ERROR,
+} from '../actions';
 
 const INITIAL_STATE = {
   token: '',
@@ -20,6 +27,20 @@ function reducerAPI(state = INITIAL_STATE, action) {
       token: action.token,
     };
   case TOKEN_ERROR:
+    return {
+      ...state,
+      error: action.error,
+    };
+  case FETCH_QUESTIONS:
+    return {
+      ...state,
+    };
+  case SUCESS_QUESTIONS:
+    return {
+      ...state,
+      questions: action.questions,
+    };
+  case QUESTIONS_ERROR:
     return {
       ...state,
       error: action.error,
