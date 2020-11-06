@@ -51,13 +51,11 @@ class Login extends Component {
       getPlayerLogin,
       getAPIQuestions,
       history,
-      questions,
     } = this.props;
     const { name, email } = this.state;
     await getPlayerToken();
     getPlayerLogin(name, email);
     await getAPIQuestions();
-    console.log(questions);
     history.push('/game');
   }
 
@@ -106,10 +104,6 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.game.questions,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   getPlayerToken: () => dispatch(getToken()),
   getPlayerLogin: (name, email) => dispatch(getLogin(name, email)),
@@ -120,10 +114,9 @@ Login.propTypes = {
   getPlayerToken: PropTypes.func.isRequired,
   getPlayerLogin: PropTypes.func.isRequired,
   getAPIQuestions: PropTypes.func.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

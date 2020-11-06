@@ -2,14 +2,6 @@ export const LOGIN = 'LOGIN';
 export const GET_SCORE = 'GET_SCORE';
 export const UPDATE_PLAYER_TOKEN = 'UPDATE_PLAYER_TOKEN';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
-export const UPDATE_LOADING = 'UPDATE_LOADING';
-
-export function updateLoading(loading) {
-  return {
-    type: UPDATE_LOADING,
-    loading,
-  };
-}
 
 export function getLogin(name, email) {
   return {
