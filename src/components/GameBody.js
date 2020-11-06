@@ -64,32 +64,10 @@ class GameBody extends React.Component {
     const { category, question, correctAnswer, answers, isCorrect } = this.state;
     const randomNumber = 0.5;
 
-    let renderTest = '';
-    if (answers.length === 0) {
-      renderTest = (
-        <div>
-          <button
-            type="button"
-            data-testid="correct-answer"
-            className="buttonCorrect"
-          >
-            .
-          </button>
-          <button
-            type="button"
-            data-testid="wrong-answer"
-            className="buttonIncorrect"
-          >
-            .
-          </button>
-        </div>);
-    }
-
     return (
       <div>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
-        { renderTest }
         {answers.map((answer, index) => {
           if (answer === correctAnswer) {
             return (
