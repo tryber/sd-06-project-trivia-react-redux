@@ -16,7 +16,7 @@ class BodyGame extends Component {
     const { getToken, questionsFunction } = this.props;
 
     if (getToken !== prevProps.getToken && getToken !== '') {
-      console.log(questionsFunction());
+      questionsFunction();
     }
   }
 
@@ -39,15 +39,15 @@ class BodyGame extends Component {
                 <button type="button" data-testid="correct-answer">
                   {question.correct_answer}
                 </button>
-                {question.incorrect_answers.map(((iten, position) => (
+                {question.incorrect_answers.map((item, position) => (
                   <button
                     type="button"
                     key={ position }
                     data-testid={ `wrong-answer-${position}` }
                   >
-                    {iten}
+                    {item}
                   </button>
-                )))}
+                ))}
               </div>
             </div>
           </div>
