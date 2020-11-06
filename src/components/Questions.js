@@ -1,52 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addPoints, saveTimeLeft } from '../redux/actions';
+import { addPoints, saveTimeLeft, updateQuestionNumber } from '../redux/actions';
+import Timer from './Timer';
 
 class Questions extends Component {
   constructor() {
     super();
-    this.state = {
-      questionNumber: 0,
-      timer: false,
-      // seconds: 0,
-    };
+    // this.state = {
+    //   questionNumber: 0,
+    //   timer: false,
+    // };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
-    this.checkTimer = this.checkTimer.bind(this);
-    // this.startCount = this.startCount.bind(this);
-  }
-
-  componentDidMount() {
-    const { saveTime } = this.props;
-    const startSeconds = 30;
-    let seconds = startSeconds;
-    const interval = 1000;
-    if (seconds > 1) {
-      this.myInterval = setInterval(() => {
-        if (seconds > 0) seconds -= 1;
-        // console.log(seconds);
-        // aqui deveria salvar os segundos que faltam
-        saveTime(seconds);
-      }, interval);
-    }
-
-    if (seconds === 0) {
-      // console.log(seconds)
-      clearInterval(this.myInterval);
-    }
+    // this.checkTimer = this.checkTimer.bind(this);
   }
 
   changeToNextQuestion() {
-    const { questionNumber } = this.state;
+    const { questionNumber } = this.props;
     const indexLimit = 4;
     const wrongList = document.querySelectorAll('.wrong-question');
     const rightQuestion = document.querySelector('.right-question');
 
-    this.setState({
-      questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
-    });
+    // this.setState({
+    //   questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
+    // });
+
+    let questionNr = questionNumber;
+    if (questionNr < indexLimit) {
+      questionNr += 1;
+    } else {
+      questionNr = 0;
+    }
+
+    updateQuestionNumber(questionNr);
 
     wrongList.forEach((element) => {
       element.className = 'wquestion';
@@ -96,17 +84,17 @@ class Questions extends Component {
     }
   }
 
-  checkTimer() {
-    this.setState({ timer: true });
-  }
+  // checkTimer() {
+  //   this.setState({ timer: true });
+  // }
 
   handleQuestions() {
-    const { gameQuestions } = this.props;
-    const { questionNumber, timer } = this.state;
+    const { gameQuestions, questionNumber } = this.props;
+    // const { questionNumber, timer } = this.state;
     const initialIndex = -1;
     let answerIndex = initialIndex;
-    const timerLimit = 30000;
-    setTimeout(this.checkTimer, timerLimit);
+    // const timerLimit = 30000;
+    // setTimeout(this.checkTimer, timerLimit);
     // this.startCount();
 
     if (gameQuestions) {
@@ -129,7 +117,7 @@ class Questions extends Component {
                   data-testid="correct-answer"
                   onClick={ (e) => this.handleAnswerStyle(e, difficulty) }
                   className="rquestion"
-                  disabled={ timer }
+                  // disabled={ timer }
                 >
                   {question}
                 </button>
@@ -142,7 +130,7 @@ class Questions extends Component {
                 className="wquestion"
                 onClick={ this.handleAnswerStyle }
                 key={ `wrong${answerIndex}` }
-                disabled={ timer }
+                // disabled={ timer }
               >
                 {question}
               </button>
@@ -156,12 +144,11 @@ class Questions extends Component {
   }
 
   render() {
-    // const { seconds } = this.state;
     return (
       <div>
         {this.handleQuestions()}
         <button type="button" onClick={ this.changeToNextQuestion }>Next Question</button>
-        {/* <p className="timer">{seconds}</p> */}
+        <Timer />
       </div>
     );
   }
@@ -173,11 +160,13 @@ const mapStateToProps = (state) => ({
   score: state.game.score,
   name: state.user.name,
   email: state.user.email,
+  questionNumber: state.game.questionNumber,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addScore: (points) => dispatch(addPoints(points)),
   saveTime: (seconds) => dispatch(saveTimeLeft(seconds)),
+  updateQuestionNumber: (question) => dispatch(updateQuestionNumber(question)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);

@@ -1,8 +1,9 @@
-import { QUESTIONS_SUCCESS, SCORE } from '../actions';
+import { QUESTIONS_SUCCESS, SAVE_QUESTION, SCORE } from '../actions';
 
 const initialState = {
   questions: '',
   score: 0,
+  questionNumber: 0,
 };
 
 function game(state = initialState, action) {
@@ -16,6 +17,11 @@ function game(state = initialState, action) {
     return {
       ...state,
       score: state.score + action.score,
+    };
+  case SAVE_QUESTION:
+    return {
+      ...state,
+      questionNumber: action.question,
     };
   default:
     return state;
