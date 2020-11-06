@@ -22,7 +22,7 @@ class Game extends Component {
   }
 
   handleStyle() {
-      this.setState({ clicked: true })
+    this.setState({ clicked: true });
   }
 
   render() {
@@ -61,28 +61,28 @@ class Game extends Component {
                 APIQuestions[index]
                   .incorrect_answers.concat(APIQuestions[index].correct_answer)
                   .map((question, i) => {
-                    if(question === APIQuestions[index].correct_answer) {
-                      return(
+                    if (question === APIQuestions[index].correct_answer) {
+                      return (
                         <button
                           type="button"
                           data-testid="correct_answer"
                           key={ i }
                           disabled={ disabled }
                           className={ clicked ? 'correct-answer' : null }
-                          onClick= { this.handleStyle }
+                          onClick={ this.handleStyle }
                         >
                           {question}
                         </button>
                       );
                     }
-                    return(
+                    return (
                       <button
                         type="button"
-                        data-testid={`wrong_answer-${i}`}
+                        data-testid={ `wrong_answer-${i}` }
                         key={ i }
                         disabled={ disabled }
                         className={ clicked ? 'wrong-answer' : null }
-                        onClick= { this.handleStyle }
+                        onClick={ this.handleStyle }
                       >
                         {question}
                       </button>
