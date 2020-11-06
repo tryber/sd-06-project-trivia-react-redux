@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Loading from './Loading';
 import { thunkQuestions } from '../actions';
 
 class GameBody extends React.Component {
