@@ -1,9 +1,13 @@
 import React from 'react';
+import HeaderGame from '../components/HeaderGame';
 
 class GameScreen extends React.Component {
   render() {
     return (
-      <div>TELA DE JOGO</div>
+      <div>
+        <div>TELA DE JOGO</div>
+        <HeaderGame />
+      </div>
     );
   }
 }
