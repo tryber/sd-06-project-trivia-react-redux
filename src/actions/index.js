@@ -14,11 +14,13 @@ export const sendScore = (score) => ({ type: SCORE, score });
 
 export function handleToken() {
   return async (dispatch) => {
-    const tokenResponse = await fetchAPITrivia();
-    dispatch(sendToken(tokenResponse));
-    localStorage.setItem('token', tokenResponse.token);
+    const tokenObjResponse = await fetchAPITrivia();
+    const tokenCode = tokenObjResponse.token;
+    dispatch(sendToken(tokenCode));
+    localStorage.setItem('token', tokenCode);
   };
 }
+
 export function getQuestions(token) {
   return async (dispatch) => {
     const questionObject = await fetchAPIQuestions(token);
