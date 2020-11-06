@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { renderTime } from '../actions';
 import { connect } from 'react-redux';
+import { renderTime } from '../actions';
 
 class Timer extends Component {
   componentDidMount() {
