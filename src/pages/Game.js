@@ -115,7 +115,7 @@ class Game extends React.Component {
               <button
                 data-testid="btn-next"
                 type="button"
-                disabled={ isDisabled }
+                hidden={ isDisabled }
                 // onClick={ this.handleDisabled }
               >
                 PRÓXIMA
