@@ -65,7 +65,7 @@ class Game extends Component {
                       return (
                         <button
                           type="button"
-                          data-testid="correct_answer"
+                          data-testid="correct-answer"
                           key={ i }
                           disabled={ disabled }
                           className={ clicked ? 'correct-answer' : null }
@@ -78,16 +78,35 @@ class Game extends Component {
                     return (
                       <button
                         type="button"
-                        data-testid={ `wrong_answer-${i}` }
+                        data-testid={ `wrong-answer-${i}`}
                         key={ i }
                         disabled={ disabled }
                         className={ clicked ? 'wrong-answer' : null }
-                        onClick={ this.handleStyle }
+                        onClick= { this.handleStyle }
                       >
                         {question}
                       </button>
                     );
-                  }).sort(() => Math.random() - random)
+                  }
+                  // {
+                  //   APIQuestions[index]
+                  //     .incorrect_answers.concat(APIQuestions[index].correct_answer)
+                  //     .map((question, i) => (
+                  //       <button
+                  //         data-testid={
+                  //           APIQuestions[index].correct_answer === question
+                  //             ? 'correct-answer'
+                  //             : `wrong-answer-${i}`
+                  //         }
+                  //         key={ i }
+                  //         type="button"
+                  //       >
+                  //         {question}
+                  //       </button>
+                  //     ))
+                  //     .sort(() => Math.random() - random)
+                  // }
+                  ).sort(() => Math.random() - random)
               }
             </section>)}
       </section>
