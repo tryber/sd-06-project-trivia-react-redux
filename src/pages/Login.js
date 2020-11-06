@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUserInfo } from '../actions';
-import reqToken from '../services';
+import { reqToken } from '../services';
 
 class Login extends Component {
   constructor() {
