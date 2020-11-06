@@ -11,9 +11,8 @@ class QuestionCards extends Component {
 
     this.correctAnswer = this.correctAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    // this.timeQuestion = this.timeQuestion.bind(this);
-    // this.count = this.count.bind(this);
-    // this.clock = this.clock.bind(this);
+    this.clearInterval = this.clearInterval.bind(this);
+    this.createInterval = this.createInterval.bind(this);
 
     this.state = {
       currentIndex: 0,
@@ -21,28 +20,35 @@ class QuestionCards extends Component {
       incorrect: '',
       visibility: 'button-visibility',
       isDisabled: false,
-      time: 30,
+      time: 10,
     };
   }
 
   componentDidMount() {
+    this.createInterval();
+  }
+
+  componentDidUpdate() {
     const { time } = this.state;
-    // const time = 30000;
-    // const timeclear = 31000;
-    // setTimeout(this.timeQuestion, time);
-    // setTimeout(this.clock, timeclear);
-    const interval = 1000;
-    this.interval = setInterval(() => {
-      this.setState((prevState) => ({
-        time: prevState.time - 1,
-      }));
-    }, interval);
-    if(time === 0) {
-      this.setState({
-        isDisabled: true,
-      })
-      clearInterval(this.interval);
+    if (time === 0) {
+      this.clearInterval(this.interval);
     }
+  }
+
+  createInterval() {
+    const interval = 1000;
+    this.setState({
+      interval: setInterval(() => {
+        this.setState((prevState) => ({
+          time: prevState.time - 1,
+        }));
+      }, interval),
+    });
+  }
+
+  clearInterval() {
+    const { interval } = this.state;
+    clearInterval(interval);
   }
 
   correctAnswer() {
@@ -59,20 +65,11 @@ class QuestionCards extends Component {
       correct: '',
       incorrect: '',
       visibility: 'button-visibility',
-      time: 30,
+      time: 10,
     }));
+    this.clearInterval();
+    this.createInterval();
   }
-
-  // clock() {
-  //   clearInterval(this.interval);
-  // }
-
-  // timeQuestion() {
-  //   clearInterval(this.relogio);
-  //   this.setState({
-  //     isDisabled: true,
-  //   });
-  // }
 
   render() {
     const { questionCard } = this.props;
