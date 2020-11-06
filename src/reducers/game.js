@@ -16,7 +16,7 @@ const game = (state = INITIAL_STATE, action) => {
       score: action.score,
     };
   case RENDER_TIME:
-    return { ...state, timer: state.timer -1 }
+    return { ...state, timer: state.timer - 1 };
   default:
     return state;
   }

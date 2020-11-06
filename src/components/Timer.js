@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { renderTime } from '../actions';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 class Timer extends Component {
   componentDidMount() {
+    const oneSec = 1000;
     const { timeController } = this.props;
-    setInterval(() => timeController(), 1000)
+    setInterval(() => timeController(), oneSec);
   }
-
 
   render() {
     const { timer } = this.props;
