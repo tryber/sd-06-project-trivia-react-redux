@@ -1,15 +1,15 @@
 import { SAVE_TIME_LEFT } from '../actions';
 
 const initialState = {
-  secondsLeft: 30,
+  seconds: 30,
 };
 
 function timer(state = initialState, action) {
-  switch (action.state) {
+  switch (action.type) {
   case SAVE_TIME_LEFT:
     return {
-      ...state,
-      secondsLeft: action.seconds,
+      // ...state,
+      seconds: action.seconds,
     };
   default:
     return state;

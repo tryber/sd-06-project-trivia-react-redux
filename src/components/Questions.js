@@ -9,11 +9,13 @@ class Questions extends Component {
     this.state = {
       questionNumber: 0,
       timer: false,
+      // seconds: 0,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
     this.checkTimer = this.checkTimer.bind(this);
+    // this.startCount = this.startCount.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +26,7 @@ class Questions extends Component {
     if (seconds > 1) {
       this.myInterval = setInterval(() => {
         if (seconds > 0) seconds -= 1;
-        console.log(seconds);
+        // console.log(seconds);
         // aqui deveria salvar os segundos que faltam
         saveTime(seconds);
       }, interval);
@@ -65,7 +67,7 @@ class Questions extends Component {
   }
 
   handleAnswerStyle({ target }, difficulty) {
-    const { addScore, secondsLeft } = this.props;
+    const { addScore, secondsLeft, name, email } = this.props;
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
     wrongList.forEach((element) => {
@@ -81,7 +83,16 @@ class Questions extends Component {
       addScore(points);
       // salvar no local storage
       // falta recuperar, atualizar e enviar
-      console.log(JSON.parse(localStorage.getItem('state')));
+      const { score } = this.props;
+      const player = {
+        player: {
+          name,
+          assertions: '',
+          score: score + points,
+          gravatarEmail: email,
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(player));
     }
   }
 
@@ -158,7 +169,10 @@ class Questions extends Component {
 
 const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
-  secondsLeft: state.timer.secondsLeft,
+  secondsLeft: state.timer.seconds,
+  score: state.game.score,
+  name: state.user.name,
+  email: state.user.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -173,4 +187,7 @@ Questions.propTypes = {
   saveTime: PropTypes.func.isRequired,
   addScore: PropTypes.func.isRequired,
   secondsLeft: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
