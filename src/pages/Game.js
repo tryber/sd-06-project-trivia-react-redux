@@ -19,18 +19,12 @@ class Game extends React.Component {
     this.chooseAnswer = this.chooseAnswer.bind(this);
   }
 
-  componentDidMount() {
-    const { questions } = this.props;
-    console.log('ComponentDidMount: ', questions);
-  }
-
   chooseAnswer() {
     this.setState({ answered: true });
   }
 
   renderQuestions() {
     const { questions } = this.props;
-    console.log('questions: ', questions);
     const { questionNumber } = this.state;
     if (questions[questionNumber] === undefined) return null;
     return (
