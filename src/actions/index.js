@@ -9,6 +9,9 @@ export const sendToken = (token) => ({ type: TOKEN, token });
 export const QUESTIONS = 'QUESTIONS';
 export const sendQuestions = (questions) => ({ type: QUESTIONS, questions });
 
+export const SCORE = 'SCORE';
+export const sendScore = (score) => ({ type: SCORE, score });
+
 export function handleToken() {
   return async (dispatch) => {
     const tokenResponse = await fetchAPITrivia();
