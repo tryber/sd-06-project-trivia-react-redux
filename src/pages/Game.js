@@ -9,7 +9,7 @@ class Game extends Component {
     super();
 
     this.state = {
-      respondida: false,
+      // respondida: false,
       index: 0,
       results: [],
     };
@@ -37,8 +37,8 @@ class Game extends Component {
 
   render() {
     const { isFetching, APIQuestions } = this.props;
-    const { results, index } = this.state;
-    const questionArray = [];
+    const { index } = this.state;
+    
     const random = 0.5;
     return (
       <section className="game-container">
