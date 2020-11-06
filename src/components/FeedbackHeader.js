@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CryptoJs from 'crypto-js';
 import PropTypes from 'prop-types';
 
-export class FeedbackHeader extends Component {
+class FeedbackHeader extends Component {
   render() {
     const { name, email } = this.props;
     const hash = CryptoJs.MD5(email).toString();

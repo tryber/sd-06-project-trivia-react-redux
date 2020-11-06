@@ -2,7 +2,6 @@ import React from 'react';
 // import { Redirect } from 'react-router-dom';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
-import CryptoJs from 'crypto-js';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { fetchApiQuestions, fetchApiToken, playerName } from '../actions';
@@ -23,8 +22,6 @@ class Login extends React.Component {
   handleUserInfo() {
     const { name, email } = this.state;
     const { infoUser } = this.props;
-    const hash = CryptoJs.MD5(email).toString();
-    console.log(hash);
     infoUser(name, email);
   }
 
