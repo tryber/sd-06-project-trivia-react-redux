@@ -3,6 +3,7 @@ import { connect, Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
 import store from '../store';
+import Timer from '../components/timer';
 
 class Game extends Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ class Game extends Component {
     return (
       <Provider store={ store }>
         <Header />
+        <Timer />
       </Provider>
     );
   }

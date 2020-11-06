@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   payload: {
     name: '',
     score: 0,
+    timeout: false,
   },
 };
 
