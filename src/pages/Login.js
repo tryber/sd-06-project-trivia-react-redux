@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getSession } from '../services/api';
 
 import { fetchToken } from '../actions';
 
@@ -16,6 +17,7 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.inputValidate = this.inputValidate.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   handleChange({ target }) {
@@ -34,11 +36,20 @@ class Login extends React.Component {
     return this.setState({ disabled: true });
   }
 
+  async handleRedirect() {
+    await getSession()
+      .then((json) => json.token)
+      .then((token) => localStorage.setItem('token', token));
+    const { history } = this.props;
+    history.push('/game');
+    return <Redirect to="/game" />;
+  }
+
   render() {
-    const { disabled, user, email, redirect} = this.state;
+    const { disabled, user, email, redirect } = this.state;
     const { infoSave } = this.props;
     if (redirect === true) {
-      return <Redirect to="/game" />;
+      this.handleRedirect();
     }
     return (
       <div>
@@ -90,7 +101,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  infoSave: PropTypes.func.isRequired,
+  infoSave: propTypes.func.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
