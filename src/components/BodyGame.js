@@ -39,7 +39,7 @@ class BodyGame extends Component {
                 <button type="button" data-testid="correct-answer">
                   {question.correct_answer}
                 </button>
-                {question.incorrect_answers.map(((item, position) => (
+                {question.incorrect_answers.map((item, position) => (
                   <button
                     type="button"
                     key={ position }
@@ -47,7 +47,7 @@ class BodyGame extends Component {
                   >
                     {item}
                   </button>
-                )))}
+                ))}
               </div>
             </div>
           </div>
