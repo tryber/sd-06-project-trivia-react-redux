@@ -64,11 +64,22 @@ class Game extends React.Component {
                 <p data-testid="question-text">{element[index].question}</p>
               </div>
               <div className="answers">
-                <button data-testid="correct-answer" className="each-answer correct-answer" onClick={ this.correctAnswer }>
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                  className="each-answer correct-answer"
+                  onClick={ this.correctAnswer }
+                >
                   {element[index].correct_answer}
                 </button>
                 {element[index].incorrect_answers.map((answer, key) => (
-                  <button key={ key } className="each-answer wrong-answer" data-testid={ `wrong-answer-${key}` } onClick={ this.correctAnswer }>
+                  <button
+                    type="button"
+                    key={ key }
+                    className="each-answer wrong-answer"
+                    data-testid={ `wrong-answer-${key}` }
+                    onClick={ this.correctAnswer }
+                  >
                     {answer}
                   </button>
                 ))}
