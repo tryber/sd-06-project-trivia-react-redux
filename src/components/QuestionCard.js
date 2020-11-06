@@ -36,11 +36,20 @@ class QuestionCard extends Component {
         <div className="answers">
           <button
             data-testid="correct-answer"
+            className={ correct }
+            onClick={ this.handleClick }
             type="button"
           >
             { questions[0].correct_answer }
           </button>
           {questions[0].incorrect_answers.map((answer, index) => (
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              type="button"
+              key={ index }
+              className={ incorrect }
+              onClick={ this.handleClick }
+            >
               { answer }
             </button>
           ))}
