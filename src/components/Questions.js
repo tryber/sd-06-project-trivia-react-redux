@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import questionsAPI from '../services/questionAPI';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -7,8 +8,29 @@ class Questions extends React.Component {
 
     this.state = {
       buttonBorder: false,
+      questions: [{
+        category: '',
+        question: '',
+        incorrect_answers: [],
+        correct_answer: '',
+      }],
+
     };
     this.handleClick = this.handleClick.bind(this);
+    this.questionsGet = this.questionsGet.bind(this);
+  }
+
+  componentDidMount() {
+    this.questionsGet();
+  }
+
+  async questionsGet() {
+    const tokenLocal = localStorage.getItem('token');
+    const questionsReturn = await questionsAPI(tokenLocal);
+    console.log('retorno do fetch de perguntas', questionsReturn);
+    this.setState({
+      questions: questionsReturn,
+    });
   }
 
   handleClick() {
@@ -19,7 +41,7 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { buttonBorder } = this.state;
+    const { buttonBorder, questions } = this.state;
     return (
       <div>
         <div className="gamepage-questions">
@@ -28,10 +50,10 @@ class Questions extends React.Component {
             className="question-category"
           >
             Categoria:
+            <p>
+              {questions[0].category}
+            </p>
             <br />
-            <span>
-              Frontend
-            </span>
           </div>
           <div
             data-testid="question-text"
@@ -39,12 +61,25 @@ class Questions extends React.Component {
           >
             Pergunta:
             <br />
-            <span>
-              Tiago é o melhor dev de CSS da Trybe?
-            </span>
+            <div>
+              {questions[0].question}
+            </div>
           </div>
         </div>
         <div className="gamepage-answer">
+          {questions[0].incorrect_answers.map((result) => (
+            <div key={ result }>
+              <button
+                className={ !buttonBorder ? 'none-answer' : 'wrong-answer' }
+                onClick={ this.handleClick }
+                data-testid="wrong-answer-0"
+                type="button"
+                disabled={ buttonBorder }
+              >
+                {result}
+              </button>
+            </div>
+          ))}
           <button
             className={ !buttonBorder ? 'none-answer' : 'correct-answer' }
             onClick={ this.handleClick }
@@ -52,16 +87,7 @@ class Questions extends React.Component {
             type="button"
             disabled={ buttonBorder }
           >
-            true
-          </button>
-          <button
-            className={ !buttonBorder ? 'none-answer' : 'wrong-answer' }
-            onClick={ this.handleClick }
-            data-testid="wrong-answer-0"
-            type="button"
-            disabled={ buttonBorder }
-          >
-            false
+            {questions[0].correct_answer}
           </button>
           <Link to="/feedback">
             <button
