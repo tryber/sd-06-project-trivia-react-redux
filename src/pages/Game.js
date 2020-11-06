@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
+import { addScore } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -10,7 +11,6 @@ class Game extends React.Component {
     this.getQuestions = this.getQuestions.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleStorage = this.handleStorage.bind(this);
     this.state = {
       questions: [],
       seconds: '30',
@@ -20,7 +20,6 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    this.handleStorage();
     const maximumTime = 30000;
     const { userToken } = this.props;
     const questions = await fetchQuestions(userToken);
@@ -37,6 +36,7 @@ class Game extends React.Component {
 
   handleClick({ target }) {
     const { points, seconds, difficulty } = this.state;
+    const { scoreAdd, userName } = this.props;
     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
     const correctClass = correctButton.className;
@@ -51,13 +51,26 @@ class Game extends React.Component {
       });
     }
     if (target.className.includes('correct-answer')) {
+      if (!localStorage.player) {
+        localStorage.setItem('player', JSON.stringify({
+          name: userName,
+          score: 0,
+        }));
+      }
+      const newScore = Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty)));
       this.setState({
-        points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
+        points: newScore,
       });
-      const { score } = localStorage;
-      localStorage.setItem('score',
-        Number(score) + (Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))))
-      );
+      scoreAdd(newScore);
+      const player = JSON.parse(localStorage.getItem('player'));
+      let { score } = player;
+      score = Number(score) + (Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))));
+
+      const updatedPlayer = {
+        ...player,
+        score,
+      };
+      localStorage.player = JSON.stringify(updatedPlayer);
     }
   }
 
@@ -97,20 +110,10 @@ class Game extends React.Component {
     }, interval);
   }
 
-  handleStorage() {
-    const { userName } = this.props;
-    if (!localStorage.player) {
-      localStorage.setItem('player', JSON.stringify({
-        name: userName,
-        score: 0,
-      }));
-    }
-  }
-
   render() {
-    const { questions, seconds } = this.state;
-    const player = JSON.parse(localStorage.player);
-    const { score, name } = player;
+    const { questions, seconds, points } = this.state;
+    //const player = JSON.parse(localStorage.getItem('player'));
+    const { userName } = this.props;
     return (
       <div className="game-container">
         {questions.map((element, index) => (
@@ -126,14 +129,14 @@ class Game extends React.Component {
                   />
                   <p data-testid="header-player-name">
                     Jogador:
-                    <span>{name}</span>
+                    { userName ? <span>{userName}</span> : <span>Rodrigo Leite</span>}
                   </p>
                 </div>
               </div>
               <h1 className="score">
                 <p data-testid="header-score">
                   Placar
-                  <span>{ score }</span>
+                  <span>{ points }</span>
                 </p>
               </h1>
             </header>
@@ -184,7 +187,12 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   userToken: state.user.token,
-  userName: state.user.user,
+  userName: state.user.player.name,
+  scoreAdd: state.user.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  scoreAdd: (score) => dispatch(addScore(score)),
 });
 
 Game.propTypes = {
@@ -192,4 +200,4 @@ Game.propTypes = {
   userName: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
