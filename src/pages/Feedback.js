@@ -6,6 +6,7 @@ class Feedback extends React.Component {
     return (
       <div>
         <Header />
+        <button type="button" data-testid="btn-next">Next</button>
       </div>
     );
   }
