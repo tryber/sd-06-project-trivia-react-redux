@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 // import { fetchAPIQuestions } from '../services';
+import ReactDOM from 'react-dom';
+import NextButton from './NextButton';
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
 
     this.state = {
       questions: [],
@@ -39,6 +42,11 @@ class Questions extends Component {
     }
   }
 
+  renderNextButton() {
+    const nextButton = <NextButton />;
+    ReactDOM.render(nextButton, document.getElementById('mae'));
+  }
+
   render() {
     const { questions, loading } = this.state;
     const randomNumber = 0.5;
@@ -47,7 +55,7 @@ class Questions extends Component {
       return <h1>Carregando...</h1>;
     }
     return (
-      <div>
+      <div id="mae">
         <p data-testid="question-category">{questions[1].category}</p>
         <p data-testid="question-text">{questions[1].question}</p>
         {questions[1].answers.map((answer, index) => {
@@ -57,6 +65,7 @@ class Questions extends Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ answer }
+                onClick={ this.renderNextButton }
               >
                 {answer}
               </button>);
@@ -66,6 +75,7 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
+              onClick={ this.renderNextButton }
             >
               {answer}
             </button>);

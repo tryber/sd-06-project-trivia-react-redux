@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
+// import NextButton from '../components/NextButton';
 
 class Game extends Component {
   render() {
@@ -8,6 +9,7 @@ class Game extends Component {
       <div>
         <Header />
         <Questions />
+        {/* <NextButton /> */}
       </div>
     );
   }
