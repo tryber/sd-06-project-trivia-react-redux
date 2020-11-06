@@ -27,7 +27,6 @@ class Questions extends React.Component {
   async questionsGet() {
     const tokenLocal = localStorage.getItem('token');
     const questionsReturn = await questionsAPI(tokenLocal);
-    console.log('retorno do fetch de perguntas', questionsReturn);
     this.setState({
       questions: questionsReturn,
     });
