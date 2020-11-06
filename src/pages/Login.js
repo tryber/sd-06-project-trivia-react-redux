@@ -39,7 +39,7 @@ class FormLogin extends React.Component {
     const stateInicial = {
       player: {
         name: Nome,
-        gravataEmail: Email,
+        gravatarEmail: Email,
         assertions: 0,
         score: 0,
       },
