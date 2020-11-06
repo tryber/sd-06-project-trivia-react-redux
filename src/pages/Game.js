@@ -10,6 +10,7 @@ class Game extends React.Component {
     this.getQuestions = this.getQuestions.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleStorage = this.handleStorage.bind(this);
     this.state = {
       questions: [],
       seconds: '30',
@@ -19,6 +20,7 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
+    this.handleStorage();
     const maximumTime = 30000;
     const { userToken } = this.props;
     const questions = await fetchQuestions(userToken);
@@ -52,6 +54,10 @@ class Game extends React.Component {
       this.setState({
         points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
       });
+      const { score } = localStorage;
+      localStorage.setItem('score',
+        Number(score) + (Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))))
+      );
     }
   }
 
@@ -91,9 +97,20 @@ class Game extends React.Component {
     }, interval);
   }
 
-  render() {
-    const { questions, seconds, points } = this.state;
+  handleStorage() {
     const { userName } = this.props;
+    if (!localStorage.player) {
+      localStorage.setItem('player', JSON.stringify({
+        name: userName,
+        score: 0,
+      }));
+    }
+  }
+
+  render() {
+    const { questions, seconds } = this.state;
+    const player = JSON.parse(localStorage.player);
+    const { score, name } = player;
     return (
       <div className="game-container">
         {questions.map((element, index) => (
@@ -109,14 +126,14 @@ class Game extends React.Component {
                   />
                   <p data-testid="header-player-name">
                     Jogador:
-                    <span>{userName}</span>
+                    <span>{name}</span>
                   </p>
                 </div>
               </div>
               <h1 className="score">
                 <p data-testid="header-score">
                   Placar
-                  <span>{points}</span>
+                  <span>{ score }</span>
                 </p>
               </h1>
             </header>
