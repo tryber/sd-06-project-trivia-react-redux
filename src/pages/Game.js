@@ -18,6 +18,7 @@ class Game extends React.Component {
       points: '0',
       difficulty: '1',
       btnDisable:false,
+      indexOfQuestions:0,
     };
   }
 
