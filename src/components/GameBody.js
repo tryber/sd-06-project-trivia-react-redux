@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { thunkQuestions } from '../actions';
+import Timer from './Timer';
 
 class GameBody extends React.Component {
   constructor() {
@@ -9,9 +10,11 @@ class GameBody extends React.Component {
     this.state = {
       index: 0,
       answers: [],
+      renderTimer: false,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
+    this.handleTimer = this.handleTimer.bind(this);
   }
 
   async componentDidMount() {
@@ -20,10 +23,19 @@ class GameBody extends React.Component {
     this.createQuestions();
   }
 
-  createQuestions(index = 0) {
+  handleTimer() {
+    const { renderTimer } = this.state;
+    if (renderTimer === false) {
+      this.setState({ renderTimer: true });
+    } else if (renderTimer === true) {
+      this.setState({ renderTimer: false });
+    }
+  }
+
+  async createQuestions(index = 0) {
     const { questions } = this.props;
     const answersArray = [];
-
+    await this.handleTimer();
     if (questions.length > 0) {
       const question = questions[index];
       answersArray.push(question.correct_answer, ...question.incorrect_answers);
@@ -39,7 +51,8 @@ class GameBody extends React.Component {
     }
   }
 
-  handleNext() {
+  async handleNext() {
+    await this.handleTimer();
     const { questions } = this.props;
     let { index } = this.state;
     index += 1;
@@ -49,7 +62,7 @@ class GameBody extends React.Component {
   }
 
   render() {
-    const { category, question, correctAnswer, answers } = this.state;
+    const { category, question, correctAnswer, answers, renderTimer } = this.state;
     const randomNumber = 0.5;
 
     let renderTest = '';
@@ -92,6 +105,9 @@ class GameBody extends React.Component {
         >
           Next
         </button>
+        <div>
+          {renderTimer === true ? <Timer /> : null}
+        </div>
       </div>
     );
   }
