@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
-import user from '../reducers/user';
 
 class Game extends React.Component {
   constructor() {
@@ -34,9 +33,9 @@ class Game extends React.Component {
     });
   }
 
-  handleClick({target}) {
-     const { points, seconds, difficulty } = this.state;
-     const ten = 10;
+  handleClick({ target }) {
+    const { points, seconds, difficulty } = this.state;
+    const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
     const correctClass = correctButton.className;
     const wrongButton = document.querySelectorAll('.wrong-answer');
@@ -112,11 +111,17 @@ class Game extends React.Component {
                     src={ profile }
                     width="120"
                   />
-                  <p data-testid="header-player-name">Nome da pessoa: {userName}</p>
+                  <p data-testid="header-player-name">
+                    Nome da pessoa:
+                    <span>{userName}</span>
+                  </p>
                 </div>
               </div>
               <h1 className="score">
-                <p data-testid="header-score">Placar {points}</p>
+                <p data-testid="header-score">
+                  Placar
+                  <span>{points}</span>
+                </p>
               </h1>
             </header>
             <div className="questions-answers-container">
@@ -171,6 +176,7 @@ const mapStateToProps = (state) => ({
 
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Game);

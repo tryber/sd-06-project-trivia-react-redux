@@ -150,7 +150,7 @@ body {
   align-items: center;
   margin: 0 auto;
   background-color: rgb(141, 136, 136);
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 2px solid rgba(0, 0, 0, 0.525);
   border-radius: 3px;
   height: 85%;
   width: 85%;
@@ -201,6 +201,10 @@ body {
   margin-right: 25px;
 }
 
+.profile-rightside span {
+  margin-left: 15px;
+}
+
 .score {
   display: flex;
   justify-content: center;
@@ -211,6 +215,10 @@ body {
 .score p {
  margin-right: 30px;
 }
+
+.score span {
+  margin-left: 20px;
+ }
 
 .questions-answers-container {
   width: 100%;
