@@ -2,38 +2,61 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestion } from '../actions';
-import { QuestionCard } from '../components';
-import Header from '../components/Header';
+import { QuestionCard, Header } from '../components';
 
 class Questions extends React.Component {
+  constructor() {
+    super();
+
+    this.updateStates = this.updateStates.bind(this);
+
+    this.state = {
+      questions: [],
+      isFetching: true,
+    };
+  }
+
   async componentDidMount() {
-    const { token, requestQuestion } = this.props;
-    await requestQuestion(token);
+    const { token, requestQuestions } = this.props;
+    await requestQuestions(token);
+    this.updateStates();
+  }
+
+  updateStates() {
+    const { questions } = this.props;
+    this.setState({
+      questions: [...questions],
+      isFetching: false,
+    });
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, isFetching } = this.state;
     return (
       <div>
         <Header />
-        <QuestionCard question={ questions } />
+        {isFetching ? (
+          <p>Loading...</p>
+        ) : (
+          <QuestionCard question={ questions[0] } />
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  token: state.userLogin.token.token,
+  token: state.userLogin.token,
   questions: state.questions.questions.results,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestQuestion: (token) => dispatch(fetchQuestion(token)),
+  requestQuestions: (token) => dispatch(fetchQuestion(token)),
 });
 
 Questions.propTypes = {
   token: PropTypes.string.isRequired,
-  requestQuestion: PropTypes.func.isRequired,
+  requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.shape({}).isRequired,
 };
 

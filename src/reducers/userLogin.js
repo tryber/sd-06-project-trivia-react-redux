@@ -11,7 +11,7 @@ export default function (state = INITIAL_STATE, action) {
   case LOGIN:
     return { ...state,
       email: action.email,
-      token: action.token,
+      token: action.token.token,
       playerName: action.playerName };
   default:
     return state;

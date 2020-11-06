@@ -21,19 +21,16 @@ const fetchToken = async () => {
 };
 
 const fetchQuestionsFromAPI = async (token) => {
+  console.log(token);
   const questionsData = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
   const questionsJSON = await questionsData.json();
-  const RESPONSE_CODE_TOKEN_EXPIRED = 3;
-  if (questionsJSON.response_code === RESPONSE_CODE_TOKEN_EXPIRED) {
-    const newToken = await fetchToken();
-    const newQuestionsData = await fetch(`https://opentdb.com/api.php?amount=5&token=${newToken}`);
-    const newQuestionsJSON = await newQuestionsData.json();
-    localStorage.setItem('question', JSON.stringify(newQuestionsJSON));
-    return newQuestionsJSON;
-  }
   localStorage.setItem('question', JSON.stringify(questionsJSON));
   return questionsJSON;
 };
+
+// const fetchTokenFromLocalStorage = () => {
+//   return JSON.parse(localStorage.getItem('token').token);
+// };
 
 export function fetchTokenAndLogin(email, playerName) {
   return async (dispatch) => {
