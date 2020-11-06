@@ -11,7 +11,7 @@ class Game extends Component {
     this.state = {
       // respondida: false,
       index: 0,
-      results: [],
+      // results: [],
     };
 
     // this.setQuestion = this.setQuestion.bind(this);
