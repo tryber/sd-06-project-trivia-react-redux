@@ -1,42 +1,106 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions } from '../actions';
 import Header from '../components/Header';
+import '../css/Game.css';
 
 class Game extends React.Component {
-  componentDidMount() {
-    const { getAPIQuestions } = this.props;
-    getAPIQuestions();
+  constructor() {
+    super();
+
+    this.state = {
+      questionNumber: 0,
+      answered: false,
+    };
+
+    this.renderAnswers = this.renderAnswers.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
+    this.chooseAnswer = this.chooseAnswer.bind(this);
+  }
+
+  chooseAnswer() {
+    this.setState({ answered: true });
+  }
+
+  renderQuestions() {
+    const { questions } = this.props;
+    const { questionNumber } = this.state;
+    return (
+      <div>
+        <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
+        <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
+      </div>
+    );
+  }
+
+  renderAnswers() {
+    const { questionNumber, answered } = this.state;
+    const { chooseAnswer } = this;
+    const { questions } = this.props;
+    const correctAnswerPosition = Math
+      .floor(Math
+        .random() * questions[questionNumber].incorrect_answers.length + 1);
+    const answers = questions[questionNumber].incorrect_answers;
+
+    if (!answered) {
+      answers.splice(correctAnswerPosition, 0, questions[questionNumber].correct_answer);
+    }
+
+    return (
+      <div>
+        {
+          answers.map((answer, index) => {
+            if (answer === questions[questionNumber].correct_answer) {
+              return (
+                <button
+                  className={ answered ? 'correct-answer' : null }
+                  type="button"
+                  onClick={ chooseAnswer }
+                  data-testid="correct-answer"
+                  key={ index }
+                >
+                  { answer }
+                </button>
+              );
+            }
+            return (
+              <button
+                className={ answered ? 'wrong-answer' : null }
+                type="button"
+                onClick={ chooseAnswer }
+                data-testid={ `wrong-answer-${index}` }
+                key={ index }
+              >
+                { answer }
+              </button>
+            );
+          })
+        }
+      </div>
+    );
   }
 
   render() {
-    const index = 0;
+    const { renderAnswers, renderQuestions } = this;
+
     return (
       <div>
         <div>
           <Header />
         </div>
-        <div>
-          <div data-testid="question-category">Category</div>
-          <div data-testid="question-text">Question</div>
-        </div>
-        <div>
-          alternatives
-          <button type="button" data-testid="correct-answer">true</button>
-          <button type="button" data-testid={ `wrong-answer-${index}` }>false</button>
-        </div>
+        { renderQuestions() }
+        { renderAnswers() }
       </div>
     );
   }
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  getAPIQuestions: () => dispatch(fetchQuestions()),
+// fiz refatoração do parâmetro da função para ficar legível
+const mapStateToProps = (state) => ({
+  questions: state.game.questions,
 });
 
 Game.propTypes = {
-  getAPIQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, null)(Game);
