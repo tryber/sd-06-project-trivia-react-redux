@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import user from '../actions';
+import { user, questionsAction } from '../actions';
 import getToken from '../service/API';
 import '../styles/Login.css';
 import music from '../styles/audio/music.mp3';
@@ -11,6 +11,7 @@ class Login extends React.Component {
     this.checkButton = this.checkButton.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.fetchQuestions = this.fetchQuestions.bind(this);
     this.state = {
       buttonDisable: true,
       name: '',
@@ -18,18 +19,33 @@ class Login extends React.Component {
     };
   }
 
-  onClick(event) {
+  async onClick(event) {
     event.preventDefault();
     const { email, name } = this.state;
     const { setUser, history } = this.props;
     setUser(email, name);
-    this.fetchToken();
+    await this.fetchToken();
     history.push('/game');
   }
 
   async fetchToken() {
     const responseAPI = await getToken();
     localStorage.setItem('token', JSON.stringify(responseAPI));
+    await this.fetchQuestions();
+  }
+
+  async fetchQuestions() {
+    const localToken = JSON.parse(localStorage.getItem('token')).token;
+    const questionsAPI = await fetch(`https://opentdb.com/api.php?amount=5&token=${localToken}`);
+    const questions = await questionsAPI.json();
+    const { history, setQuestions } = this.props;
+    if (questions.response_code === 3) {
+      localStorage.removeItem('token');
+      window.alert('Erro');
+      history.push('/');
+    } else {
+        setQuestions(questions.results);
+    }
   }
 
   checkButton() {
@@ -99,7 +115,8 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setUser: (email, name) => dispatch(user(email, name))
+  setUser: (email, name) => dispatch(user(email, name)),
+  setQuestions: (questionsArray) => dispatch(questionsAction(questionsArray)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
