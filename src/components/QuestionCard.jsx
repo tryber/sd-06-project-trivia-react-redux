@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './CSS/QuestionCardCSS.css';
+import { NextButton } from './NextButton';
 
 export default class QuestionCard extends Component {
   constructor() {
@@ -100,6 +101,9 @@ export default class QuestionCard extends Component {
                 </button>
               );
             })}
+            <div className="next-button">
+              { !answersBorderActive ? null : <NextButton /> }
+            </div>
           </div>
         </div>
       </div>
