@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
+import loading from '../image/loading.gif';
 import './questionCards.css';
 
 class QuestionCards extends Component {
@@ -57,7 +58,7 @@ class QuestionCards extends Component {
                 ))}
               </div>
             </div>
-          ) : <p>não deu certo</p>}
+          ) : <img src={ loading } alt="loading-api" />}
       </div>
     );
   }
