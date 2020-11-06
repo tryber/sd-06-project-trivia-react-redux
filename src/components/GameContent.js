@@ -103,6 +103,25 @@ class GameContent extends React.Component {
     return this.setState({ sort: array });
   }
 
+  renderNextButton() {
+    const { btnDisabled, results, current } = this.state;
+    const maxAnswers = 5;
+    if (results.length < maxAnswers) {
+      return (
+        <button
+          disabled={ !btnDisabled }
+          type="button"
+          onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
+          data-testid="btn-next"
+        >
+          Proxima pergunta
+        </button>
+      );
+    } return (
+      <span>No more questions</span>
+    );
+  }
+
   render() {
     const { element,
       current, isLoading, answer, sort, results, btnDisabled, counter } = this.state;
@@ -150,14 +169,7 @@ class GameContent extends React.Component {
         <div className="counter">
           {!btnDisabled && <span>{counter}</span>}
         </div>
-        <button
-          disabled={ !btnDisabled }
-          type="button"
-          onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
-          data-testid="btn-next"
-        >
-          Proxima pergunta
-        </button>
+        {this.renderNextButton()}
       </div>
     );
   }
