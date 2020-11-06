@@ -9,9 +9,11 @@ class GameBody extends React.Component {
     this.state = {
       index: 0,
       answers: [],
+      isCorrect: false,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
+    this.changeColor = this.changeColor.bind(this);
   }
 
   async componentDidMount() {
@@ -46,18 +48,39 @@ class GameBody extends React.Component {
     if (questions.length > 0 && index < questions.length) {
       this.createQuestions(index);
     }
+    this.setState({
+      isCorrect: false,
+    });
+  }
+
+  changeColor() {
+    this.setState({
+      isCorrect: true,
+    });
   }
 
   render() {
-    const { category, question, correctAnswer, answers } = this.state;
+    const { category, question, correctAnswer, answers, isCorrect } = this.state;
     const randomNumber = 0.5;
 
     let renderTest = '';
     if (answers.length === 0) {
       renderTest = (
         <div>
-          <div data-testid="correct-answer" />
-          <div data-testid="wrong-answer" />
+          <button
+            type="button"
+            data-testid="correct-answer"
+            className="buttonCorrect"
+          >
+            .
+          </button>
+          <button
+            type="button"
+            data-testid="wrong-answer"
+            className="buttonIncorrect"
+          >
+            .
+          </button>
         </div>);
     }
 
@@ -71,8 +94,10 @@ class GameBody extends React.Component {
             return (
               <button
                 type="button"
+                className={ isCorrect ? 'buttonCorrect' : '' }
                 key={ answer }
                 data-testid="correct-answer"
+                onClick={ () => this.changeColor() }
               >
                 { answer }
               </button>);
@@ -80,12 +105,16 @@ class GameBody extends React.Component {
           return (
             <button
               type="button"
+              className={ isCorrect ? 'buttonIncorrect' : '' }
               key={ answer }
               data-testid={ `wrong-answer-${index - 1}` }
+              onClick={ () => this.changeColor() }
             >
               { answer }
             </button>);
         }).sort(() => Math.random() - randomNumber) }
+        <br />
+        <br />
         <button
           type="button"
           onClick={ () => this.handleNext() }
