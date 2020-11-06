@@ -109,6 +109,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   requestToken: PropTypes.func.isRequired,
+  loginSucess: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
