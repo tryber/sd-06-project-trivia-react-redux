@@ -1,4 +1,4 @@
-import { USER } from "../actions";
+import { USER } from '../actions';
 
 const INITIAL_STATE = { token: '' };
 const TOKEN = 'TOKEN';
