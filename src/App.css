@@ -2,3 +2,94 @@
   max-width: 300px;
   max-height: 300px;
 }
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 100px 100px;
+}
+.gamepage-container  {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 100px 100px;
+  border: 1px solid black;
+}
+
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer {
+  border: 3px solid rgb(255, 0, 0);
+}
+
+.none-answer {
+  border: none;
+}
+
+.gamepage-header {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 10px;
+  align-items: center;
+  justify-content:space-between;
+}
+
+.gamepage-header img {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.gamepage-header p{
+  margin-right: 50px;
+}
+
+.gamepage-questions {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  margin:30px;
+  margin-left: 10px;
+  max-width: 150px;
+  padding: 20px 10px;
+  background-color: rgb(240, 240, 240);
+}
+
+.question-category {
+  background-color: rgb(210, 210, 210);
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.question-category span{
+  background-color:  rgb(210, 210, 210);
+  font-weight: 300;
+}
+
+.question-text {
+  background-color: rgb(160, 160, 160);
+  font-weight: 800;
+}
+
+.question-text span{
+  background-color: rgb(160, 160, 160);
+  font-weight: 300;
+}
+
+.gamepage-answer {
+  display: flex;
+  flex-direction: column;
+  float: right;
+  margin:30px;
+  margin-right: 10px;
+}
+
+.gamepage-answer button{
+  margin-top: 10px;
+}
