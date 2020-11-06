@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { fetchToken } from '../actions';
@@ -12,6 +12,7 @@ class Login extends React.Component {
       email: '',
       user: '',
       disabled: true,
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.inputValidate = this.inputValidate.bind(this);
@@ -34,8 +35,11 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disabled, user, email } = this.state;
+    const { disabled, user, email, redirect} = this.state;
     const { infoSave } = this.props;
+    if (redirect === true) {
+      return <Redirect to="/game" />;
+    }
     return (
       <div>
         <label htmlFor="user">
@@ -58,16 +62,14 @@ class Login extends React.Component {
           />
         </label>
         <br />
-        <Link to="/game">
-          <button
-            disabled={ disabled }
-            type="button"
-            data-testid="btn-play"
-            onClick={ () => infoSave(user, email) }
-          >
-            Entrar
-          </button>
-        </Link>
+        <button
+          disabled={ disabled }
+          type="button"
+          data-testid="btn-play"
+          onClick={ () => infoSave(user, email) && this.setState({ redirect: true }) }
+        >
+          Entrar
+        </button>
         <br />
         <Link to="/settings">
           <button
