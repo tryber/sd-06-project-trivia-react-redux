@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
@@ -19,6 +20,7 @@ class BodyGame extends Component {
       score: 0,
       counter: 30,
       questionIndex: 0,
+      redirect: false,
     };
   }
 
@@ -124,14 +126,22 @@ class BodyGame extends Component {
 
   handleQuestionIndex() {
     const { questionIndex } = this.state;
-    this.setState({ questionIndex: questionIndex + 1 });
+    const lastQuestion = 4;
+    if (questionIndex === lastQuestion) {
+      this.setState({ redirect: true });
+    }
+    this.setState({
+      questionIndex: questionIndex + 1,
+      counter: 30,
+    });
   }
 
   render() {
     const { questions } = this.props;
-    const { isDisabled, counter, questionIndex } = this.state;
+    const { isDisabled, counter, questionIndex, redirect } = this.state;
     return (
       <div className="container">
+        {redirect ? <Redirect to="/feedback" /> : null}
         {questions.map((question, index) => (
           <div key={ index }>
             <div className="box-question">
