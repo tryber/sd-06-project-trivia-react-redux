@@ -1,6 +1,7 @@
 import { GET_QUESTIONS, REQUEST_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
+  results: [],
   isFetching: false,
 };
 
