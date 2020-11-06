@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import Timer from './Timer';
 import './Questions.css';
+import NextButton from './NextButton';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
+    this.disableButtons = this.disableButtons.bind(this);
     this.addClass = this.addClass.bind(this);
 
     this.state = {
       questions: [],
       loading: true,
       checked: false,
+      disable: false,
     };
   }
 
   componentDidMount() {
+    const TIMES = 30000;
     this.fetchAPIQuestions();
+    setTimeout(() => this.disableButtons(), TIMES);
   }
 
   async fetchAPIQuestions() {
@@ -42,6 +48,10 @@ class Questions extends Component {
     }
   }
 
+  disableButtons() {
+    this.setState({ disable: true });
+  }
+
   addClass() {
     this.setState({
       checked: true,
@@ -49,12 +59,15 @@ class Questions extends Component {
   }
 
   render() {
-    const { questions, loading, checked } = this.state;
+    const { questions, loading, checked, disable } = this.state;
     const randomNumber = 0.5;
+    const nextButton = <NextButton />;
+    const renderNextButton = checked ? nextButton : null;
 
     if (loading) {
       return <h1>Carregando...</h1>;
     }
+
     return (
       <div>
         <p data-testid="question-category">{questions[1].category}</p>
@@ -67,6 +80,7 @@ class Questions extends Component {
                 data-testid="correct-answer"
                 key={ answer }
                 onClick={ this.addClass }
+                disabled={ disable }
                 className={ checked ? 'correctAnswer' : null }
               >
                 {answer}
@@ -78,11 +92,16 @@ class Questions extends Component {
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
               onClick={ this.addClass }
+              disabled={ disable }
               className={ checked ? 'incorrectAnswer' : null }
             >
               {answer}
             </button>);
         }).sort(() => Math.random() - randomNumber)}
+        <Timer />
+        <div>
+          {renderNextButton}
+        </div>
       </div>
     );
   }
