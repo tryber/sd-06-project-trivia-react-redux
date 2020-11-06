@@ -8,13 +8,14 @@ class Questions extends Component {
     this.state = {
       questionNumber: 0,
       disableBTN: false,
-      questions: [],
+      shuffledQuestions: [],
       shuffled: false,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
+    this.shuffle = this.shuffle.bind(this);
   }
 
   changeToNextQuestion() {
@@ -24,6 +25,7 @@ class Questions extends Component {
     this.setState({
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
+      shuffled: false,
     });
 
     const wrongList = document.querySelectorAll('.wrong-question');
@@ -37,9 +39,20 @@ class Questions extends Component {
     }
   }
 
-  shuffle(array) {
+  shuffle() {
+    const { gameQuestions } = this.props;
+    const { questionNumber } = this.state;
     const magic = 0.5;
-    return array.sort(() => Math.random() - magic);
+    if (gameQuestions) {
+      const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
+      const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
+      const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
+      const newArr = questionsArray.sort(() => Math.random() - magic);
+      this.setState({
+        shuffled: true,
+        shuffledQuestions: newArr,
+      });
+    }
   }
 
   handleAnswerStyle({ target }) {
@@ -59,23 +72,18 @@ class Questions extends Component {
 
   handleQuestions() {
     const { gameQuestions } = this.props;
-    const { questionNumber, disableBTN } = this.state;
+    const { questionNumber, disableBTN, shuffledQuestions, shuffled } = this.state;
     const initialIndex = -1;
     let answerIndex = initialIndex;
-
-    if (gameQuestions) {
+    if (shuffled && shuffledQuestions) {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
-      const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
-      const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
-      const newArr = this.shuffle(questionsArray);
-
       return (
         <div>
           <h4 data-testid="question-category">
             {gameQuestions[questionNumber].category}
           </h4>
           <p data-testid="question-text">{gameQuestions[questionNumber].question}</p>
-          {newArr.map((question) => {
+          {shuffledQuestions.map((question) => {
             if (question === CORRECT_ANSWER) {
               return (
                 <button
@@ -111,6 +119,14 @@ class Questions extends Component {
   }
 
   render() {
+
+    const { shuffled } = this.state;
+    const { gameQuestions } = this.props;
+
+    if(!shuffled && gameQuestions) {
+      this.shuffle();
+    }
+
     return (
       <div>
         {this.handleQuestions()}
