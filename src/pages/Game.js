@@ -19,6 +19,7 @@ class Game extends Component {
       isLoading: true,
       nextButtonClass: 'button-invisible',
       answerColor: false,
+      score: 0,
     };
   }
 
@@ -67,16 +68,18 @@ class Game extends Component {
       const { history } = this.props;
       history.push('/feedback');
     }
-    this.setState({ index });
+    this.setState({ index, answerColor: false });
   }
 
   handleClick({ target }) {
     this.setState({ nextButtonClass: 'button-visible' });
     const { id } = target;
     if (id === 'correct-answer') {
-      this.setState({
+      this.setState((corentState) => ({
+        ...corentState,
         answerColor: true,
-      });
+        score: corentState.score + 1,
+      }));
     } else {
       this.setState({
         answerColor: true,

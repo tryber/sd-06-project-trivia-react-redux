@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
-import { saveToken, saveName } from '../actions';
+import { saveToken, saveName, saveEmail } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -51,6 +51,21 @@ class Login extends React.Component {
 
     const { userName } = this.state;
     dispatchSaveName(userName);
+
+    const { email } = this.state;
+    const { dispatchSaveEmail } = this.props;
+    dispatchSaveEmail(email);
+
+    const object = {
+      player: {
+        name: 'nome',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: 'nome@nome.com',
+      },
+    };
+    const stringfiedObjetc = JSON.stringify(object);
+    localStorage.setItem('state', stringfiedObjetc);
   }
 
   render() {
@@ -108,11 +123,13 @@ class Login extends React.Component {
 Login.propTypes = {
   dispatchSaveToken: propTypes.func.isRequired,
   dispatchSaveName: propTypes.func.isRequired,
+  dispatchSaveEmail: propTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveToken: (token) => dispatch(saveToken(token)),
   dispatchSaveName: (name) => dispatch(saveName(name)),
+  dispatchSaveEmail: (gravatarEmail) => dispatch(saveEmail(gravatarEmail)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
