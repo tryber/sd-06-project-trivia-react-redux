@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import Timer from './Timer';
 import './Questions.css';
+import NextButton from './NextButton';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
@@ -10,6 +11,7 @@ class Questions extends Component {
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
     this.disableButtons = this.disableButtons.bind(this);
     this.addClass = this.addClass.bind(this);
+
     this.state = {
       questions: [],
       loading: true,
@@ -59,9 +61,13 @@ class Questions extends Component {
   render() {
     const { questions, loading, checked, disable } = this.state;
     const randomNumber = 0.5;
+    const nextButton = <NextButton />;
+    const renderNextButton = checked ? nextButton : null;
+
     if (loading) {
       return <h1>Carregando...</h1>;
     }
+
     return (
       <div>
         <p data-testid="question-category">{questions[1].category}</p>
@@ -73,8 +79,8 @@ class Questions extends Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ answer }
-                disabled={ disable }
                 onClick={ this.addClass }
+                disabled={ disable }
                 className={ checked ? 'correctAnswer' : null }
               >
                 {answer}
@@ -85,14 +91,17 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
-              disabled={ disable }
               onClick={ this.addClass }
+              disabled={ disable }
               className={ checked ? 'incorrectAnswer' : null }
             >
               {answer}
             </button>);
         }).sort(() => Math.random() - randomNumber)}
         <Timer />
+        <div>
+          {renderNextButton}
+        </div>
       </div>
     );
   }
