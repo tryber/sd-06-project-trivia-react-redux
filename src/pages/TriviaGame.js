@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getQuestion } from '../actions';
 import QuestionCard from '../componente/questionCards';
+import Header from '../componente/Header';
 
 class TriviaGame extends Component {
   componentDidMount() {
@@ -11,37 +12,16 @@ class TriviaGame extends Component {
   }
 
   render() {
-    const { userName, userImage } = this.props;
     return (
-      <div>
-        <header>
-          <img
-            alt="user login"
-            data-testid="header-profile-picture"
-            src={ userImage }
-          />
-          <h3
-            data-testid="header-player-name"
-          >
-            { userName }
-          </h3>
-          <h3
-            data-testid="header-score"
-          >
-            0
-          </h3>
-        </header>
-        <section>
-          <QuestionCard />
-        </section>
-      </div>
+      <section>
+        <Header />
+        <QuestionCard />
+      </section>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  userName: state.loginReducer.nome,
-  userImage: state.loginReducer.image,
   questionToken: state.tokenReducer.token,
 });
 
@@ -50,8 +30,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 TriviaGame.propTypes = {
-  userName: propTypes.string.isRequired,
-  userImage: propTypes.string.isRequired,
   questionToken: propTypes.string.isRequired,
   questionCards: propTypes.func.isRequired,
 };

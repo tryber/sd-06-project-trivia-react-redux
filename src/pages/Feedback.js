@@ -1,13 +1,12 @@
 import React from 'react';
+import Header from '../componente/Header';
 
 class Ranking extends React.Component {
   render() {
     return (
-      <h1
-        data-testid="Ranking-title"
-      >
-        Ranking
-      </h1>
+      <section>
+        <Header />
+      </section>
     );
   }
 }

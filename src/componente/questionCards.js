@@ -8,11 +8,13 @@ import './questionCards.css';
 class QuestionCards extends Component {
   constructor() {
     super();
+
     this.correctAnswer = this.correctAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.counter = this.counter.bind(this);
     this.setDisableTimeout = this.setDisableTimeout.bind(this);
     this.getRate = this.getRate.bind(this);
+
     this.state = {
       currentIndex: 0,
       correct: '',
@@ -46,6 +48,7 @@ class QuestionCards extends Component {
     const hard = 3;
     const medium = 2;
     const easy = 1;
+    
     console.log(time);
     switch (difficulty) {
     case 'hard':
@@ -79,7 +82,7 @@ class QuestionCards extends Component {
       incorrect: 'buttonFalse',
       visibility: '',
     });
-    // this.getRate();
+    this.getRate();
   }
 
   counter() {
