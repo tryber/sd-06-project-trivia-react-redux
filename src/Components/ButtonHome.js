@@ -5,7 +5,7 @@ class ButtonHome extends Component {
   render() {
     return (
       <div>
-        <button data-testid="btn-go-home">
+        <button data-testid="btn-go-home" type="button">
           <Link to="/">
             Jogar de Novo
           </Link>
