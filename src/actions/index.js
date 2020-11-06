@@ -24,18 +24,22 @@ const tokenAction = (payload) => ({
   payload,
 });
 
-export const getQuestionsAction = (payload) => ({
-  type: GET_QUESTIONS,
-  payload,
+export const playerData = (payload) => ({
+  type: 'PLAYER_DATA',
+  payload: {
+    name: payload.name,
+    score: payload.score,
+  },
 });
 
 const requestQuestions = () => ({
   type: REQUEST_QUESTIONS,
 });
 
-// export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
-//   .then((response) => response.json()
-//     .then((data) => dispatch(tokenAction(data))));
+export const getQuestionsAction = (payload) => ({
+  type: GET_QUESTIONS,
+  payload,
+});
 
 export function getQuestions(token) {
   return async (dispatch) => {
@@ -56,11 +60,3 @@ export const fetchToken = () => (dispatch) => {
     })
     .then((data) => dispatch(getQuestions(data.token)));
 };
-
-export const playerData = (payload) => ({
-  type: 'PLAYER_DATA',
-  payload: {
-    name: payload.name,
-    score: payload.score,
-  },
-});

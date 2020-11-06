@@ -24,7 +24,6 @@ class Login extends Component {
     const { name, email } = this.state;
     if (newState.name !== name || newState.email !== email) {
       this.handleChange();
-      // console.log(name);
     }
   }
 
@@ -43,7 +42,6 @@ class Login extends Component {
   }
 
   render() {
-    const { history } = this.props;
     const { disabled } = this.state;
     return (
       <div className="App">

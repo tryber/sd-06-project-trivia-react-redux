@@ -5,42 +5,49 @@ import PropTypes from 'prop-types';
 import Header from '../components/header';
 
 class Game extends Component {
-  constructor() {
-    super();
+  // constructor() {
+  //   super();
 
-    this.state = {
-      first: {},
-      second: {},
-      third: {},
-      fourth: {},
-      fifth: {},
-    };
-  }
+  //   this.state = {
+  //   };
+  // }
 
   componentDidMount() {
-    const { info, isFetching, APIQuestions } = this.props;
+    const { info } = this.props;
     localStorage.setItem('token', info.token);
-    // if (isFetching) {
-    //   console.log('Lading');
-    // } else {
-    //   console.log(APIQuestions.results[0]);
-    // }
   }
 
   render() {
-    const { isFetching } = this.props;
+    const { isFetching, APIQuestions } = this.props;
     return (
       <section className="game-container">
         <section className="game-header">
           <Header />
         </section>
         <section className="game-question">
-          <section className="game-category">categoria</section>
-          <section className="game-text">texto da pergunta</section>
+          <section className="game-category">
+            { isFetching
+              ? <p>Carregando...</p>
+              : (
+                <section className="game-answers">
+                  {APIQuestions[0].category}
+                </section>)}
+          </section>
+          <section className="game-text">
+            { isFetching
+              ? <p>Carregando...</p>
+              : (
+                <section className="game-answers">
+                  {APIQuestions[0].question}
+                </section>)}
+          </section>
         </section>
-        {/* { isFetching
+        { isFetching
           ? <p>Carregando...</p>
-          : <section className="game-answers">{teste.incorrect_answers.map((i) => <p>{i}</p>)}</section>} */}
+          : (
+            <section className="game-answers">
+              {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)}
+            </section>)}
       </section>
     );
   }
@@ -52,13 +59,14 @@ const mapStateToProps = (state) => ({
   isFetching: state.allQuestions.isFetching,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
-
 Game.propTypes = {
   info: PropTypes.shape().isRequired,
-  // questions: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  APIQuestions: PropTypes.arrayOf(
+    PropTypes.shape(),
+    PropTypes.array,
+    PropTypes.string,
+  ).isRequired,
 };
 
 export default connect(mapStateToProps)(Game);
