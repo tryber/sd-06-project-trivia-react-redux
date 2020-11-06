@@ -51,7 +51,7 @@ class Login extends Component {
       getPlayerLogin,
       getAPIQuestions,
       history,
-      questions
+      questions,
     } = this.props;
     const { name, email } = this.state;
     await getPlayerToken();
