@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { solicitacaoQuestoes } from '../actions';
+import '../css/jogo.css';
 
 class Jogo extends React.Component {
   constructor() {
     super();
     this.state = {
       contador: 0,
-      perguntaState: '',
+      classe: false,
     };
     this.handleClique = this.handleClique.bind(this);
+    this.handleClass = this.handleClass.bind(this);
   }
 
   componentDidMount() {
@@ -18,15 +20,22 @@ class Jogo extends React.Component {
     dispatchPerguntas(token);
   }
 
+  handleClass() {
+    this.setState({
+      classe: true,
+    });
+  }
+
   handleClique() {
     this.setState((prevState) => ({
       contador: prevState.contador + 1,
+      classe: false,
     }));
   }
 
   render() {
     const { perguntas } = this.props;
-    const { contador } = this.state;
+    const { contador, classe } = this.state;
     console.log('perguntas no render', perguntas);
     let correctAnswer = '';
     let options = '';
@@ -49,7 +58,8 @@ class Jogo extends React.Component {
                 <button
                   type="button"
                   data-testid={ option === correctAnswer ? "correct-answer" : `wrong-answer${index}`}
-                  className={ option === correctAnswer ? "correct-answer" : "wrong-answer" }
+                  onClick={ this.handleClass }
+                  className={ option === correctAnswer ? `${classe ? 'correct' : ''}` : `${classe ? 'wrong' : ''}` }
                 >
                   {option}
                 </button>
