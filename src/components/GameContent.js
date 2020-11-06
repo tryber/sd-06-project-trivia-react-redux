@@ -10,7 +10,7 @@ class GameContent extends React.Component {
       isLoading: true,
       current: 0,
       answer: false,
-      sort: [],
+      sort: []
     };
 
     this.shuffle = this.shuffle.bind(this);
