@@ -2,11 +2,11 @@ import React from 'react';
 // import { Redirect } from 'react-router-dom';
 // import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
+import CryptoJs from 'crypto-js';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { fetchApiQuestions, fetchApiToken } from '../actions';
+import { fetchApiQuestions, fetchApiToken, playerName } from '../actions';
 import ButtonConfig from './ButtonConfig';
-import ScreenGame from './ScreenGame';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,6 +18,14 @@ class Login extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleUserInfo() {
+    const { name, email } = this.state;
+    const { infoUser } = this.props;
+    const hash = CryptoJs.MD5(email).toString();
+    console.log(hash);
+    infoUser(name, email);
   }
 
   handleClick() {
@@ -32,6 +40,7 @@ class Login extends React.Component {
     getToken();
     // const responseTrivia = await getTriviaQuestions(token);
     // console.log(responseTrivia);
+    this.handleUserInfo();
     this.setState({
       redirect: true,
     });
@@ -39,10 +48,6 @@ class Login extends React.Component {
 
   render() {
     const { name, email, redirect } = this.state;
-
-    if (redirect === true) {
-      return <ScreenGame />;
-    }
 
     return (
       <div className="container">
@@ -76,8 +81,10 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
+
         <ButtonConfig />
-        { redirect ? <Redirect to="/screen" /> : null }
+
+        { redirect ? <Redirect to="/game" /> : null }
       </div>
     );
   }
@@ -86,10 +93,12 @@ class Login extends React.Component {
 const mapsDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchApiToken()),
   getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
+  infoUser: (name, email) => dispatch(playerName(name, email)),
 });
 
 Login.propTypes = {
   getToken: propType.func.isRequired,
+  infoUser: propType.func.isRequired,
 };
 
 export default connect(null, mapsDispatchToProps)(Login);

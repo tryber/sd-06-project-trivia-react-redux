@@ -40,10 +40,11 @@ export function receiveHash(hash) {
   };
 }
 
-export function playerName(name) {
+export function playerName(name, email) {
   return {
     type: PLAYER_NAME,
     name,
+    email,
   };
 }
 

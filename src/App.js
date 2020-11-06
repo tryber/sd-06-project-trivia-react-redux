@@ -10,8 +10,8 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         <Route path="/config" component={ ScreenConfig } />
+        <Route path="/game" component={ ScreenGame } />
         <Route exact path="/" component={ Login } />
-        <Route path="/screen" component={ ScreenGame } />
       </Switch>
     </BrowserRouter>
     // <div className="App">

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { MD5 } from 'crypto-js/md5';
+import CryptoJs from 'crypto-js';
 import PropTypes from 'prop-types';
 
 export class FeedbackHeader extends Component {
   render() {
-    const { hash, name } = this.props;
+    const { name, email } = this.props;
+    const hash = CryptoJs.MD5(email).toString();
     const score = 0;
-    console.log(name);
     return (
       <div>
         <img
@@ -23,14 +23,14 @@ export class FeedbackHeader extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.name,
-  hash: state.hash,
+  name: state.userReducer.name,
+  email: state.userReducer.email,
   // score: state.user.player.score,
 });
 
 FeedbackHeader.propTypes = {
   name: PropTypes.string.isRequired,
-  hash: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   // score: PropTypes.number.isRequired,
 };
 
