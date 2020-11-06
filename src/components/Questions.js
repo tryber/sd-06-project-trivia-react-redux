@@ -9,18 +9,26 @@ class Questions extends Component {
       questionNumber: 0,
     };
 
-    // function binds
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.applyIndexToIncorrectAnswers = this.applyIndexToIncorrectAnswers.bind(this);
+    this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
   }
 
   changeToNextQuestion() {
     const { questionNumber } = this.state;
     const indexLimit = 4;
+    const wrongList = document.querySelectorAll('.wrong-question');
+    const rightQuestion = document.querySelector('.right-question');
+
     this.setState({
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
     });
+
+    wrongList.forEach((element) => {
+      element.className = 'wquestion';
+    });
+    rightQuestion.className = 'rquestion';
   }
 
   applyIndexToIncorrectAnswers(index) {
@@ -31,6 +39,15 @@ class Questions extends Component {
   shuffle(array) {
     const magic = 0.5;
     return array.sort(() => Math.random() - magic);
+  }
+
+  handleAnswerStyle() {
+    const wrongList = document.querySelectorAll('.wquestion');
+    const rightQuestion = document.querySelector('.rquestion');
+    wrongList.forEach((element) => {
+      element.className = 'wrong-question';
+    });
+    rightQuestion.className = 'right-question';
   }
 
   handleQuestions() {
@@ -55,16 +72,23 @@ class Questions extends Component {
           {newArr.map((question) => {
             if (question === CORRECT_ANSWER) {
               return (
-                <button type="button" data-testid="correct-answer">
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                  onClick={ this.handleAnswerStyle }
+                  className="rquestion"
+                >
                   {question}
                 </button>
               );
             }
             const wrongButton = (
               <button
-                key="qualquer"
                 type="button"
                 data-testid={ `wrong-answers-${answerIndex += 1}` }
+                className="wquestion"
+                onClick={ this.handleAnswerStyle }
+                key={ `wrong${answerIndex}` }
               >
                 {question}
               </button>
