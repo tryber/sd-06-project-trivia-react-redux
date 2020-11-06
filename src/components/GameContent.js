@@ -23,6 +23,7 @@ class GameContent extends React.Component {
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
     this.resetAnswer = this.resetAnswer.bind(this);
     this.setResult = this.setResult.bind(this);
+    this.setCounter = this.setCounter.bind(this);
   }
 
   componentDidMount() {
@@ -34,30 +35,32 @@ class GameContent extends React.Component {
   componentDidUpdate(_prevProps, prevState) {
     const maxNumberOfAnswers = 5;
     const { dispatchResults } = this.props;
-    const { results, current } = this.state;
+    const { results } = this.state;
     if (results.length === maxNumberOfAnswers) dispatchResults(results);
-    if (current !== prevState.current) this.setCounter();
   }
 
-  setSecond(counter) {
+  setSecond() {
     const second = 1000;
-    if (counter === 0) {
+    const { counter } = this.state;
+    let count = counter;
+    if (count <= 0) {
       this.setState({ btnDisabled: true });
       this.setResult(false);
     } else {
       setTimeout(() => {
-        this.setState({ counter: counter - 1 });
+        count -= 1;
       }, second);
     }
+    this.setState({ counter: count });
   }
 
   setCounter() {
-    const { counter, btnDisabled } = this.state;
-    this.setState({ counter: 30 });
-
+    const { btnDisabled } = this.state;
     while (!btnDisabled) {
-      this.setSecond(counter);
+      this.setSecond();
     }
+
+    console.log();
   }
 
   setResult(result) {
@@ -145,7 +148,7 @@ class GameContent extends React.Component {
             ? correctAnswer(item, index)
             : wrongAnswer(item, index)
         ))}
-        <div>
+        <div className="counter">
           <span>{counter}</span>
         </div>
         <button
