@@ -17,6 +17,7 @@ class Feedback extends React.Component {
           <h4 data-testid="header-score">{ score }</h4>
         </header>
         <button type="button" data-testid="btn-next">Next</button>
+        <p data-testid="correct-answer">Resposta correta</p>
       </div>
     );
   }
