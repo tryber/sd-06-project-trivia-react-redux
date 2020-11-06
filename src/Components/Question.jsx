@@ -1,12 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../styles/Question.css';
 
 class Question extends React.Component {
   constructor() {
     super();
+
+    this.state = {
+      classCorrect: 'btn',
+      classIncorrect: 'btn',
+    }
+
     this.randomQuestions = this.randomQuestions.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   shuffleArray(array) {
@@ -23,14 +31,26 @@ class Question extends React.Component {
     return array;
   }
 
+  checkAnswer() {
+    this.setState(() => {
+      return {
+        classCorrect: 'btn-correct',
+        classIncorrect: 'btn-incorrect'
+      }
+    });
+  }
+
   randomQuestions() {
     const { getQuestions } = this.props;
     const arrayHTML = getQuestions[0].incorrect_answers.map((incorrect, index) => {
       return (
         <button
+          id="wrong-answer"
+          type="button"
           key={index}
-          className="btn"
+          className={this.state.classIncorrect}
           data-testid={`wrong-answer`}
+          onClick={this.checkAnswer}
         >
           {incorrect}
         </button>
@@ -38,10 +58,12 @@ class Question extends React.Component {
     });
     arrayHTML.push(
       <button
+        id="correct-answer"
         type="button"
         key="correct"
-        className="btn"
+        className={this.state.classCorrect}
         data-testid="correct-answer"
+        onClick={this.checkAnswer}
       >
         {getQuestions[0].correct_answer}
       </button>
@@ -52,9 +74,6 @@ class Question extends React.Component {
 
   render() {
     const { getQuestions } = this.props;
-    if (getQuestions[0] === undefined) {
-      return (<span>'loading...'</span>);
-    }
     return (
       <div>
         <h2 data-testid="question-category">{getQuestions[0].category}</h2>

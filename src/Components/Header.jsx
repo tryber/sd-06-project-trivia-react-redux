@@ -1,6 +1,7 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import '../styles/Header.css';
 
 class Header extends React.Component {
   render() {
