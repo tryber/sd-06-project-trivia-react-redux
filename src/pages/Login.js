@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchToken } from '../actions';
+import { fetchTokenAndLogin } from '../actions';
 
 import logo from '../trivia.png';
 
@@ -104,7 +104,7 @@ class Login extends React.Component {
 
 // Function that make dispatch to my /actions/index
 const mapDispatchToProps = (dispatch) => ({
-  requestToken: (email, playerName) => dispatch(fetchToken(email, playerName)),
+  requestToken: (email, playerName) => dispatch(fetchTokenAndLogin(email, playerName)),
 });
 
 Login.propTypes = {

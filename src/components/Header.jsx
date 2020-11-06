@@ -7,7 +7,6 @@ class Header extends Component {
   render() {
     const { playerName, email } = this.props;
     const hashGravatar = md5(email);
-    // console.log(playerName);
     return (
       <header>
         <div>

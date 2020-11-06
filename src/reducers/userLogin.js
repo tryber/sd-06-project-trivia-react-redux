@@ -2,17 +2,16 @@ import { LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
-  playerName: '',
   token: '',
+  playerName: '',
 };
 
-// Esse reducer será responsável por tratar as informações da pessoa usuária
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOGIN:
     return { ...state,
       email: action.email,
-      token: action.token,
+      token: action.token.token,
       playerName: action.playerName };
   default:
     return state;
