@@ -114,11 +114,13 @@ Questions.propTypes = {
   history: propTypes.shape({ push: propTypes.func }).isRequired,
   questions: propTypes.arrayOf(propTypes.object).isRequired,
   handleApi: propTypes.func.isRequired,
+  // timer: propTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => (
   {
-    questions: state.questions,
+    questions: state.game.questions,
+    timer: state.game.timer, //  - usar este timer na hora do calculo do score
   }
 );
 

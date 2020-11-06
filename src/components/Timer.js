@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import { getTimer } from '../actions';
 
 class Timer extends Component {
   constructor(props) {
     super(props);
     this.downTime = this.downTime.bind(this);
-
-    this.state = {
-      timer: 30,
-    };
   }
 
   componentDidMount() {
@@ -15,12 +14,12 @@ class Timer extends Component {
   }
 
   downTime() {
+    const { handleTimer, timer } = this.props;
     const ONE_SECOND = 1000;
     const ALL_TIME = 30000;
-    const { timer } = this.state;
     if (timer !== 0) {
       const time = setInterval(() => {
-        this.setState((last) => ({ timer: last.timer - 1 }));
+        handleTimer(timer);
       }, ONE_SECOND);
       setTimeout(() => {
         clearInterval(time);
@@ -29,7 +28,7 @@ class Timer extends Component {
   }
 
   render() {
-    const { timer } = this.state;
+    const { timer } = this.props;
     return (
       <div>
       Tempo restante:
@@ -39,4 +38,17 @@ class Timer extends Component {
   }
 }
 
-export default Timer;
+const mapStateToProps = (state) => ({
+  timer: state.game.timer,
+});
+
+const mapDispatchToPros = (dispatch) => ({
+  handleTimer: (time) => dispatch(getTimer(time)),
+});
+
+Timer.propTypes = {
+  timer: propTypes.number.isRequired,
+  handleTimer: propTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToPros)(Timer);
