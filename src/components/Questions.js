@@ -29,7 +29,7 @@ class Questions extends Component {
       );
 
       const incorrect = (questions.results[Number(questionNumber)].incorrect_answers
-        .map((answer, index) => (
+        .map((answer) => (
           <button
             data-testid="wrong-answer"
             key={ answer }
