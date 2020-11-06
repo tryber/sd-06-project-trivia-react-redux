@@ -10,8 +10,10 @@ class Question extends React.Component {
   }
 
   shuffleArray(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) {
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+    while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
       temporaryValue = array[currentIndex];
@@ -23,16 +25,27 @@ class Question extends React.Component {
 
   randomQuestions() {
     const { getQuestions } = this.props;
-    const arrayHTML = getQuestions[0].incorrect_answers.map((incorrect, index) => (
-    <button key={index} className="btn" data-testid={`wrong-answer`}>{incorrect}</button>
-    ));
-    arrayHTML.push(<button
-      key={'correct'}
-      className="btn"
-      data-testid="correct-answer"
-    >
-      {getQuestions[0].correct_answer}
-    </button>)
+    const arrayHTML = getQuestions[0].incorrect_answers.map((incorrect, index) => {
+      return (
+        <button
+          key={index}
+          className="btn"
+          data-testid={`wrong-answer`}
+        >
+          {incorrect}
+        </button>
+      );
+    });
+    arrayHTML.push(
+      <button
+        type="button"
+        key="correct"
+        className="btn"
+        data-testid="correct-answer"
+      >
+        {getQuestions[0].correct_answer}
+      </button>
+    );
     const newArray = this.shuffleArray(arrayHTML);
     return newArray;
   }
@@ -40,7 +53,7 @@ class Question extends React.Component {
   render() {
     const { getQuestions } = this.props;
     if (getQuestions[0] === undefined) {
-      return <span>'loading...'</span>
+      return (<span>'loading...'</span>);
     }
     return (
       <div>
@@ -54,7 +67,7 @@ class Question extends React.Component {
 
 Question.propTypes = {
   getQuestions: PropTypes.arrayOf(Object).isRequired,
-}
+};
 
 const mapStateToProps = (state) => ({
   getQuestions: state.questions.questionsArray,

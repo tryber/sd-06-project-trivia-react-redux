@@ -1,9 +1,9 @@
 import React from 'react';
-import Question from '../components/Question';
+import Question from '../components/Question.jsx';
 import { questionsAction } from '../actions';
 import { connect } from 'react-redux';
 import '../styles/Game.css';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   constructor() {

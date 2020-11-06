@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   questionsArray: [],
-}
+};
 
 export default function questionsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
