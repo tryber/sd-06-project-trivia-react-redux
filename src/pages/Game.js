@@ -8,8 +8,12 @@ import { fetchApi } from '../actions';
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    this.firstClick = this.firstClick.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.state = {
       placar: 0,
+      nextButton: 'none',
+      counter: 0,
     };
   }
 
@@ -18,8 +22,21 @@ class Game extends React.Component {
     questionFetch();
   }
 
+  firstClick() {
+    this.setState({
+      nextButton: 'block',
+    });
+  }
+
+  nextQuestion() {
+    const { counter } = this.state;
+    this.setState({
+      counter: counter + 1,
+    });
+  }
+
   render() {
-    const { placar } = this.state;
+    const { placar, nextButton, counter } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
@@ -45,10 +62,10 @@ class Game extends React.Component {
         <div className="container-game">
           <div>
             <div data-testid="question-category">
-              { results !== '' ? results[0].category : 0 }
+              { results !== '' ? results[counter].category : 0 }
             </div>
             <div data-testid="question-text">
-              { results !== '' ? results[0].question : 0 }
+              { results !== '' ? results[counter].question : 0 }
             </div>
           </div>
           <div>
@@ -56,20 +73,31 @@ class Game extends React.Component {
               type="button"
               className="btn btn-success btn-block mt-4"
               data-testid="correct-answer"
+              onClick={ this.firstClick }
             >
-              { results !== '' ? results[0].correct_answer : 0 }
+              { results !== '' ? results[counter].correct_answer : 0 }
             </button>
-            { results !== '' ? results[0].incorrect_answers.map((answer, index) => (
+            { results !== '' ? results[counter].incorrect_answers.map((answer, index) => (
               <button
                 key={ index }
                 type="button"
                 className="btn btn-success btn-block mt-4"
                 data-testid={ `wrong-answer-${index}` }
+                onClick={ this.firstClick }
               >
                 { answer }
               </button>
             ))
               : 0 }
+            <button
+              type="button"
+              className="btn btn-success btn-block mt-4"
+              data-testid="btn-next"
+              style={ { display: nextButton } }
+              onClick={ this.nextQuestion }
+            >
+              PRÓXIMA
+            </button>
           </div>
         </div>
       </div>
