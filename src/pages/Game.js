@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import GameHeader from '../components/GameHeader';
-
+// teste
 class Game extends Component {
   constructor() {
     super();
