@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { getQuestions } from '../actions';
 import Header from '../components/header';
 
 class Game extends Component {
@@ -10,35 +9,26 @@ class Game extends Component {
     super();
 
     this.state = {
-      // respondida: false,
       index: 0,
-      // results: [],
+      disabled: false,
+      clicked: false,
     };
 
-    // this.setQuestion = this.setQuestion.bind(this);
+    this.handleStyle = this.handleStyle.bind(this);
   }
 
   componentDidMount() {
     const { info } = this.props;
     localStorage.setItem('token', info.token);
-    // this.setQuestion();
   }
 
-  // setQuestion() {
-  //   const { isFetching, APIQuestions } = this.props;
-  //   const { results } = this.state;
-  //   return (
-  //     !isFetching
-  //       ? this.setState({
-  //         results: [...APIQuestions],
-  //       })
-  //       : results
-  //   );
-  // }
+  handleStyle() {
+    this.setState({ clicked: true });
+  }
 
   render() {
     const { isFetching, APIQuestions } = this.props;
-    const { index } = this.state;
+    const { index, disabled, clicked } = this.state;
     const random = 0.5;
     return (
       <section className="game-container">
@@ -68,37 +58,40 @@ class Game extends Component {
           ? <p>Carregando...</p>
           : (
             <section className="game-answers">
-
               {
                 APIQuestions[index]
                   .incorrect_answers.concat(APIQuestions[index].correct_answer)
-                  .map((question, i) => (
-                    // Tirar o Link depois
-                    <Link to="/feedback" key={ i }>
+                  .map((question, i) => {
+                    if (question === APIQuestions[index].correct_answer) {
+                      return (
+                        <Link to="/feedback" key={ i }>
+                        <button
+                          type="button"
+                          data-testid="correct-answer"
+                          key={ i }
+                          disabled={ disabled }
+                          className={ clicked ? 'correct-answer' : null }
+                          onClick={ this.handleStyle }
+                        >
+                          {question}
+                        </button>
+                        </Link>
+                      );
+                    }
+                    return (
                       <button
-                        data-testid={
-                          APIQuestions[index].correct_answer === question
-                            ? 'correct-answer'
-                            : `wrong-answer-${i}`
-                        }
-                        key={ i }
                         type="button"
+                        data-testid={ `wrong-answer-${i}` }
+                        key={ i }
+                        disabled={ disabled }
+                        className={ clicked ? 'wrong-answer' : null }
+                        onClick={ this.handleStyle }
                       >
                         {question}
                       </button>
-                    </Link>
-                  ))
-                  .sort(() => Math.random() - random)
-
+                    );
+                  }).sort(() => Math.random() - random)
               }
-              {/* {
-                questionArray.push(...APIQuestions[index].incorrect_answers,
-                  APIQuestions[index].correct_answer)
-              }
-              {
-                questionArray.map
-              } */}
-              {/* {APIQuestions[0].incorrect_answers.map((i) => <p key={ i }>{i}</p>)} */}
             </section>)}
       </section>
     );

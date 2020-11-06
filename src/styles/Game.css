@@ -1,0 +1,9 @@
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+  outline: none;
+}
+
+.wrong-answer {
+  border: 3px solid rgb(255, 0, 0);
+  outline: none;
+}
