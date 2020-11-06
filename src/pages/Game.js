@@ -2,35 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import triviaAPI from '../services/triviaAPI';
-import { requestQuestions } from '../actions';
+import { fetchQuestionsFromAPI, requestQuestions } from '../actions';
 
 class Game extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      classRight: '',
-      classWrong: '',
+      classRightAnswer: '',
+      classWrongAnswer: '',
       isDisabled: true,
     };
 
-    this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
   }
 
   async componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 1;
-    const { receivedQuestions } = this.props;
-    const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
-    receivedQuestions(questions); //  populou o state
-  }
-
-  async handleFetch(num) {
-    const getQuestions = await triviaAPI(num);
-    return getQuestions;
+    const NUMBER_OF_QUESTIONS = 5;
+    const { fetchQuestionsAction } = this.props;
+    fetchQuestionsAction(NUMBER_OF_QUESTIONS);
   }
 
   async handleQuestions() {
@@ -129,6 +121,9 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   receivedQuestions: (e) => dispatch(requestQuestions(e)),
+  fetchQuestionsAction: (numberOfQuestions) => (
+    dispatch(fetchQuestionsFromAPI(numberOfQuestions))
+  ),
 });
 
 const mapStateToProps = (state) => ({
