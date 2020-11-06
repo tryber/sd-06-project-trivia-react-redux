@@ -1,7 +1,8 @@
-import fetchTokenApi from '../services/fetchApi';
+import { fetchTokenApi, fetchQuestionsApi } from '../services/fetchApi';
 
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
+export const QUESTIONS = 'QUESTIONS';
 export const GRAVATAR = 'GRAVATAR';
 
 export const gravatar = (gravatarInfos) => ({
@@ -19,8 +20,13 @@ export const tokenAction = (token) => ({
   token,
 });
 
+export const questionAction = (questions) => ({
+  type: QUESTIONS,
+  questions,
+});
+
 export function thunkToken() {
-  return (dispatch) => (
+  return async (dispatch) => (
     fetchTokenApi()
       .then((tokenInfo) => {
         dispatch(tokenAction(tokenInfo.token));
@@ -29,10 +35,17 @@ export function thunkToken() {
   );
 }
 
-// export function thunkGravatar(userHash) {
-//   return async (dispatch) => {
-//     const linkGravatar = `https://www.gravatar.com/avatar/${userHash}`;
-//     const fetchGravatar = await fetch(linkGravatar);
-//   };
-// }
-// console.log(thunkGravatar);
+export function thunkQuestions() {
+  const tokenExpire = 3;
+  const token = localStorage.getItem('token');
+  return async (dispatch) => (
+    fetchQuestionsApi(token)
+      .then((questionInfo) => {
+        if (questionInfo.response_code === tokenExpire) {
+          thunkToken();
+        } else {
+          dispatch(questionAction(questionInfo.results));
+        }
+      })
+  );
+}
