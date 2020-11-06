@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './CSS/QuestionCardCSS.css';
 
 export default class QuestionCard extends Component {
   constructor() {
     super();
 
     this.updateStates = this.updateStates.bind(this);
+    this.activateBorders = this.activateBorders.bind(this);
 
     this.state = {
       answers: [],
       updatedStates: false,
+      answersBorderActive: false,
     };
   }
 
@@ -40,11 +43,18 @@ export default class QuestionCard extends Component {
     });
   }
 
+  activateBorders() {
+    // const { answersBorderActive } = this.state;
+    this.setState({
+      answersBorderActive: true,
+    });
+  }
+
   render() {
     const {
       question: { category, question, correct_answer: correctAnswer },
     } = this.props;
-    const { answers, updatedStates } = this.state;
+    const { answers, updatedStates, answersBorderActive } = this.state;
 
     if (!updatedStates) {
       return <p>Loading...</p>;
@@ -56,29 +66,41 @@ export default class QuestionCard extends Component {
     const startingIdx = -2;
     let currentIdx = startingIdx + 1;
     return (
-      <div>
-        <h2 data-testid="question-category">{category}</h2>
-        <h5 data-testid="question-text">{question}</h5>
-        <div>
-          {answers.map((item, index) => {
-            if (index === correctAnswerIdx) {
+      <div className="question-card">
+        <p className="category" data-testid="question-category">
+          <p className="category-title">Category</p>
+          <p className="category-content">{category}</p>
+        </p>
+        <div className="question-container">
+          <p className="question" data-testid="question-text">{question}</p>
+          <div className="answers">
+            {answers.map((item, index) => {
+              if (index === correctAnswerIdx) {
+                return (
+                  <button
+                    className={ !answersBorderActive ? 'answers' : 'correct-answer' }
+                    data-testid="correct-answer"
+                    type="button"
+                    onClick={ this.activateBorders }
+                  >
+                    {correctAnswer}
+                  </button>
+                );
+              }
+              currentIdx += 1;
               return (
-                <button data-testid="correct-answer" type="button">
-                  {correctAnswer}
+                <button
+                  className={ !answersBorderActive ? 'answers' : 'wrong-answer' }
+                  key={ index }
+                  data-testid={ `wrong-answer-${currentIdx}` }
+                  type="button"
+                  onClick={ this.activateBorders }
+                >
+                  {item}
                 </button>
               );
-            }
-            currentIdx += 1;
-            return (
-              <button
-                key={ index }
-                data-testid={ `wrong-answer-${currentIdx}` }
-                type="button"
-              >
-                {item}
-              </button>
-            );
-          })}
+            })}
+          </div>
         </div>
       </div>
     );
