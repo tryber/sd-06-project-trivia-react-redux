@@ -7,7 +7,7 @@ class Feedback extends React.Component {
       <div>
         <Header />
       </div>
-    )
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { getQuestions } from '../actions';
 import Header from '../components/header';
 
@@ -74,18 +74,18 @@ class Game extends Component {
                   .incorrect_answers.concat(APIQuestions[index].correct_answer)
                   .map((question, i) => (
                     // Tirar o Link depois
-                    <Link to="/feedback">
-                    <button
-                      data-testid={
-                        APIQuestions[index].correct_answer === question
-                          ? 'correct-answer'
-                          : `wrong-answer-${i}`
-                      }
-                      key={ i }
-                      type="button"
-                    >
-                      {question}
-                    </button>
+                    <Link to="/feedback" key={ i }>
+                      <button
+                        data-testid={
+                          APIQuestions[index].correct_answer === question
+                            ? 'correct-answer'
+                            : `wrong-answer-${i}`
+                        }
+                        key={ i }
+                        type="button"
+                      >
+                        {question}
+                      </button>
                     </Link>
                   ))
                   .sort(() => Math.random() - random)
