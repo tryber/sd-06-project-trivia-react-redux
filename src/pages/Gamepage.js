@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
@@ -10,8 +9,8 @@ class Gamepage extends React.Component {
     const { email, username } = this.props;
     const hash = md5(email);
     return (
-      <div>
-        <header>
+      <div className="gamepage-container">
+        <header className="gamepage-header">
           <img
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
@@ -30,13 +29,6 @@ class Gamepage extends React.Component {
           </span>
         </header>
         <Questions />
-        <Link to="/feedback">
-          <button
-            type="button"
-          >
-            PRÓXIMA
-          </button>
-        </Link>
       </div>
     );
   }
