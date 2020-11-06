@@ -14,6 +14,7 @@ class GameScreen extends Component {
     this.handleClickCorrect = this.handleClickCorrect.bind(this);
     this.temporizer = this.temporizer.bind(this);
     this.timeHandle = this.timeHandle.bind(this);
+    this.goToFeedback = this.goToFeedback.bind(this);
 
     this.state = {
       score: 0,
@@ -22,6 +23,8 @@ class GameScreen extends Component {
       index: 0,
       loading: true,
       timer: 30,
+      disabled: false,
+      click: 0,
     };
   }
 
@@ -104,9 +107,10 @@ class GameScreen extends Component {
     buttons.forEach((button) => {
       if (button.className === 'wrong') {
         button.className += ' red';
+        this.setState({ disabled: true });
       } else if (button.className === 'correct') {
         button.className += ' green';
-        button.disabled = 'true';
+        this.setState({ disabled: true });
       } else if (button.className === 'hidden') {
         button.className += ' show';
       }
@@ -116,7 +120,20 @@ class GameScreen extends Component {
   handleClickNext() {
     this.setState((state) => ({
       index: state.index + 1,
+      disabled: false,
+      click: state.click + 1,
     }));
+    const buttons = document.querySelectorAll('button');
+    const { disabled } = this.state;
+    buttons.forEach((button) => {
+      if (button.className === 'wrong red') {
+        button.className = 'wrong';
+      } else if (button.className === 'correct green') {
+        button.className = 'correct';
+      } else if (button.className === 'hidden show') {
+        button.className = 'hidden';
+      }
+    });
   }
 
   async handleClickCorrect() {
@@ -139,6 +156,15 @@ class GameScreen extends Component {
     const { timer } = this.state;
     if (timer === 0) {
       this.handleClick();
+    }
+  }
+
+  goToFeedback() {
+    const { click } = this.state;
+    const { history } = this.props;
+    const four = 4;
+    if (click === four) {
+      history.push('/feedback');
     }
   }
 
@@ -175,6 +201,7 @@ class GameScreen extends Component {
               type="button"
               className="correct"
               data-testid="correct-answer"
+              disabled={ disabled }
               onClick={ () => {
                 this.handleClick();
                 this.handleClickCorrect();
@@ -187,7 +214,10 @@ class GameScreen extends Component {
               type="button"
               className="hidden"
               data-testid="btn-next"
-              onClick={ this.handleClickNext }
+              onClick={ () => {
+                this.handleClickNext();
+                this.goToFeedback();
+              } }
             >
               Próxima
             </button>
