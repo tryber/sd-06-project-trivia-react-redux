@@ -19,7 +19,7 @@ class Game extends React.Component {
     this.randomArray = this.randomArray.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const NUMBER_OF_QUESTIONS = 5;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
