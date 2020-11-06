@@ -65,16 +65,16 @@ class Game extends Component {
                     if (question === APIQuestions[index].correct_answer) {
                       return (
                         <Link to="/feedback" key={ i }>
-                        <button
-                          type="button"
-                          data-testid="correct-answer"
-                          key={ i }
-                          disabled={ disabled }
-                          className={ clicked ? 'correct-answer' : null }
-                          onClick={ this.handleStyle }
-                        >
-                          {question}
-                        </button>
+                          <button
+                            type="button"
+                            data-testid="correct-answer"
+                            key={ i }
+                            disabled={ disabled }
+                            className={ clicked ? 'correct-answer' : null }
+                            onClick={ this.handleStyle }
+                          >
+                            {question}
+                          </button>
                         </Link>
                       );
                     }
