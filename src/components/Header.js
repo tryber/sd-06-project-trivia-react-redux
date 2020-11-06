@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { email, name } = this.props;
-    console.log(email, name);
-    console.log(this.props);
     return (
       <div>
         <img
@@ -28,8 +26,8 @@ const mapStateToProps = (state) => ({
 });
 
 Header.propTypes = {
-  email: PropTypes.func.isRequired,
-  name: PropTypes.func.isRequired,
-};
+  email: PropTypes.string,
+  name: PropTypes.string,
+}.isRequired;
 
 export default connect(mapStateToProps, null)(Header);

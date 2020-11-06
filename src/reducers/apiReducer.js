@@ -1,4 +1,4 @@
-import { FETCH_TOKEN, FETCH_TOKEN_SUCESS, FETCH_TOKEN_ERROR } from '../actions';
+import { FETCH_TOKEN, FETCH_TOKEN_SUCESS, FETCH_TOKEN_ERROR, QUESTION } from '../actions';
 
 const INITIAL_STATE = {
   token: '',
@@ -21,6 +21,11 @@ const apiReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       error: action.error,
+    };
+  case QUESTION:
+    return {
+      ...state,
+      questions: action.questions,
     };
   default:
     return state;

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+import BodyGame from '../components/BodyGame';
 import Header from '../components/Header';
 
 class Game extends Component {
@@ -6,7 +8,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        MA ÔE, GANHOU UM MILHÃO DE REAIS!
+        <BodyGame />
       </div>
     );
   }
