@@ -16,51 +16,50 @@ class GameContent extends React.Component {
       sort: [],
       results: [],
       btnDisabled: false,
-      counter: 30,
+      counter: 3,
     };
 
     this.shuffle = this.shuffle.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
-    this.resetAnswer = this.resetAnswer.bind(this);
     this.setResult = this.setResult.bind(this);
-    this.setCounter = this.setCounter.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.setNextQuestion = this.setNextQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchApi();
+
     this.shuffle([1, 2, 1 + 2, 2 + 2]);
-    this.setCounter();
+    this.setTimer();
   }
 
   componentDidUpdate(_prevProps, prevState) {
     const maxNumberOfAnswers = 5;
+    const resetedTimer = 30;
     const { dispatchResults } = this.props;
-    const { results } = this.state;
+    const { results, counter, current } = this.state;
     if (results.length === maxNumberOfAnswers) dispatchResults(results);
-  }
 
-  setSecond() {
-    const second = 1000;
-    const { counter } = this.state;
-    let count = counter;
-    if (count <= 0) {
-      this.setState({ btnDisabled: true });
+    if (counter === resetedTimer && current !== prevState.current) {
+      this.setTimer();
+    }
+
+    if (counter <= 0) {
+      this.resetTimer();
       this.setResult(false);
-    } else {
-      setTimeout(() => {
-        count -= 1;
-      }, second);
+      this.setNextQuestion();
     }
-    this.setState({ counter: count });
   }
 
-  setCounter() {
-    const { btnDisabled } = this.state;
-    while (!btnDisabled) {
-      this.setSecond();
-    }
+  setNextQuestion() {
+    this.setState((prevState) => ({ current: prevState.current + 1 }));
+  }
 
-    console.log();
+  setTimer() {
+    const second = 1000;
+    this.counterId = setInterval(
+      () => this.setState((prevState) => ({ counter: prevState.counter - 1 })), second,
+    );
   }
 
   setResult(result) {
@@ -70,8 +69,9 @@ class GameContent extends React.Component {
     });
   }
 
-  resetAnswer() {
-    this.setState({ answer: false });
+  resetTimer() {
+    clearInterval(this.counterId);
+    this.setState({ counter: 30 });
   }
 
   async fetchApi() {
@@ -86,8 +86,8 @@ class GameContent extends React.Component {
     const { target } = event;
     const result = target.className === 'correct';
     this.setState({ btnDisabled: true });
-
     this.setResult(result);
+    this.resetTimer();
   }
 
   shuffle(array) {
