@@ -2,7 +2,18 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class GameCard extends Component {
+  constructor() {
+    super();
+    this.state = { addClass: false };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({ addClass: true });
+  }
+
   render() {
+    const { addClass } = this.state;
     const { question } = this.props;
     const correctAnswer = question.correct_answer;
     const options = [...question.incorrect_answers, correctAnswer].sort();
@@ -16,6 +27,9 @@ class GameCard extends Component {
               data-testid={
                 option === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
               }
+              onClick={ this.handleClick }
+              className={ option === correctAnswer
+                ? `${addClass ? 'correct' : ''}` : `${addClass ? 'incorrect' : ''}` }
               type="button"
             >
               {option}
