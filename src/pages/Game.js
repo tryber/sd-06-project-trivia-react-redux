@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import GameHeader from '../components/GameHeader';
@@ -11,12 +12,14 @@ class Game extends Component {
 
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
     this.randomizeAnswers = this.randomizeAnswers.bind(this);
+    this.nextButton = this.nextButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       questions: [],
       index: 0,
       isLoading: true,
+      nextButtonClass: 'button-invisible',
       answerColor: false,
     };
   }
@@ -58,7 +61,19 @@ class Game extends Component {
     return RANDOM_ANSWERS;
   }
 
+  nextButton() {
+    let { index } = this.state;
+    index += 1;
+    const numberFour = 4;
+    if (index > numberFour) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
+    this.setState({ index });
+  }
+
   handleClick({ target }) {
+    this.setState({ nextButtonClass: 'button-visible' });
     const { id } = target;
     if (id === 'correct-answer') {
       this.setState({
@@ -72,7 +87,7 @@ class Game extends Component {
   }
 
   renderGameBoard() {
-    const { questions, index, answerColor } = this.state;
+    const { questions, index, answerColor, nextButtonClass } = this.state;
     const currentQuestion = questions[index];
     const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
     const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
@@ -114,6 +129,14 @@ class Game extends Component {
                 </button>
             ))}
           </div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextButton }
+            className={ nextButtonClass }
+          >
+            Próxima
+          </button>
         </section>
       </main>
     );
@@ -130,6 +153,10 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  history: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   time: state.game.time,
