@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+// import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { LoginForm } from '../components';
 import { addName } from '../actions';
@@ -20,18 +20,18 @@ class Login extends React.Component {
 
   validateEmail({ target }) {
     const email = target.value;
-    const hash = md5(email);
+    // const hash = md5(email);
     const validator = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const isValid = validator.test(String(email).toLowerCase());
     if (isValid) {
       this.setState({
         validEmail: true,
-        hash: hash.words,
+        // hash: hash.words,
       });
     } else {
       this.setState({
         validEmail: false,
-        hash: '',
+        // hash: '',
       });
     }
   }

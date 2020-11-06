@@ -91,10 +91,6 @@ class Game extends React.Component {
     }, interval);
   }
 
-  score() {
-
-  }
-
   render() {
     const { questions, seconds, points } = this.state;
     const { userName } = this.props;
@@ -112,7 +108,7 @@ class Game extends React.Component {
                     width="120"
                   />
                   <p data-testid="header-player-name">
-                    Nome da pessoa:
+                    Jogador:
                     <span>{userName}</span>
                   </p>
                 </div>
