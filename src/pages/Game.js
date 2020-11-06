@@ -21,8 +21,8 @@ class Game extends React.Component {
   }
 
   async handleFetch(num) {
-    const teste = await triviaAPI(num);
-    return teste;
+    const getQuestions = await triviaAPI(num);
+    return getQuestions;
   }
 
   async handleQuestions() {
@@ -30,17 +30,35 @@ class Game extends React.Component {
   }
 
   render() {
-    //  const { q uestions } = this.props;
+    const { questions } = this.props;
     return (
       <div>
         <Header />
-        <div id="perguntas">
-          <div data-testid="question-category" />
-          <div data-testid="question-text" />
-        </div>
-        <div id="respostas">
-          <div data-testid="correct-answer" />
-        </div>
+        {questions.map((element, index) => (
+          element.results.map((e, i) => (
+            <div key={ index } id="container">
+              <div id="questions">
+                <div data-testid="question-category">
+                CATEGORIA:
+                  <p>{e.category}</p>
+                </div>
+                <div data-testid="question-text">
+                PERGUNTA:
+                  <p>{e.question}</p>
+                </div>
+              </div>
+              <div id="answers">
+                <div data-testid="correct-answer">
+                RESPOSTA CORRETA:
+                  <p>{e.correct_answer}</p>
+                </div>
+                <div data-testid={ `wrong-answer-${i}` }>
+                RESPOSTAS ERRADAS:
+                  {e.incorrect_answers.map((answer, j) => <p key={ j }>{answer}</p>)}
+                </div>
+              </div>
+            </div>
+          ))))}
       </div>
     );
   }
