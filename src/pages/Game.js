@@ -86,7 +86,6 @@ class Game extends Component {
     });
   }
 
-
   timer() {
     const countTime = 1000;
     const seiLa = setInterval(() => {
