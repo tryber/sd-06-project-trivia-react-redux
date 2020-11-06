@@ -11,9 +11,9 @@ class QuestionCards extends Component {
 
     this.correctAnswer = this.correctAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.timeQuestion = this.timeQuestion.bind(this);
-    this.count = this.count.bind(this);
-    this.clock = this.clock.bind(this);
+    // this.timeQuestion = this.timeQuestion.bind(this);
+    // this.count = this.count.bind(this);
+    // this.clock = this.clock.bind(this);
 
     this.state = {
       currentIndex: 0,
@@ -26,14 +26,23 @@ class QuestionCards extends Component {
   }
 
   componentDidMount() {
-    const time = 30000;
-    const timeclear = 31000;
-    setTimeout(this.timeQuestion, time);
-    setTimeout(this.clock, timeclear);
+    const { time } = this.state;
+    // const time = 30000;
+    // const timeclear = 31000;
+    // setTimeout(this.timeQuestion, time);
+    // setTimeout(this.clock, timeclear);
     const interval = 1000;
     this.interval = setInterval(() => {
-      this.count();
+      this.setState((prevState) => ({
+        time: prevState.time - 1,
+      }));
     }, interval);
+    if(time === 0) {
+      this.setState({
+        isDisabled: true,
+      })
+      clearInterval(this.interval);
+    }
   }
 
   correctAnswer() {
@@ -45,30 +54,25 @@ class QuestionCards extends Component {
   }
 
   nextQuestion() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       currentIndex: prevState.currentIndex + 1,
       correct: '',
       incorrect: '',
       visibility: 'button-visibility',
-    }))
-  }
-  
-  count() {
-    this.setState((prevState) => ({
-      time: prevState.time - 1,
+      time: 30,
     }));
   }
 
-  clock() {
-    clearInterval(this.interval);
-  }
+  // clock() {
+  //   clearInterval(this.interval);
+  // }
 
-  timeQuestion() {
-    clearInterval(this.relogio);
-    this.setState({
-      isDisabled: true,
-    });
-  }
+  // timeQuestion() {
+  //   clearInterval(this.relogio);
+  //   this.setState({
+  //     isDisabled: true,
+  //   });
+  // }
 
   render() {
     const { questionCard } = this.props;
@@ -94,25 +98,35 @@ class QuestionCards extends Component {
                 </button>
                 {questionCard[currentIndex].incorrect_answers.map((element, idx) => (
                   <button
-                    data-testid={`wrong-answer-${idx}`}
+                    data-testid={ `wrong-answer-${idx}` }
                     type="button"
-                    key={idx}
+                    key={ idx }
                     id="incorrect"
                     disabled={ isDisabled }
                     className={ incorrect }
                     onClick={ this.correctAnswer }
                   >
-                    {element}
+                    { element }
                   </button>
                 ))}
                 <p>{ time }</p>
               </div>
-              { questionCard.length - 1 === currentIndex ?
-                <Link to="/feedback">
-                  <button className={visibility} type="button">Finalizar</button>
-                </Link> :
-                <button className={visibility} type="button" data-testid="btn-next" onClick={this.nextQuestion}>Next</button>
-              }
+              {questionCard.length - 1 === currentIndex
+                ? (
+                  <Link to="/feedback">
+                    <button className={ visibility } type="button">Finalizar</button>
+                  </Link>
+                )
+                : (
+                  <button
+                    className={ visibility }
+                    type="button"
+                    data-testid="btn-next"
+                    onClick={ this.nextQuestion }
+                  >
+                    Next
+                  </button>
+                )}
             </div>
           ) : <img src={ loading } alt="loading-api" />}
       </div>
