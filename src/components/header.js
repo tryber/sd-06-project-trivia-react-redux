@@ -9,7 +9,7 @@ class Header extends React.Component {
     return (
       <header>
         <img alt="Player Initials" data-testid="header-profile-picture" src={ avatar } />
-        <h3 data-testid="header-profile-name">{ name }</h3>
+        <h3 data-testid="header-player-name">{ name }</h3>
         <h4 data-testid="header-score">{ score }</h4>
       </header>
     );
@@ -19,7 +19,7 @@ class Header extends React.Component {
 Header.defaultProps = {
   avatar: 'imagem',
   name: 'Player',
-  score: '0',
+  score: 0,
 };
 
 Header.propTypes = {
