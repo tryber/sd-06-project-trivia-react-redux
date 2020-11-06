@@ -11,9 +11,8 @@ class QuestionCards extends Component {
 
     this.correctAnswer = this.correctAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    // this.timeQuestion = this.timeQuestion.bind(this);
-    // this.count = this.count.bind(this);
-    // this.clock = this.clock.bind(this);
+    this.counter = this.counter.bind(this);
+    this.setDisableTimeout = this.setDisableTimeout.bind(this);
 
     this.state = {
       currentIndex: 0,
@@ -26,23 +25,28 @@ class QuestionCards extends Component {
   }
 
   componentDidMount() {
-    const { time } = this.state;
-    // const time = 30000;
-    // const timeclear = 31000;
-    // setTimeout(this.timeQuestion, time);
-    // setTimeout(this.clock, timeclear);
-    const interval = 1000;
-    this.interval = setInterval(() => {
-      this.setState((prevState) => ({
-        time: prevState.time - 1,
-      }));
-    }, interval);
-    if(time === 0) {
+    this.counter();
+    this.setDisableTimeout();
+  }
+
+  setDisableTimeout() {
+    const time = 30000;
+    const timeOut = setTimeout(() => (
       this.setState({
         isDisabled: true,
-      })
-      clearInterval(this.interval);
-    }
+      })), time);
+    this.timeOut = timeOut;
+  }
+
+  counter() {
+    const interval = 1000;
+
+    setInterval(() => {
+      this.setState(({ time }) => ({
+        time: time ? time - 1 : 0,
+        visibility: time ? 'button-visibility' : '',
+      }));
+    }, interval);
   }
 
   correctAnswer() {
@@ -54,6 +58,9 @@ class QuestionCards extends Component {
   }
 
   nextQuestion() {
+    clearTimeout(this.timeOut);
+    this.setDisableTimeout();
+
     this.setState((prevState) => ({
       currentIndex: prevState.currentIndex + 1,
       correct: '',
@@ -62,17 +69,6 @@ class QuestionCards extends Component {
       time: 30,
     }));
   }
-
-  // clock() {
-  //   clearInterval(this.interval);
-  // }
-
-  // timeQuestion() {
-  //   clearInterval(this.relogio);
-  //   this.setState({
-  //     isDisabled: true,
-  //   });
-  // }
 
   render() {
     const { questionCard } = this.props;
