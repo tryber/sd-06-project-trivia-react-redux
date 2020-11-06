@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Timer from './Timer';
 import './Questions.css';
-import NextButton from './NextButton';
+// import NextButton from './NextButton';
 import { reqQuestions } from '../services';
 import { getQuestions } from '../actions';
 // import { fetchAPIQuestions } from '../services';
@@ -14,11 +14,13 @@ class Questions extends Component {
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
     this.disableButtons = this.disableButtons.bind(this);
     this.addClass = this.addClass.bind(this);
+    this.countQuestionsAndRedirect = this.countQuestionsAndRedirect.bind(this);
 
     this.state = {
       loading: true,
       checked: false,
       disable: false,
+      questionsAnswer: 0,
     };
   }
 
@@ -54,6 +56,22 @@ class Questions extends Component {
     this.setState({ disable: true });
   }
 
+  countQuestionsAndRedirect() {
+    const { questionsAnswer } = this.state;
+    const magic = 5;
+    const { history } = this.props;
+    this.setState({
+      checked: false,
+    });
+    // ZERAR TIMER, SETSTATE(TIMER) = 0 ???????????????????
+    if (questionsAnswer === magic) {
+      history.push('/feedback');
+    }
+    if (questionsAnswer < magic) {
+      this.setState({ questionsAnswer: questionsAnswer + 1 });
+    }
+  }
+
   addClass() {
     this.setState({
       checked: true,
@@ -61,10 +79,17 @@ class Questions extends Component {
   }
 
   render() {
-    const { loading, checked, disable } = this.state;
+    const { loading, checked, disable, questionsAnswer } = this.state;
     const { questions } = this.props;
     const randomNumber = 0.5;
-    const nextButton = <NextButton />;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.countQuestionsAndRedirect }
+      >
+        Próxima
+      </button>);
     const renderNextButton = checked ? nextButton : null;
 
     if (loading) {
@@ -73,10 +98,10 @@ class Questions extends Component {
 
     return (
       <div>
-        <p data-testid="question-category">{questions[0].category}</p>
-        <p data-testid="question-text">{questions[0].question}</p>
-        {questions[0].answers.map((answer, index) => {
-          if (answer === questions[0].correct_answer) {
+        <p data-testid="question-category">{questions[questionsAnswer].category}</p>
+        <p data-testid="question-text">{questions[questionsAnswer].question}</p>
+        {questions[questionsAnswer].answers.map((answer, index) => {
+          if (answer === questions[questionsAnswer].correct_answer) {
             return (
               <button
                 type="button"
