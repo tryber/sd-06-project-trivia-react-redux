@@ -12,6 +12,7 @@ class Jogo extends React.Component {
       classe: false,
       contagem: 30,
       disable: false,
+      nextBtnDisable: false,
     };
     this.handleClique = this.handleClique.bind(this);
     this.handleClass = this.handleClass.bind(this);
@@ -42,6 +43,7 @@ class Jogo extends React.Component {
   handleClass() {
     this.setState({
       classe: true,
+      nextBtnDisable: true,
     });
   }
 
@@ -49,16 +51,17 @@ class Jogo extends React.Component {
     this.setState((prevState) => ({
       contador: prevState.contador + 1,
       classe: false,
+      nextBtnDisable: false,
     }));
   }
 
   render() {
     const { perguntas } = this.props;
-    const { contador, classe, disable, contagem } = this.state;
+    const { contador, classe, disable, contagem, nextBtnDisable } = this.state;
     console.log('perguntas no render', perguntas);
     let correctAnswer = '';
     let options = '';
-    if (perguntas.length > 0 ) {
+    if (perguntas.length > 0) {
       correctAnswer = perguntas[contador].correct_answer;
       options = [...perguntas[contador].incorrect_answers, correctAnswer].sort();
     }
@@ -68,7 +71,7 @@ class Jogo extends React.Component {
         <div>
           <Header />
         </div>
-        <span>{contagem}</span> 
+        <span>{contagem}</span>
         { perguntas.length > 0 ?
           <div>
             <h2 data-testid="question-category">{ `${perguntas[contador].category}` }</h2>
@@ -77,16 +80,25 @@ class Jogo extends React.Component {
               <div key={ index }>
                 <button
                   type="button"
-                  data-testid={ option === correctAnswer ? "correct-answer" : `wrong-answer${index}` }
+                  data-testid={ option === correctAnswer ? "correct-answer" 
+                    : `wrong-answer${index}` }
                   disabled={ disable }
                   onClick={ this.handleClass }
-                  className={ option === correctAnswer ? `${classe ? 'correct' : ''}` : `${classe ? 'wrong' : ''}` }
+                  className={ option === correctAnswer ? `${classe ? 'correct' : ''}`
+                    : `${classe ? 'wrong' : ''}` }
                 >
                   {option}
                 </button>
               </div>
             ))}
-            <button type="button" onClick={ this.handleClique }>Próxima Questão</button>
+            {nextBtnDisable ?
+              <button
+                type="button"
+                onClick={ this.handleClique }
+                data-testid="btn-next"
+              >
+                  Próxima Questão
+              </button> : null}
           </div>
           : <span>Loading...</span>
         }
