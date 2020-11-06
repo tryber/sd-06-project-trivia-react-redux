@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { gettingQuestionsThunk } from '../redux/actions';
+import './Questions.css';
 
 class Questions extends Component {
   constructor() {
@@ -16,6 +17,18 @@ class Questions extends Component {
     getQuestions();
   }
 
+  checkAnswer() {
+    const btnArray = document.getElementsByTagName('button');
+
+    for (let x = 0; x < btnArray.length; x += 1) {
+      if (btnArray[x].id === 'correct') {
+        btnArray[x].className = 'correct';
+      } else {
+        btnArray[x].className = 'incorrect';
+      }
+    }
+  }
+
   randomizeAnswers() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
@@ -23,7 +36,13 @@ class Questions extends Component {
 
     if (questions !== undefined) {
       const correct = (
-        <button type="button" data-testid="correct-answer" key="correct-answer">
+        <button
+          type="button"
+          data-testid="correct-answer"
+          key="correct-answer"
+          id="correct"
+          onClick={ this.checkAnswer }
+        >
           { questions.results[Number(questionNumber)].correct_answer }
         </button>
       );
@@ -34,6 +53,7 @@ class Questions extends Component {
             data-testid="wrong-answer"
             key={ answer }
             type="button"
+            onClick={ this.checkAnswer }
           >
             { answer }
           </button>)));
