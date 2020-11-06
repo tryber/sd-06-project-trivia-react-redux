@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './GameContent.css';
+import PropTypes from 'prop-types';
+
+import { addResult } from '../actions/game';
 
 class GameContent extends React.Component {
   constructor(props) {
@@ -11,14 +14,46 @@ class GameContent extends React.Component {
       current: 0,
       answer: false,
       sort: [],
+      results: [],
     };
 
     this.shuffle = this.shuffle.bind(this);
+    this.handleClickAnswer = this.handleClickAnswer.bind(this);
+    this.resetAnswer = this.resetAnswer.bind(this);
   }
 
   componentDidMount() {
     this.fetchApi();
     this.shuffle([1, 2, 1 + 2, 2 + 2]);
+    this.setCounter();
+  }
+
+  componentDidUpdate() {
+    const maxNumberOfAnswers = 5;
+    const { dispatchResults } = this.props;
+    const { results } = this.state;
+    if (results.length === maxNumberOfAnswers) dispatchResults(results);
+  }
+
+  async setCounter() {
+    const thirtySeconds = 30000;
+    setTimeout(() => {
+      const thirty = 30;
+      let i = thirty;
+      while (i > 0) {
+        i = countSeconds(i);
+
+        console.log('durante', i);
+      }
+    }, thirtySeconds);
+  }
+
+  setResult(target) {
+    return target.className === 'correct';
+  }
+
+  resetAnswer() {
+    this.setState({ answer: false });
   }
 
   async fetchApi() {
@@ -26,8 +61,18 @@ class GameContent extends React.Component {
     const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
     await fetch(url)
       .then((response) => response.json())
-      .then((a) => this.setState({ element: a }))
-      .then(() => this.setState({ isLoading: false }));
+      .then((a) => this.setState({ element: a, isLoading: false, answer: false }));
+  }
+
+  async handleClickAnswer(event) {
+    const { target } = event;
+    const { results } = this.state;
+
+    this.setState(() => ({ answer: true }), async () => {
+      const result = this.setResult(target);
+      this.setState({ results: [...results, result], isLoading: true });
+      this.fetchApi();
+    });
   }
 
   shuffle(array) {
@@ -45,7 +90,8 @@ class GameContent extends React.Component {
   }
 
   render() {
-    const { element, current, isLoading, answer, sort } = this.state;
+    const { element, current, isLoading, answer, sort, results } = this.state;
+    console.log('results:', results);
     if (isLoading) {
       return <p>Carregando...</p>;
     }
@@ -57,8 +103,8 @@ class GameContent extends React.Component {
         key={ `btn${index}` }
         id={ `order-${sort[index]}` }
         type="button"
-        className={ ` ${answer ? 'correct' : null}` }
-        onClick={ () => this.setState({ answer: true }) }
+        className={ `${answer ? 'correct' : null}` }
+        onClick={ (event) => this.handleClickAnswer(event) }
         data-testid="correct-answer"
       >
         {item}
@@ -70,7 +116,7 @@ class GameContent extends React.Component {
         id={ `order-${sort[index]}` }
         type="button"
         className={ ` ${answer ? 'incorrect' : null}` }
-        onClick={ () => this.setState({ answer: true }) }
+        onClick={ (event) => this.handleClickAnswer(event) }
         data-testid={ `wrong-answer-${index}` }
       >
         {item}
@@ -89,4 +135,16 @@ class GameContent extends React.Component {
   }
 }
 
-export default connect(null, null)(GameContent);
+// const mapStateToProps = (state) => ({
+//   results: state.game.results,
+// });
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchResults: (result) => dispatch(addResult(result)),
+});
+
+GameContent.propTypes = {
+  dispatchResults: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(GameContent);
