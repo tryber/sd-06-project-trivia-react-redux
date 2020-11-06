@@ -80,6 +80,7 @@ class Game extends Component {
                           ? 'correct-answer'
                           : `wrong-answer-${i}`
                       }
+                      className="answer-button"
                       key={ i }
                       type="button"
                     >

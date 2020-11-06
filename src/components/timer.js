@@ -30,6 +30,10 @@ class Timer extends React.Component {
     const oneSecond = 1000;
     if (timeLeft < 1) {
       playerDataAction(action);
+      const buttons = document.getElementsByClassName('answer-button');
+      for (let i = 0; i < buttons.length; i += 1) {
+        buttons[i].disabled = true;
+      }
       return;
     }
     setTimeout(this.decreaseTime, oneSecond);
