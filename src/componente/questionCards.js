@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
+import loading from '../image/loading.gif';
 import './questionCards.css';
 
 class QuestionCards extends Component {
@@ -10,13 +11,29 @@ class QuestionCards extends Component {
 
     this.correctAnswer = this.correctAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.timeQuestion = this.timeQuestion.bind(this);
+    this.count = this.count.bind(this);
+    this.clock = this.clock.bind(this);
 
     this.state = {
       currentIndex: 0,
       correct: '',
       incorrect: '',
       visibility: 'button-visibility',
+      isDisabled: false,
+      time: 30,
     };
+  }
+
+  componentDidMount() {
+    const time = 30000;
+    const timeclear = 31000;
+    setTimeout(this.timeQuestion, time);
+    setTimeout(this.clock, timeclear);
+    const interval = 1000;
+    this.interval = setInterval(() => {
+      this.count();
+    }, interval);
   }
 
   correctAnswer() {
@@ -35,10 +52,27 @@ class QuestionCards extends Component {
       visibility: 'button-visibility',
     }))
   }
+  
+  count() {
+    this.setState((prevState) => ({
+      time: prevState.time - 1,
+    }));
+  }
+
+  clock() {
+    clearInterval(this.interval);
+  }
+
+  timeQuestion() {
+    clearInterval(this.relogio);
+    this.setState({
+      isDisabled: true,
+    });
+  }
 
   render() {
     const { questionCard } = this.props;
-    const { correct, incorrect, currentIndex, visibility } = this.state;
+    const { correct, incorrect, currentIndex, visibility, isDisabled, time } = this.state;
 
     return (
       <div>
@@ -52,8 +86,9 @@ class QuestionCards extends Component {
                   type="button"
                   data-testid="correct-answer"
                   id="correct"
-                  className={correct}
-                  onClick={this.correctAnswer}
+                  disabled={ isDisabled }
+                  className={ correct }
+                  onClick={ this.correctAnswer }
                 >
                   {questionCard[currentIndex].correct_answer}
                 </button>
@@ -63,12 +98,14 @@ class QuestionCards extends Component {
                     type="button"
                     key={idx}
                     id="incorrect"
-                    className={incorrect}
-                    onClick={this.correctAnswer}
+                    disabled={ isDisabled }
+                    className={ incorrect }
+                    onClick={ this.correctAnswer }
                   >
                     {element}
                   </button>
                 ))}
+                <p>{ time }</p>
               </div>
               { questionCard.length - 1 === currentIndex ?
                 <Link to="/feedback">
@@ -77,8 +114,7 @@ class QuestionCards extends Component {
                 <button className={visibility} type="button" data-testid="btn-next" onClick={this.nextQuestion}>Next</button>
               }
             </div>
-          ) : <h3>Loading</h3>
-        }
+          ) : <img src={ loading } alt="loading-api" />}
       </div>
     );
   }
