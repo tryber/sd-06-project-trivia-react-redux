@@ -17,7 +17,6 @@ export default class QuestionCard extends Component {
       answers: [],
       updatedStates: false,
       answersBorderActive: false,
-      playing: false,
       timeIsUp: false,
     };
   }
@@ -71,7 +70,7 @@ export default class QuestionCard extends Component {
     const {
       question: { category, question, correct_answer: correctAnswer },
     } = this.props;
-    const { answers, updatedStates, answersBorderActive } = this.state;
+    const { answers, updatedStates, answersBorderActive, timeIsUp } = this.state;
 
     if (!updatedStates) {
       return <p>Loading...</p>;
@@ -107,6 +106,7 @@ export default class QuestionCard extends Component {
                     data-testid="correct-answer"
                     type="button"
                     onClick={ this.activateBorders }
+                    disabled={ timeIsUp }
                   >
                     {correctAnswer}
                   </button>
