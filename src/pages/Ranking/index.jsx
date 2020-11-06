@@ -30,7 +30,7 @@ class Ranking extends React.Component {
             </li>
           ))}
         </ol>
-        <Link to="/"> Início </Link>
+        <Link data-testid="btn-go-home" to="/"> Início </Link>
       </div>
     );
   }
