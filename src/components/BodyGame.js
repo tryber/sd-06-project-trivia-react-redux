@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions';
+import '../App.css';
 
 class BodyGame extends Component {
   componentDidMount() {
@@ -20,6 +21,15 @@ class BodyGame extends Component {
     }
   }
 
+  handleAnswerBorderColor() {
+    const rightAnswer = document.querySelector('#right-answer');
+    rightAnswer.className = 'right-question';
+    const wrongAnswers = document.querySelectorAll('#wrong-answer');
+    wrongAnswers.forEach((wrongAnswer) => {
+      wrongAnswer.className = 'wrong-question';
+    });
+  }
+
   render() {
     const { questions } = this.props;
     return (
@@ -36,14 +46,23 @@ class BodyGame extends Component {
             </div>
             <div className="box-alternatives">
               <div>
-                <button type="button" data-testid="correct-answer">
+                <button
+                  id="right-answer"
+                  type="button"
+                  data-testid="correct-answer"
+                  name="right-answer"
+                  onClick={ this.handleAnswerBorderColor }
+                >
                   {question.correct_answer}
                 </button>
                 {question.incorrect_answers.map((item, position) => (
                   <button
+                    id="wrong-answer"
                     type="button"
                     key={ position }
                     data-testid={ `wrong-answer-${position}` }
+                    name="wrong-answer"
+                    onClick={ this.handleAnswerBorderColor }
                   >
                     {item}
                   </button>
