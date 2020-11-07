@@ -64,7 +64,7 @@ class Game extends Component {
                   .map((question, i) => {
                     if (question === APIQuestions[index].correct_answer) {
                       return (
-                        <Link to="/feedback" key={ i }>
+                        <Link to="/feedback" key={ i } teste="teste">
                           <button
                             type="button"
                             data-testid="correct-answer"
