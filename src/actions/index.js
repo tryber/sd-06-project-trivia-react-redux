@@ -1,5 +1,6 @@
 export const TOKEN = 'TOKEN';
 export const USER = 'USER';
+export const HASH = 'HASH'
 
 export const addToken = (token) => ({
   type: TOKEN,
@@ -10,6 +11,11 @@ export const addName = (name) => ({
   type: USER,
   name,
 });
+
+export const addHash = (hash) => ({
+  type: HASH,
+  hash,
+})
 
 export const fetchApi = () => async (dispatch) => {
   const request = await fetch('https://opentdb.com/api_token.php?command=request');
