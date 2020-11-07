@@ -66,7 +66,7 @@ class LoginForm extends Component {
                   </button>
                 </div>
               </div>
-              { showSettings ? <Settings /> : '' }
+              { showSettings ? <Link to="/feedback"><Settings /></Link> : '' }
             </div>
           </div>
         </form>

@@ -1,16 +1,59 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import fetchGravatar from '../services'
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+    this.fetchProfileImg = this.fetchProfileImg.bind(this);
+  }
+
+  async componentDidMount() {
+    this.fetchProfileImg();
+  }
+
+  fetchProfileImg() {
+    const { hashGravatar } =  this.props;
+    const imgUrl = fetchGravatar(hashGravatar)
+    console.log(imgUrl)
+  }
+
   render() {
+    const { hashGravatar, userName } =  this.props;
+    const src = `https://www.gravatar.com/avatar/${hashGravatar}`
     return (
-      <div className="feedback-container">
-        <header>
-          <div className="header-profile-picture"></div>
-          <div></div>
+      <div className="feedback-container game-container">
+        <header className="profile-header" data-testid="header-player-name">
+          <div className="profile-div">
+            <div className="profile-rightside">
+              <img
+                data-testid="header-profile-picture"
+                alt="profile"
+                src={ src }
+                width="120"
+              />
+              <p data-testid="header-player-name">
+                Jogador:
+                <span>{ userName }</span>
+              </p>
+            </div>
+          </div>
+          <h1 className="score">
+                <p data-testid="header-score">
+                  Placar
+                  <span>{}</span>
+                </p>
+          </h1>
         </header>
       </div>
     )
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  hashGravatar: state.user.hash,
+  userName: state.user.user,
+});
+
+
+export default connect(mapStateToProps)(Feedback);
