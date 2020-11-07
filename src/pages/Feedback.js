@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+    const state = JSON.parse(localStorage.getItem('state'));
+    this.state = {
+      // name: state.player.name,
+      assertions: state.player.assertions,
+      score: state.player.score,
+    };
+  }
+
   ggMessage() {
     return (
       <h1>
@@ -35,31 +43,20 @@ class Feedback extends Component {
   }
 
   render() {
-    const { gameStats: { correctAnswers, score } } = this.props;
+    const { assertions, score } = this.state;
     const numberOfAnswers = 3;
     return (
       <main>
-        {/* <Header /> */}
+        <Header />
         <header data-testid="feedback-text">
-          {(correctAnswers >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
+          {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
         </header>
-        {this.gameFeedback(correctAnswers, score)}
-        <Link to="ranking" data-testid="btn-ranking">VER RANKING</Link>
+        {this.gameFeedback(assertions, score)}
+        <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
         <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
       </main>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  gameStats: state.stats,
-});
-
-export default connect(mapStateToProps)(Feedback);
-
-Feedback.propTypes = {
-  gameStats: PropTypes.shape({
-    correctAnswers: PropTypes.number.isRequired,
-    score: PropTypes.number.isRequired,
-  }).isRequired,
-};
+export default Feedback;
