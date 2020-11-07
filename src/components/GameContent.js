@@ -16,7 +16,7 @@ class GameContent extends React.Component {
       sort: [],
       results: [],
       btnDisabled: false,
-      counter: 3,
+      counter: 30,
     };
 
     this.shuffle = this.shuffle.bind(this);
