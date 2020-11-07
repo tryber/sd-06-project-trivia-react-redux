@@ -7,12 +7,11 @@ import Timer from '../components/timer';
 // import { getQuestions } from '../actions';
 
 class Game extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       index: 0,
-      disabled: false,
       clicked: false,
     };
 
@@ -30,7 +29,8 @@ class Game extends Component {
 
   render() {
     const { isFetching, APIQuestions } = this.props;
-    const { index, disabled, clicked } = this.state;
+    const { index, clicked } = this.state;
+    const { timeout } = this.props;
     const random = 0.5;
     return (
       <section className="game-container">
@@ -70,7 +70,7 @@ class Game extends Component {
                           type="button"
                           data-testid="correct-answer"
                           key={ i }
-                          disabled={ disabled }
+                          disabled={ timeout }
                           className={ clicked ? 'correct-answer' : null }
                           onClick={ this.handleStyle }
                         >
@@ -83,7 +83,7 @@ class Game extends Component {
                         type="button"
                         data-testid={ `wrong-answer-${i}` }
                         key={ i }
-                        disabled={ disabled }
+                        disabled={ timeout }
                         className={ clicked ? 'wrong-answer' : null }
                         onClick={ this.handleStyle }
                       >
@@ -107,11 +107,13 @@ const mapStateToProps = (state) => ({
   info: state.token.response,
   APIQuestions: state.allQuestions.results,
   isFetching: state.allQuestions.isFetching,
+  timeout: state.playerData.payload.timeout,
 });
 
 Game.propTypes = {
   info: PropTypes.shape().isRequired,
   isFetching: PropTypes.bool.isRequired,
+  timeout: PropTypes.bool.isRequired,
   APIQuestions: PropTypes.arrayOf(
     PropTypes.shape(),
     PropTypes.array,
