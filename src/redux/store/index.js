@@ -15,10 +15,10 @@ const composeWithDevTools = (
 
 const INITIAL_STATE = {
   userInformation: {
-    token: loadState('token'),
+    token: loadState('token', ''),
   },
   questionsInformation: {
-    score: loadState('score'),
+    score: loadState('score', 0),
   },
 };
 

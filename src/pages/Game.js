@@ -48,7 +48,8 @@ class Game extends Component {
         difficultyNumber = 0;
         break;
       }
-      const score = 10 + (time * difficultyNumber);
+      const ten = 10;
+      const score = ten + (time * difficultyNumber);
       saveScore(score);
       console.log('difficultyNumber', difficultyNumber);
       console.log('score', score);
@@ -173,6 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
+  saveScore: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

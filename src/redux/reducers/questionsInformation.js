@@ -10,7 +10,10 @@ function questionsInformation(state = INITIAL_STATE, action) {
   case ADD_QUESTIONS:
     return { ...state, arrayQuestion: [...action.payload.questionsResults] };
   case SCORE:
-    return { ...state, score: parseInt(state.score) + parseInt(action.payload.score) };
+    return {
+      ...state,
+      score: parseInt((state.score), 10) + parseInt((action.payload.score), 10),
+    };
   default:
     return state;
   }
