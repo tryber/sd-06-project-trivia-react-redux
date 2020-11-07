@@ -37,7 +37,7 @@ class Login extends React.Component {
     const { name, email } = this.state;
     dispatchDados(name, email);
     dispatchToken();
-    history.push("/jogo");
+    history.push('/jogo');
   }
 
   render() {
@@ -84,7 +84,7 @@ class Login extends React.Component {
               Configurações
             </button>
           </Link>
-          </form>
+        </form>
       </div>
     );
   }

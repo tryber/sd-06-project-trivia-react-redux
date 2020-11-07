@@ -13,10 +13,12 @@ class Jogo extends React.Component {
       contagem: 30,
       disable: false,
       nextBtnDisable: false,
+      click: 0,
     };
     this.handleClique = this.handleClique.bind(this);
     this.handleClass = this.handleClass.bind(this);
     this.setContagem = this.setContagem.bind(this);
+    this.vaParaFeedback = this.vaParaFeedback.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +42,15 @@ class Jogo extends React.Component {
     }
   }
 
+  vaParaFeedback() {
+    const { click } = this.state;
+    const { history } = this.props;
+    const final = 4;
+    if (click === final) {
+      history.push('/feedback');
+    }
+  }
+
   handleClass() {
     this.setState({
       classe: true,
@@ -52,6 +63,7 @@ class Jogo extends React.Component {
       contador: prevState.contador + 1,
       classe: false,
       nextBtnDisable: false,
+      click: prevState.click + 1,
     }));
   }
 
@@ -80,7 +92,7 @@ class Jogo extends React.Component {
               <div key={ index }>
                 <button
                   type="button"
-                  data-testid={ option === correctAnswer ? "correct-answer" 
+                  data-testid={ option === correctAnswer ? 'correct-answer'
                     : `wrong-answer${index}` }
                   disabled={ disable }
                   onClick={ this.handleClass }
@@ -94,14 +106,16 @@ class Jogo extends React.Component {
             {nextBtnDisable ?
               <button
                 type="button"
-                onClick={ this.handleClique }
+                onClick={ () => {
+                  this.handleClique();
+                  this.vaParaFeedback();}
+                }
                 data-testid="btn-next"
               >
                   Próxima Questão
               </button> : null}
           </div>
-          : <span>Loading...</span>
-        }
+          : <span>Loading...</span>}
       </div>
     );
   }
