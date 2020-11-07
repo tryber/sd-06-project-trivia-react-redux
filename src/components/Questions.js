@@ -9,6 +9,7 @@ class Questions extends React.Component {
       disable: false,
       tempo: 30,
       currentQuestion: 0,
+      assertions: 0,
     };
     this.timerFunction = this.timerFunction.bind(this);
     this.stopCounter = this.stopCounter.bind(this);
@@ -40,7 +41,7 @@ class Questions extends React.Component {
 
   scored() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const { tempo, currentQuestion } = this.state;
+    const { tempo, currentQuestion, assertions } = this.state;
     const { question } = this.props;
     const dez = 10;
     const tres = 3;
@@ -64,15 +65,17 @@ class Questions extends React.Component {
     soma = soma + dez + (dif * tempo);
     localStorage.setItem(
       'state',
-      JSON.stringify({ player: { ...state.player, score: soma } }),
+      JSON.stringify({ player: { ...state.player, score: soma, assertions } }),
     );
   }
 
   choosed(e) {
     if (e.target.value === 'CorrectAnswer') {
-      this.scored();
+      this.setState((prev) => ({ disable: true, assertions: prev.assertions + 1 }),
+        () => this.scored());
+    } else {
+      this.setState({ disable: true });
     }
-    this.setState({ disable: true });
     this.stopCounter();
     const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
     const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
@@ -125,7 +128,7 @@ class Questions extends React.Component {
     }
     return (
       <div>
-        {timer}
+        {timer }
         <h3 data-testid="question-category">
           Categoria:
           { question[currentQuestion].category }

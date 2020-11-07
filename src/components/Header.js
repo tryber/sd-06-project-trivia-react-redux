@@ -21,7 +21,10 @@ class Header extends Component {
           <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
           <strong data-testid="header-player-name">{` Jogador: ${name}`}</strong>
           <div style={ { textAlign: 'right' } }>
-            <strong data-testid="header-score">{` Pontos: ${score}`}</strong>
+            <strong>
+              Pontos:
+              <span data-testid="header-score">{ score }</span>
+            </strong>
           </div>
         </div>
       </header>

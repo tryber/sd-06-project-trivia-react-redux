@@ -7,7 +7,6 @@ class Feedback extends Component {
     super();
     const state = JSON.parse(localStorage.getItem('state'));
     this.state = {
-      // name: state.player.name,
       assertions: state.player.assertions,
       score: state.player.score,
     };
@@ -32,11 +31,15 @@ class Feedback extends Component {
   gameFeedback(answers, score) {
     return (
       <section>
-        <p data-testid="feedback-total-question">
-          {`Você acertou ${answers} questões!`}
+        <p>
+          Você acertou
+          <span data-testid="feedback-total-question">{ answers }</span>
+          questões!
         </p>
-        <p data-testid="feedback-total-score">
-          {`Um total de ${score} pontos`}
+        <p>
+          Um total de
+          <span data-testid="feedback-total-score">{ score }</span>
+          pontos
         </p>
       </section>
     );
@@ -48,9 +51,9 @@ class Feedback extends Component {
     return (
       <main>
         <Header />
-        <header data-testid="feedback-text">
+        <h2 data-testid="feedback-text">
           {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
-        </header>
+        </h2>
         {this.gameFeedback(assertions, score)}
         <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
         <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
