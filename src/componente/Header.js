@@ -11,7 +11,7 @@ class Header extends Component {
         <img
           alt="user login"
           data-testid="header-profile-picture"
-          src={userImage}
+          src={ userImage }
         />
         <h3
           data-testid="header-player-name"

@@ -48,7 +48,7 @@ class QuestionCards extends Component {
     const hard = 3;
     const medium = 2;
     const easy = 1;
-    
+
     console.log(time);
     switch (difficulty) {
     case 'hard':
@@ -133,7 +133,7 @@ class QuestionCards extends Component {
               {questionCard.length - 1 === currentIndex
                 ? (
                   <Link to="/feedback">
-                    <button className={ visibility } type="button">Finalizar</button>
+                    <button data-testid="btn-next" className={ visibility } type="button">Finalizar</button>
                   </Link>
                 )
                 : (
