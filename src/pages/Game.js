@@ -98,7 +98,6 @@ class Game extends React.Component {
           </div>
           <div data-testid="header-player-name">
             Jogador:
-            <br />
             { name }
           </div>
           <div data-testid="header-score">
@@ -107,14 +106,13 @@ class Game extends React.Component {
           </div>
         </header>
         <div className="container-game">
-          <div className="question">
-            CATEGORIA:
+          <div className="right">
             <div data-testid="question-category">
+              CATEGORIA[
               { results !== '' ? this.decodeHTMLEntities(results[counter].category) : '' }
+              ]
             </div>
-            <br />
-            PERGUNTA:
-            <div data-testid="question-text">
+            <div className="question" data-testid="question-text">
               { results !== '' ? this.decodeHTMLEntities(results[counter].question) : '' }
             </div>
           </div>
