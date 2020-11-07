@@ -71,15 +71,25 @@ class Game extends Component {
     this.setState({ index, answerColor: false });
   }
 
-  handleClick({ target }) {
+  async handleClick({ target }) {
     this.setState({ nextButtonClass: 'button-visible' });
     const { id } = target;
     if (id === 'correct-answer') {
-      this.setState((corentState) => ({
+      await this.setState((corentState) => ({
         ...corentState,
         answerColor: true,
         score: corentState.score + 1,
       }));
+      const { score } = this.state;
+      const object = {
+        player: {
+          name: 'nome',
+          score,
+          gravatarEmail: 'nome@nome.com',
+        },
+      };
+      const stringfiedObjetc = JSON.stringify(object);
+      localStorage.setItem('state', stringfiedObjetc);
     } else {
       this.setState({
         answerColor: true,
