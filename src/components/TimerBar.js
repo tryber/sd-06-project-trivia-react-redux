@@ -6,7 +6,7 @@ class Timer extends React.Component {
 
     this.state = {
       seconds: 30,
-    }
+    };
   }
 
   componentDidMount() {
@@ -22,15 +22,15 @@ class Timer extends React.Component {
     const { seconds } = this.state;
     if (seconds === 0) {
       clearInterval(this.myInterval);
-    };
+    }
   }
 
   render() {
     const { seconds } = this.state;
     console.log(seconds);
-    return(
+    return (
       <div>
-          <p className="timer">{seconds}</p>
+        <p className="timer">{seconds}</p>
       </div>
     );
   }

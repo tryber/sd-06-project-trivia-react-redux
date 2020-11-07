@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import timer from '../redux/reducers/timer';
+// import timer from '../redux/reducers/timer';
 
 class Questions extends Component {
   constructor() {
@@ -31,7 +31,7 @@ class Questions extends Component {
     });
 
     const wrongList = document.querySelectorAll('.wrong-question');
-      const rightQuestion = document.querySelector('.right-question');
+    const rightQuestion = document.querySelector('.right-question');
 
     if (wrongList && rightQuestion) {
       wrongList.forEach((element) => {
@@ -65,7 +65,7 @@ class Questions extends Component {
         element.className = 'wrong-question';
       });
       rightQuestion.className = 'right-question';
-  
+
       this.setState({
         disableBTN: true,
       });
@@ -122,17 +122,16 @@ class Questions extends Component {
 
   testTimer() {
     const time = document.querySelector('.timer');
-    console.log(time)
+    console.log(time);
   }
 
   render() {
-
     const { shuffled } = this.state;
     const { gameQuestions } = this.props;
 
-    this.testTimer()
+    this.testTimer();
 
-    if(!shuffled && gameQuestions) {
+    if (!shuffled && gameQuestions) {
       this.shuffleArray();
     }
 
