@@ -5,13 +5,13 @@ import { fetchQuestionsAPI } from '../redux/actions';
 import GameHeader from '../components/GameHeader';
 import Timer from '../components/TimerBar';
 
-
 class Game extends React.Component {
   constructor() {
     super();
 
     this.handlePage = this.handlePage.bind(this);
   }
+
   componentDidUpdate() {
     const { fetchQuestions, tokenResponse } = this.props;
     if (tokenResponse) {
@@ -22,15 +22,14 @@ class Game extends React.Component {
   handlePage() {
     const { loading } = this.props;
     if (loading) {
-      return <h2>Loading...</h2> 
-    } else {
-      return (
-        <div>
+      return <h2>Loading...</h2>;
+    }
+    return (
+      <div>
         <GameHeader />
         <Timer />
       </div>
-      );
-    }
+    );
   }
 
   render() {
