@@ -18,14 +18,12 @@ function timer(state = initialState, action) {
   case TIMER_STOP:
     return {
       ...state,
-      stoppedAt: action.now,
+      stoppedAt: action.stopCount,
     };
   case TIMER_RESET:
   return {
     ...state,
-    baseTime: 0,
-    startedAt: state.startedAt ? action.now : undefined,
-    stoppedAt: state.stoppedAt ? action.now : undefined
+    baseTime: action.resetCount,
   };
   default:
     return state;

@@ -27,7 +27,6 @@ class Timer extends React.Component {
 
   render() {
     const { seconds } = this.state;
-    console.log(seconds);
     return(
       <div>
           <p className="timer">{seconds}</p>

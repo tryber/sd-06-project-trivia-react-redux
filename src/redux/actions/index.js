@@ -49,10 +49,10 @@ export const startTimer = (baseTime = 0) => ({
 
 export const stopTimer = () => ({
   type: TIMER_STOP,
-  now: new Date().getTime(),
+  stopCount: 'a',
 });
 
 export const timerReset = () => ({
   type: TIMER_RESET,
-  now: new Date().getTime(),
+  resetCount: 'a',
 });

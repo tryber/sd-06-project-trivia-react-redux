@@ -11,13 +11,14 @@ class Questions extends Component {
       disableBTN: false,
       shuffledQuestions: [],
       shuffled: false,
+      answerTime: 0,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
-    this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
-    this.testTimer = this.testTimer.bind(this);
+    this.getAnswerTime = this.getAnswerTime.bind(this);
   }
 
   changeToNextQuestion() {
@@ -57,7 +58,18 @@ class Questions extends Component {
     }
   }
 
-  handleAnswerStyle({ target }) {
+  getAnswerTime({ target }) {
+    const time = document.querySelector('.timer');
+    if (time && target.className === 'rquestion') {
+      const timeInt = parseInt(time.innerHTML);
+
+      return timeInt;
+    } else {
+      return 0;
+    };
+  }
+
+  handleAnswer({ target }) {
     if (target.className === 'wquestion' || target.className === 'rquestion') {
       const wrongList = document.querySelectorAll('.wquestion');
       const rightQuestion = document.querySelector('.rquestion');
@@ -65,9 +77,12 @@ class Questions extends Component {
         element.className = 'wrong-question';
       });
       rightQuestion.className = 'right-question';
-  
+      const answerTime = this.getAnswerTime();
+      console.log(answerTime)
+      
       this.setState({
         disableBTN: true,
+        answerTime,
       });
     }
   }
@@ -91,7 +106,7 @@ class Questions extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
-                  onClick={ this.handleAnswerStyle }
+                  onClick={ this.handleAnswer }
                   className="rquestion"
                   key="correct"
                   disabled={ disableBTN }
@@ -105,7 +120,7 @@ class Questions extends Component {
                 type="button"
                 data-testid={ `wrong-answers-${answerIndex += 1}` }
                 className="wquestion"
-                onClick={ this.handleAnswerStyle }
+                onClick={ this.handleAnswer }
                 key={ `wrong${answerIndex}` }
                 disabled={ disableBTN }
               >
@@ -120,17 +135,10 @@ class Questions extends Component {
     return <p>Loading</p>;
   }
 
-  testTimer() {
-    const time = document.querySelector('.timer');
-    console.log(time)
-  }
-
   render() {
 
     const { shuffled } = this.state;
     const { gameQuestions } = this.props;
-
-    this.testTimer()
 
     if(!shuffled && gameQuestions) {
       this.shuffleArray();
