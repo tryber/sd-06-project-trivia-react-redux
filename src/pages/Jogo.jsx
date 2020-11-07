@@ -108,7 +108,7 @@ class Jogo extends React.Component {
                 type="button"
                 onClick={ () => {
                   this.handleClique();
-                  this.vaParaFeedback();}
+                  this.vaParaFeedback(); }
                 }
                 data-testid="btn-next"
               >
