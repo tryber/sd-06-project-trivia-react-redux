@@ -5,14 +5,18 @@ import { Redirect } from 'react-router-dom';
 class Questions extends React.Component {
   constructor() {
     super();
-
     this.state = {
       disable: false,
       tempo: 30,
       currentQuestion: 0,
     };
-
+    this.timerFunction = this.timerFunction.bind(this);
+    this.stopCounter = this.stopCounter.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  componentDidMount() {
+    this.timerFunction();
   }
 
   nextQuestion() {
@@ -20,8 +24,10 @@ class Questions extends React.Component {
       {
         currentQuestion: prev.currentQuestion + 1,
         disable: false,
+        tempo: 30,
       }
     ));
+    this.timerFunction();
     const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
     const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
     buttonsCorrect.forEach((button) => {
@@ -67,6 +73,7 @@ class Questions extends React.Component {
       this.scored();
     }
     this.setState({ disable: true });
+    this.stopCounter();
     const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
     const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
     buttonsCorrect.forEach((button) => {
@@ -77,15 +84,48 @@ class Questions extends React.Component {
     });
   }
 
+  stopCounter() {
+    window.clearInterval(this.interval);
+  }
+
+  timerFunction() {
+    const sec = 1000;
+    this.interval = setInterval(() => {
+      this.setState((prevState) => ({
+        ...prevState,
+        tempo: prevState.tempo - 1,
+      }
+      ));
+      const { tempo } = this.state;
+      if (tempo < 1) {
+        this.stopCounter();
+        this.setState({
+          resposta: 'WrongAnswer',
+          disable: true,
+        });
+      }
+    }, sec);
+  }
+
+  timer() {
+    const { tempo } = this.state;
+    return (
+      <div>
+        {tempo }
+      </div>
+    );
+  }
+
   render() {
     const { currentQuestion, disable } = this.state;
     const { question } = this.props;
-    console.log(question[currentQuestion].difficulty);
+    const timer = this.timer();
     if (currentQuestion === question.length) {
       return <Redirect to="/feedback" />;
     }
     return (
       <div>
+        {timer}
         <h3 data-testid="question-category">
           Categoria:
           { question[currentQuestion].category }
