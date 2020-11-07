@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions, sendScore } from '../actions';
+import { fetchQuestions, sendScore, sendAssertions } from '../actions';
 import '../App.css';
 import Timer from './Timer';
 
@@ -14,6 +14,7 @@ class BodyGame extends Component {
     this.handleCounter = this.handleCounter.bind(this);
     this.handleScoreToLocalStorage = this.handleScoreToLocalStorage.bind(this);
     this.handleQuestionIndex = this.handleQuestionIndex.bind(this);
+    this.handleAssertions = this.handleAssertions.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -21,6 +22,7 @@ class BodyGame extends Component {
       counter: 30,
       questionIndex: 0,
       redirect: false,
+      assertions: 0,
     };
   }
 
@@ -124,6 +126,11 @@ class BodyGame extends Component {
     localStorage.setItem('state', JSON.stringify(localStoragePlayerInfo));
   }
 
+  handleAssertions() {
+    const { assertions } = this.state;
+    this.setState({ assertions: assertions + 1 });
+  }
+
   handleQuestionIndex() {
     const { questionIndex } = this.state;
     const lastQuestion = 4;
@@ -136,10 +143,16 @@ class BodyGame extends Component {
     });
   }
 
-  handleClick() {
+  handleClickScore() {
     const { dispatchScore } = this.props;
     const { score } = this.state;
     dispatchScore(score);
+  }
+
+  handleClickAssertions() {
+    const { dispatchAssertions } = this.props;
+    const { assertions } = this.state;
+    dispatchAssertions(assertions);
   }
 
   render() {
@@ -166,7 +179,7 @@ class BodyGame extends Component {
                   data-testid="btn-next"
                   onClick={ () => {
                     this.handleQuestionIndex();
-                    this.handleClick();
+                    this.handleClickScore();
                   } }
                   style={ { display: 'none' } }
                 >
@@ -180,6 +193,8 @@ class BodyGame extends Component {
                   onClick={ () => {
                     this.handleScore(question, counter);
                     this.handleAnswerBorderColor();
+                    this.handleAssertions();
+                    this.handleClickAssertions();
                   } }
                   disabled={ isDisabled }
                 >
@@ -221,6 +236,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (score) => dispatch(sendScore(score)),
+  dispatchAssertions: (assertions) => dispatch(sendAssertions(assertions)),
   questionsFunction: () => dispatch(fetchQuestions()),
 });
 
