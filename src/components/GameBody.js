@@ -11,6 +11,7 @@ class GameBody extends React.Component {
       index: 0,
       answers: [],
       isCorrect: false,
+      disabled: true,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
@@ -51,17 +52,20 @@ class GameBody extends React.Component {
     }
     this.setState({
       isCorrect: false,
+      disabled: true,
     });
   }
 
   changeColor() {
     this.setState({
       isCorrect: true,
+      disabled: false,
     });
   }
 
   render() {
-    const { category, question, correctAnswer, answers, isCorrect } = this.state;
+    const { category, question, correctAnswer,
+      answers, isCorrect, disabled } = this.state;
     const randomNumber = 0.5;
 
     return (
@@ -96,6 +100,8 @@ class GameBody extends React.Component {
         <br />
         <button
           type="button"
+          disabled={ disabled }
+          data-testid={ disabled ? '' : 'btn-next' }
           onClick={ () => this.handleNext() }
         >
           Next
