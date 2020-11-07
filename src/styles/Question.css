@@ -16,3 +16,7 @@
 .incorrect {
   border: 3px solid rgb(255, 0, 0);
 }
+
+.invisible {
+  visibility: hidden;
+}
