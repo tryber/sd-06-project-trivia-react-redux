@@ -20,7 +20,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 1;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
   }
@@ -29,12 +29,11 @@ class Game extends React.Component {
     //   const { questions } = this.props;
   }
 
-  handleDisabled({ target }) {
+  handleDisabled() {
+    // { target }
     // Lógica para mudar o disabled do botão
     // Necessita que uma alternativa tenha sido selecionada
     // target.id ? target.className = 'green' ;
-
-    console.log(target);
     this.setState({
       classRightAnswer: 'green',
       classWrongAnswer: 'red',
@@ -50,7 +49,6 @@ class Game extends React.Component {
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
     const { classRightAnswer, classWrongAnswer } = this.state;
-    console.log('Teste');
     return (
       <div id="answers">
         {newArray.map((element, index) => {
