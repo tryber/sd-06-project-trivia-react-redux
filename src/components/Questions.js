@@ -5,11 +5,9 @@ import { Redirect } from 'react-router-dom';
 class Questions extends React.Component {
   constructor() {
     super();
-
     this.state = {
       disable: false,
-      // resposta: '',
-      // dificuldade: '',
+//       resposta:,
       tempo: 30,
       currentQuestion: 0,
     };
@@ -57,8 +55,6 @@ class Questions extends React.Component {
       button.style.border = '3px solid rgb(255, 0, 0)';
     });
   }
-
-  // Lógica do Timer:
   stopCounter() {
     window.clearInterval(this.interval);
   }
@@ -89,7 +85,6 @@ class Questions extends React.Component {
         {tempo}
       </div>
     );
-  }
 
   render() {
     const { currentQuestion, disable } = this.state;
