@@ -10,16 +10,44 @@ class Game extends React.Component {
     super(props);
     this.firstClick = this.firstClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.shuffle = this.shuffle.bind(this);
+    this.getAnswers = this.getAnswers.bind(this);
+    this.decodeHTMLEntities = this.decodeHTMLEntities.bind(this);
     this.state = {
       placar: 0,
       nextButton: 'none',
       counter: 0,
+      answers: '',
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { questionFetch } = this.props;
-    questionFetch();
+    await questionFetch();
+    this.getAnswers();
+  }
+
+  getAnswers() {
+    const { results } = this.props;
+    const { counter } = this.state;
+    const correctAnswer = {
+      correction: 'correct-answer',
+      result: results[counter].correct_answer,
+    };
+    const incorrectAnswers = results[counter].incorrect_answers
+      .map((e, index) => ({
+        correction: `wrong-answer-${index}`,
+        result: e,
+      }));
+    const answers = [correctAnswer, ...incorrectAnswers];
+    this.shuffle(answers);
+    this.setState({ answers });
+  }
+
+  decodeHTMLEntities(text) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
   }
 
   firstClick() {
@@ -28,20 +56,34 @@ class Game extends React.Component {
     });
   }
 
-  nextQuestion() {
+  async nextQuestion() {
     const { counter } = this.state;
-    this.setState({
+    await this.setState({
       counter: counter + 1,
+      nextButton: 'none',
     });
+    this.getAnswers();
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
   }
 
   render() {
-    const { placar, nextButton, counter } = this.state;
+    const { placar, nextButton, counter, answers } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
-
-    console.log(results !== '' ? results[0].category : 0);
 
     return (
       <div>
@@ -51,9 +93,13 @@ class Game extends React.Component {
               data-testid="header-profile-picture"
               alt="imagem"
               src={ gravatarLink + emailMD5 }
+              className="picture"
             />
           </div>
-          <div data-testid="header-player-name">{ name }</div>
+          <div data-testid="header-player-name">
+            Jogador:
+            { name }
+          </div>
           <div data-testid="header-score">
             Placar:
             { placar }
@@ -61,37 +107,33 @@ class Game extends React.Component {
         </header>
         <div className="container-game">
           <div>
+            CATEGORIA:
             <div data-testid="question-category">
-              { results !== '' ? results[counter].category : 0 }
+              { results !== '' ? this.decodeHTMLEntities(results[counter].category) : '' }
             </div>
+            <br />
+            PERGUNTA:
             <div data-testid="question-text">
-              { results !== '' ? results[counter].question : 0 }
+              { results !== '' ? this.decodeHTMLEntities(results[counter].question) : '' }
             </div>
           </div>
-          <div>
-            <button
-              type="button"
-              className="btn btn-success btn-block mt-4"
-              data-testid="correct-answer"
-              onClick={ this.firstClick }
-            >
-              { results !== '' ? results[counter].correct_answer : 0 }
-            </button>
-            { results !== '' ? results[counter].incorrect_answers.map((answer, index) => (
+          <div className="buttons">
+            { answers !== '' ? answers.map((answer, index) => (
               <button
                 key={ index }
                 type="button"
-                className="btn btn-success btn-block mt-4"
-                data-testid={ `wrong-answer-${index}` }
+                className="btn btn-success btn-lg mt-4 ml-4"
+                data-testid={ answer.correction }
                 onClick={ this.firstClick }
               >
-                { answer }
+                { this.decodeHTMLEntities(answer.result) }
               </button>
-            ))
-              : 0 }
+            )) : '' }
+          </div>
+          <div className="nextbutton">
             <button
               type="button"
-              className="btn btn-success btn-block mt-4"
+              className="btn btn-warning btn-block mt-4"
               data-testid="btn-next"
               style={ { display: nextButton } }
               onClick={ this.nextQuestion }
