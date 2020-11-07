@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import timer from '../redux/reducers/timer';
+import { timerReset, timerStop } from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -23,16 +23,19 @@ class Questions extends Component {
 
   changeToNextQuestion() {
     const { questionNumber } = this.state;
+    const { resetTimer } = this.props;
     const indexLimit = 4;
+    const wrongList = document.querySelectorAll('.wrong-question');
+    const rightQuestion = document.querySelector('.right-question');
+
+    resetTimer();
 
     this.setState({
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
       shuffled: false,
+      answerTime: 0,
     });
-
-    const wrongList = document.querySelectorAll('.wrong-question');
-      const rightQuestion = document.querySelector('.right-question');
 
     if (wrongList && rightQuestion) {
       wrongList.forEach((element) => {
@@ -58,31 +61,42 @@ class Questions extends Component {
     }
   }
 
-  getAnswerTime({ target }) {
+  getAnswerTime() {
     const time = document.querySelector('.timer');
-    if (time && target.className === 'rquestion') {
-      const timeInt = parseInt(time.innerHTML);
-
-      return timeInt;
-    } else {
-      return 0;
-    };
+    const timeInt = parseInt(time.innerHTML);
+    return timeInt;
   }
 
+
   handleAnswer({ target }) {
-    if (target.className === 'wquestion' || target.className === 'rquestion') {
-      const wrongList = document.querySelectorAll('.wquestion');
-      const rightQuestion = document.querySelector('.rquestion');
+    const { stopTimer } = this.props;
+    const wrongList = document.querySelectorAll('.wquestion');
+    const rightQuestion = document.querySelector('.rquestion');
+
+    stopTimer();
+
+    if (target.className === 'rquestion') {
+      const answerTime = this.getAnswerTime();
+
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
       });
       rightQuestion.className = 'right-question';
-      const answerTime = this.getAnswerTime();
       console.log(answerTime)
-      
       this.setState({
         disableBTN: true,
-        answerTime,
+        answerTime: answerTime,
+      });
+    }
+    if (target.className === 'wquestion') {
+      wrongList.forEach((element) => {
+        element.className = 'wrong-question';
+      });
+      rightQuestion.className = 'right-question';
+  
+      this.setState({
+        disableBTN: true,
+        answerTime: 0,
       });
     }
   }
@@ -157,7 +171,12 @@ const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
 });
 
-export default connect(mapStateToProps)(Questions);
+const mapDispatchToProps = (dispatch) => ({
+  resetTimer: () =>  dispatch(timerReset()),
+  stopTimer: () => dispatch(timerStop()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
