@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import FeedHeader from '../components/FeedHeader';
 
 class FeedBack extends React.Component {
@@ -20,6 +21,14 @@ class FeedBack extends React.Component {
           >
             {score.assertions}
           </div>
+          <Link to="/ranking">
+            <button type="button">Ranking</button>
+
+          </Link>
+          <Link to="/">
+            <button type="button">Jogar Novamente</button>
+          </Link>
+
         </div>
       );
     }
