@@ -51,26 +51,45 @@ class Game extends React.Component {
       });
     }
     if (target.className.includes('correct-answer')) {
-      if (!localStorage.player) {
+      if (!localStorage.state) {
         localStorage.setItem('player', JSON.stringify({
-          name: userName,
-          score: 0,
+          player: {
+            name: userName,
+            score: 0,
+          },
         }));
       }
-      const newScore = Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty)));
+      const newScore = Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty)));
+
       this.setState({
         points: newScore,
       });
       scoreAdd(newScore);
-      const player = JSON.parse(localStorage.getItem('player'));
-      let { score } = player;
-      score = Number(score) + (Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))));
 
-      const updatedPlayer = {
-        ...player,
-        score,
-      };
-      localStorage.player = JSON.stringify(updatedPlayer);
+      const state = JSON.parse(localStorage.getItem('state'));
+      let { score } = state.player;
+      score = Number(score)
+      + (Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty))));
+
+      localStorage.state = JSON.stringify({
+        player: {
+          name: userName,
+          score,
+        },
+      });
+    } else {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name: userName,
+          score: 0,
+        },
+      }));
     }
   }
 
@@ -112,8 +131,10 @@ class Game extends React.Component {
 
   render() {
     const { questions, seconds, points } = this.state;
-    //const player = JSON.parse(localStorage.getItem('player'));
-    const { userName } = this.props;
+    let { userName } = this.props;
+    if (!userName) {
+      userName = 'Rodrigo Leite';
+    }
     return (
       <div className="game-container">
         {questions.map((element, index) => (
@@ -198,6 +219,7 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
+  scoreAdd: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
