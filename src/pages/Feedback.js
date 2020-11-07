@@ -7,7 +7,7 @@ class Feedback extends Component {
     super();
     const state = JSON.parse(localStorage.getItem('state'));
     this.state = {
-      name: state.player.name,
+      // name: state.player.name,
       assertions: state.player.assertions,
       score: state.player.score,
     };

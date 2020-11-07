@@ -7,7 +7,7 @@ class Questions extends React.Component {
     super();
     this.state = {
       disable: false,
-//       resposta:,
+      resposta: '',
       tempo: 30,
       currentQuestion: 0,
     };
@@ -55,6 +55,7 @@ class Questions extends React.Component {
       button.style.border = '3px solid rgb(255, 0, 0)';
     });
   }
+
   stopCounter() {
     window.clearInterval(this.interval);
   }
@@ -82,9 +83,10 @@ class Questions extends React.Component {
     const { tempo } = this.state;
     return (
       <div>
-        {tempo}
+        {tempo }
       </div>
     );
+  }
 
   render() {
     const { currentQuestion, disable } = this.state;
