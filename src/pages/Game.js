@@ -98,6 +98,7 @@ class Game extends React.Component {
           </div>
           <div data-testid="header-player-name">
             Jogador:
+            <br />
             { name }
           </div>
           <div data-testid="header-score">
@@ -106,7 +107,7 @@ class Game extends React.Component {
           </div>
         </header>
         <div className="container-game">
-          <div>
+          <div className="question">
             CATEGORIA:
             <div data-testid="question-category">
               { results !== '' ? this.decodeHTMLEntities(results[counter].category) : '' }
@@ -122,24 +123,24 @@ class Game extends React.Component {
               <button
                 key={ index }
                 type="button"
-                className="btn btn-success btn-lg mt-4 ml-4"
+                className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid={ answer.correction }
                 onClick={ this.firstClick }
               >
                 { this.decodeHTMLEntities(answer.result) }
               </button>
             )) : '' }
-          </div>
-          <div className="nextbutton">
-            <button
-              type="button"
-              className="btn btn-warning btn-block mt-4"
-              data-testid="btn-next"
-              style={ { display: nextButton } }
-              onClick={ this.nextQuestion }
-            >
-              PRÓXIMA
-            </button>
+            <div className="nextbutton">
+              <button
+                type="button"
+                className="btn btn-warning btn-block mt-4"
+                data-testid="btn-next"
+                style={ { display: nextButton } }
+                onClick={ this.nextQuestion }
+              >
+                PRÓXIMA
+              </button>
+            </div>
           </div>
         </div>
       </div>
