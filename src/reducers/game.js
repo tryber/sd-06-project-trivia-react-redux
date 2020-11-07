@@ -1,14 +1,17 @@
-import ADD_RESULT from '../actions/game';
+import { ADD_RESULT } from '../actions/game';
 
 const initialState = {
-  results: [],
+  results: {
+    assertions: 0,
+    score: 0,
+  },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
   case ADD_RESULT:
     return {
-      ...state, results: [...state.results, ...action.results],
+      ...state, results: { ...state.results, ...action.results },
     };
   default:
     return state;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './GameContent.css';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+import './GameContent.css';
 import { addResult } from '../actions/game';
 
 class GameContent extends React.Component {
@@ -16,6 +17,8 @@ class GameContent extends React.Component {
       sort: [],
       results: [],
       btnDisabled: false,
+      score: 0,
+      assertions: 0,
       counter: 30,
     };
 
@@ -24,6 +27,8 @@ class GameContent extends React.Component {
     this.setResult = this.setResult.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.setNextQuestion = this.setNextQuestion.bind(this);
+    this.handleScore = this.handleScore.bind(this);
+    this.handleLocalStorage = this.handleLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -34,11 +39,8 @@ class GameContent extends React.Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    const maxNumberOfAnswers = 5;
     const resetedTimer = 30;
-    const { dispatchResults } = this.props;
-    const { results, counter, current } = this.state;
-    if (results.length === maxNumberOfAnswers) dispatchResults(results);
+    const { counter, current } = this.state;
 
     if (counter === resetedTimer && current !== prevState.current) {
       this.setTimer();
@@ -103,6 +105,35 @@ class GameContent extends React.Component {
     return this.setState({ sort: array });
   }
 
+  handleScore(questionsDataARR, counter) {
+    const { score, assertions } = this.state;
+    const { difficulty } = questionsDataARR;
+    let difficultyNumber = 0;
+    const ten = 10;
+    if (difficulty === 'easy') { difficultyNumber = 1; }
+    if (difficulty === 'medium') { difficultyNumber = 2; }
+    if (difficulty === 'hard') { difficultyNumber = 1 + 2; }
+    const sum = score + (ten + (counter * difficultyNumber));
+    const attAssertions = assertions + 1;
+    this.setState({ score: sum, assertions: attAssertions });
+    this.handleLocalStorage(sum, attAssertions);
+  }
+
+  handleLocalStorage(sum, attAssertions) {
+    const { login, dispatchResults } = this.props;
+    const player = {
+      player: {
+        name: login.user,
+        assertions: attAssertions,
+        score: sum,
+        gravatarEmail: login.email,
+      },
+    };
+    const jsonAux = JSON.stringify(player);
+    dispatchResults(player);
+    localStorage.setItem('state', jsonAux);
+  }
+
   renderNextButton() {
     const { btnDisabled, results, current } = this.state;
     const maxAnswers = 5;
@@ -118,15 +149,22 @@ class GameContent extends React.Component {
           Proxima pergunta
         </button>
       );
-    } return (
-      <span>No more questions</span>
+    }
+    return (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+        >
+          Proxima pergunta
+        </button>
+      </Link>
     );
   }
 
   render() {
     const { element,
-      current, isLoading, answer, sort, results, btnDisabled, counter } = this.state;
-    console.log('results:', results);
+      current, isLoading, answer, sort, btnDisabled, counter } = this.state;
     if (isLoading) {
       return <p>Carregando...</p>;
     }
@@ -140,7 +178,8 @@ class GameContent extends React.Component {
         id={ `order-${sort[index]}` }
         type="button"
         className={ `${answer ? 'correct' : null}` }
-        onClick={ (event) => this.handleClickAnswer(event) }
+        onClick={ (event) => this.handleClickAnswer(event)
+          && this.handleScore(questionsDataARR, counter) }
         data-testid="correct-answer"
       >
         {item}
@@ -176,9 +215,10 @@ class GameContent extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   results: state.game.results,
-// });
+const mapStateToProps = (state) => ({
+  login: state.login.player,
+  // results: state.game.results,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchResults: (result) => dispatch(addResult(result)),
@@ -186,6 +226,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 GameContent.propTypes = {
   dispatchResults: PropTypes.func.isRequired,
+  login: PropTypes.shape().isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(GameContent);
+export default connect(mapStateToProps, mapDispatchToProps)(GameContent);

@@ -4,7 +4,11 @@ import FeedHeader from '../components/FeedHeader';
 class FeedBack extends React.Component {
   render() {
     return (
-      <FeedHeader />
+      <div>
+        <FeedHeader />
+        <p data-testid="feedback-text">FeedBack</p>
+      </div>
+
     );
   }
 }
