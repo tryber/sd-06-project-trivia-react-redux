@@ -4,22 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends Component {
-  // constructor() {
-  //   super();
-
-  //   this.updateScore = this.updateScore.bind(this);
-
-  //   this.state = {
-  //     score: 0,
-  //   };
-  // }
-
-  // async updateScore() {
-  //   const state = await JSON.parse(localStorage.getItem('state'));
-  //   console.log(state);
-  //   this.setState({ score: state.player.score });
-  // }
-
   render() {
     const { email, name, score } = this.props;
     return (
