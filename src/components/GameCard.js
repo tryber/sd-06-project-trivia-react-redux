@@ -4,7 +4,12 @@ import React, { Component } from 'react';
 class GameCard extends Component {
   constructor() {
     super();
-    this.state = { addClass: false, timer: 30, disable: false, hidden: true };
+    this.state = {
+      addClass: false,
+      timer: 30,
+      disable: false,
+      hidden: true,
+    };
     this.handleClick = this.handleClick.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
@@ -27,11 +32,45 @@ class GameCard extends Component {
         hidden: false,
       });
     }
-    console.log(timer);
   }
 
-  handleClick() {
-    this.setState({ addClass: true, hidden: false });
+  handleClick(option, question) {
+    this.setState({
+      addClass: true,
+      hidden: false,
+      disable: true,
+    });
+    const { timer } = this.state;
+    const state = JSON.parse(localStorage.getItem('state'));
+    console.log(state);
+    let { score, assertions } = state;
+    console.log(question);
+
+    if (option === question.correct_answer) {
+      assertions += 1;
+      let dificuldade = 0;
+      const hardScore = 3;
+      switch (question.difficulty) {
+      case 'easy':
+        dificuldade = 1;
+        break;
+      case 'medium':
+        dificuldade = 2;
+        break;
+      case 'hard':
+        dificuldade = hardScore;
+        break;
+      default:
+        dificuldade = 0;
+      }
+
+      const baseScore = 10;
+      score += baseScore + (timer * dificuldade);
+      const player = JSON.parse(localStorage.getItem('state'));
+      localStorage.setItem('state', JSON.stringify({ ...player, assertions, score }));
+    } else {
+      console.log('ERROU');
+    }
   }
 
   handleNextQuestion() {
@@ -60,7 +99,7 @@ class GameCard extends Component {
               data-testid={
                 option === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
               }
-              onClick={ this.handleClick }
+              onClick={ () => this.handleClick(option, question) }
               className={ option === correctAnswer
                 ? `${addClass ? 'correct' : ''}` : `${addClass ? 'incorrect' : ''}` }
               type="button"

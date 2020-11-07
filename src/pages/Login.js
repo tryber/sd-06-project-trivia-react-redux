@@ -36,6 +36,13 @@ class Login extends React.Component {
     const getQuestions = await fetchQuestions(token);
     const questionsInfo = getQuestions.results;
     this.savePlayerInfo(questionsInfo);
+    const player = {
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
+    };
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   savePlayerInfo(questionsInfo) {
