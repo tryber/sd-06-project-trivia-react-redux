@@ -46,6 +46,8 @@ class Question extends React.Component {
         item.classList.add('incorrect');
       }
     });
+    const nextButton = document.querySelector('.invisible');
+    nextButton.className = "btn";
   }
 
   randomQuestions(ramdomize) {
@@ -94,6 +96,7 @@ class Question extends React.Component {
         <h1 data-testid="question-text">{getQuestions[0].question}</h1>
         <div>{ this.randomQuestions().map((answer) => answer) }</div>
         <Timer changeDisabled={ this.changeDisabled } disabled={ disabled } />
+        <button data-testid="btn-next" className="invisible">Vamo ver se vai</button>
       </div>
     );
   }
