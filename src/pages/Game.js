@@ -50,6 +50,7 @@ class Game extends React.Component {
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
     const { classRightAnswer, classWrongAnswer } = this.state;
+    console.log('Teste');
     return (
       <div id="answers">
         {newArray.map((element, index) => {
