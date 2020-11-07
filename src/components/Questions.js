@@ -7,7 +7,6 @@ class Questions extends React.Component {
     super();
     this.state = {
       disable: false,
-      resposta: '',
       tempo: 30,
       currentQuestion: 0,
     };
@@ -39,12 +38,41 @@ class Questions extends React.Component {
     });
   }
 
+  scored() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { tempo, currentQuestion } = this.state;
+    const { question } = this.props;
+    const dez = 10;
+    const tres = 3;
+    let dif;
+
+    switch (question[currentQuestion].difficulty) {
+    case 'easy':
+      dif = 1;
+      break;
+    case 'medium':
+      dif = 2;
+      break;
+    case 'hard':
+      dif = tres;
+      break;
+    default:
+      break;
+    }
+
+    let soma = state.player.score;
+    soma = soma + dez + (dif * tempo);
+    localStorage.setItem(
+      'state',
+      JSON.stringify({ player: { ...state.player, score: soma } }),
+    );
+  }
+
   choosed(e) {
-    this.setState({
-      disable: true,
-    }, this.setState({
-      resposta: e.target.value,
-    }));
+    if (e.target.value === 'CorrectAnswer') {
+      this.scored();
+    }
+    this.setState({ disable: true });
     this.stopCounter();
     const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
     const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
