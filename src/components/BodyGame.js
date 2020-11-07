@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions } from '../actions';
+import { fetchQuestions, sendScore } from '../actions';
 import '../App.css';
 import Timer from './Timer';
 
@@ -136,6 +136,12 @@ class BodyGame extends Component {
     });
   }
 
+  handleClick() {
+    const { dispatchScore } = this.props;
+    const { score } = this.state;
+    dispatchScore(score);
+  }
+
   render() {
     const { questions } = this.props;
     const { isDisabled, counter, questionIndex, redirect } = this.state;
@@ -158,7 +164,10 @@ class BodyGame extends Component {
                   type="button"
                   id="next-button"
                   data-testid="btn-next"
-                  onClick={ this.handleQuestionIndex }
+                  onClick={ () => {
+                    this.handleQuestionIndex();
+                    this.handleClick();
+                  } }
                   style={ { display: 'none' } }
                 >
                   Próxima
@@ -211,6 +220,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (score) => dispatch(sendScore(score)),
   questionsFunction: () => dispatch(fetchQuestions()),
 });
 

@@ -12,6 +12,11 @@ export const login = (email, name) => ({
   name,
 });
 
+export const sendScore = (score) => ({
+  type: 'SEND_SCORE',
+  score,
+});
+
 const requestToken = () => ({
   type: FETCH_TOKEN,
 });
