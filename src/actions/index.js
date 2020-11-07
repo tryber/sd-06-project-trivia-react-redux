@@ -1,4 +1,3 @@
-// import fetchAPI from '../services/fetchAPI';
 import triviaAPI from '../services/triviaAPI';
 
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
@@ -48,5 +47,3 @@ export function fetchQuestionsFromAPI(numberOfQuestions) {
     dispatch(sendQuestionsToStore(questions));
   };
 }
-
-

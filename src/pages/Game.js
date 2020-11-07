@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { fetchQuestionsFromAPI, requestQuestions } from '../actions';
+import { fetchQuestionsFromAPI } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -36,8 +36,8 @@ class Game extends React.Component {
 
     console.log(target);
     this.setState({
-      classRight: 'green',
-      classWrong: 'red',
+      classRightAnswer: 'green',
+      classWrongAnswer: 'red',
       isDisabled: false,
     });
   }
@@ -48,19 +48,19 @@ class Game extends React.Component {
     const newArray = incorrectAnswers.concat(correctAnswer);
 
     newArray.sort(); // já está alterado
-    const myIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRight, classWrong } = this.state;
+    const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
+    const { classRightAnswer, classWrongAnswer } = this.state;
     return (
       <div id="answers">
         {newArray.map((element, index) => {
-          if (index === myIndex) {
+          if (index === correctAnswerIndex) {
             return (
               <button
                 type="button"
                 key={ index }
                 data-testid="correct-answer"
                 id="correct"
-                className={ classRight }
+                className={ classRightAnswer }
                 value={ element }
                 onClick={ this.handleDisabled }
               >
@@ -73,7 +73,7 @@ class Game extends React.Component {
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               value={ element }
-              className={ classWrong }
+              className={ classWrongAnswer }
               id="wrong"
               onClick={ this.handleDisabled }
             >
@@ -120,7 +120,6 @@ class Game extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  receivedQuestions: (e) => dispatch(requestQuestions(e)),
   fetchQuestionsAction: (numberOfQuestions) => (
     dispatch(fetchQuestionsFromAPI(numberOfQuestions))
   ),
@@ -131,7 +130,7 @@ const mapStateToProps = (state) => ({
 });
 
 Game.propTypes = {
-  receivedQuestions: PropTypes.func.isRequired,
+  fetchQuestionsAction: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
 };
 
