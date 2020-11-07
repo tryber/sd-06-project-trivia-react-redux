@@ -4,6 +4,8 @@ export const FETCH_TOKEN = 'FETCH_TOKEN';
 export const FETCH_TOKEN_SUCESS = 'FETCH_TOKEN_SUCESS';
 export const FETCH_TOKEN_ERROR = 'FETCH_TOKEN_ERROR';
 export const SEND_LOGIN = 'SEND_LOGIN';
+export const SEND_SCORE = 'SEND_SCORE';
+export const SEND_ASSERTIONS = 'SEND_ASSERTIONS';
 export const QUESTION = 'QUESTION';
 
 export const login = (email, name) => ({
@@ -13,8 +15,13 @@ export const login = (email, name) => ({
 });
 
 export const sendScore = (score) => ({
-  type: 'SEND_SCORE',
+  type: SEND_SCORE,
   score,
+});
+
+export const sendAssertions = (assertions) => ({
+  type: SEND_ASSERTIONS,
+  assertions,
 });
 
 const requestToken = () => ({
