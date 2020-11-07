@@ -55,17 +55,6 @@ class Login extends React.Component {
     const { email } = this.state;
     const { dispatchSaveEmail } = this.props;
     dispatchSaveEmail(email);
-
-    const object = {
-      player: {
-        name: 'nome',
-        assertions: 0,
-        score: 0,
-        gravatarEmail: 'nome@nome.com',
-      },
-    };
-    const stringfiedObjetc = JSON.stringify(object);
-    localStorage.setItem('state', stringfiedObjetc);
   }
 
   render() {
