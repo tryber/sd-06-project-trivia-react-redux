@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { saveTimeLeft } from '../redux/actions';
 
-class Timer extends React.Component {
-  
+class StopWatch extends React.Component {
   componentDidMount() {
     const { saveTime } = this.props;
     const startSeconds = 30;
@@ -12,14 +12,14 @@ class Timer extends React.Component {
     if (seconds > 1) {
       this.myInterval = setInterval(() => {
         if (seconds > 0) seconds -= 1;
-        // console.log(seconds);
-        // aqui deveria salvar os segundos que faltam
         saveTime(seconds);
       }, interval);
     }
+  }
 
+  componentDidUpdate() {
+    const { seconds } = this.props;
     if (seconds === 0) {
-      // console.log(seconds)
       clearInterval(this.myInterval);
     }
   }
@@ -36,10 +36,17 @@ class Timer extends React.Component {
 
 const mapStateToProps = (state) => ({
   seconds: state.timer.seconds,
+  // timerOn: state.stopwatch.timerOn,
+  // timeStart: state.stopwatch.timeStart,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   saveTime: (seconds) => dispatch(saveTimeLeft(seconds)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(StopWatch);
+
+StopWatch.propTypes = {
+  saveTime: PropTypes.func.isRequired,
+  seconds: PropTypes.number.isRequired,
+};

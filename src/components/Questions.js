@@ -2,49 +2,60 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addPoints, saveTimeLeft, updateQuestionNumber } from '../redux/actions';
-import Timer from './Timer';
+import StopWatch from './StopWatch';
 
 class Questions extends Component {
   constructor() {
     super();
-    // this.state = {
-    //   questionNumber: 0,
-    //   timer: false,
-    // };
+    this.state = {
+      questionNumber: 0,
+      disableBTN: false,
+      shuffledQuestions: [],
+      shuffled: false,
+      // timer: false,
+    };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
-    // this.checkTimer = this.checkTimer.bind(this);
+    this.shuffleArray = this.shuffleArray.bind(this);
+    this.handleQuestions = this.handleQuestions.bind(this);
+    this.checkTimer = this.checkTimer.bind(this);
   }
 
   changeToNextQuestion() {
-    const { questionNumber } = this.props;
+    const { questionNumber } = this.state;
     const indexLimit = 4;
+
+    this.setState({
+      questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
+      disableBTN: false,
+      shuffled: false,
+    });
+
     const wrongList = document.querySelectorAll('.wrong-question');
     const rightQuestion = document.querySelector('.right-question');
-
-    // this.setState({
-    //   questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
-    // });
-
-    let questionNr = questionNumber;
-    if (questionNr < indexLimit) {
-      questionNr += 1;
-    } else {
-      questionNr = 0;
+    if (wrongList && rightQuestion) {
+      wrongList.forEach((element) => {
+        element.className = 'wquestion';
+      });
+      rightQuestion.className = 'rquestion';
     }
-
-    updateQuestionNumber(questionNr);
-
-    wrongList.forEach((element) => {
-      element.className = 'wquestion';
-    });
-    rightQuestion.className = 'rquestion';
   }
 
-  shuffle(array) {
+  shuffleArray() {
+    const { gameQuestions } = this.props;
+    const { questionNumber } = this.state;
     const magic = 0.5;
-    return array.sort(() => Math.random() - magic);
+    if (gameQuestions) {
+      const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
+      const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
+      const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
+      const newArr = questionsArray.sort(() => Math.random() - magic);
+      this.setState({
+        shuffled: true,
+        shuffledQuestions: newArr,
+      });
+    }
   }
 
   checkDifficulty(difficulty) {
@@ -55,22 +66,27 @@ class Questions extends Component {
   }
 
   handleAnswerStyle({ target }, difficulty) {
-    const { addScore, secondsLeft, name, email } = this.props;
-    const wrongList = document.querySelectorAll('.wquestion');
-    const rightQuestion = document.querySelector('.rquestion');
-    wrongList.forEach((element) => {
-      element.className = 'wrong-question';
-    });
-    rightQuestion.className = 'right-question';
+    if (target.className === 'wquestion' || target.className === 'rquestion') {
+      const wrongList = document.querySelectorAll('.wquestion');
+      const rightQuestion = document.querySelector('.rquestion');
+      wrongList.forEach((element) => {
+        element.className = 'wrong-question';
+      });
+      rightQuestion.className = 'right-question';
 
-    // o timer deve receber os segundos que faltam
-    // não está funcionando
+      this.setState({
+        disableBTN: true,
+      });
+    }
+
+    // o timer recebe os segundos que faltam
+    // porém ainda não zera a cada pergunta
+    const { secondsLeft, addScore, email, name } = this.props;
     const TEN = 10;
     const points = TEN + (secondsLeft * this.checkDifficulty(difficulty));
     if (target.className === 'right-question') {
       addScore(points);
-      // salvar no local storage
-      // falta recuperar, atualizar e enviar
+
       const { score } = this.props;
       const player = {
         player: {
@@ -84,31 +100,27 @@ class Questions extends Component {
     }
   }
 
-  // checkTimer() {
-  //   this.setState({ timer: true });
-  // }
+  checkTimer() {
+    this.setState({ disableBTN: true });
+  }
 
   handleQuestions() {
-    const { gameQuestions, questionNumber } = this.props;
-    // const { questionNumber, timer } = this.state;
+    const { gameQuestions } = this.props;
+    const { disableBTN, shuffled, shuffledQuestions, questionNumber } = this.state;
     const initialIndex = -1;
     let answerIndex = initialIndex;
-    // const timerLimit = 30000;
-    // setTimeout(this.checkTimer, timerLimit);
-    // this.startCount();
+    const timeLimit = 30000;
+    setTimeout(this.checkTimer, timeLimit);
 
-    if (gameQuestions) {
+    if (shuffled && shuffledQuestions) {
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
-      const INCORRECT_ANSWER = gameQuestions[questionNumber].incorrect_answers;
-      const questionsArray = [CORRECT_ANSWER, ...INCORRECT_ANSWER];
-      const newArr = this.shuffle(questionsArray);
       return (
         <div>
           <h4 data-testid="question-category">
             {gameQuestions[questionNumber].category}
           </h4>
           <p data-testid="question-text">{gameQuestions[questionNumber].question}</p>
-          {newArr.map((question) => {
+          {shuffledQuestions.map((question) => {
             if (question === CORRECT_ANSWER) {
               const { difficulty } = gameQuestions[questionNumber];
               return (
@@ -117,7 +129,8 @@ class Questions extends Component {
                   data-testid="correct-answer"
                   onClick={ (e) => this.handleAnswerStyle(e, difficulty) }
                   className="rquestion"
-                  // disabled={ timer }
+                  key="correct"
+                  disabled={ disableBTN }
                 >
                   {question}
                 </button>
@@ -130,7 +143,7 @@ class Questions extends Component {
                 className="wquestion"
                 onClick={ this.handleAnswerStyle }
                 key={ `wrong${answerIndex}` }
-                // disabled={ timer }
+                disabled={ disableBTN }
               >
                 {question}
               </button>
@@ -144,11 +157,18 @@ class Questions extends Component {
   }
 
   render() {
+    const { shuffled } = this.state;
+    const { gameQuestions } = this.props;
+
+    if (!shuffled && gameQuestions) {
+      this.shuffleArray();
+    }
+
     return (
       <div>
         {this.handleQuestions()}
         <button type="button" onClick={ this.changeToNextQuestion }>Next Question</button>
-        <Timer />
+        <StopWatch />
       </div>
     );
   }
@@ -160,7 +180,6 @@ const mapStateToProps = (state) => ({
   score: state.game.score,
   name: state.user.name,
   email: state.user.email,
-  questionNumber: state.game.questionNumber,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -173,7 +192,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  saveTime: PropTypes.func.isRequired,
+  // saveTime: PropTypes.func.isRequired,
   addScore: PropTypes.func.isRequired,
   secondsLeft: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,

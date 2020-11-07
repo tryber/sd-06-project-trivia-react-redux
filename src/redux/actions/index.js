@@ -5,6 +5,7 @@ export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const SCORE = 'SCORE';
 export const SAVE_TIME_LEFT = 'SAVE_TIME_LEFT';
 export const SAVE_QUESTION = 'SAVE_QUESTION';
+export const STOPWATCH = 'STOPWATCH';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -49,6 +50,11 @@ export const addPoints = (score) => ({
 export const saveTimeLeft = (seconds) => ({
   type: SAVE_TIME_LEFT,
   seconds,
+});
+
+export const stopWatch = (data) => ({
+  type: STOPWATCH,
+  data,
 });
 
 export const updateQuestionNumber = (question) => ({
