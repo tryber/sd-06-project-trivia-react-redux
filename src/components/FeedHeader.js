@@ -22,7 +22,7 @@ class FeedHeader extends React.Component {
             data-testid="header-profile-picture"
           />
           <div data-testid="header-player-name">{playerName}</div>
-          <div data-testid="header-score">{`Score: ${score.score}`}</div>
+          <div data-testid="header-score">{score.score}</div>
           <div>{`Acertadas: ${score.assertions}`}</div>
         </header>
       );
@@ -35,7 +35,7 @@ class FeedHeader extends React.Component {
           data-testid="header-profile-picture"
         />
         <div data-testid="header-player-name">{playerName}</div>
-        <div data-testid="header-score">{`Score: ${0}`}</div>
+        <div data-testid="header-score">{0}</div>
         <div>{`Acertadas: ${0}`}</div>
       </header>
     );

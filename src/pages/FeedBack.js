@@ -12,14 +12,14 @@ class FeedBack extends React.Component {
           <FeedHeader />
           <p>FeedBack</p>
           { score.assertions < 1 + 2
-            ? <p data-testid="feedback-text">Podia ser melhor...</p>
-            : <p data-testid="feedback-text">Mandou bem!</p> }
-          <p data-testid="feedback-total-score">{`Score Total: ${score.score}`}</p>
-          <p
+            ? <div data-testid="feedback-text">Podia ser melhor...</div>
+            : <div data-testid="feedback-text">Mandou bem!</div> }
+          <div data-testid="feedback-total-score">{score.score}</div>
+          <div
             data-testid="feedback-total-question"
           >
-            {`Perguntas acertadas: ${score.assertions}`}
-          </p>
+            {score.assertions}
+          </div>
         </div>
       );
     }
@@ -28,8 +28,8 @@ class FeedBack extends React.Component {
         <FeedHeader />
         <p>FeedBack</p>
         <p data-testid="feedback-text">Podia ser melhor...</p>
-        <p data-testid="feedback-total-score">{`Score Total: ${0}`}</p>
-        <p data-testid="feedback-total-question">0</p>
+        <p data-testid="feedback-total-score">{0}</p>
+        <p data-testid="feedback-total-question">{0}</p>
       </div>
     );
   }
