@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+    const state = JSON.parse(localStorage.getItem('state'));
+    this.state = {
+      assertions: state.player.assertions,
+      score: state.player.score,
+    };
+  }
+
   ggMessage() {
     return (
       <h1>
@@ -24,42 +31,35 @@ class Feedback extends Component {
   gameFeedback(answers, score) {
     return (
       <section>
-        <p data-testid="feedback-total-question">
-          {`Você acertou ${answers} questões!`}
+        <p>
+          Você acertou
+          <span data-testid="feedback-total-question">{ answers }</span>
+          questões!
         </p>
-        <p data-testid="feedback-total-score">
-          {`Um total de ${score} pontos`}
+        <p>
+          Um total de
+          <span data-testid="feedback-total-score">{ score }</span>
+          pontos
         </p>
       </section>
     );
   }
 
   render() {
-    const { gameStats: { correctAnswers, score } } = this.props;
+    const { assertions, score } = this.state;
     const numberOfAnswers = 3;
     return (
       <main>
-        {/* <Header /> */}
-        <header data-testid="feedback-text">
-          {(correctAnswers >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
-        </header>
-        {this.gameFeedback(correctAnswers, score)}
-        <Link to="ranking" data-testid="btn-ranking">VER RANKING</Link>
+        <Header />
+        <h2 data-testid="feedback-text">
+          {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
+        </h2>
+        {this.gameFeedback(assertions, score)}
+        <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
         <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
       </main>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  gameStats: state.stats,
-});
-
-export default connect(mapStateToProps)(Feedback);
-
-Feedback.propTypes = {
-  gameStats: PropTypes.shape({
-    correctAnswers: PropTypes.number.isRequired,
-    score: PropTypes.number.isRequired,
-  }).isRequired,
-};
+export default Feedback;
