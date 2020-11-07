@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Header from '../components/header';
 
 class Game extends Component {
@@ -64,18 +63,16 @@ class Game extends Component {
                   .map((question, i) => {
                     if (question === APIQuestions[index].correct_answer) {
                       return (
-                        <Link to="/feedback" key={ i } teste="teste">
-                          <button
-                            type="button"
-                            data-testid="correct-answer"
-                            key={ i }
-                            disabled={ disabled }
-                            className={ clicked ? 'correct-answer' : null }
-                            onClick={ this.handleStyle }
-                          >
-                            {question}
-                          </button>
-                        </Link>
+                        <button
+                          type="button"
+                          data-testid="correct-answer"
+                          key={ i }
+                          disabled={ disabled }
+                          className={ clicked ? 'correct-answer' : null }
+                          onClick={ this.handleStyle }
+                        >
+                          {question}
+                        </button>
                       );
                     }
                     return (
