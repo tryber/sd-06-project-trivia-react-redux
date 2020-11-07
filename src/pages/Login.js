@@ -33,14 +33,24 @@ class Login extends React.Component {
     if (validEmail && userValid === true) {
       return this.setState({ disabled: false });
     }
-    return this.setState({ disabled: true });
+    this.setState({ disabled: true });
   }
 
   async handleRedirect() {
+    const { user, email } = this.state;
     await getSession()
       .then((json) => json.token)
       .then((token) => localStorage.setItem('token', token));
     const { history } = this.props;
+    const player = {
+      player: {
+        name: user,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(player));
     history.push('/game');
     return <Redirect to="/game" />;
   }
