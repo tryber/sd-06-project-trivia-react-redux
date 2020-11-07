@@ -110,6 +110,7 @@ class GameContent extends React.Component {
       return (
         <button
           disabled={ !btnDisabled }
+          className={ `${!btnDisabled ? 'btnDisplay' : null}` }
           type="button"
           onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
           data-testid="btn-next"
