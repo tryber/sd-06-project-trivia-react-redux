@@ -5,7 +5,7 @@ class Timer extends React.Component {
     super();
 
     this.state = {
-      seconds: 5,
+      seconds: 30,
     }
   }
 

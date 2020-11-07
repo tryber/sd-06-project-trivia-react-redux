@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import timer from '../redux/reducers/timer';
 
 class Questions extends Component {
   constructor() {
@@ -15,7 +16,8 @@ class Questions extends Component {
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswerStyle = this.handleAnswerStyle.bind(this);
-    this.shuffle = this.shuffle.bind(this);
+    this.shuffleArray = this.shuffleArray.bind(this);
+    this.testTimer = this.testTimer.bind(this);
   }
 
   changeToNextQuestion() {
@@ -39,7 +41,7 @@ class Questions extends Component {
     }
   }
 
-  shuffle() {
+  shuffleArray() {
     const { gameQuestions } = this.props;
     const { questionNumber } = this.state;
     const magic = 0.5;
@@ -118,13 +120,20 @@ class Questions extends Component {
     return <p>Loading</p>;
   }
 
+  testTimer() {
+    const time = document.querySelector('.timer');
+    console.log(time)
+  }
+
   render() {
 
     const { shuffled } = this.state;
     const { gameQuestions } = this.props;
 
+    this.testTimer()
+
     if(!shuffled && gameQuestions) {
-      this.shuffle();
+      this.shuffleArray();
     }
 
     return (
