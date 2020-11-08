@@ -209,7 +209,7 @@ class BodyGame extends Component {
                     this.handleQuestionIndex();
                     this.handleClickScore();
                   } }
-                  style={ counter > 1 ? { display: 'none' } : { display: 'block' } }
+                  style={ { display: 'none' } }
                 >
                   Próxima
                 </button>
