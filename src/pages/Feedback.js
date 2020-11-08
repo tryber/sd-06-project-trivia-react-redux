@@ -56,18 +56,30 @@ class Feedback extends React.Component {
               </p>
             </h1>
           </header>
-          <section>
+          <section className="feedback-mid-container">
             <h1>{`Acertou: ${correct} pergunta(s)!`}</h1>
             <p data-testid="feedback-text">{this.handleFeedback()}</p>
-            <p data-testid="feedback-total-score">{score}</p>
-            <p data-testid="feedback-total-question">{correct}</p>
           </section>
+          <div className="feedback-bottom-content">
+            <div>
+              <p data-testid="feedback-total-score">{score}</p>
+              <p data-testid="feedback-total-question">{correct}</p>
+            </div>
+            <footer className="feedback-footer">
+              <Link to="/">
+                <button type="button" className="next ranking" data-testid="btn-ranking">
+                  <span>Ranking</span>
+                </button>
+              </Link>
+              <Link to="/">
+                <button type="button" className="next" data-testid="btn-play-again">
+                  <span>Jogar Novamente</span>
+                </button>
+              </Link>
+            </footer>
+          </div>
+
         </div>
-        <Link to="/">
-          <button type="button" data-testid="btn-play-again">
-            Jogar Novamente
-          </button>
-        </Link>
       </div>
     );
   }
