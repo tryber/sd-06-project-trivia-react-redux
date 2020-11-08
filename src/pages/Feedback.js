@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import fetchGravatar from '../services'
 
 class Feedback extends React.Component {
@@ -57,7 +58,14 @@ class Feedback extends React.Component {
         <section>
           <h1>{`Acertou: ${correct} pergunta(s)!`}</h1>
           <p data-testid="feedback-text">{this.handleFeedback()}</p>
+          <p data-testid="feedback-total-score">{score}</p>
+          <p data-testid="feedback-total-question">{correct}</p>
         </section>
+        <Link to='/'>
+          <button data-testid="btn-play-again" >
+            Jogar Novamente
+          </button>
+        </Link>
       </div>
     )
   }

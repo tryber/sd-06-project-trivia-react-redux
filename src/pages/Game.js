@@ -146,7 +146,7 @@ class Game extends React.Component {
 
   async handleNextQuestion() {
     const { scoreAdd, addCorrect } = this.props;
-    const { indexNextQuestion, newScore, correct} = this.state;
+    const { indexNextQuestion, points, correct} = this.state;
     const correctButton = document.querySelector('.correct-answer');
     const wrongButton = document.querySelectorAll('.wrong-answer');
     this.setState((previousState) => ({
@@ -167,7 +167,7 @@ class Game extends React.Component {
       });
     }
     if(indexNextQuestion > 2) {
-      scoreAdd(newScore);
+      scoreAdd(points);
       addCorrect(correct)
       this.setState({
         feedback: '/feedback'
