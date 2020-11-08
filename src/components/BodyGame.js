@@ -16,6 +16,7 @@ class BodyGame extends Component {
     this.handleQuestionIndex = this.handleQuestionIndex.bind(this);
     this.handleAssertions = this.handleAssertions.bind(this);
     this.handleShuffle = this.handleShuffle.bind(this);
+    this.handleAnswerBorderColor = this.handleAnswerBorderColor.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -57,6 +58,7 @@ class BodyGame extends Component {
   }
 
   handleAnswerBorderColor() {
+    const { counter } = this.state;
     const rightAnswer = document.querySelector('#right-answer');
     rightAnswer.className = 'right-question';
     const wrongAnswers = document.querySelectorAll('#wrong-answer');
@@ -65,6 +67,9 @@ class BodyGame extends Component {
     });
     const nextButton = document.querySelector('#next-button');
     nextButton.style = 'display: block';
+    if (counter < 1) {
+      this.disableAnswerButtons();
+    }
   }
 
   disableAnswerButtons() {
@@ -142,6 +147,7 @@ class BodyGame extends Component {
     this.setState({
       questionIndex: questionIndex + 1,
       counter: 30,
+      isDisabled: false,
     });
   }
 
@@ -223,8 +229,8 @@ class BodyGame extends Component {
                         name="right-answer"
                         key={ i }
                         onClick={ () => {
-                          this.handleScore(questions[index], counter);
                           this.handleAnswerBorderColor();
+                          this.handleScore(questions[index], counter);
                           this.handleAssertions();
                           this.handleClickAssertions();
                         } }
