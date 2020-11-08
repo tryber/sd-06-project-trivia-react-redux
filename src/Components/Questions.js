@@ -21,9 +21,14 @@ class Questions extends React.Component {
     this.state = {
       correctAnswer,
       allAnswers,
+      timer: 30,
     };
 
     this.updateAnswers = this.updateAnswers.bind(this);
+  }
+
+  componentDidMount() {
+    this.startTimer();
   }
 
   componentDidUpdate(prevProps) {
@@ -33,6 +38,19 @@ class Questions extends React.Component {
       const allAnswers = this.shuffleAnswers(questionObj);
       this.updateAnswers(questionObj, allAnswers);
     }
+  }
+
+  startTimer() {
+    const timerInterval = 1000;
+    const timerEnd = 31000;
+    const questionTimer = setInterval(() => this.setState((prevState) => ({
+      timer: prevState.timer - 1,
+    })), timerInterval);
+
+    setTimeout(() => {
+      clearInterval(questionTimer);
+      document.getElementById('timer-0').click();
+    }, timerEnd);
   }
 
   updateAnswers(questionObj, allAnswers) {
@@ -60,13 +78,14 @@ class Questions extends React.Component {
       answered,
       handleAnswer,
       questionObj: { category, question } } = this.props;
-    const { allAnswers, correctAnswer } = this.state;
+    const { allAnswers, correctAnswer, timer } = this.state;
 
     return (
       <div className="main-wrapper">
+        <p className="timer">{ timer }</p>
         <h4 data-testid="question-category">{ category }</h4>
         <section className="question-wrapper">
-          <p data-testid="question-text">{ question }</p>
+          <p className="question-text" data-testid="question-text">{ question }</p>
           <section className="answers-wrapper">
             {allAnswers.map((answer, index) => (
               answer === correctAnswer
@@ -86,6 +105,7 @@ class Questions extends React.Component {
                   <button
                     key={ index }
                     type="button"
+                    id={ `timer-${index}` }
                     data-testid={ `wrong-answer-${index}` }
                     className={ `answer-button
                     ${(answered) ? 'check-incorrect-answer' : ''}` }

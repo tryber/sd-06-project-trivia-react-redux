@@ -6,6 +6,8 @@ import Questions from '../Components/Questions';
 import Header from '../Components/Header';
 import GenericButton from '../Components/GenericButton';
 
+import '../Css/Game.css';
+
 class Game extends React.Component {
   constructor() {
     super();
@@ -69,11 +71,15 @@ class Game extends React.Component {
                   <GenericButton
                     onClick={ this.handleNextQuestion }
                     title="Próxima pergunta"
+                    className="advance-button"
+                    disabled={ !answered }
                   />)
                 : (
                   <GenericButton
                     onClick={ this.handleNextQuestion }
                     title="Ver resultado!"
+                    className="advance-button"
+                    disabled={ answered }
                   />) }
             </div>) }
       </div>

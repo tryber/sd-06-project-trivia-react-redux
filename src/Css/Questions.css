@@ -5,11 +5,26 @@
   justify-content: space-between;
 }
 
+.main-wrapper h4 {
+  border-radius: 0 0 10px 10px;
+  background-color: rgb(206, 215, 233);
+  font-size: 2.2em;
+  margin: 0;
+  padding: 0 20px 5px;
+}
+
 .question-wrapper {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   text-align: center;
+}
+
+.question-text {
+  font-size: 1.4em;
+  font-style: italic;
+  margin: 22px 0 10px;
+  max-width: 560px;
 }
 
 .answers-wrapper {
@@ -24,7 +39,10 @@
   background-color: rgb(200, 200, 200);
   border: 0;
   border-radius: 10px;
+  color: rgb(6, 20, 15);
   cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
   margin: 5px 0;
   padding: 12px;
   width: 300px;
@@ -51,4 +69,21 @@
 
 .check-incorrect-answer {
   border: 3px solid rgb(255, 0, 0);
+}
+
+.timer {
+  align-items: center;
+  background-color: rgb(241, 138, 54);
+  border-radius: 50%;
+  color: rgb(255, 251, 242);
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 2.5em;
+  height: 80px;
+  justify-content: center;
+  left: 25%;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 80px;
 }
