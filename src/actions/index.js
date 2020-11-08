@@ -1,6 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const QUESTIONS = 'QUESTIONS';
 export const SEND_SCORE = 'SEND_SCORE';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
 
 export const login = (email, token, playerName) => ({
   type: LOGIN,
@@ -51,9 +52,3 @@ export function fetchQuestion(token) {
     dispatch(receiveQuestions(questionsJSON));
   };
 }
-
-// export function addScore(score) {
-//   return (dispatch) => {
-//     localStorage.setItem('')
-//   }
-// }
