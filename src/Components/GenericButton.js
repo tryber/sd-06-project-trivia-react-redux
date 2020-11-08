@@ -18,10 +18,14 @@ class GenericButton extends Component {
   }
 }
 
-export default GenericButton;
-
 GenericButton.propTypes = {
   onClick: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   title: PropTypes.string.isRequired,
 };
+
+GenericButton.defaultProps = {
+  disabled: false,
+};
+
+export default GenericButton;

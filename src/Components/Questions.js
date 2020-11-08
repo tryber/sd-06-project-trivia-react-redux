@@ -40,8 +40,6 @@ class Questions extends React.Component {
   }
 }
 
-export default Questions;
-
 Questions.propTypes = {
   questionObj: PropTypes.shape({
     category: PropTypes.string,
@@ -50,3 +48,5 @@ Questions.propTypes = {
     incorrect_answers: PropTypes.arrayOf(String),
   }).isRequired,
 };
+
+export default Questions;
