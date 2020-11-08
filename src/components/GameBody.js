@@ -49,6 +49,7 @@ class GameBody extends React.Component {
     if (questions.length > 0 && index < questions.length) {
       this.createQuestions(index);
     }
+      
     this.setState({
       isCorrect: false,
     });
