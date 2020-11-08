@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NextButton } from '../components';
@@ -78,7 +78,7 @@ class Game extends React.Component {
 
       this.setState({
         points: newScore,
-        correct: correct + 1
+        correct: correct + 1,
       });
       const state = JSON.parse(localStorage.getItem('state'));
       let { score } = state.player;
@@ -146,7 +146,7 @@ class Game extends React.Component {
 
   async handleNextQuestion() {
     const { scoreAdd, addCorrect } = this.props;
-    const { indexNextQuestion, points, correct} = this.state;
+    const { indexNextQuestion, points, correct } = this.state;
     const correctButton = document.querySelector('.correct-answer');
     const wrongButton = document.querySelectorAll('.wrong-answer');
     this.setState((previousState) => ({
@@ -166,17 +166,17 @@ class Game extends React.Component {
         seconds: '30',
       });
     }
-    if(indexNextQuestion > 2) {
+    if (indexNextQuestion > 2) {
       scoreAdd(points);
-      addCorrect(correct)
+      addCorrect(correct);
       this.setState({
-        feedback: '/feedback'
-      })
+        feedback: '/feedback',
+      });
     }
   }
 
   render() {
-    const { questions, seconds, points, btnDisable, feedback, correct } = this.state;
+    const { questions, seconds, points, btnDisable, feedback } = this.state;
     const { userName } = this.props;
     return (
       <div className="game-container">
@@ -238,7 +238,9 @@ class Game extends React.Component {
               </div>
               <div className="next-div">
                 {btnDisable
-                  ? <Link to={feedback}><NextButton handleNextQuestion={ this.handleNextQuestion } /></Link>
+                  ? <Link to={ feedback }>
+                      <NextButton handleNextQuestion={ this.handleNextQuestion } />
+                    </Link>
                   : null}
               </div>
             </footer>
@@ -257,13 +259,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   scoreAdd: (score) => dispatch(addScore(score)),
-  addCorrect: (correct) =>dispatch(correctAnswer(correct)),
+  addCorrect: (correct) => dispatch(correctAnswer(correct)),
 });
 
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   scoreAdd: PropTypes.func.isRequired,
+  addCorrect: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

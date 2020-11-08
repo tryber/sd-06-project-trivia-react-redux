@@ -15,8 +15,7 @@ export default function (state = INITIAL_STATE, action) {
       },
     };
   case HASH:
-    return {...state, hash:action.hash}
-
+    return { ...state, hash: action.hash };
   case SCORE:
     return {
       ...state,
@@ -30,7 +29,7 @@ export default function (state = INITIAL_STATE, action) {
       ...state,
       player: {
         ...state.player,
-        correct: action.correct
+        correct: action.correct,
       },
     };
   default:

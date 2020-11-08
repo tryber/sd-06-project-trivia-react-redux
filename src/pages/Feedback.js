@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import fetchGravatar from '../services'
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { fetchGravatar } from '../services';
 
 class Feedback extends React.Component {
   constructor() {
@@ -15,26 +16,25 @@ class Feedback extends React.Component {
 
   fetchProfileImg() {
     const { hashGravatar } =  this.props;
-    fetchGravatar(hashGravatar)
+    fetchGravatar(hashGravatar);
   }
 
   handleFeedback() {
-    const { correct } =  this.props;
-    if (correct < 3) {
-      return 'Podia ser melhor...'
-    } else {
-      return 'Mandou bem!'
-    }
+    const { correct } = this.props;
+    const limitCorrectAnswer = 3;
+    if (correct < limitCorrectAnswer) {
+      return 'Podia ser melhor...';
+    } 
+    return 'Mandou bem!';
   }
-  
+
   render() {
-    const { hashGravatar, userName, score, correct } =  this.props;
-    const src = `https://www.gravatar.com/avatar/${hashGravatar}`
+    const { hashGravatar, userName, score, correct } = this.props;
+    const src = `https://www.gravatar.com/avatar/${hashGravatar}`;
     return (
       <div className="feedback-container game-container">
         <header className="profile-header" data-testid="header-player-name">
           <div className="profile-div">
-            <p data-testid="feedback-text"></p>
             <div className="profile-rightside">
               <img
                 data-testid="header-profile-picture"
@@ -49,10 +49,10 @@ class Feedback extends React.Component {
             </div>
           </div>
           <h1 className="score">
-                <p>
-                  Placar
-                  <span data-testid="header-score">{score}</span>
-                </p>
+            <p>
+              Placar
+              <span data-testid="header-score">{score}</span>
+            </p>
           </h1>
         </header>
         <section>
@@ -61,13 +61,13 @@ class Feedback extends React.Component {
           <p data-testid="feedback-total-score">{score}</p>
           <p data-testid="feedback-total-question">{correct}</p>
         </section>
-        <Link to='/'>
-          <button data-testid="btn-play-again" >
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">
             Jogar Novamente
           </button>
         </Link>
       </div>
-    )
+    );
   }
 }
 
@@ -78,5 +78,11 @@ const mapStateToProps = (state) => ({
   correct: state.user.player.correct,
 });
 
+Feedback.propTypes = {
+  hashGravatar: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
+  correct: PropTypes.string.isRequired
+};
 
 export default connect(mapStateToProps)(Feedback);

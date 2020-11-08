@@ -16,7 +16,7 @@ class Login extends React.Component {
       validEmail: false,
       validName: false,
       showSettings: false,
-      hash:'',
+      hash: '',
     };
   }
 
@@ -37,7 +37,6 @@ class Login extends React.Component {
         hash: '',
       });
     }
-    
   }
 
   validateName({ target }) {
@@ -87,12 +86,12 @@ class Login extends React.Component {
     const { getHash } = this.props;
     const { hash } = this.state;
     if (hash) {
-      getHash(...hash)
+      getHash(...hash);
     }
   }
 
   render() {
-    this.handleHash()
+    this.handleHash();
     const { validEmail, validName, showSettings } = this.state;
     return (
       <LoginForm
@@ -109,12 +108,13 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  userName: PropTypes.string.isRequired,
+  userName: PropTypes.func.isRequired,
+  getHash: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   userName: (name) => dispatch(addName(name)),
-  getHash: (hash) => dispatch(addHash(hash))
+  getHash: (hash) => dispatch(addHash(hash)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
