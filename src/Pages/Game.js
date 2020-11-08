@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { responseQuestions } from '../Action/actionFetchQuestions';
+import { playerScore } from '../Action/actionUpdateScore';
 import Questions from '../Components/Questions';
 import Header from '../Components/Header';
 import GenericButton from '../Components/GenericButton';
@@ -9,13 +10,16 @@ import GenericButton from '../Components/GenericButton';
 import '../Css/Game.css';
 
 class Game extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { player } = this.props;
 
     this.state = {
       index: 0,
       isLoading: true,
       answered: false,
+      player,
     };
 
     this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
@@ -24,7 +28,11 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { player } = this.state;
+
     this.getTheFetchQuestions();
+
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   async getTheFetchQuestions() {
@@ -44,8 +52,27 @@ class Game extends React.Component {
       : history.push('/feedback');
   }
 
-  handleAnswer() {
+  handleAnswer({ target }, timer) {
+    const { questions, updateScore } = this.props;
+    const { index } = this.state;
+    const correct = (target.textContent === questions[index].correct_answer);
+
     this.setState({ answered: true });
+
+    if (correct) {
+      const localStorageState = JSON.parse(localStorage.getItem('state'));
+      const { player } = localStorageState;
+      const questionTags = { easy: 1, medium: 2, hard: 3 };
+      const { difficulty } = questions[index];
+      const baseScore = 10;
+      const newScore = player.score + (baseScore + (timer * questionTags[difficulty]));
+
+      player.score = newScore;
+      player.assertions += 1;
+
+      localStorage.setItem('state', JSON.stringify({ player }));
+      updateScore(player.score, player.assertions);
+    }
   }
 
   render() {
@@ -70,16 +97,18 @@ class Game extends React.Component {
                 ? (
                   <GenericButton
                     onClick={ this.handleNextQuestion }
-                    title="Próxima pergunta"
+                    title="Próxima"
                     className="advance-button"
                     disabled={ !answered }
+                    testid="btn-next"
                   />)
                 : (
                   <GenericButton
                     onClick={ this.handleNextQuestion }
                     title="Ver resultado!"
                     className="advance-button"
-                    disabled={ answered }
+                    disabled={ !answered }
+                    testid="btn-next"
                   />) }
             </div>) }
       </div>
@@ -89,18 +118,22 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.reducerQuestions.questions,
+  player: state.reducerLogin.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(responseQuestions()),
+  updateScore: (score, assertions) => dispatch(playerScore(score, assertions)),
 });
 
 Game.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
+  updateScore: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(Object).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  player: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

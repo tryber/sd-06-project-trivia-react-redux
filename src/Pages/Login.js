@@ -88,6 +88,7 @@ class Login extends Component {
             onClick={ this.handleClick }
             disabled={ validated }
             title="Jogar"
+            testid="btn-play"
           />
         </form>
         <ButtonSettings />

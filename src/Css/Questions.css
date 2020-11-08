@@ -63,6 +63,11 @@
   top: 1px;
 }
 
+.answer-button:disabled {
+  background-color: rgb(148, 148, 148);
+  color: rgb(210, 210, 210);
+}
+
 .check-correct-answer {
   border: 3px solid rgb(6, 240, 15);
 }

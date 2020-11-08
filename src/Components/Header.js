@@ -6,7 +6,7 @@ import '../Css/Header.css';
 
 class Header extends React.Component {
   render() {
-    const { name, hash, score } = this.props;
+    const { hash, player: { name, gravatarEmail, score } } = this.props;
 
     return (
       <div className="header">
@@ -16,7 +16,9 @@ class Header extends React.Component {
           alt={ `${name} profile` }
           className="header-gravatar"
         />
-        <span data-testid="header-player-name" className="header-name">{ name }</span>
+        <span data-testid="header-player-name" className="header-name">
+          { `${name} | ${gravatarEmail}` }
+        </span>
         <span data-testid="header-score" className="header-score">{ score }</span>
       </div>
     );
@@ -24,17 +26,17 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.reducerLogin.name,
+  player: state.reducerLogin.player,
   hash: state.reducerLogin.hash,
-  score: state.reducerLogin.score,
 });
 
-export default connect(
-  mapStateToProps,
-)(Header);
-
 Header.propTypes = {
-  name: PropTypes.string.isRequired,
-  hash: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  hash: PropTypes.string,
+  player: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+Header.defaultProps = {
+  hash: '',
+};
+
+export default connect(mapStateToProps)(Header);

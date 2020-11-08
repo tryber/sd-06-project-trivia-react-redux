@@ -5,7 +5,7 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  margin: 0 auto 40px;
+  margin: 15px auto 40px;
   padding: 0;
   width: 24%;
 }

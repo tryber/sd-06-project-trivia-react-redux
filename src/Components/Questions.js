@@ -25,32 +25,41 @@ class Questions extends React.Component {
     };
 
     this.updateAnswers = this.updateAnswers.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
-    this.startTimer();
+    const timerInterval = 1000;
+
+    this.activeTimer = setInterval(
+      () => this.setState((prevState) => ({ timer: prevState.timer - 1 })), timerInterval,
+    );
   }
 
   componentDidUpdate(prevProps) {
     const { questionObj } = this.props;
+    const { timer } = this.state;
 
-    if (prevProps.questionObj !== questionObj) {
+    if (prevProps.questionObj.question !== questionObj.question) {
       const allAnswers = this.shuffleAnswers(questionObj);
+      const timerInterval = 1000;
+
       this.updateAnswers(questionObj, allAnswers);
+      this.activeTimer = setInterval(
+        () => this.setState((prevState) => ({
+          timer: prevState.timer - 1 })), timerInterval,
+      );
+    }
+
+    if (timer === 0) {
+      clearInterval(this.activeTimer);
+      const timerTarget = document.getElementById('timer-0');
+      return (timerTarget) ? timerTarget.click() : null;
     }
   }
 
-  startTimer() {
-    const timerInterval = 1000;
-    const timerEnd = 31000;
-    const questionTimer = setInterval(() => this.setState((prevState) => ({
-      timer: prevState.timer - 1,
-    })), timerInterval);
-
-    setTimeout(() => {
-      clearInterval(questionTimer);
-      document.getElementById('timer-0').click();
-    }, timerEnd);
+  stopTimer() {
+    clearInterval(this.activeTimer);
   }
 
   updateAnswers(questionObj, allAnswers) {
@@ -59,6 +68,7 @@ class Questions extends React.Component {
     this.setState({
       correctAnswer,
       allAnswers,
+      timer: 30,
     });
   }
 
@@ -96,7 +106,10 @@ class Questions extends React.Component {
                     data-testid="correct-answer"
                     className={ `answer-button
                     ${(answered) ? 'check-correct-answer' : ''}` }
-                    onClick={ handleAnswer }
+                    onClick={ (e) => {
+                      handleAnswer(e, timer);
+                      this.stopTimer();
+                    } }
                     disabled={ answered }
                   >
                     {answer}
@@ -109,7 +122,10 @@ class Questions extends React.Component {
                     data-testid={ `wrong-answer-${index}` }
                     className={ `answer-button
                     ${(answered) ? 'check-incorrect-answer' : ''}` }
-                    onClick={ handleAnswer }
+                    onClick={ (e) => {
+                      handleAnswer(e, timer);
+                      this.stopTimer();
+                    } }
                     disabled={ answered }
                   >
                     {answer}
