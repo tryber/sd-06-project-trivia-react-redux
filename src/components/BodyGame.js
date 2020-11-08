@@ -15,6 +15,7 @@ class BodyGame extends Component {
     this.handleScoreToLocalStorage = this.handleScoreToLocalStorage.bind(this);
     this.handleQuestionIndex = this.handleQuestionIndex.bind(this);
     this.handleAssertions = this.handleAssertions.bind(this);
+    this.handleShuffle = this.handleShuffle.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -23,6 +24,7 @@ class BodyGame extends Component {
       questionIndex: 0,
       redirect: false,
       assertions: 0,
+      answers: [],
     };
   }
 
@@ -155,20 +157,46 @@ class BodyGame extends Component {
     dispatchAssertions(assertions);
   }
 
+  handleShuffle() {
+    const { questions } = this.props;
+    const { answers, counter } = this.state;
+    const timerIsRunning = 29;
+    if (counter > timerIsRunning) {
+      questions.forEach((question, index) => {
+        console.log(questions[index]);
+        answers[index] = [question.correct_answer, ...question.incorrect_answers];
+      });
+      for (let i = 0; i < answers.length - 1; i += 1) {
+        let currentIndex = answers[i].length;
+        let temporaryValue;
+        let randomIndex;
+        while (currentIndex !== 0) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = answers[i][currentIndex];
+          answers[i][currentIndex] = answers[i][randomIndex];
+          answers[i][randomIndex] = temporaryValue;
+        }
+        console.log(answers[i]);
+      }
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { isDisabled, counter, questionIndex, redirect } = this.state;
+    const { isDisabled, counter, questionIndex, redirect, answers } = this.state;
     return (
       <div className="container">
+        {this.handleShuffle(questions)}
         {redirect ? <Redirect to="/feedback" /> : null}
-        {questions.map((question, index) => (
+        {answers.map((answer, index) => (
           <div key={ index }>
             <div className="box-question">
               <div className="field-category">
-                <h3 data-testid="question-category">{question.category}</h3>
+                <h3 data-testid="question-category">{questions[index].category}</h3>
               </div>
               <div className="field-question">
-                <p data-testid="question-text">{question.question}</p>
+                <p data-testid="question-text">{questions[index].question}</p>
               </div>
             </div>
             <div className="box-alternatives">
@@ -181,43 +209,50 @@ class BodyGame extends Component {
                     this.handleQuestionIndex();
                     this.handleClickScore();
                   } }
-                  style={ { display: 'none' } }
+                  style={ counter > 1 ? { display: 'none' } : { display: 'block' } }
                 >
                   Próxima
                 </button>
-                <button
-                  id="right-answer"
-                  type="button"
-                  data-testid="correct-answer"
-                  name="right-answer"
-                  onClick={ () => {
-                    this.handleScore(question, counter);
-                    this.handleAnswerBorderColor();
-                    this.handleAssertions();
-                    this.handleClickAssertions();
-                  } }
-                  disabled={ isDisabled }
-                >
-                  {question.correct_answer}
-                </button>
-                {question.incorrect_answers.map((item, position) => (
-                  <button
-                    id="wrong-answer"
-                    type="button"
-                    key={ position }
-                    data-testid={ `wrong-answer-${position}` }
-                    name="wrong-answer"
-                    onClick={ this.handleAnswerBorderColor }
-                    disabled={ isDisabled }
-                  >
-                    {item}
-                  </button>
-                ))}
+                {answer.map((eachAnswer, i) => (
+                  (questions[index].correct_answer.includes(eachAnswer)
+                    ? (
+                      <button
+                        id="right-answer"
+                        type="button"
+                        data-testid="correct-answer"
+                        name="right-answer"
+                        key={ i }
+                        onClick={ () => {
+                          this.handleScore(questions[index], counter);
+                          this.handleAnswerBorderColor();
+                          this.handleAssertions();
+                          this.handleClickAssertions();
+                        } }
+                        disabled={ isDisabled }
+                      >
+                        {eachAnswer}
+                      </button>
+                    )
+                    : (
+                      <button
+                        id="wrong-answer"
+                        type="button"
+                        key={ i }
+                        data-testid={ `wrong-answer-${i}` }
+                        name="wrong-answer"
+                        onClick={ this.handleAnswerBorderColor }
+                        disabled={ isDisabled }
+                      >
+                        {eachAnswer}
+                      </button>
+                    )
+                  )))}
               </div>
             </div>
           </div>
         )).filter((_, index) => index === questionIndex)}
         <Timer
+          handleAnswerBorderColor={ this.handleAnswerBorderColor }
           counter={ counter }
           handleCounter={ this.handleCounter }
           disableAnswerButtons={ this.disableAnswerButtons }
