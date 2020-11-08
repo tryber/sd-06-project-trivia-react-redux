@@ -29,6 +29,7 @@ export const playerData = (payload) => ({
   payload: {
     name: payload.name,
     score: payload.score,
+    timeout: payload.timeout,
   },
 });
 
