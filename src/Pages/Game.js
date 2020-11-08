@@ -35,15 +35,17 @@ class Game extends React.Component {
 
     return (
       <div>
-        {isLoading ? <h2>Loading...</h2>
-          : <div>
-            <Header />
-            <Questions questionObj={ questions[index] } />
-            <GenericButton
-              onClick={ this.handleClick }
-              title="Próxima pergunta"
-            />
-          </div>}
+        { isLoading
+          ? <h2>Loading...</h2>
+          : (
+            <div>
+              <Header />
+              <Questions questionObj={ questions[index] } />
+              <GenericButton
+                onClick={ this.handleClick }
+                title="Próxima pergunta"
+              />
+            </div>) }
       </div>
     );
   }
