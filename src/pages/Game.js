@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect, Provider } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
 import store from '../store';
@@ -66,16 +67,18 @@ class Game extends Component {
                   .map((question, i) => {
                     if (question === APIQuestions[index].correct_answer) {
                       return (
-                        <button
-                          type="button"
-                          data-testid="correct-answer"
-                          key={ i }
-                          disabled={ timeout }
-                          className={ clicked ? 'correct-answer' : null }
-                          onClick={ this.handleStyle }
-                        >
-                          {question}
-                        </button>
+                        <Link to="/feedback">
+                          <button
+                            type="button"
+                            data-testid="correct-answer"
+                            key={ i }
+                            disabled={ timeout }
+                            className={ clicked ? 'correct-answer' : null }
+                            onClick={ this.handleStyle }
+                          >
+                            {question}
+                          </button>
+                        </Link>
                       );
                     }
                     return (
