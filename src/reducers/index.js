@@ -1,23 +1,7 @@
-import { SAVE_PLAYER_INFO, SAVE_SCORE } from '../actions/index';
+import { combineReducers } from 'redux';
+import player from './player';
+import requestInfo from './requestInfo';
 
-const initialState = {
-  name: '',
-  email: '',
-  hash: '',
-  questionsInfo: [],
-  score: 0,
-};
+const rootReducer = combineReducers({ player, requestInfo });
 
-function playerInfoReducer(state = initialState,
-  { type, name, email, hash, score, questionsInfo }) {
-  switch (type) {
-  case SAVE_PLAYER_INFO:
-    return { ...state, name, email, hash, questionsInfo };
-  case SAVE_SCORE:
-    return { ...state, score };
-  default:
-    return state;
-  }
-}
-
-export default playerInfoReducer;
+export default rootReducer;

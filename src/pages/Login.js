@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import CryptoJs from 'crypto-js';
 import { connect } from 'react-redux';
 import { fetchToken, fetchQuestions } from '../services/api';
-import { savePlayerInfo } from '../actions';
+import { saveNameEmail, saveRequestInfo } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -12,17 +12,17 @@ class Login extends React.Component {
     this.state = {
       btnDisabled: true,
       name: '',
-      email: '',
+      gravatarEmail: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.savePlayerInfo = this.savePlayerInfo.bind(this);
+    this.storePlayerAndRequestInfo = this.storePlayerAndRequestInfo.bind(this);
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value }, () => {
-      const { name, email } = this.state;
-      if (name && email) {
+      const { name, gravatarEmail } = this.state;
+      if (name && gravatarEmail) {
         this.setState({ btnDisabled: false });
       } else {
         this.setState({ btnDisabled: true });
@@ -35,14 +35,15 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     const getQuestions = await fetchQuestions(token);
     const questionsInfo = getQuestions.results;
-    this.savePlayerInfo(questionsInfo);
+    this.storePlayerAndRequestInfo(questionsInfo);
   }
 
-  savePlayerInfo(questionsInfo) {
-    const { name, email } = this.state;
-    const { savePlayerInfoToStore } = this.props;
-    const hash = CryptoJs.MD5(email).toString().trim().toLowerCase();
-    savePlayerInfoToStore(name, email, hash, questionsInfo);
+  storePlayerAndRequestInfo(questionsInfo) {
+    const { name, gravatarEmail } = this.state;
+    const { storeNameEmail, storeRequestInfo } = this.props;
+    const hash = CryptoJs.MD5(gravatarEmail).toString().trim().toLowerCase();
+    storeNameEmail(name, gravatarEmail);
+    storeRequestInfo(hash, questionsInfo);
   }
 
   render() {
@@ -63,14 +64,14 @@ class Login extends React.Component {
               name="name"
             />
           </label>
-          <label htmlFor="email">
+          <label htmlFor="gravatarEmail">
           Email:
             <input
               data-testid="input-gravatar-email"
-              id="email"
+              id="gravatarEmail"
               type="text"
               onChange={ this.handleChange }
-              name="email"
+              name="gravatarEmail"
             />
           </label>
           <Link to="/game">
@@ -90,13 +91,14 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  savePlayerInfoToStore: PropTypes.func.isRequired,
+  storeNameEmail: PropTypes.func.isRequired,
+  storeRequestInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  savePlayerInfoToStore: (name, email, hash, questionsInfo) => {
-    dispatch(savePlayerInfo(name, email, hash, questionsInfo));
-  },
+  storeNameEmail: (name, gravatarEmail) => dispatch(saveNameEmail(name, gravatarEmail)),
+  storeRequestInfo:
+    (hash, questionsInfo) => dispatch(saveRequestInfo(hash, questionsInfo)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

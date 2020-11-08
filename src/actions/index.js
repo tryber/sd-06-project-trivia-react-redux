@@ -1,15 +1,21 @@
-export const SAVE_PLAYER_INFO = 'SAVE_PLAYER_INFO';
-export const SAVE_SCORE = 'SAVE_SCORE';
+export const SAVE_NAME_EMAIL = 'SAVE_NAME_EMAIL';
+export const SAVE_GAME_SCORE = 'SAVE_GAME_SCORE';
+export const SAVE_REQUEST_INFO = 'SAVE_REQUEST_INFO';
 
-export const savePlayerInfo = (name, email, hash, questionsInfo) => ({
-  type: SAVE_PLAYER_INFO,
+export const saveNameEmail = (name, gravatarEmail) => ({
+  type: SAVE_NAME_EMAIL,
   name,
-  email,
-  hash,
-  questionsInfo,
+  gravatarEmail,
 });
 
-export const saveScore = (score) => ({
-  type: SAVE_SCORE,
+export const saveGameScore = (score, assertions) => ({
+  type: SAVE_GAME_SCORE,
   score,
+  assertions,
+});
+
+export const saveRequestInfo = (hash, questionsInfo) => ({
+  type: SAVE_REQUEST_INFO,
+  hash,
+  questionsInfo,
 });
