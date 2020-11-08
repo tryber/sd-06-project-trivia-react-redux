@@ -14,13 +14,14 @@ class Game extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.decodeHTMLEntities = this.decodeHTMLEntities.bind(this);
     this.state = {
-      placar: 0,
+      scoreBoard: 0,
       nextButton: 'none',
       counter: 0,
       answers: '',
       borderGreen: 0,
       borderRed: 0,
       timer: 30,
+      choice: '',
     };
   }
 
@@ -50,13 +51,13 @@ class Game extends React.Component {
   }
 
   timerFunction() {
-    const { timer } = this.state;
-    if (timer > 0) {
+    const { timer, choice } = this.state;
+    if (timer > 0 && choice === '') {
       this.setState((prevState) => ({
         timer: prevState.timer - 1,
       }));
     } else {
-      this.optionChoose();
+      this.changeState();
     }
   }
 
@@ -66,13 +67,20 @@ class Game extends React.Component {
     return textArea.value;
   }
 
-  optionChoose() {
+  changeState() {
     this.setState({
       nextButton: 'block',
       borderGreen: '3px solid rgb(6, 240, 15)',
       borderRed: '3px solid rgb(255, 0, 0)',
-      timer: 0,
     });
+  }
+
+  async optionChoose(event) {
+    await this.setState({
+      choice: event.target.id,
+    });
+    this.changeState();
+    this.score();
   }
 
   async nextQuestion() {
@@ -83,6 +91,7 @@ class Game extends React.Component {
       counter: counter + 1,
       nextButton: 'none',
       timer: 30,
+      choice: '',
     });
     this.getAnswers();
   }
@@ -101,13 +110,42 @@ class Game extends React.Component {
     return array;
   }
 
+  score() {
+    const { results } = this.props;
+    const { counter, timer, scoreBoard, choice } = this.state;
+    let total = scoreBoard;
+    const ten = 10;
+    const three = 3;
+    if (choice === 'correct-answer') {
+      switch (results[counter].difficulty) {
+      case 'easy':
+        total = scoreBoard + ten + (timer * 1);
+        console.log(timer);
+        break;
+      case 'medium':
+        total = scoreBoard + ten + (timer * 2);
+        break;
+      case 'hard':
+        total = scoreBoard + ten + (timer * three);
+        break;
+      default:
+        total = scoreBoard;
+      }
+    }
+    this.setState({
+      scoreBoard: total,
+    });
+  }
+
   render() {
-    const { placar, nextButton, counter, answers,
-      borderGreen, borderRed, timer } = this.state;
+    const { nextButton, counter, answers,
+      borderGreen, borderRed, timer, scoreBoard } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
     const four = 4;
+    localStorage.setItem('state', JSON
+      .stringify({ player: { name, score: scoreBoard, gravatarEmail: email } }));
 
     return (
       <div>
@@ -126,7 +164,7 @@ class Game extends React.Component {
           </div>
           <div data-testid="header-score">
             Placar:
-            { placar }
+            { scoreBoard }
           </div>
         </header>
         <div className="container-game">
@@ -149,6 +187,7 @@ class Game extends React.Component {
             { answers !== '' ? answers.map((answer, index) => (
               <button
                 key={ index }
+                id={ answer.correction }
                 style={ answer.correction === 'correct-answer'
                   ? { border: borderGreen } : { border: borderRed } }
                 type="button"
