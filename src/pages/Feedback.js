@@ -42,6 +42,7 @@ class Feedback extends React.Component {
                   alt="profile"
                   src={ src }
                   width="120"
+                  className="profile-img-feedback-ranking"
                 />
                 <p data-testid="header-player-name">
                   Jogador:
@@ -66,7 +67,7 @@ class Feedback extends React.Component {
               <p data-testid="feedback-total-question">{correct}</p>
             </div>
             <footer className="feedback-footer">
-              <Link to="/">
+              <Link to="/ranking">
                 <button type="button" className="next ranking" data-testid="btn-ranking">
                   <span>Ranking</span>
                 </button>

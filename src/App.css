@@ -151,7 +151,7 @@ body {
   margin: 0 auto;
   background-color: rgb(141, 136, 136);
   border: 2px solid rgba(0, 0, 0, 0.525);
-  border-radius: 3px;
+  border-radius: 5px;
   height: 85%;
   width: 85%;
 }
@@ -401,6 +401,10 @@ body {
   width: 100%;
 }
 
+.profile-img-feedback-ranking {
+  border-radius: 5px;
+}
+
 .feedback-mid-container {
   display: flex;
   align-items: center;
@@ -442,4 +446,63 @@ body {
 .ranking {
   background: rgb(219, 171, 14);
   margin: 75px;
+}
+
+.ranking-container {
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.ranking-header {
+  justify-content: center;
+  font-size: 55px;
+  height: 25%;
+}
+
+.table-container {
+  width: 80%;
+  height: 55%;
+  margin: auto;
+  border: rgb(56, 55, 55) solid 5px;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  color: white;
+  text-shadow: 0 0 6px #000;
+  -moz-text-shadow: 0 0 5px #000;
+  -webkit-text-shadow: 0 0 5px #000;
+}
+
+th {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+td {
+  margin-top: 10px;
+  font-size: 45px;
+}
+
+.hr-table {
+  width: 100px;
+  border: rgb(56, 55, 55) solid 1px;
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  margin: 0;
+  padding: 0;
+}
+
+.td-score {
+  padding-right: 35px;
+}
+
+th:nth-child(even) {background: inherit}
+th:nth-child(odd) {background: rgb(88, 86, 86)}
+
+.home-button {
+  margin-bottom: 15px;
 }
