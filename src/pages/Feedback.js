@@ -53,7 +53,7 @@ class Feedback extends React.Component {
             <h1 className="score">
               <p>
                 Placar
-                <span data-testid="header-score">{}</span>
+                <span data-testid="header-score">{ score }</span>
               </p>
             </h1>
           </header>
