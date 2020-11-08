@@ -33,34 +33,36 @@ class Feedback extends React.Component {
     const src = `https://www.gravatar.com/avatar/${hashGravatar}`;
     return (
       <div className="feedback-container game-container">
-        <header className="profile-header" data-testid="header-player-name">
-          <div className="profile-div">
-            <div className="profile-rightside">
-              <img
-                data-testid="header-profile-picture"
-                alt="profile"
-                src={ src }
-                width="120"
-              />
-              <p data-testid="header-player-name">
-                Jogador:
-                <span>{ userName }</span>
-              </p>
+        <div className="square-feedback square">
+          <header className="profile-header" data-testid="header-player-name">
+            <div className="profile-div">
+              <div className="profile-rightside">
+                <img
+                  data-testid="header-profile-picture"
+                  alt="profile"
+                  src={ src }
+                  width="120"
+                />
+                <p data-testid="header-player-name">
+                  Jogador:
+                  <span>{ userName }</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <h1 className="score">
-            <p>
-              Placar
-              <span data-testid="header-score">{score}</span>
-            </p>
-          </h1>
-        </header>
-        <section>
-          <h1>{`Acertou: ${correct} pergunta(s)!`}</h1>
-          <p data-testid="feedback-text">{this.handleFeedback()}</p>
-          <p data-testid="feedback-total-score">{score}</p>
-          <p data-testid="feedback-total-question">{correct}</p>
-        </section>
+            <h1 className="score">
+              <p>
+                Placar
+                <span data-testid="header-score">{score}</span>
+              </p>
+            </h1>
+          </header>
+          <section>
+            <h1>{`Acertou: ${correct} pergunta(s)!`}</h1>
+            <p data-testid="feedback-text">{this.handleFeedback()}</p>
+            <p data-testid="feedback-total-score">{score}</p>
+            <p data-testid="feedback-total-question">{correct}</p>
+          </section>
+        </div>
         <Link to="/">
           <button type="button" data-testid="btn-play-again">
             Jogar Novamente
