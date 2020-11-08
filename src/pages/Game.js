@@ -11,18 +11,19 @@ class Game extends React.Component {
     super();
 
     this.state = {
-      classRightAnswer: '',
-      classWrongAnswer: '',
+      classRight: '',
+      classWrong: '',
       isDisabled: true,
       disableQuestions: false,
       secondsRemaining: 30,
       score: 0,
     };
 
+    this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
-    //Função do timer
+    //Função do timer - ok
     this.decreaseTime = this.decreaseTime.bind(this);
     this.disableWhenTimeout = this.disableWhenTimeout.bind(this);
   }
@@ -64,7 +65,7 @@ class Game extends React.Component {
     // { target }
     // Lógica para mudar o disabled do botão
     // Necessita que uma alternativa tenha sido selecionada
-    // target.id ? target.className = 'green' ;
+    // target.id ? target.className = 'green' ; ok
 
     this.setState({
       classRight: 'green',
@@ -91,14 +92,14 @@ class Game extends React.Component {
           handleDisabled={this.disableWhenTimeout}
         />
         {newArray.map((element, index) => {
-          if (index === correctAnswerIndex) {
+          if (index === myIndex) {
             return (
               <button
                 type="button"
                 key={ index }
                 data-testid="correct-answer"
                 id="correct"
-                className={ classRightAnswer }
+                className={ classRight }
                 value={ element }
                 disabled={ disableQuestions }
                 onClick={ this.handleDisabled }
@@ -112,7 +113,7 @@ class Game extends React.Component {
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               value={ element }
-              className={ classWrongAnswer }
+              className={ classWrong }
               id="wrong"
               disabled={ disableQuestions }
               onClick={ this.handleDisabled }
@@ -161,9 +162,7 @@ class Game extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchQuestionsAction: (numberOfQuestions) => (
-    dispatch(fetchQuestionsFromAPI(numberOfQuestions))
-  ),
+  receivedQuestions: (e) => dispatch(requestQuestions(e)),
 });
 
 const mapStateToProps = (state) => ({
@@ -171,7 +170,7 @@ const mapStateToProps = (state) => ({
 });
 
 Game.propTypes = {
-  fetchQuestionsAction: PropTypes.func.isRequired,
+  receivedQuestions: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
 };
 
