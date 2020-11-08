@@ -20,7 +20,6 @@ class Questions extends React.Component {
 
     this.state = {
       correctAnswer,
-      incorrectAnswers,
       allAnswers,
     };
 
@@ -37,13 +36,10 @@ class Questions extends React.Component {
   }
 
   updateAnswers(questionObj, allAnswers) {
-    const {
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = questionObj;
+    const { correct_answer: correctAnswer } = questionObj;
 
     this.setState({
       correctAnswer,
-      incorrectAnswers,
       allAnswers,
     });
   }
