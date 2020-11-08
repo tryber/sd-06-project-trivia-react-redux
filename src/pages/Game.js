@@ -11,15 +11,14 @@ class Game extends React.Component {
     super();
 
     this.state = {
-      classRight: '',
-      classWrong: '',
+      classRightAnswer: '',
+      classWrongAnswer: '',
       isDisabled: true,
       disableQuestions: false,
       secondsRemaining: 30,
       score: 0,
     };
 
-    this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
@@ -83,14 +82,14 @@ class Game extends React.Component {
       <div id="answers">
         <Timer handleTime={this.decreaseTime} seconds={secondsRemaining} />
         {newArray.map((element, index) => {
-          if (index === myIndex) {
+          if (index === correctAnswerIndex) {
             return (
               <button
                 type="button"
                 key={ index }
                 data-testid="correct-answer"
                 id="correct"
-                className={ classRight }
+                className={ classRightAnswer }
                 value={ element }
                 disabled={ disableQuestions }
                 onClick={ this.handleDisabled }
@@ -104,7 +103,7 @@ class Game extends React.Component {
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               value={ element }
-              className={ classWrong }
+              className={ classWrongAnswer }
               id="wrong"
               disabled={ disableQuestions }
               onClick={ this.handleDisabled }
@@ -153,7 +152,9 @@ class Game extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  receivedQuestions: (e) => dispatch(requestQuestions(e)),
+  fetchQuestionsAction: (numberOfQuestions) => (
+    dispatch(fetchQuestionsFromAPI(numberOfQuestions))
+  ),
 });
 
 const mapStateToProps = (state) => ({
@@ -161,7 +162,7 @@ const mapStateToProps = (state) => ({
 });
 
 Game.propTypes = {
-  receivedQuestions: PropTypes.func.isRequired,
+  fetchQuestionsAction: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
 };
 
