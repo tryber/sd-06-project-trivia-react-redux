@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchQuestionsFromAPI } from '../actions';
-import Timer from '../components/Timer.jsx';
+import Timer from '../components/Timer.js';
 
 class Game extends React.Component {
   constructor() {
@@ -65,8 +65,8 @@ class Game extends React.Component {
     return (
       <div id="answers">
         <Timer
-          seconds={secondsRemaining}
-          handleTime={this.decreaseTime}
+          seconds={ secondsRemaining }
+          handleTime={ this.decreaseTime }
         />
         {newArray.map((element, index) => {
           if (index === correctAnswerIndex) {
