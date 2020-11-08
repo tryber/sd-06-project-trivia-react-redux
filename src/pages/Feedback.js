@@ -14,12 +14,11 @@ class Feedback extends React.Component {
 
   fetchProfileImg() {
     const { hashGravatar } =  this.props;
-    const imgUrl = fetchGravatar(hashGravatar)
-    console.log(imgUrl)
+    fetchGravatar(hashGravatar)
   }
 
   render() {
-    const { hashGravatar, userName } =  this.props;
+    const { hashGravatar, userName, score } =  this.props;
     const src = `https://www.gravatar.com/avatar/${hashGravatar}`
     return (
       <div className="feedback-container game-container">
@@ -41,7 +40,7 @@ class Feedback extends React.Component {
           <h1 className="score">
                 <p data-testid="header-score">
                   Placar
-                  <span>{}</span>
+                  <span>{score}</span>
                 </p>
           </h1>
         </header>
@@ -52,7 +51,9 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   hashGravatar: state.user.hash,
-  userName: state.user.user,
+  userName: state.user.player.name,
+  score: state.user.player.score,
+
 });
 
 

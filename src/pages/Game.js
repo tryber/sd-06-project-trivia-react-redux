@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
+import { addScore } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -15,16 +17,39 @@ class Game extends React.Component {
       seconds: '30',
       points: '0',
       difficulty: '1',
+      click: false,
     };
   }
 
   async componentDidMount() {
-    const maximumTime = 30000;
     const { userToken } = this.props;
+    const { click, seconds } = this.state;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    this.timer();
-    setTimeout(this.correctAnswer, maximumTime);
+    if ( click === false && seconds > '0') {
+      this.timer();
+    }
+  }
+
+  timer() {
+    const correctButton = document.querySelector('.correct-answer');
+    const wrongButton = document.querySelectorAll('.wrong-answer');
+    const interval = 1000;
+    setInterval(() => {
+      const { seconds } = this.state;
+      if (seconds > 0 && correctButton.disabled === false) {
+        this.setState({
+          seconds: seconds - 1,
+        });
+      }
+      if (seconds < 1) {
+        this.correctAnswer();
+        correctButton.disabled = true;
+        wrongButton.forEach((element) => {
+          element.disabled = true;
+        });
+      }
+    }, interval);
   }
 
   getQuestions(questions) {
@@ -35,6 +60,7 @@ class Game extends React.Component {
 
   handleClick({ target }) {
     const { points, seconds, difficulty } = this.state;
+    const { scoreAdd, userName } = this.props;
     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
     const correctClass = correctButton.className;
@@ -49,10 +75,50 @@ class Game extends React.Component {
       });
     }
     if (target.className.includes('correct-answer')) {
+      if (!localStorage.state) {
+        localStorage.setItem('player', JSON.stringify({
+          player: {
+            name: userName,
+            score: 0,
+          },
+        }));
+      }
+      const newScore = Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty)));
+
       this.setState({
-        points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
+        points: newScore,
       });
+      scoreAdd(newScore);
+
+      const state = JSON.parse(localStorage.getItem('state'));
+      let { score } = state.player;
+      score = Number(score)
+      + (Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty))));
+
+      localStorage.state = JSON.stringify({
+        player: {
+          name: userName,
+          score,
+        },
+      });
+    } else {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name: userName,
+          score: 0,
+        },
+      }));
+      scoreAdd('0');
     }
+    this.setState({
+      click: true,
+    })
   }
 
   correctAnswer() {
@@ -70,30 +136,12 @@ class Game extends React.Component {
     }
   }
 
-  timer() {
-    const correctButton = document.querySelector('.correct-answer');
-    const wrongButton = document.querySelectorAll('.wrong-answer');
-    const interval = 1000;
-    setInterval(() => {
-      const { seconds } = this.state;
-      if (seconds > 0) {
-        this.setState({
-          seconds: seconds - 1,
-        });
-      }
-      if (seconds === 0) {
-        correctButton.disabled = true;
-        wrongButton.forEach((element) => {
-          element.disabled = true;
-        });
-        clearInterval();
-      }
-    }, interval);
-  }
-
   render() {
     const { questions, seconds, points } = this.state;
-    const { userName } = this.props;
+    let { userName } = this.props;
+    if (!userName) {
+      userName = 'Rodrigo Leite';
+    }
     return (
       <div className="game-container">
         {questions.map((element, index) => (
@@ -109,14 +157,14 @@ class Game extends React.Component {
                   />
                   <p data-testid="header-player-name">
                     Jogador:
-                    <span>{userName}</span>
+                    { userName ? <span>{userName}</span> : <span>Rodrigo Leite</span>}
                   </p>
                 </div>
               </div>
               <h1 className="score">
                 <p data-testid="header-score">
                   Placar
-                  <span>{points}</span>
+                  <span>{ points }</span>
                 </p>
               </h1>
             </header>
@@ -153,9 +201,11 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                <button className="next" type="button">
-                  <span>Proxima</span>
-                </button>
+                <Link to="/feedback">
+                  <button className="next" type="button" data-testid="btn-next">
+                    <span>Proxima</span>
+                  </button>
+                </Link>
               </div>
             </footer>
           </div>
@@ -167,12 +217,18 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   userToken: state.user.token,
-  userName: state.user.user,
+  userName: state.user.player.name,
+  scoreAdd: state.user.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  scoreAdd: (score) => dispatch(addScore(score)),
 });
 
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
+  scoreAdd: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
