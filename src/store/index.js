@@ -1,6 +1,6 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import playerInfoReducer from '../reducers';
+import rootReducer from '../reducers';
 
 const composeWithDevTools = (
   typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -11,8 +11,6 @@ const composeWithDevTools = (
       return compose(...args);
     }
 );
-
-const rootReducer = combineReducers({ playerInfoReducer });
 
 const store = createStore(
   rootReducer,

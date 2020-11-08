@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { saveGameScore } from '../actions';
 
 class GameCard extends Component {
   constructor() {
@@ -16,6 +18,8 @@ class GameCard extends Component {
   }
 
   componentDidMount() {
+    const { player } = this.props;
+    localStorage.setItem('state', JSON.stringify({ player }));
     const thousand = 1000;
     setInterval(this.updateTimer, thousand);
   }
@@ -41,13 +45,12 @@ class GameCard extends Component {
       disable: true,
     });
     const { timer } = this.state;
-    const state = JSON.parse(localStorage.getItem('state'));
-    console.log(state);
-    let { score, assertions } = state;
-    console.log(question);
+    const { score, assertions, player, storeGameScore } = this.props;
+    let currentScore = score;
+    let currentAssertions = assertions;
 
     if (option === question.correct_answer) {
-      assertions += 1;
+      currentAssertions += 1;
       let dificuldade = 0;
       const hardScore = 3;
       switch (question.difficulty) {
@@ -65,12 +68,19 @@ class GameCard extends Component {
       }
 
       const baseScore = 10;
-      score += baseScore + (timer * dificuldade);
-      const player = JSON.parse(localStorage.getItem('state'));
-      localStorage.setItem('state', JSON.stringify({ ...player, assertions, score }));
+      currentScore += baseScore + (timer * dificuldade);
     } else {
       console.log('ERROU');
     }
+
+    storeGameScore(currentScore, currentAssertions);
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        ...player,
+        assertions: currentAssertions,
+        score: currentScore,
+      },
+    }));
   }
 
   handleNextQuestion() {
@@ -89,6 +99,7 @@ class GameCard extends Component {
     const { question } = this.props;
     const correctAnswer = question.correct_answer;
     const options = [...question.incorrect_answers, correctAnswer].sort();
+    console.log(question);
     return (
       <div>
         <h3 data-testid="question-category">{`Categoria: ${question.category}`}</h3>
@@ -125,13 +136,32 @@ class GameCard extends Component {
 }
 
 GameCard.propTypes = {
-  question: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-    correct_answer: PropTypes.string.isRequired,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
-    question: PropTypes.string.isRequired,
-  }).isRequired,
+  assertions: PropTypes.number.isRequired,
   nextQuestion: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    gravatarEmail: PropTypes.string,
+    score: PropTypes.number,
+    assertations: PropTypes.number,
+  }).isRequired,
+  question: PropTypes.shape({
+    category: PropTypes.any,
+    correct_answer: PropTypes.any,
+    incorrect_answers: PropTypes.any,
+    question: PropTypes.any,
+  }).isRequired,
+  score: PropTypes.number.isRequired,
+  storeGameScore: PropTypes.func.isRequired,
 };
 
-export default GameCard;
+const mapStateToProps = (state) => ({
+  player: state.player,
+  score: state.player.score,
+  assertions: state.player.assertions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  storeGameScore: (score, assertions) => dispatch(saveGameScore(score, assertions)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameCard);

@@ -42,7 +42,7 @@ Game.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  questionsInfo: state.playerInfoReducer.questionsInfo,
+  questionsInfo: state.requestInfo.questionsInfo,
 });
 
 export default connect(mapStateToProps)(Game);
