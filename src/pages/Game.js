@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { NextButton } from '../components'
+import { NextButton } from '../components';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
 
@@ -57,7 +56,7 @@ class Game extends React.Component {
       this.setState({
         btnDisable:true,
       })
-    } 
+    }
     if (target.className.includes('correct-answer')) {
       this.setState({
         points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
