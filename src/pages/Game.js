@@ -8,7 +8,7 @@ import { fetchApi } from '../actions';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.firstClick = this.firstClick.bind(this);
+    this.optionChoose = this.optionChoose.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.getAnswers = this.getAnswers.bind(this);
@@ -18,6 +18,8 @@ class Game extends React.Component {
       nextButton: 'none',
       counter: 0,
       answers: '',
+      borderGreen: 0,
+      borderRed: 0,
     };
   }
 
@@ -50,15 +52,19 @@ class Game extends React.Component {
     return textArea.value;
   }
 
-  firstClick() {
+  optionChoose() {
     this.setState({
       nextButton: 'block',
+      borderGreen: '3px solid rgb(6, 240, 15)',
+      borderRed: '3px solid rgb(255, 0, 0)',
     });
   }
 
   async nextQuestion() {
     const { counter } = this.state;
     await this.setState({
+      borderGreen: 0,
+      borderRed: 0,
       counter: counter + 1,
       nextButton: 'none',
     });
@@ -80,7 +86,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { placar, nextButton, counter, answers } = this.state;
+    const { placar, nextButton, counter, answers, borderGreen, borderRed } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
@@ -120,10 +126,13 @@ class Game extends React.Component {
             { answers !== '' ? answers.map((answer, index) => (
               <button
                 key={ index }
+                style={ answer.correction === 'correct-answer'
+                  ? { border: borderGreen } : { border: borderRed } }
                 type="button"
                 className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid={ answer.correction }
-                onClick={ this.firstClick }
+                onClick={ this.optionChoose }
+                disabled={ nextButton === 'block' }
               >
                 { this.decodeHTMLEntities(answer.result) }
               </button>
