@@ -175,8 +175,20 @@ class Game extends React.Component {
     }
   }
 
+  handleNextButton() {
+    const { btnDisable, feedback } = this.state;
+    if (btnDisable) {
+      return (
+        <Link to={ feedback }>
+          <NextButton handleNextQuestion={ this.handleNextQuestion } />
+        </Link>
+      );
+    }
+    return null;
+  }
+
   render() {
-    const { questions, seconds, points, btnDisable, feedback } = this.state;
+    const { questions, seconds, points } = this.state;
     const { userName } = this.props;
     return (
       <div className="game-container">
@@ -237,11 +249,7 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                {btnDisable ?
-                <Link to={ feedback }>
-                  <NextButton handleNextQuestion={ this.handleNextQuestion } />
-                </Link>
-                : null}
+                {this.handleNextButton()}
               </div>
             </footer>
           </div>
