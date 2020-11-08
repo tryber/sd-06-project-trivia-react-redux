@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import '../Css/Questions.css';
 
 class Questions extends React.Component {
-  render() {
-    const { questionObj, answered, handleAnswer } = this.props;
+  constructor(props) {
+    super(props);
+
+    const { questionObj } = this.props;
+
     const {
-      category,
-      question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionObj;
 
@@ -16,6 +17,54 @@ class Questions extends React.Component {
     // Shuffle retirado de https://flaviocopes.com/how-to-shuffle-array-javascript/
     const randomNumber = 0.5;
     allAnswers.sort(() => Math.random() - randomNumber);
+
+    this.state = {
+      correctAnswer,
+      incorrectAnswers,
+      allAnswers,
+    };
+
+    this.updateAnswers = this.updateAnswers.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { questionObj } = this.props;
+
+    if (prevProps.questionObj !== questionObj) {
+      const allAnswers = this.shuffleAnswers(questionObj);
+      this.updateAnswers(questionObj, allAnswers);
+    }
+  }
+
+  updateAnswers(questionObj, allAnswers) {
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = questionObj;
+
+    this.setState({
+      correctAnswer,
+      incorrectAnswers,
+      allAnswers,
+    });
+  }
+
+  shuffleAnswers(questionObj) {
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = questionObj;
+
+    const allAnswers = [...incorrectAnswers, correctAnswer];
+    // Shuffle retirado de https://flaviocopes.com/how-to-shuffle-array-javascript/
+    const randomNumber = 0.5;
+    return allAnswers.sort(() => Math.random() - randomNumber);
+  }
+
+  render() {
+    const {
+      answered,
+      handleAnswer,
+      questionObj: { category, question } } = this.props;
+    const { allAnswers, correctAnswer } = this.state;
 
     return (
       <div className="main-wrapper">
