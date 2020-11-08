@@ -29,7 +29,7 @@ class Game extends React.Component {
     const { click, seconds } = this.state;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    if( click === false && seconds > '0') {
+    if ( click === false && seconds > '0') {
       this.timer();
     }
   }
@@ -56,8 +56,8 @@ class Game extends React.Component {
         element.disabled = true;
       });
       this.setState({
-        btnDisable:true,
-      })
+        btnDisable: true,
+      });
     }
     if (target.className.includes('correct-answer')) {
       if (!localStorage.state) {
@@ -102,7 +102,7 @@ class Game extends React.Component {
     }
     this.setState({
       click: true,
-    })
+    });
   }
 
   correctAnswer() {
@@ -151,7 +151,7 @@ class Game extends React.Component {
     const { userToken } = this.props;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    if ( correctButton.disabled === true ) {
+    if (correctButton.disabled === true) {
       correctButton.classList.remove('correct');
       correctButton.disabled = false;
       wrongButton.forEach((element) => {
@@ -159,8 +159,8 @@ class Game extends React.Component {
         element.disabled = false;
       });
       this.setState({
-        seconds: '30'
-      })
+        seconds: '30',
+      });
     }
   }
 
@@ -227,8 +227,8 @@ class Game extends React.Component {
               </div>
               <div className="next-div">
                 {btnDisable
-                ? <NextButton handleNextQuestion={ this.handleNextQuestion } />
-                : null}
+                  ? <NextButton handleNextQuestion={ this.handleNextQuestion } />
+                  : null}
               </div>
             </footer>
           </div>
