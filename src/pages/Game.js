@@ -55,7 +55,7 @@ class Game extends React.Component {
       this.setState({
         btnDisable:true,
       })
-    }
+    } 
     if (target.className.includes('correct-answer')) {
       this.setState({
         points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
@@ -101,6 +101,8 @@ class Game extends React.Component {
   }
 
   async handleNextQuestion() {
+    const correctButton = document.querySelector('.correct-answer');
+    const wrongButton = document.querySelectorAll('.wrong-answer');
     this.setState((previousState) => ({
       indexNextQuestion: previousState.indexNextQuestion + 1,
     }));
@@ -110,6 +112,17 @@ class Game extends React.Component {
     this.getQuestions(questions.results);
     this.timer();
     setTimeout(this.correctAnswer, maximumTime);
+    if ( correctButton.disabled === true ) {
+      correctButton.classList.remove('correct');
+      correctButton.disabled = false;
+      wrongButton.forEach((element) => {
+        element.classList.remove('wrong');
+        element.disabled = false;
+      });
+      this.setState({
+        seconds: '30'
+      })
+    }
   }
 
   render() {
