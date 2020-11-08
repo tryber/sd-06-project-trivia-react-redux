@@ -1,6 +1,7 @@
 import React from 'react';
 import './Game.css';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
 import { Icon } from 'semantic-ui-react';
@@ -106,6 +107,7 @@ class Game extends React.Component {
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
+    const four = 4;
 
     return (
       <div>
@@ -133,6 +135,7 @@ class Game extends React.Component {
               <Icon fitted name="hourglass half" />
               { timer >= 0 ? `TEMPO: ${timer}s` : 'TEMPO ESGOTADO' }
             </div>
+            <br />
             <div data-testid="question-category">
               CATEGORIA[
               { results !== '' ? this.decodeHTMLEntities(results[counter].category) : '' }
@@ -158,15 +161,30 @@ class Game extends React.Component {
               </button>
             )) : '' }
             <div className="nextbutton">
-              <button
-                type="button"
-                className="btn btn-warning btn-block mt-4"
-                data-testid="btn-next"
-                style={ { display: nextButton } }
-                onClick={ this.nextQuestion }
-              >
-                PRÓXIMA
-              </button>
+              { counter === four ? (
+                <Link
+                  style={ { textDecoration: 'none' } }
+                  to="/feedback"
+                >
+                  <button
+                    type="button"
+                    className="btn btn-warning btn-block mt-4"
+                    data-testid="btn-next"
+                    style={ { display: nextButton } }
+                  >
+                      PRÓXIMA
+                  </button>
+                </Link>)
+                : (
+                  <button
+                    type="button"
+                    className="btn btn-warning btn-block mt-4"
+                    data-testid="btn-next"
+                    style={ { display: nextButton } }
+                    onClick={ this.nextQuestion }
+                  >
+                    PRÓXIMA
+                  </button>)}
             </div>
           </div>
         </div>

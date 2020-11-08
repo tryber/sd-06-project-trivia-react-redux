@@ -7,6 +7,7 @@
   flex-direction: row;
   font-size: 2em;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   font-family: 'Big Shoulders Stencil Text', cursive;
 }
@@ -33,7 +34,9 @@
   -moz-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
   box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
 }
-
+.right {
+  margin: 7px;
+}
 .buttons {
   display: flex;
   flex-direction: column;
@@ -50,10 +53,12 @@ button {
 }
 
 .question {
-  font-size: 1.8em;
+  font-size: 2em;
+  line-height: 40px;
+  text-shadow: 3px 3px black;
 }
 
 .timer {
-  font-size: 2em;
+  font-size: 1.5em;
   color: yellow;
 }
