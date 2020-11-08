@@ -13,10 +13,12 @@ class Game extends React.Component {
     this.state = {
       index: 0,
       isLoading: true,
+      answered: false,
     };
 
     this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -30,19 +32,23 @@ class Game extends React.Component {
     this.setState({ isLoading: false });
   }
 
-  handleClick() {
+  handleNextQuestion() {
     const { index } = this.state;
     const { history } = this.props;
     const finalQuestion = 4;
 
     return (index < finalQuestion)
-      ? this.setState((prevState) => ({ index: prevState.index + 1 }))
+      ? this.setState((prevState) => ({ index: prevState.index + 1, answered: false }))
       : history.push('/feedback');
+  }
+
+  handleAnswer() {
+    this.setState({ answered: true });
   }
 
   render() {
     const { questions } = this.props;
-    const { index, isLoading } = this.state;
+    const { index, isLoading, answered } = this.state;
 
     const finalQuestion = 4;
 
@@ -53,16 +59,20 @@ class Game extends React.Component {
           : (
             <div>
               <Header />
-              <Questions questionObj={ questions[index] } />
+              <Questions
+                questionObj={ questions[index] }
+                answered={ answered }
+                handleAnswer={ this.handleAnswer }
+              />
               { (index < finalQuestion)
                 ? (
                   <GenericButton
-                    onClick={ this.handleClick }
+                    onClick={ this.handleNextQuestion }
                     title="Próxima pergunta"
                   />)
                 : (
                   <GenericButton
-                    onClick={ this.handleClick }
+                    onClick={ this.handleNextQuestion }
                     title="Ver resultado!"
                   />) }
             </div>) }

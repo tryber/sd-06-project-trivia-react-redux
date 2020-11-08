@@ -4,17 +4,8 @@ import PropTypes from 'prop-types';
 import '../Css/Questions.css';
 
 class Questions extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      answered: false,
-    };
-  }
-
   render() {
-    const { answered } = this.state;
-    const { questionObj } = this.props;
+    const { questionObj, answered, handleAnswer } = this.props;
     const {
       category,
       question,
@@ -41,6 +32,8 @@ class Questions extends React.Component {
                     data-testid="correct-answer"
                     className={ `answer-button
                     ${(answered) ? 'check-correct-answer' : ''}` }
+                    onClick={ handleAnswer }
+                    disabled={ answered }
                   >
                     {answer}
                   </button>)
@@ -51,6 +44,8 @@ class Questions extends React.Component {
                     data-testid={ `wrong-answer-${index}` }
                     className={ `answer-button
                     ${(answered) ? 'check-incorrect-answer' : ''}` }
+                    onClick={ handleAnswer }
+                    disabled={ answered }
                   >
                     {answer}
                   </button>)
@@ -69,6 +64,12 @@ Questions.propTypes = {
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(String),
   }).isRequired,
+  answered: PropTypes.bool.isRequired,
+  handleAnswer: PropTypes.func,
+};
+
+Questions.defaultProps = {
+  handleAnswer: () => {},
 };
 
 export default Questions;
