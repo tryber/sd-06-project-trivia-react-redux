@@ -15,7 +15,7 @@ class Feedback extends React.Component {
   }
 
   fetchProfileImg() {
-    const { hashGravatar } =  this.props;
+    const { hashGravatar } = this.props;
     fetchGravatar(hashGravatar);
   }
 
@@ -24,7 +24,7 @@ class Feedback extends React.Component {
     const limitCorrectAnswer = 3;
     if (correct < limitCorrectAnswer) {
       return 'Podia ser melhor...';
-    } 
+    }
     return 'Mandou bem!';
   }
 
@@ -82,7 +82,7 @@ Feedback.propTypes = {
   hashGravatar: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
-  correct: PropTypes.string.isRequired
+  correct: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
