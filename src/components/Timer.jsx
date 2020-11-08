@@ -4,7 +4,18 @@ class Timer extends Component {
 
   componentDidMount() {
     const { handleTime } = this.props;
-    setInterval(handleTime, 1000);
+    let intervalID = setInterval(handleTime, 1000);
+    this.setState({
+      intervalID
+    }) 
+  }
+
+  componentDidUpdate() {
+    const { seconds } = this.props;
+    const { intervalID } = this.state;
+    if(seconds === 0) {
+      clearInterval(intervalID);
+    }
   }
 
   render() {

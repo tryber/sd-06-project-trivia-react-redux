@@ -25,6 +25,7 @@ class Game extends React.Component {
     this.randomArray = this.randomArray.bind(this);
     //Função do timer
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.disableWhenTimeout = this.disableWhenTimeout.bind(this);
   }
 
   async componentDidMount() {
@@ -34,19 +35,21 @@ class Game extends React.Component {
     receivedQuestions(questions); //  populou o state
   }
 
-  decreaseTime() {
+  disableWhenTimeout() {
     const { secondsRemaining } = this.state;
-
-    this.setState({
-      secondsRemaining: secondsRemaining - 1,
-    });
-
     if (secondsRemaining < 1) {
       this.setState({
         classWrong: 'red',
         disableQuestions: true,
       });
     }
+  }
+
+  decreaseTime() {
+    const { secondsRemaining } = this.state;
+    this.setState({
+      secondsRemaining: secondsRemaining - 1,
+    });
   }
 
   async handleFetch(num) {
@@ -81,7 +84,13 @@ class Game extends React.Component {
     const { classRight, classWrong, disableQuestions, secondsRemaining } = this.state;
     return (
       <div id="answers">
-        <Timer handleTime={this.decreaseTime} seconds={secondsRemaining} />
+        <Timer
+          seconds={secondsRemaining}
+          classWrong={classWrong}
+          disableQuestions={disableQuestions}
+          handleTime={this.decreaseTime}
+          handleDisabled={this.disableWhenTimeout}
+        />
         {newArray.map((element, index) => {
           if (index === myIndex) {
             return (
