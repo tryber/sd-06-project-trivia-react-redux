@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NextButton } from '../components';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
+import { addScore } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -41,6 +42,7 @@ class Game extends React.Component {
 
   handleClick({ target }) {
     const { points, seconds, difficulty } = this.state;
+    const { scoreAdd, userName } = this.props;
     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
     const correctClass = correctButton.className;
@@ -58,10 +60,45 @@ class Game extends React.Component {
       })
     }
     if (target.className.includes('correct-answer')) {
+      if (!localStorage.state) {
+        localStorage.setItem('player', JSON.stringify({
+          player: {
+            name: userName,
+            score: 0,
+          },
+        }));
+      }
+      const newScore = Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty)));
+
       this.setState({
-        points: Number(points) + (Number(ten) + (Number(seconds) * Number(difficulty))),
-        btnDisable:true,
+        points: newScore,
       });
+      scoreAdd(newScore);
+
+      const state = JSON.parse(localStorage.getItem('state'));
+      let { score } = state.player;
+      score = Number(score)
+      + (Number(points)
+      + (Number(ten)
+      + (Number(seconds)
+      * Number(difficulty))));
+
+      localStorage.state = JSON.stringify({
+        player: {
+          name: userName,
+          score,
+        },
+      });
+    } else {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name: userName,
+          score: 0,
+        },
+      }));
     }
     this.setState({
       click: true,
@@ -145,14 +182,14 @@ class Game extends React.Component {
                   />
                   <p data-testid="header-player-name">
                     Jogador:
-                    <span>{userName}</span>
+                    { userName ? <span>{userName}</span> : <span>Rodrigo Leite</span>}
                   </p>
                 </div>
               </div>
               <h1 className="score">
                 <p data-testid="header-score">
                   Placar
-                  <span>{points}</span>
+                  <span>{ points }</span>
                 </p>
               </h1>
             </header>
@@ -203,12 +240,18 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   userToken: state.user.token,
-  userName: state.user.user,
+  userName: state.user.player.name,
+  scoreAdd: state.user.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  scoreAdd: (score) => dispatch(addScore(score)),
 });
 
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
+  scoreAdd: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

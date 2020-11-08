@@ -44,10 +44,31 @@ class Login extends React.Component {
       this.setState({
         validName: true,
       });
+      if (!localStorage.player) {
+        localStorage.setItem('state', JSON.stringify({
+          player: {
+            name,
+            score: 0,
+          },
+        }));
+      } else {
+        localStorage.setItem('state', JSON.stringify({
+          player: {
+            name,
+            score: 0,
+          },
+        }));
+      }
     } else {
       this.setState({
         validName: false,
       });
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name: '',
+          score: 0,
+        },
+      }));
     }
     userName(name);
   }

@@ -1,5 +1,6 @@
 export const TOKEN = 'TOKEN';
 export const USER = 'USER';
+export const SCORE = 'SCORE';
 
 export const addToken = (token) => ({
   type: TOKEN,
@@ -9,6 +10,11 @@ export const addToken = (token) => ({
 export const addName = (name) => ({
   type: USER,
   name,
+});
+
+export const addScore = (score) => ({
+  type: SCORE,
+  score,
 });
 
 export const fetchApi = () => async (dispatch) => {
