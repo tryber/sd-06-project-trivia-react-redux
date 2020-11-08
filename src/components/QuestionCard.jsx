@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Timer } from '.';
 import './CSS/QuestionCardCSS.css';
 import { NextButton } from './NextButton';
+import { sendScore } from '../actions';
 
-export default class QuestionCard extends Component {
+class QuestionCard extends Component {
   constructor() {
     super();
 
+    this.saveInfoToLocalStorage = this.saveInfoToLocalStorage.bind(this);
     this.updateStates = this.updateStates.bind(this);
     this.activateBorders = this.activateBorders.bind(this);
     this.activateQuestions = this.activateQuestions.bind(this);
     this.timeUp = this.timeUp.bind(this);
     this.handleChosenAnswer = this.handleChosenAnswer.bind(this);
+    this.updateNextQuestion = this.updateNextQuestion.bind(this);
 
     this.state = {
       answers: [],
       updatedStates: false,
       answersBorderActive: false,
       timeIsUp: false,
+      time: 32,
       hasChosen: false,
       correctAnswer: '',
       chosenAnswer: '',
@@ -26,7 +30,26 @@ export default class QuestionCard extends Component {
   }
 
   componentDidMount() {
+    this.saveInfoToLocalStorage();
     this.updateStates();
+    this.startTimer();
+  }
+
+  componentDidUpdate() {
+    this.saveInfoToLocalStorage();
+  }
+
+  saveInfoToLocalStorage() {
+    const { name, gravatarEmail, score, assertions } = this.props;
+    const playerInfo = JSON.stringify({
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    });
+    localStorage.setItem('state', playerInfo);
   }
 
   updateStates() {
@@ -44,8 +67,6 @@ export default class QuestionCard extends Component {
       [answers[i], answers[j]] = [answers[j], answers[i]];
     }
 
-    console.log(answers);
-
     this.setState({
       answers,
       updatedStates: true,
@@ -53,16 +74,54 @@ export default class QuestionCard extends Component {
     });
   }
 
-  handleChosenAnswer(chosenAnswer) {
-    this.setState({
-      hasChosen: true,
-      answersBorderActive: true,
-      chosenAnswer,
-    });
+  resetStates() {
+    this.setState(
+      {
+        answersBorderActive: false,
+        timeIsUp: false,
+        time: 32,
+        hasChosen: false,
+      },
+      () => {
+        this.updateStates();
+        this.startTimer();
+      },
+    );
+  }
+
+  handleChosenAnswer(chosenAnswer, difficulty) {
+    this.setState(
+      {
+        hasChosen: true,
+        answersBorderActive: true,
+        chosenAnswer,
+      },
+      () => {
+        this.stopTimer();
+        const { time } = this.state;
+        this.calculateScore(time, difficulty);
+      },
+    );
+  }
+
+  calculateScore(time, difficulty) {
+    const { correctAnswer, chosenAnswer } = this.state;
+    const { addScore } = this.props;
+    const scoreMultiplier = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    const SCORE_OFFSET = 10;
+
+    const score = correctAnswer === chosenAnswer
+      ? SCORE_OFFSET + time * scoreMultiplier[difficulty]
+      : 0;
+    addScore(score);
   }
 
   activateBorders() {
-    // const { answersBorderActive } = this.state;
     this.setState({
       answersBorderActive: true,
     });
@@ -72,6 +131,29 @@ export default class QuestionCard extends Component {
     this.setState({ playing: true });
   }
 
+  startTimer() {
+    const INTERVAL = 1000;
+    this.timer = setInterval(() => {
+      this.setState(
+        (prev) => ({
+          ...prev,
+          time: prev.time - 1,
+        }),
+        () => {
+          const { time } = this.state;
+          if (time === 0) {
+            this.stopTimer();
+            this.timeUp();
+          }
+        },
+      );
+    }, INTERVAL);
+  }
+
+  stopTimer() {
+    clearInterval(this.timer);
+  }
+
   timeUp() {
     this.setState({
       timeIsUp: true,
@@ -79,9 +161,20 @@ export default class QuestionCard extends Component {
     });
   }
 
+  updateNextQuestion() {
+    const { updateQuestion } = this.props;
+    updateQuestion();
+    this.resetStates();
+  }
+
   render() {
     const {
-      question: { category, question, correct_answer: correctAnswer },
+      question: {
+        category,
+        question,
+        correct_answer: correctAnswer,
+        difficulty,
+      },
     } = this.props;
     const {
       answers,
@@ -90,6 +183,7 @@ export default class QuestionCard extends Component {
       timeIsUp,
       hasChosen,
       chosenAnswer,
+      time,
     } = this.state;
 
     if (!updatedStates) {
@@ -107,10 +201,12 @@ export default class QuestionCard extends Component {
           <p className="category-title">Category</p>
           <p className="category-content">{category}</p>
         </p>
-        <Timer
-          timeUp={ this.timeUp }
-          activateQuestions={ this.activateQuestions }
-        />
+        <div>
+          <h3>
+            Timer:
+            {time}
+          </h3>
+        </div>
         <div className="question-container">
           <p className="question" data-testid="question-text">
             {question}
@@ -125,7 +221,7 @@ export default class QuestionCard extends Component {
                     }
                     data-testid="correct-answer"
                     type="button"
-                    onClick={ () => this.handleChosenAnswer(correctAnswer) }
+                    onClick={ () => this.handleChosenAnswer(correctAnswer, difficulty) }
                     disabled={ timeIsUp || hasChosen }
                   >
                     {correctAnswer}
@@ -139,7 +235,7 @@ export default class QuestionCard extends Component {
                   key={ index }
                   data-testid={ `wrong-answer-${currentIdx}` }
                   type="button"
-                  onClick={ () => this.handleChosenAnswer(item) }
+                  onClick={ () => this.handleChosenAnswer(item, difficulty) }
                   disabled={ timeIsUp || hasChosen }
                 >
                   {item}
@@ -147,18 +243,41 @@ export default class QuestionCard extends Component {
               );
             })}
             <div className="next-button">
-              {!answersBorderActive ? null : <NextButton />}
+              {!answersBorderActive ? null : (
+                <NextButton updateQuestion={ this.updateNextQuestion } />
+              )}
             </div>
           </div>
         </div>
         {hasChosen && chosenAnswer === correctAnswer ? (
           <h2>Certa resposta!</h2>
-        ) : hasChosen && (<h2>Errou!</h2>)}
+        ) : (
+          hasChosen && <h2>Errou!</h2>
+        )}
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  name: state.userLogin.player.name,
+  score: state.userLogin.player.score,
+  gravatarEmail: state.userLogin.player.gravatarEmail,
+  assertions: state.userLogin.player.assertions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addScore: (score) => dispatch(sendScore(score)),
+});
+
 QuestionCard.propTypes = {
   question: PropTypes.arrayOf(PropTypes.object).isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  addScore: PropTypes.func.isRequired,
+  updateQuestion: PropTypes.func.isRequired,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);

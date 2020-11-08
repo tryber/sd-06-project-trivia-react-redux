@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class NextButton extends Component {
   render() {
+    const { updateQuestion } = this.props;
     return (
       <div>
         <button
           type="button"
-          // id={ currentIdx }
           data-testid="btn-next"
-          onClick={ () => window.location.reload() }
+          onClick={ updateQuestion }
         >
           Next Question
         </button>
@@ -18,3 +19,7 @@ export class NextButton extends Component {
 }
 
 export default NextButton;
+
+NextButton.propTypes = {
+  updateQuestion: PropTypes.func.isRequired,
+};

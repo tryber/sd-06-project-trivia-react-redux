@@ -6,7 +6,7 @@ import './CSS/HeaderCSS.css';
 
 class Header extends Component {
   render() {
-    const { playerName, email } = this.props;
+    const { playerName, email, score } = this.props;
     const hashGravatar = md5(email);
     return (
       <header className="header">
@@ -27,7 +27,8 @@ class Header extends Component {
             className="score"
             data-testid="header-score"
           >
-            Score: 0
+            Score:
+            {score}
           </p>
         </div>
       </header>
@@ -36,13 +37,15 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.userLogin.playerName,
-  email: state.userLogin.email,
+  playerName: state.userLogin.player.name,
+  email: state.userLogin.player.gravatarEmail,
+  score: state.userLogin.player.score,
 });
 
 Header.propTypes = {
   playerName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

@@ -9,10 +9,12 @@ class Questions extends React.Component {
     super();
 
     this.updateStates = this.updateStates.bind(this);
+    this.updateQuestion = this.updateQuestion.bind(this);
 
     this.state = {
       questions: [],
       isFetching: true,
+      currentQuestionIdx: 0,
     };
   }
 
@@ -20,6 +22,12 @@ class Questions extends React.Component {
     const { token, requestQuestions } = this.props;
     await requestQuestions(token);
     this.updateStates();
+  }
+
+  updateQuestion() {
+    this.setState((prev) => ({
+      currentQuestionIdx: prev.currentQuestionIdx + 1,
+    }));
   }
 
   updateStates() {
@@ -30,16 +38,23 @@ class Questions extends React.Component {
     });
   }
 
+  renderQuestionCard(questions) {
+    const { currentQuestionIdx } = this.state;
+
+    return (
+      <QuestionCard
+        question={ questions[currentQuestionIdx] }
+        updateQuestion={ this.updateQuestion }
+      />
+    );
+  }
+
   render() {
     const { questions, isFetching } = this.state;
     return (
       <div>
         <Header />
-        {isFetching ? (
-          <p>Loading...</p>
-        ) : (
-          <QuestionCard question={ questions[0] } />
-        )}
+        {isFetching ? <p>Loading...</p> : this.renderQuestionCard(questions)}
       </div>
     );
   }
@@ -48,6 +63,7 @@ class Questions extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.userLogin.token,
   questions: state.questions.questions.results,
+  currentQuestionIdx: state.questions.currentQuestionIdx,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -60,7 +76,4 @@ Questions.propTypes = {
   questions: PropTypes.shape({}).isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Questions);
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
