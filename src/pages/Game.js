@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import triviaAPI from '../services/triviaAPI';
 import { requestQuestions } from '../actions';
+import Timer from '../components/Timer.jsx';
 
 class Game extends React.Component {
   constructor() {
@@ -13,12 +14,17 @@ class Game extends React.Component {
       classRight: '',
       classWrong: '',
       isDisabled: true,
+      disableQuestions: false,
+      secondsRemaining: 30,
+      score: 0,
     };
 
     this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
+    //Função do timer
+    this.decreaseTime = this.decreaseTime.bind(this);
   }
 
   async componentDidMount() {
@@ -26,6 +32,21 @@ class Game extends React.Component {
     const { receivedQuestions } = this.props;
     const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
     receivedQuestions(questions); //  populou o state
+  }
+
+  decreaseTime() {
+    const { secondsRemaining } = this.state;
+
+    this.setState({
+      secondsRemaining: secondsRemaining - 1,
+    });
+
+    if (secondsRemaining < 1) {
+      this.setState({
+        classWrong: 'red',
+        disableQuestions: true,
+      });
+    }
   }
 
   async handleFetch(num) {
@@ -37,16 +58,16 @@ class Game extends React.Component {
     //   const { questions } = this.props;
   }
 
-  handleDisabled({ target }) {
+  handleDisabled() {
+    // { target }
     // Lógica para mudar o disabled do botão
     // Necessita que uma alternativa tenha sido selecionada
     // target.id ? target.className = 'green' ;
 
-    console.log(target);
     this.setState({
       classRight: 'green',
       classWrong: 'red',
-      isDisabled: false,
+      isDisabled: true,
     });
   }
 
@@ -57,9 +78,10 @@ class Game extends React.Component {
 
     newArray.sort(); // já está alterado
     const myIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRight, classWrong } = this.state;
+    const { classRight, classWrong, disableQuestions, secondsRemaining } = this.state;
     return (
       <div id="answers">
+        <Timer handleTime={this.decreaseTime} seconds={secondsRemaining} />
         {newArray.map((element, index) => {
           if (index === myIndex) {
             return (
@@ -70,6 +92,7 @@ class Game extends React.Component {
                 id="correct"
                 className={ classRight }
                 value={ element }
+                disabled={ disableQuestions }
                 onClick={ this.handleDisabled }
               >
                 { element }
@@ -83,6 +106,7 @@ class Game extends React.Component {
               value={ element }
               className={ classWrong }
               id="wrong"
+              disabled={ disableQuestions }
               onClick={ this.handleDisabled }
             >
               { element }
@@ -98,6 +122,7 @@ class Game extends React.Component {
     return (
       <div onChange={ this.handleDisabled }>
         <Header />
+        <div id="countdown" value="30" />
         {questions.map((element, index) => (
           element.results.map((e) => (
             <div key={ index } id="container">
@@ -115,7 +140,7 @@ class Game extends React.Component {
               <button
                 data-testid="btn-next"
                 type="button"
-                hidden={ isDisabled }
+                disabled={ isDisabled }
                 // onClick={ this.handleDisabled }
               >
                 PRÓXIMA
