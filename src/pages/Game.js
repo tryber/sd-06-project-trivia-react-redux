@@ -19,17 +19,19 @@ class Game extends React.Component {
       difficulty: '1',
       btnDisable: false,
       indexNextQuestion: 0,
+      click: false,
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   async componentDidMount() {
-    const maximumTime = 30000;
     const { userToken } = this.props;
+    const { click, seconds } = this.state;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    this.timer();
-    setTimeout(this.correctAnswer, maximumTime);
+    if( click === false && seconds > '0') {
+      this.timer();
+    }
   }
 
   getQuestions(questions) {
@@ -62,6 +64,9 @@ class Game extends React.Component {
         btnDisable:true,
       });
     }
+    this.setState({
+      click: true,
+    })
   }
 
   correctAnswer() {
@@ -85,12 +90,13 @@ class Game extends React.Component {
     const interval = 1000;
     setInterval(() => {
       const { seconds } = this.state;
-      if (seconds > 0) {
+      if (seconds > 0 && correctButton.disabled === false) {
         this.setState({
           seconds: seconds - 1,
         });
       }
-      if (seconds === 0) {
+      if (seconds < 1) {
+        this.correctAnswer();
         correctButton.disabled = true;
         wrongButton.forEach((element) => {
           element.disabled = true;
@@ -106,12 +112,9 @@ class Game extends React.Component {
     this.setState((previousState) => ({
       indexNextQuestion: previousState.indexNextQuestion + 1,
     }));
-    const maximumTime = 30000;
     const { userToken } = this.props;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    this.timer();
-    setTimeout(this.correctAnswer, maximumTime);
     if ( correctButton.disabled === true ) {
       correctButton.classList.remove('correct');
       correctButton.disabled = false;
