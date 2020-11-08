@@ -428,11 +428,34 @@ body {
 
 .feedback-bottom-content{
   display: flex;
-  height: 50%;
+  height: 70%;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+}
+
+.feedback-totalscore-content {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  font-size: 60.5px;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  color: white;
+  text-shadow: 0 0 6px #000;
+  -moz-text-shadow: 0 0 5px #000;
+  -webkit-text-shadow: 0 0 5px #000;
+}
+
+.hr-feedback {
+  width: 180px;
+  border: rgb(199, 195, 195) solid 1px;
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  margin: 0;
 }
 
 .feedback-footer {

@@ -29,7 +29,7 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { hashGravatar, userName, score, correct } = this.props;
+    const { hashGravatar, userName, correct, score } = this.props;
     const src = `https://www.gravatar.com/avatar/${hashGravatar}`;
     return (
       <div className="feedback-container game-container">
@@ -53,7 +53,7 @@ class Feedback extends React.Component {
             <h1 className="score">
               <p>
                 Placar
-                <span data-testid="header-score">{score}</span>
+                <span data-testid="header-score">{}</span>
               </p>
             </h1>
           </header>
@@ -62,9 +62,14 @@ class Feedback extends React.Component {
             <p data-testid="feedback-text">{this.handleFeedback()}</p>
           </section>
           <div className="feedback-bottom-content">
-            <div>
-              <p data-testid="feedback-total-score">{score}</p>
-              <p data-testid="feedback-total-question">{correct}</p>
+            <div className="feedback-totalscore-content">
+              <p data-testid="feedback-total-score">
+                { score }
+              </p>
+              <hr className="hr-feedback" />
+              <p data-testid="feedback-total-question">
+                { correct }
+              </p>
             </div>
             <footer className="feedback-footer">
               <Link to="/ranking">
