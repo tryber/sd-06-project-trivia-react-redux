@@ -17,7 +17,7 @@ export default class Timer extends Component {
 
   startTimer() {
     const { time } = this.state;
-    const { timeUp, activateQuestions } = this.props;
+    const { timeUp, activateQuestions, handleTimer } = this.props;
     const TIMEISUP = 32000;
     const INTERVAL = 1000;
     const TIMER = Math.floor(Date.now() / INTERVAL) + time;
@@ -27,8 +27,14 @@ export default class Timer extends Component {
       time: Math.floor(Date.now() / INTERVAL) - TIMER < 0
         ? TIMER - Math.floor(Date.now() / INTERVAL)
         : 0,
-    }), INTERVAL);
+    }, () => handleTimer(this.state)), INTERVAL);
   }
+
+  // stopTimer() {
+  //   // const { time } = this.state;
+
+  //   clearInterval(this.timer);
+  // }
 
   render() {
     const { time } = this.state;
@@ -47,4 +53,5 @@ export default class Timer extends Component {
 Timer.propTypes = {
   timeUp: PropTypes.func.isRequired,
   activateQuestions: PropTypes.func.isRequired,
+  handleTimer: PropTypes.func.isRequired,
 };

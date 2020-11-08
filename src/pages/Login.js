@@ -11,6 +11,7 @@ class Login extends React.Component {
     super();
 
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       email: '',
@@ -37,10 +38,21 @@ class Login extends React.Component {
     );
   }
 
+  handleClick(email, name) {
+    const { requestToken } = this.props;
+    const playerInfo = JSON.stringify({ player: {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    } });
+    localStorage.setItem('state', playerInfo);
+    requestToken(email, name);
+  }
+
   render() {
     const { email, playerName, disabled } = this.state;
     // Destruturate my login action as a props
-    const { requestToken } = this.props;
 
     return (
       <div>
@@ -92,7 +104,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             disabled={ disabled }
             // Clicking at button disparates dispatch function to save state email at /actions/index
-            onClick={ () => requestToken(email, playerName) }
+            onClick={ () => this.handleClick(email, playerName) }
           >
             Jogar
           </button>
