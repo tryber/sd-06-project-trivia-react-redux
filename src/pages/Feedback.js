@@ -24,6 +24,7 @@ class Feedback extends React.Component {
       <div className="feedback-container game-container">
         <header className="profile-header" data-testid="header-player-name">
           <div className="profile-div">
+            <p data-testid="feedback-text"></p>
             <div className="profile-rightside">
               <img
                 data-testid="header-profile-picture"
@@ -38,9 +39,9 @@ class Feedback extends React.Component {
             </div>
           </div>
           <h1 className="score">
-                <p data-testid="header-score">
+                <p>
                   Placar
-                  <span>{score}</span>
+                  <span data-testid="header-score">{score}</span>
                 </p>
           </h1>
         </header>
