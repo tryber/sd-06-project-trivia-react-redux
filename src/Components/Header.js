@@ -6,7 +6,7 @@ import '../Css/Header.css';
 
 class Header extends React.Component {
   render() {
-    const { hash, player: { name, gravatarEmail, score } } = this.props;
+    const { hash, player: { name, score } } = this.props;
 
     return (
       <div className="header">
@@ -17,7 +17,7 @@ class Header extends React.Component {
           className="header-gravatar"
         />
         <span data-testid="header-player-name" className="header-name">
-          { `${name} | ${gravatarEmail}` }
+          { name }
         </span>
         <span data-testid="header-score" className="header-score">{ score }</span>
       </div>

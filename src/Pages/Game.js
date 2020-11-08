@@ -35,6 +35,16 @@ class Game extends React.Component {
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
+  componentDidUpdate() {
+    const { answered, index } = this.state;
+    const { history } = this.props;
+    const lastQuestion = 4;
+
+    if (answered === true && index === lastQuestion) {
+      history.push('/feedback');
+    }
+  }
+
   async getTheFetchQuestions() {
     const { fetchQuestions } = this.props;
 
@@ -100,6 +110,7 @@ class Game extends React.Component {
                     title="Próxima"
                     className="advance-button"
                     disabled={ !answered }
+                    hidden={ !answered }
                     testid="btn-next"
                   />)
                 : (
@@ -108,6 +119,7 @@ class Game extends React.Component {
                     title="Ver resultado!"
                     className="advance-button"
                     disabled={ !answered }
+                    hidden={ !answered }
                     testid="btn-next"
                   />) }
             </div>) }

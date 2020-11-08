@@ -92,3 +92,7 @@
   top: 39px;
   width: 80px;
 }
+
+.hidden {
+  display: none;
+}
