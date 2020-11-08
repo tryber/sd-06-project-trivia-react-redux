@@ -1,4 +1,4 @@
-import { HASH, USER, SCORE } from '../actions';
+import { HASH, USER, SCORE, CORRECT } from '../actions';
 
 const INITIAL_STATE = { token: '' };
 const TOKEN = 'TOKEN';
@@ -23,6 +23,14 @@ export default function (state = INITIAL_STATE, action) {
       player: {
         ...state.player,
         score: action.score,
+      },
+    };
+  case CORRECT:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        correct: action.correct
       },
     };
   default:

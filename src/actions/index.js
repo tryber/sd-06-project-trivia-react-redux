@@ -2,6 +2,7 @@ export const TOKEN = 'TOKEN';
 export const USER = 'USER';
 export const SCORE = 'SCORE';
 export const HASH =  'HASH';
+export const CORRECT =  'CORRECT';
 
 
 export const addToken = (token) => ({
@@ -23,6 +24,11 @@ export const addScore = (score) => ({
   type: SCORE,
   score,
 });
+
+export const correctAnswer = (correct) => ({
+  type: CORRECT,
+  correct,
+})
 
 export const fetchApi = () => async (dispatch) => {
   const request = await fetch('https://opentdb.com/api_token.php?command=request');

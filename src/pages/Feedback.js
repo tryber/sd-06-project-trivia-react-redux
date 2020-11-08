@@ -17,8 +17,17 @@ class Feedback extends React.Component {
     fetchGravatar(hashGravatar)
   }
 
+  handleFeedback() {
+    const { correct } =  this.props;
+    if (correct < 3) {
+      return 'Podia ser melhor...'
+    } else {
+      return 'Mandou bem!'
+    }
+  }
+  
   render() {
-    const { hashGravatar, userName, score } =  this.props;
+    const { hashGravatar, userName, score, correct } =  this.props;
     const src = `https://www.gravatar.com/avatar/${hashGravatar}`
     return (
       <div className="feedback-container game-container">
@@ -45,6 +54,10 @@ class Feedback extends React.Component {
                 </p>
           </h1>
         </header>
+        <section>
+          <h1>{`Acertou: ${correct} pergunta(s)!`}</h1>
+          <p data-testid="feedback-text">{this.handleFeedback()}</p>
+        </section>
       </div>
     )
   }
@@ -54,7 +67,7 @@ const mapStateToProps = (state) => ({
   hashGravatar: state.user.hash,
   userName: state.user.player.name,
   score: state.user.player.score,
-
+  correct: state.user.player.correct,
 });
 
 

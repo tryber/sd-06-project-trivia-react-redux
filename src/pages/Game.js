@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { NextButton } from '../components';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
-import { addScore } from '../actions';
+import { addScore, correctAnswer } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -22,6 +22,7 @@ class Game extends React.Component {
       indexNextQuestion: 0,
       click: false,
       feedback: 0,
+      correct: 0,
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
@@ -43,7 +44,7 @@ class Game extends React.Component {
   }
 
   handleClick({ target }) {
-    const { points, seconds, difficulty } = this.state;
+    const { points, seconds, difficulty, correct } = this.state;
     const { scoreAdd, userName } = this.props;
     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
@@ -77,9 +78,8 @@ class Game extends React.Component {
 
       this.setState({
         points: newScore,
+        correct: correct + 1
       });
-      scoreAdd(newScore);
-
       const state = JSON.parse(localStorage.getItem('state'));
       let { score } = state.player;
       score = (Number(points)
@@ -145,7 +145,8 @@ class Game extends React.Component {
   }
 
   async handleNextQuestion() {
-    const { indexNextQuestion } = this.state;
+    const { scoreAdd, addCorrect } = this.props;
+    const { indexNextQuestion, newScore, correct} = this.state;
     const correctButton = document.querySelector('.correct-answer');
     const wrongButton = document.querySelectorAll('.wrong-answer');
     this.setState((previousState) => ({
@@ -166,6 +167,8 @@ class Game extends React.Component {
       });
     }
     if(indexNextQuestion > 2) {
+      scoreAdd(newScore);
+      addCorrect(correct)
       this.setState({
         feedback: '/feedback'
       })
@@ -173,7 +176,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions, seconds, points, btnDisable, feedback } = this.state;
+    const { questions, seconds, points, btnDisable, feedback, correct } = this.state;
     const { userName } = this.props;
     return (
       <div className="game-container">
@@ -254,6 +257,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   scoreAdd: (score) => dispatch(addScore(score)),
+  addCorrect: (correct) =>dispatch(correctAnswer(correct)),
 });
 
 Game.propTypes = {
