@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchQuestionsFromAPI } from '../actions';
+import Timer from '../components/Timer.jsx';
 
 class Game extends React.Component {
   constructor() {
@@ -12,17 +13,27 @@ class Game extends React.Component {
       classRightAnswer: '',
       classWrongAnswer: '',
       isDisabled: true,
+      secondsRemaining: 30,
     };
 
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
+    //Timer
+    this.decreaseTime = this.decreaseTime.bind(this);
   }
 
   componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 1;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
+  }
+
+  decreaseTime() {
+    const { secondsRemaining } = this.state;
+    this.setState({
+      secondsRemaining: secondsRemaining - 1,
+    });
   }
 
   async handleQuestions() {
@@ -49,10 +60,14 @@ class Game extends React.Component {
 
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRightAnswer, classWrongAnswer } = this.state;
+    const { classRightAnswer, classWrongAnswer, secondsRemaining } = this.state;
     console.log('Teste');
     return (
       <div id="answers">
+        <Timer
+          seconds={secondsRemaining}
+          handleTime={this.decreaseTime}
+        />
         {newArray.map((element, index) => {
           if (index === correctAnswerIndex) {
             return (
