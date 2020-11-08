@@ -238,9 +238,10 @@ class Game extends React.Component {
               </div>
               <div className="next-div">
                 {btnDisable
-                  ? <Link to={ feedback }>
-                      <NextButton handleNextQuestion={ this.handleNextQuestion } />
-                    </Link>
+                  ? 
+                  <Link to={ feedback }>
+                    <NextButton handleNextQuestion={ this.handleNextQuestion } />
+                  </Link>
                   : null}
               </div>
             </footer>
