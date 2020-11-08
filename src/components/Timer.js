@@ -12,7 +12,6 @@ class Timer extends Component {
       } else {
         disableAnswerButtons();
         handleAnswerBorderColor();
-        clearInterval(this.timer);
       }
     }, mil);
   }

@@ -67,9 +67,17 @@ class BodyGame extends Component {
     });
     const nextButton = document.querySelector('#next-button');
     nextButton.style = 'display: block';
-    if (counter < 1) {
+    if (counter > 1) {
       this.disableAnswerButtons();
+      this.handleDisableButtonsOnClick(rightAnswer, wrongAnswers);
     }
+  }
+
+  handleDisableButtonsOnClick(rightAnswer, wrongAnswers) {
+    rightAnswer.setAttribute('disabled', 'disabled');
+    wrongAnswers.forEach((eachWrongAnswer) => {
+      eachWrongAnswer.setAttribute('disabled', 'disabled');
+    });
   }
 
   disableAnswerButtons() {
