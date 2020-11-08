@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NextButton } from '../components';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
 import { addScore } from '../actions';
@@ -16,16 +17,21 @@ class Game extends React.Component {
       seconds: '30',
       points: '0',
       difficulty: '1',
+      btnDisable: false,
+      indexNextQuestion: 0,
+      click: false,
     };
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   async componentDidMount() {
-    const maximumTime = 30000;
     const { userToken } = this.props;
+    const { click, seconds } = this.state;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    this.timer();
-    setTimeout(this.correctAnswer, maximumTime);
+    if (click === false && seconds > '0') {
+      this.timer();
+    }
   }
 
   getQuestions(questions) {
@@ -48,6 +54,9 @@ class Game extends React.Component {
       wrongButton.forEach((element) => {
         element.classList.add('wrong');
         element.disabled = true;
+      });
+      this.setState({
+        btnDisable: true,
       });
     }
     if (target.className.includes('correct-answer')) {
@@ -91,6 +100,9 @@ class Game extends React.Component {
         },
       }));
     }
+    this.setState({
+      click: true,
+    });
   }
 
   correctAnswer() {
@@ -114,12 +126,13 @@ class Game extends React.Component {
     const interval = 1000;
     setInterval(() => {
       const { seconds } = this.state;
-      if (seconds > 0) {
+      if (seconds > 0 && correctButton.disabled === false) {
         this.setState({
           seconds: seconds - 1,
         });
       }
-      if (seconds === 0) {
+      if (seconds < 1) {
+        this.correctAnswer();
         correctButton.disabled = true;
         wrongButton.forEach((element) => {
           element.disabled = true;
@@ -129,12 +142,31 @@ class Game extends React.Component {
     }, interval);
   }
 
-  render() {
-    const { questions, seconds, points } = this.state;
-    let { userName } = this.props;
-    if (!userName) {
-      userName = 'Rodrigo Leite';
+  async handleNextQuestion() {
+    const correctButton = document.querySelector('.correct-answer');
+    const wrongButton = document.querySelectorAll('.wrong-answer');
+    this.setState((previousState) => ({
+      indexNextQuestion: previousState.indexNextQuestion + 1,
+    }));
+    const { userToken } = this.props;
+    const questions = await fetchQuestions(userToken);
+    this.getQuestions(questions.results);
+    if (correctButton.disabled === true) {
+      correctButton.classList.remove('correct');
+      correctButton.disabled = false;
+      wrongButton.forEach((element) => {
+        element.classList.remove('wrong');
+        element.disabled = false;
+      });
+      this.setState({
+        seconds: '30',
+      });
     }
+  }
+
+  render() {
+    const { questions, seconds, points, btnDisable } = this.state;
+    const { userName } = this.props;
     return (
       <div className="game-container">
         {questions.map((element, index) => (
@@ -194,9 +226,9 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                <button className="next" type="button">
-                  <span>Proxima</span>
-                </button>
+                {btnDisable
+                  ? <NextButton handleNextQuestion={ this.handleNextQuestion } />
+                  : null}
               </div>
             </footer>
           </div>
