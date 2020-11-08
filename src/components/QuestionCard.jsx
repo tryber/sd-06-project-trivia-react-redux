@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Timer } from '.';
 import './CSS/QuestionCardCSS.css';
 import { NextButton } from './NextButton';
 
@@ -9,11 +10,18 @@ export default class QuestionCard extends Component {
 
     this.updateStates = this.updateStates.bind(this);
     this.activateBorders = this.activateBorders.bind(this);
+    this.activateQuestions = this.activateQuestions.bind(this);
+    this.timeUp = this.timeUp.bind(this);
+    this.handleChosenAnswer = this.handleChosenAnswer.bind(this);
 
     this.state = {
       answers: [],
       updatedStates: false,
       answersBorderActive: false,
+      timeIsUp: false,
+      hasChosen: false,
+      correctAnswer: '',
+      chosenAnswer: '',
     };
   }
 
@@ -41,6 +49,15 @@ export default class QuestionCard extends Component {
     this.setState({
       answers,
       updatedStates: true,
+      correctAnswer,
+    });
+  }
+
+  handleChosenAnswer(chosenAnswer) {
+    this.setState({
+      hasChosen: true,
+      answersBorderActive: true,
+      chosenAnswer,
     });
   }
 
@@ -51,11 +68,29 @@ export default class QuestionCard extends Component {
     });
   }
 
+  activateQuestions() {
+    this.setState({ playing: true });
+  }
+
+  timeUp() {
+    this.setState({
+      timeIsUp: true,
+      answersBorderActive: true,
+    });
+  }
+
   render() {
     const {
       question: { category, question, correct_answer: correctAnswer },
     } = this.props;
-    const { answers, updatedStates, answersBorderActive } = this.state;
+    const {
+      answers,
+      updatedStates,
+      answersBorderActive,
+      timeIsUp,
+      hasChosen,
+      chosenAnswer,
+    } = this.state;
 
     if (!updatedStates) {
       return <p>Loading...</p>;
@@ -72,17 +107,26 @@ export default class QuestionCard extends Component {
           <p className="category-title">Category</p>
           <p className="category-content">{category}</p>
         </p>
+        <Timer
+          timeUp={ this.timeUp }
+          activateQuestions={ this.activateQuestions }
+        />
         <div className="question-container">
-          <p className="question" data-testid="question-text">{question}</p>
+          <p className="question" data-testid="question-text">
+            {question}
+          </p>
           <div className="answers">
             {answers.map((item, index) => {
               if (index === correctAnswerIdx) {
                 return (
                   <button
-                    className={ !answersBorderActive ? 'answers' : 'correct-answer' }
+                    className={
+                      !answersBorderActive ? 'answers' : 'correct-answer'
+                    }
                     data-testid="correct-answer"
                     type="button"
-                    onClick={ this.activateBorders }
+                    onClick={ () => this.handleChosenAnswer(correctAnswer) }
+                    disabled={ timeIsUp || hasChosen }
                   >
                     {correctAnswer}
                   </button>
@@ -95,17 +139,21 @@ export default class QuestionCard extends Component {
                   key={ index }
                   data-testid={ `wrong-answer-${currentIdx}` }
                   type="button"
-                  onClick={ this.activateBorders }
+                  onClick={ () => this.handleChosenAnswer(item) }
+                  disabled={ timeIsUp || hasChosen }
                 >
                   {item}
                 </button>
               );
             })}
             <div className="next-button">
-              { !answersBorderActive ? null : <NextButton /> }
+              {!answersBorderActive ? null : <NextButton />}
             </div>
           </div>
         </div>
+        {hasChosen && chosenAnswer === correctAnswer ? (
+          <h2>Certa resposta!</h2>
+        ) : hasChosen && (<h2>Errou!</h2>)}
       </div>
     );
   }
