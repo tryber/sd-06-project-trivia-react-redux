@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NextButton } from '../components';
 import fetchQuestions from '../services';
 import profile from '../img/profile.png';
-import { addScore } from '../actions';
+import { addScore, correctAnswer } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -20,6 +21,8 @@ class Game extends React.Component {
       btnDisable: false,
       indexNextQuestion: 0,
       click: false,
+      feedback: 0,
+      correct: 0,
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
@@ -41,7 +44,7 @@ class Game extends React.Component {
   }
 
   handleClick({ target }) {
-    const { points, seconds, difficulty } = this.state;
+    const { points, seconds, difficulty, correct } = this.state;
     const { scoreAdd, userName } = this.props;
     const ten = 10;
     const correctButton = document.querySelector('.correct-answer');
@@ -75,13 +78,11 @@ class Game extends React.Component {
 
       this.setState({
         points: newScore,
+        correct: correct + 1,
       });
-      scoreAdd(newScore);
-
       const state = JSON.parse(localStorage.getItem('state'));
       let { score } = state.player;
-      score = Number(score)
-      + (Number(points)
+      score = (Number(points)
       + (Number(ten)
       + (Number(seconds)
       * Number(difficulty))));
@@ -99,6 +100,7 @@ class Game extends React.Component {
           score: 0,
         },
       }));
+      scoreAdd('0');
     }
     this.setState({
       click: true,
@@ -143,6 +145,8 @@ class Game extends React.Component {
   }
 
   async handleNextQuestion() {
+    const { scoreAdd, addCorrect } = this.props;
+    const { indexNextQuestion, points, correct } = this.state;
     const correctButton = document.querySelector('.correct-answer');
     const wrongButton = document.querySelectorAll('.wrong-answer');
     this.setState((previousState) => ({
@@ -162,10 +166,29 @@ class Game extends React.Component {
         seconds: '30',
       });
     }
+    if (indexNextQuestion > 2) {
+      scoreAdd(points);
+      addCorrect(correct);
+      this.setState({
+        feedback: '/feedback',
+      });
+    }
+  }
+
+  handleNextButton() {
+    const { btnDisable, feedback } = this.state;
+    if (btnDisable) {
+      return (
+        <Link to={ feedback }>
+          <NextButton handleNextQuestion={ this.handleNextQuestion } />
+        </Link>
+      );
+    }
+    return null;
   }
 
   render() {
-    const { questions, seconds, points, btnDisable } = this.state;
+    const { questions, seconds, points } = this.state;
     const { userName } = this.props;
     return (
       <div className="game-container">
@@ -226,9 +249,7 @@ class Game extends React.Component {
                 <p>{seconds}</p>
               </div>
               <div className="next-div">
-                {btnDisable
-                  ? <NextButton handleNextQuestion={ this.handleNextQuestion } />
-                  : null}
+                {this.handleNextButton()}
               </div>
             </footer>
           </div>
@@ -246,12 +267,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   scoreAdd: (score) => dispatch(addScore(score)),
+  addCorrect: (correct) => dispatch(correctAnswer(correct)),
 });
 
 Game.propTypes = {
   userToken: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   scoreAdd: PropTypes.func.isRequired,
+  addCorrect: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

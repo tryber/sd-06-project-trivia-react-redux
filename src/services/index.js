@@ -6,4 +6,5 @@ export default (token) => (
 export const fetchGravatar = (hash) => (
   fetch(`https://www.gravatar.com/avatar/${hash}`)
     .then((response) => response.json())
+    .then((response) => console.log(response))
 );
