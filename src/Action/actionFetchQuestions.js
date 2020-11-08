@@ -10,7 +10,11 @@ export function responseQuestions() {
     const endpoint = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const responseAPI = await fetch(endpoint);
     const { results } = await responseAPI.json();
+    const replaceQuotResults = results.map((result) => ({
+      ...result,
+      question: result.question.replace(/(&quot;)/g, '\''),
+    }));
 
-    return dispatch(getQuestions(results));
+    return dispatch(getQuestions(replaceQuotResults));
   };
 }
