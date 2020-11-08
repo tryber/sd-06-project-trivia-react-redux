@@ -8,11 +8,12 @@ export const setUserInfo = (name, email) => ({
   email,
 });
 
-export const HANDLE_AVATAR = 'HANDLE_AVATAR';
+export const HANDLE_SCORE = 'HANDLE_SCORE';
 
-export const getAvatar = (avatar) => ({
-  type: HANDLE_AVATAR,
-  avatar,
+export const getAvatar = (assertions, score) => ({
+  type: HANDLE_SCORE,
+  assertions,
+  score,
 });
 
 export const getQuestions = (questions) => ({
