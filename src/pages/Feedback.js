@@ -18,8 +18,8 @@ class Feedback extends React.Component {
         </header>
         <button type="button" data-testid="btn-next">Next</button>
         <p data-testid="correct-answer">Resposta correta</p>
-        <p data-testid="wrong-answer">Resposta errada?</p>
-        <p data-testid="feedback-text">Feedback Text?</p>
+        <p data-testid="wrong-answer">Resposta errada</p>
+        <p data-testid="feedback-text">Feedback Text</p>
       </div>
     );
   }
