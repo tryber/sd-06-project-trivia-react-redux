@@ -29,7 +29,7 @@ class Game extends React.Component {
     const { click, seconds } = this.state;
     const questions = await fetchQuestions(userToken);
     this.getQuestions(questions.results);
-    if ( click === false && seconds > '0') {
+    if (click === false && seconds > '0') {
       this.timer();
     }
   }
