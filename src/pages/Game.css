@@ -52,3 +52,8 @@ button {
 .question {
   font-size: 1.8em;
 }
+
+.timer {
+  font-size: 2em;
+  color: yellow;
+}

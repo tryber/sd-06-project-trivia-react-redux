@@ -3,6 +3,7 @@ import './Game.css';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
+import { Icon } from 'semantic-ui-react';
 import { fetchApi } from '../actions';
 
 class Game extends React.Component {
@@ -10,8 +11,6 @@ class Game extends React.Component {
     super(props);
     this.optionChoose = this.optionChoose.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.shuffle = this.shuffle.bind(this);
-    this.getAnswers = this.getAnswers.bind(this);
     this.decodeHTMLEntities = this.decodeHTMLEntities.bind(this);
     this.state = {
       placar: 0,
@@ -20,13 +19,16 @@ class Game extends React.Component {
       answers: '',
       borderGreen: 0,
       borderRed: 0,
+      timer: 30,
     };
   }
 
   async componentDidMount() {
     const { questionFetch } = this.props;
+    const miliseconds = 1000;
     await questionFetch();
     this.getAnswers();
+    this.timerID = setInterval(() => this.timerFunction(), miliseconds);
   }
 
   getAnswers() {
@@ -46,6 +48,17 @@ class Game extends React.Component {
     this.setState({ answers });
   }
 
+  timerFunction() {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    } else {
+      this.optionChoose();
+    }
+  }
+
   decodeHTMLEntities(text) {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = text;
@@ -57,6 +70,7 @@ class Game extends React.Component {
       nextButton: 'block',
       borderGreen: '3px solid rgb(6, 240, 15)',
       borderRed: '3px solid rgb(255, 0, 0)',
+      timer: 0,
     });
   }
 
@@ -67,6 +81,7 @@ class Game extends React.Component {
       borderRed: 0,
       counter: counter + 1,
       nextButton: 'none',
+      timer: 30,
     });
     this.getAnswers();
   }
@@ -86,7 +101,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const { placar, nextButton, counter, answers, borderGreen, borderRed } = this.state;
+    const { placar, nextButton, counter, answers,
+      borderGreen, borderRed, timer } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
@@ -113,6 +129,10 @@ class Game extends React.Component {
         </header>
         <div className="container-game">
           <div className="right">
+            <div className="timer">
+              <Icon fitted name="hourglass half" />
+              { timer >= 0 ? `TEMPO: ${timer}s` : 'TEMPO ESGOTADO' }
+            </div>
             <div data-testid="question-category">
               CATEGORIA[
               { results !== '' ? this.decodeHTMLEntities(results[counter].category) : '' }
