@@ -4,6 +4,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class GameHeader extends Component {
+  //
+  componentDidMount() {
+    const object = {
+      player: {
+        name: 'nome',
+        score: 0,
+        gravatarEmail: 'nome@nome.com',
+      },
+    };
+    const stringfiedObjetc = JSON.stringify(object);
+    localStorage.setItem('state', stringfiedObjetc);
+  }
+  //
+
   render() {
     const { name, gravatarEmail, score } = this.props;
     return (
