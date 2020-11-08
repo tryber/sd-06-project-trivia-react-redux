@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchQuestionsFromAPI } from '../actions';
-import Timer from '../components/Timer.js';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -19,7 +19,7 @@ class Game extends React.Component {
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
-    //Timer
+    // Timer
     this.decreaseTime = this.decreaseTime.bind(this);
   }
 
