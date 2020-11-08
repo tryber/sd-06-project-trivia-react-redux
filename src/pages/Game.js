@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import GameHeader from '../components/GameHeader';
+import GameTimer from '../components/GameTimer';
 
 class Game extends Component {
   constructor() {
@@ -102,6 +104,7 @@ class Game extends Component {
     const currentQuestion = questions[index];
     const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
     const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
+    const { time } = this.props;
 
     return (
       <main className="game-board">
@@ -123,6 +126,7 @@ class Game extends Component {
                   data-testid="correct-answer"
                   className={ answerColor ? 'correct-answer' : null }
                   onClick={ this.handleClick }
+                  disabled={ (time === 0) ? true : null }
                 >
                   {answer.correctAnswer}
                 </button>
@@ -132,6 +136,7 @@ class Game extends Component {
                   data-testid={ `wrong-answer-${answer.index}` }
                   className={ answerColor ? 'wrong-answer' : null }
                   onClick={ this.handleClick }
+                  disabled={ (time === 0) ? true : null }
                 >
                   {answer.answer}
                 </button>
@@ -156,6 +161,7 @@ class Game extends Component {
       <div>
         <GameHeader />
         {isLoading ? <p>Loading</p> : this.renderGameBoard()}
+        <GameTimer />
       </div>
     );
   }
@@ -163,6 +169,11 @@ class Game extends Component {
 
 Game.propTypes = {
   history: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
-export default Game;
+const mapStateToProps = (state) => ({
+  time: state.game.time,
+});
+
+export default connect(mapStateToProps)(Game);

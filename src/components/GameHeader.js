@@ -30,18 +30,18 @@ class GameHeader extends Component {
             alt="gravatar"
           />
           <br />
-          <h3 data-testid="header-player-name">{name}</h3>
+          <h3 data-testid="header-player-name">{ name }</h3>
           <br />
-          <p data-testid="header-score">{score}</p>
+          <p data-testid="header-score">{ score }</p>
         </header>
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  name: state.player.name,
-  gravatarEmail: state.player.gravatarEmail,
-  score: state.player.score,
+  name: state.player.player.name,
+  gravatarEmail: state.player.player.gravatarEmail,
+  score: state.player.player.score,
 });
 
 GameHeader.propTypes = {
