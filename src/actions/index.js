@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const QUESTIONS = 'QUESTIONS';
 export const GRAVATAR = 'GRAVATAR';
+export const POINTS_SUM = 'POINTS_SUM';
 
 export const gravatar = (gravatarInfos) => ({
   type: GRAVATAR,
@@ -23,6 +24,11 @@ export const tokenAction = (token) => ({
 export const questionAction = (questions) => ({
   type: QUESTIONS,
   questions,
+});
+
+export const pointsSum = (score) => ({
+  type: SUM_POINTS,
+  score,
 });
 
 export function thunkToken() {
