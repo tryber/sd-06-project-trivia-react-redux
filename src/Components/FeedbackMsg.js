@@ -12,7 +12,7 @@ class FeedbackMsg extends Component {
         <div className="Feedback-Msg orange-bg">
           <p data-testid="feedback-text">
             Podia ser melhor...
-            <span className="feeback-emoji">
+            <span className="feeback-emoji" role="img" aria-label="emoji with tongue out">
               &#128539;
             </span>
           </p>
@@ -22,7 +22,7 @@ class FeedbackMsg extends Component {
         <div className="Feedback-Msg green-bg">
           <p>
             Mandou bem!
-            <span className="feeback-emoji">
+            <span className="feeback-emoji" role="img" aria-label="emoji with sunglasses">
               &#128526;
             </span>
           </p>
