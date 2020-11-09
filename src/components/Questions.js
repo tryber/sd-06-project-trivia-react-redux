@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { timerReset, timerStop, getPlayerScore, correctAnswerCounter } from '../redux/actions';
+import {
+  timerReset,
+  timerStop,
+  getPlayerScore,
+  correctAnswerCounter,
+} from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -22,7 +27,8 @@ class Questions extends Component {
     this.shuffleArray = this.shuffleArray.bind(this);
     this.getAnswerTime = this.getAnswerTime.bind(this);
     this.handleTime = this.handleTime.bind(this);
-    this.handleRedirectFeedback = this.handleRedirectFeedback.bind(this);
+    this.renderFeedback = this.renderFeedback.bind(this);
+    this.renderNext = this.renderNext.bind(this);
   }
 
   getAnswerTime() {
@@ -195,36 +201,30 @@ class Questions extends Component {
     return <p>Loading</p>;
   }
 
-  handleRedirectFeedback() {
-    const { feedback, hideNext } = this.state;
-    if (!feedback, !hideNext) {
-      const nextBtn = (
+  renderNext() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.changeToNextQuestion }
+      >
+        Next Question
+      </button>
+    );
+  }
+
+  renderFeedback() {
+    return (
+      <Link to="/feedback">
         <button
           type="button"
-          className="btn-next"
           data-testid="btn-next"
           onClick={ this.changeToNextQuestion }
         >
           Next Question
         </button>
-      );
-
-      return nextBtn;
-    } else if (feedback, !hideNext) {
-      const feedbackBtn = (
-        <Link to="/feedback">
-          <button
-            type="button"
-            className="btn-next"
-            data-testid="btn-next"
-          >
-            Next Question
-          </button>
-        </Link>
-      );
-  
-      return feedbackBtn;
-    }
+      </Link>
+    );
   }
 
   render() {
@@ -240,16 +240,8 @@ class Questions extends Component {
     return (
       <div>
         {this.handleQuestions()}
-        {!hideNext && !feedback
-          ? <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ this.changeToNextQuestion }
-          >
-            Next Question
-        </button>
-          : ''}
-        {!hideNext && feedback ? <Link to="/feedback"><button type="button" data-testid="btn-next" onClick={ this.changeToNextQuestion }>Next Question</button></Link> : ''}
+        {!hideNext && !feedback ? this.renderNext() : ''}
+        {!hideNext && feedback ? this.renderFeedback() : '' }
       </div>
     );
   }

@@ -16,15 +16,18 @@ class FeedbackComponent extends React.Component {
     if (correctAnswers > three) {
       return (
         <p data-testid="feedback-text">Mandou bem!</p>
-      )
-    } else if (correctAnswers === three) {
+      );
+    }
+    if (correctAnswers === three) {
       return (
         <p data-testid="feedback-text">Mandou bem!</p>
-      )
-    } else if (correctAnswers < three) {
+      );
+    }
+
+    if (correctAnswers < three) {
       return (
         <p data-testid="feedback-text">Podia ser melhor...</p>
-      )
+      );
     }
   }
 
@@ -66,4 +69,5 @@ FeedbackComponent.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  correctAnswers: PropTypes.number.isRequired,
 };

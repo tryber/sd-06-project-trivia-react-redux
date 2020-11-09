@@ -16,7 +16,7 @@ function game(state = initialState, action) {
     return {
       ...state,
       correctAnswers: state.correctAnswers + action.amount,
-    }
+    };
   default:
     return state;
   }
