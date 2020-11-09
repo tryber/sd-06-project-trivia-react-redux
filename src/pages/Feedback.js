@@ -4,7 +4,7 @@ import { FeedbackHeader, PlayAgain, RankingButton } from '../components';
 class Feedback extends Component {
   render() {
     return (
-      <div>
+      <div data-testid="feedback-text">
         <FeedbackHeader />
         <RankingButton />
         <PlayAgain />

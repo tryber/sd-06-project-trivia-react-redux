@@ -46,14 +46,11 @@ class Login extends React.Component {
 
     localStorage.setItem('token', TOKEN);
 
-    const { dispatchSaveToken, dispatchSaveName } = this.props;
+    const { dispatchSaveToken, dispatchSaveName, dispatchSaveEmail } = this.props;
+    const { userName, email } = this.state;
+
     dispatchSaveToken(TOKEN);
-
-    const { userName } = this.state;
     dispatchSaveName(userName);
-
-    const { email } = this.state;
-    const { dispatchSaveEmail } = this.props;
     dispatchSaveEmail(email);
   }
 
