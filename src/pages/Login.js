@@ -42,9 +42,9 @@ class Login extends React.Component {
     gravatarData(linkGravatar);
   }
 
-  handleClick() {
+  async handleClick() {
     const { fetchToken, saveLogin } = this.props;
-    fetchToken();
+    await fetchToken();
     saveLogin(this.state);
     this.gravatarTransform();
   }

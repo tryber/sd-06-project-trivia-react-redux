@@ -4,6 +4,8 @@ export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const QUESTIONS = 'QUESTIONS';
 export const GRAVATAR = 'GRAVATAR';
+export const FREEZE_TIMER = 'STOP-TIMER';
+export const SCORE = 'SCORE';
 
 export const gravatar = (gravatarInfos) => ({
   type: GRAVATAR,
@@ -23,6 +25,16 @@ export const tokenAction = (token) => ({
 export const questionAction = (questions) => ({
   type: QUESTIONS,
   questions,
+});
+
+export const freezeTimer = (stopTimer) => ({
+  type: FREEZE_TIMER,
+  payload: stopTimer,
+});
+
+export const score = (userScore) => ({
+  type: SCORE,
+  payload: userScore,
 });
 
 export function thunkToken() {
