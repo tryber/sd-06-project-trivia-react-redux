@@ -31,12 +31,12 @@ const mapStateToProps = (state) => ({
 });
 
 Header.propTypes = {
-  hash: PropTypes.string,
+  hash: PropTypes.string.isRequired,
   player: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-Header.defaultProps = {
-  hash: '',
-};
+// Header.defaultProps = {
+//   hash: '',
+// };
 
 export default connect(mapStateToProps)(Header);

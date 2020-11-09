@@ -29,7 +29,6 @@ function reducerLogin(state = initialState, action) {
   case UPDATE_SCORE:
     return {
       ...state,
-      hash: action.hash,
       player: { ...state.player, ...action.player },
     };
   default: {
