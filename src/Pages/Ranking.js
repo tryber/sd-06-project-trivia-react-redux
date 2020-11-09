@@ -7,7 +7,7 @@ class Ranking extends Component {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
       <div>
-        <h1 className="RankingTitle">Ranking</h1>
+        <h1 className="RankingTitle" data-testid="ranking-title">Ranking</h1>
         {ranking.sort((a, b) => b.score - a.score)
           .map((item, index) => {
             const hash = MD5(item.picture).toString();
