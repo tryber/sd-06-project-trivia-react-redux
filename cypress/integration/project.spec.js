@@ -269,7 +269,7 @@ describe('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após 
   });
 });
 
-describe.skip('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
+describe.only('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -328,7 +328,7 @@ describe.skip('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que j
 
 // feedback
 
-describe.skip('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
+describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

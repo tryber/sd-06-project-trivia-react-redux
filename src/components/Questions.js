@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { timerReset, timerStop, getPlayerScore } from '../redux/actions';
 
@@ -11,6 +12,7 @@ class Questions extends Component {
       disableBTN: false,
       shuffledQuestions: [],
       shuffled: false,
+      feedback: false,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
@@ -19,6 +21,7 @@ class Questions extends Component {
     this.shuffleArray = this.shuffleArray.bind(this);
     this.getAnswerTime = this.getAnswerTime.bind(this);
     this.handleTime = this.handleTime.bind(this);
+    this.handleRedirectFeedback = this.handleRedirectFeedback.bind(this);
   }
 
   getAnswerTime() {
@@ -95,6 +98,7 @@ class Questions extends Component {
   }
 
   handleAnswer({ target }, difficulty) {
+    const { questionNumber } = this.state;
     const { stopTimer, sendScore } = this.props;
     const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
@@ -128,6 +132,14 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
+      });
+    }
+
+    const questionIndexLimit = 4;
+
+    if (questionNumber === questionIndexLimit) {
+      this.setState({
+        feedback: true,
       });
     }
   }
@@ -181,6 +193,41 @@ class Questions extends Component {
     return <p>Loading</p>;
   }
 
+  handleRedirectFeedback() {
+    const { feedback } = this.state;
+    if (!feedback) {
+      const nextBtn = (
+        <button
+          type="button"
+          className="btn-next"
+          data-testid="btn-next"
+          onClick={ this.changeToNextQuestion }
+        >
+          Next Question
+        </button>
+      );
+
+      return nextBtn;
+    }
+
+    const nextButton = document.querySelector('.btn-next');
+    nextButton.style.visibility = 'visible';
+
+    const feedbackBtn = (
+      <Link to="/feedback">
+        <button
+          type="button"
+          className="btn-next"
+          data-testid="btn-next"
+        >
+          Next Question
+        </button>
+      </Link>
+    );
+
+    return feedbackBtn;
+  }
+
   render() {
     const { shuffled } = this.state;
     const { gameQuestions } = this.props;
@@ -194,14 +241,7 @@ class Questions extends Component {
     return (
       <div>
         {this.handleQuestions()}
-        <button
-          type="button"
-          className="btn-next"
-          data-testid="btn-next"
-          onClick={ this.changeToNextQuestion }
-        >
-          Next Question
-        </button>
+        {this.handleRedirectFeedback()}
       </div>
     );
   }
