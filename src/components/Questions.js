@@ -71,7 +71,7 @@ class Questions extends Component {
     const magic = 5;
     const { history, resetTime } = this.props;
 
-    resetTime(30);
+    resetTime(30); // dispatch para resetar ao trocar de pergunta
     this.setState({
       checked: false,
     });
@@ -108,7 +108,7 @@ class Questions extends Component {
     if (timer !== 0) {
       const time = setInterval(() => {
         const { sendTimer } = this.props;
-        sendTimer(timer);
+        sendTimer(timer); // Dispatch
       }, ONE_SECOND);
       setTimeout(() => {
         clearInterval(time);
@@ -122,6 +122,7 @@ class Questions extends Component {
     this.setState({
       checked: true,
     });
+    // handleTimer(timer);
   }
 
   render() {
@@ -201,8 +202,8 @@ const mapStateToProps = (state) => (
 const mapDispatchToProps = (dispatch) => (
   {
     handleApi: (state) => dispatch(getQuestions(state)),
-    handleTimer: (state) => dispatch(stopTimer(state)),
     sendTimer: (state) => dispatch(getTimer(state)),
+    handleTimer: (state) => dispatch(stopTimer(state)),
     resetTime: (state) => dispatch(resetTimer(state)),
   }
 );
