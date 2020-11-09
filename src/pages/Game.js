@@ -3,9 +3,9 @@ import './Game.css';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import MD5 from 'crypto-js/md5';
 import { Icon } from 'semantic-ui-react';
 import { fetchApi, scoreFunction } from '../actions';
+import Header from './Header';
 
 class Game extends React.Component {
   constructor(props) {
@@ -71,12 +71,8 @@ class Game extends React.Component {
 
   render() {
     const { counter, timer, stop } = this.state;
-    const { name, email, results, score, scoreSum, assertions, isFetching } = this.props;
-    const gravatarLink = 'https://www.gravatar.com/avatar/';
-    const emailMD5 = MD5(email);
+    const { results, scoreSum, isFetching } = this.props;
     const five = 5;
-    localStorage.setItem('state', JSON
-      .stringify({ player: { name, score, gravatarEmail: email, assertions } }));
     if (counter === five) {
       return <Redirect to="/feedback" />;
     }
@@ -85,24 +81,7 @@ class Game extends React.Component {
     }
     return (
       <div>
-        <header className="container-header">
-          <div>
-            <img
-              data-testid="header-profile-picture"
-              alt="imagem"
-              src={ gravatarLink + emailMD5 }
-              className="picture"
-            />
-          </div>
-          <div data-testid="header-player-name">
-            Jogador:
-            { name }
-          </div>
-          <div data-testid="header-score">
-            Placar:
-            { score }
-          </div>
-        </header>
+        <Header />
         <div className="container-game">
           <div className="right">
             <div className="timer">
@@ -165,23 +144,15 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
   questionFetch: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(Object).isRequired,
-  score: PropTypes.number.isRequired,
   scoreSum: PropTypes.func.isRequired,
-  assertions: PropTypes.number.isRequired,
   isFetching: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  name: state.user.player.name,
-  email: state.user.player.email,
   isFetching: state.game.isFetching,
   results: state.game.results,
-  score: state.game.gameBoard.score,
-  assertions: state.game.gameBoard.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
