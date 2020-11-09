@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginAction } from '../actions';
 import trivia from '../images/trivia.png';
-import triviaAPI from '../services/triviaAPI';
+import tokenAPI from '../services/tokenAPI';
 
 class Login extends React.Component {
   constructor() {
@@ -36,7 +36,7 @@ class Login extends React.Component {
   async handleClick() {
     const { email, username } = this.state;
     const { login } = this.props;
-    const token = await triviaAPI();
+    const token = await tokenAPI();
     localStorage.setItem('token', token);
     login(email, username);
   }
