@@ -8,6 +8,7 @@ import { fetchApi } from '../actions';
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    this.timer = this.timer.bind(this);
     this.firstClick = this.firstClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.shuffle = this.shuffle.bind(this);
@@ -18,6 +19,9 @@ class Game extends React.Component {
       nextButton: 'none',
       counter: 0,
       answers: '',
+      time: 30,
+      intervalConst: 0,
+      disableAnwsers: false,
     };
   }
 
@@ -25,6 +29,7 @@ class Game extends React.Component {
     const { questionFetch } = this.props;
     await questionFetch();
     this.getAnswers();
+    this.timer();
   }
 
   getAnswers() {
@@ -62,7 +67,10 @@ class Game extends React.Component {
       counter: counter + 1,
       nextButton: 'none',
     });
+    const { intervalConst } = this.state;
+    clearInterval(intervalConst);
     this.getAnswers();
+    this.timer();
   }
 
   shuffle(array) {
@@ -79,8 +87,34 @@ class Game extends React.Component {
     return array;
   }
 
+  // myTimer(time) {
+  //   const atualTime = time - 1;
+  //   console.log(atualTime);
+  //   return atualTime;
+  // }
+
+  timer() {
+    const oneSecond = 1000;
+    const intervalConst = setInterval(() => {
+      const { time } = this.state;
+      console.log(time);
+      this.setState(() => ({
+        time: time - 1,
+      }),
+      () => {
+        if (time <= 1) {
+          console.log('time out');
+          this.setState({
+            disableAnwsers: true,
+          });
+          clearInterval(intervalConst);
+        }
+      });
+    }, oneSecond);
+  }
+
   render() {
-    const { placar, nextButton, counter, answers } = this.state;
+    const { placar, nextButton, counter, answers, time, disableAnwsers } = this.state;
     const { name, email, results } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
@@ -115,6 +149,10 @@ class Game extends React.Component {
             <div className="question" data-testid="question-text">
               { results !== '' ? this.decodeHTMLEntities(results[counter].question) : '' }
             </div>
+            <div className="timer">
+              Tempo:
+              { time }
+            </div>
           </div>
           <div className="buttons">
             { answers !== '' ? answers.map((answer, index) => (
@@ -124,6 +162,7 @@ class Game extends React.Component {
                 className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid={ answer.correction }
                 onClick={ this.firstClick }
+                disabled={ disableAnwsers }
               >
                 { this.decodeHTMLEntities(answer.result) }
               </button>
@@ -135,6 +174,7 @@ class Game extends React.Component {
                 data-testid="btn-next"
                 style={ { display: nextButton } }
                 onClick={ this.nextQuestion }
+                disabled={ disableAnwsers }
               >
                 PRÓXIMA
               </button>

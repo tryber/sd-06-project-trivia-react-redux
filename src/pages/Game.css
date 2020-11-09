@@ -26,6 +26,7 @@
   font-family: 'Goldman', cursive;
 }
 
+
 .picture {
   border-radius: 10px;
   border: solid 2px rgb(14, 88, 131);
@@ -36,7 +37,6 @@
 
 .nextbutton {
   min-height: 100px;
-  
 }
 
 .buttons {
