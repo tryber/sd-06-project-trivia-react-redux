@@ -67,3 +67,8 @@ button {
   font-size: 3em;
   height: 100px;
 }
+
+.scoreBoard {
+  line-height: 40px;
+  text-align: center;
+}
