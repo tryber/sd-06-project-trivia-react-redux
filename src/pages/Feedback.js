@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BtnHome from '../componente/BtnHome';
 import Header from '../componente/Header';
 
 class Ranking extends React.Component {
@@ -59,6 +60,7 @@ class Ranking extends React.Component {
             Ver Ranking
           </button>
         </Link>
+        <BtnHome />
       </section>
     );
   }
