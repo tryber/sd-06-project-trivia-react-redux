@@ -19,6 +19,18 @@
 
   padding-bottom: 10px;
 
+  animation: appear 1.5s ease-in;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .login-in-content img {

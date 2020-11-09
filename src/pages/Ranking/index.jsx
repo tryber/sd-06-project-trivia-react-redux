@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiHome } from 'react-icons/fi';
+
+import './styles.css';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -14,23 +17,29 @@ class Ranking extends React.Component {
 
   render() {
     const { ranking } = this.state;
+
     return (
-      <div>
-        <h1 data-testid="ranking-title">
-        Ranking
-        </h1>
-        <ol>
+      <div className="ranking-page">
+        <Link data-testid="btn-go-home" to="/">
+          <FiHome size={ 20 } />
+          Início
+        </Link>
+
+        <h1 data-testid="ranking-title">Ranking</h1>
+
+        <div className="ranking-list">
           { ranking.map((user, index) => (
-            <li key={ `${user.picture}-${index}` }>
-              <div>
+            <div key={ `${user.picture}-${index}` }>
+              <div className="user-rank">
+                <span>{`${index + 1}.`}</span>
                 <img src={ user.picture } alt={ `${user.name}` } />
                 <span data-testid={ ` player-name-${index}` }>{ user.name }</span>
                 <span data-testid={ `player-score-${index}` }>{ user.score }</span>
               </div>
-            </li>
+            </div>
           ))}
-        </ol>
-        <Link data-testid="btn-go-home" to="/"> Início </Link>
+        </div>
+
       </div>
     );
   }

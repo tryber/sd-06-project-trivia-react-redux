@@ -1,0 +1,56 @@
+.ranking-page {
+  min-height: 100vh;
+  width: 100vw;
+  padding: 50px 0;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ranking-page a {
+  color: white;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.ranking-page a:hover {
+  opacity: 0.75;
+}
+
+.ranking-page a svg {
+  margin-right: 10px;
+}
+
+.ranking-page h1 {
+  margin-bottom: 30px;
+}
+
+.ranking-page .ranking-list {
+  max-width: 700px;
+}
+
+.user-rank {
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 20px;
+
+
+  display: flex;
+  align-items: center;
+}
+
+.user-rank img {
+  border-radius: 100%;
+  height: 10vh;
+  margin: 0 15px;
+}

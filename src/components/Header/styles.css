@@ -1,0 +1,34 @@
+.app-header {
+  width: 100vw;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom: 1px solid white;
+}
+
+.app-header > img {
+  height: 8vh;
+}
+
+.app-header .player-score {
+  font-size: 30px;
+}
+
+.app-header .header-content {
+  display: flex;
+  align-items: center;
+}
+
+.app-header .header-content img {
+  height: 6vh;
+  border-radius: 100%;
+}
+
+.app-header .header-content span {
+  margin-left: 12px;
+}

@@ -22,9 +22,13 @@ class Input extends React.Component {
   }
 }
 
+Input.defaultProps = {
+  icon: null,
+};
+
 Input.propTypes = {
   value: PropTypes.string.isRequired,
-  icon: PropTypes.element.isRequired,
+  icon: PropTypes.func,
 };
 
 export default Input;

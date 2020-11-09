@@ -74,6 +74,7 @@ class SignIn extends React.Component {
               type="text"
               data-testid="input-gravatar-email"
               placeholder="Email"
+              autoComplete="off"
               value={ email }
               onChange={ ({ target }) => this.handleInputChange(target) }
               icon={ FiMail }

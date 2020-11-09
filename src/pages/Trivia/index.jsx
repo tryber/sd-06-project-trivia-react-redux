@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Html5Entities } from 'html-entities';
 
 import Header from '../../components/Header';
+import Button from '../../components/Button';
 
 import { updateScore } from '../../redux/actions';
 
@@ -53,6 +55,7 @@ class Trivia extends React.Component {
   timerOut() {
     const { timer, answered } = this.state;
     const oneSecond = 1000;
+
     if (timer > 0 && !answered) {
       const newTimer = timer - 1;
 
@@ -69,7 +72,9 @@ class Trivia extends React.Component {
     const { currentQuestion } = this.state;
     const { history, questions } = this.props;
 
-    if (questions.length - 1 === currentQuestion) {
+    const lastQuestion = questions.length - 1;
+
+    if (lastQuestion === currentQuestion) {
       history.push('/results');
     } else {
       this.setState({
@@ -86,63 +91,88 @@ class Trivia extends React.Component {
     const { questions } = this.props;
     const { currentQuestion, answered, timer } = this.state;
 
+    console.log('render!');
+
     if (!questions[currentQuestion]) {
-      return <div>Loading</div>;
+      return (
+        <div className="loading-trivia">
+          <div className="loading-container">
+            <div className="ocean-blue" />
+            <div className="continent-blue" />
+            <div className="ocean-blue" />
+            <div className="continent-blue" />
+          </div>
+        </div>
+      );
     }
 
+    const decoder = new Html5Entities();
+
     return (
-      <div className="trivia" onLoad={ this.timerOut }>
+      <div className="trivia-game" onLoad={ this.timerOut }>
         <Header />
-        <div>
-          <p>
-            { timer }
-          </p>
-          <span data-testid="question-category">
-            { questions[currentQuestion].category }
-          </span>
 
-          <p data-testid="question-text">{ questions[currentQuestion].question }</p>
+        <div className="trivia-container">
+          <div className="trivia">
+            <p className={ `${timer < 10 ? 'timeup' : ''}` }>
+              { timer }
+            </p>
 
-          <div>
-            { questions[currentQuestion].answers.map(({ correct, answer }) => {
-              const correctAnswerId = 'correct-answer';
-
-              const incorrectIndex = questions[currentQuestion]
-                .incorrect_answers.findIndex((a) => a === answer);
-
-              const incorrectAnswerId = `wrong-answer-${incorrectIndex}`;
-              const { difficulty } = questions[currentQuestion];
-
-              return (
-                <div key={ answer }>
-                  <button
-                    type="button"
-                    className={ answered && (
-                      correct ? 'correct-answer' : 'wrong-answer'
-                    ) }
-                    data-testid={ correct ? correctAnswerId : incorrectAnswerId }
-                    onClick={ () => this.handleAnswerClick({
-                      timer,
-                      correct,
-                      difficulty,
-                    }) }
-                    disabled={ answered }
-                  >
-                    { answer }
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          { answered && (
-            <button
-              onClick={ this.handleNextQuestion }
-              type="button"
-              data-testid="btn-next"
+            <h2
+              data-testid="question-text"
             >
-                Proxima
-            </button>
-          )}
+              { decoder.decode(questions[currentQuestion].question) }
+            </h2>
+
+            <div className="trivia-category">
+              Categoria:
+              <span data-testid="question-category">
+                { questions[currentQuestion].category }
+              </span>
+            </div>
+
+            <div className="trivia-questions">
+              { questions[currentQuestion].answers.map(({ correct, answer }) => {
+                const correctAnswerId = 'correct-answer';
+
+                const incorrectIndex = questions[currentQuestion]
+                  .incorrect_answers.findIndex((a) => a === answer);
+
+                const incorrectAnswerId = `wrong-answer-${incorrectIndex}`;
+                const { difficulty } = questions[currentQuestion];
+
+                return (
+                  <div key={ answer }>
+                    <button
+                      type="button"
+                      className={ answered && (
+                        correct ? 'correct-answer' : 'wrong-answer'
+                      ) }
+                      data-testid={ correct ? correctAnswerId : incorrectAnswerId }
+                      onClick={ () => this.handleAnswerClick({
+                        timer,
+                        correct,
+                        difficulty,
+                      }) }
+                      disabled={ answered }
+                    >
+                      { decoder.decode(answer) }
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
+            { answered && (
+              <Button
+                onClick={ this.handleNextQuestion }
+                type="button"
+                data-testid="btn-next"
+              >
+                  Proxima
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );
