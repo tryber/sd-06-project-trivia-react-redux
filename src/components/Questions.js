@@ -72,7 +72,8 @@ class Questions extends Component {
     }
   }
 
-  addClass() {
+  addClass(e) {
+    e.preventDefault();
     this.setState({
       checked: true,
     });
