@@ -18,10 +18,9 @@ export const userInfo = (name, email) => ({
   email,
 });
 
-export const userScore = (score, assertions) => ({
+export const userScore = (score) => ({
   type: USER_SCORE,
   score,
-  assertions,
 });
 
 export const userRanking = (ranking) => ({
