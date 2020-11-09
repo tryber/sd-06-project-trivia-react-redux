@@ -92,7 +92,7 @@ class Questions extends Component {
     stopTimer();
 
     if (target.className === 'rquestion') {
-      const answerTime = this.getAnswerTime();
+      // const answerTime = this.getAnswerTime();
 
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
@@ -116,10 +116,6 @@ class Questions extends Component {
         // answerTime: 0,
       });
     }
-  }
-
-  checkTimer() {
-    this.setState({ timer: true });
   }
 
   handleQuestions() {
