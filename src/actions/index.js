@@ -27,7 +27,7 @@ export const questionAction = (questions) => ({
 });
 
 export const pointsSum = (score) => ({
-  type: SUM_POINTS,
+  type: POINTS_SUM,
   score,
 });
 
