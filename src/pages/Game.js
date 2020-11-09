@@ -15,7 +15,6 @@ class Game extends React.Component {
       secondsRemaining: 30,
       disableQuestions: false,
       disableAnswers: true,
-
     };
 
     this.handleQuestions = this.handleQuestions.bind(this);
@@ -28,11 +27,20 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { state } = this.props;
+    localStorage.setItem('state', JSON.stringify(state));
     const NUMBER_OF_QUESTIONS = 1;
     const MAGIC_NUMBER = 5000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
     setTimeout(this.startTimer, MAGIC_NUMBER);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { state } = this.props;
+    if (JSON.stringify(prevProps.state) !== JSON.stringify(state)) {
+      localStorage.setItem('state', JSON.stringify(state));
+    }
   }
 
   startTimer() {
@@ -74,16 +82,17 @@ class Game extends React.Component {
     //   const { questions } = this.props;
   }
 
-  async handleDisabled({ target }) {
+  handleDisabled({ target }) {
     this.stopTimer();
     const { secondsRemaining } = this.state;
     const { handleAnswerAction } = this.props;
     const MAGIC_POINTS = 10;
     if (target.id === 'correct') {
       const questionScore = MAGIC_POINTS + (secondsRemaining * target.value);
-      await handleAnswerAction(questionScore);
-      const { score } = this.props;
-      localStorage.setItem('score', score);
+
+      handleAnswerAction(questionScore);
+      // const { state } = this.props;
+      // localStorage.setItem('state', JSON.stringify(state));
     }
     this.setState({
       classRightAnswer: 'green',
@@ -194,13 +203,13 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   questions: state.questions.questions,
-  score: state.state.player.score,
+  state: state.state,
 });
 
 Game.propTypes = {
   fetchQuestionsAction: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
-  score: PropTypes.number.isRequired,
+  state: PropTypes.shape().isRequired,
   handleAnswerAction: PropTypes.func.isRequired,
 };
 
