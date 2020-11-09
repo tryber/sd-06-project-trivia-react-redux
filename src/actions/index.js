@@ -1,5 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const QUESTIONS = 'QUESTIONS';
+export const SEND_SCORE = 'SEND_SCORE';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
 
 export const login = (email, token, playerName) => ({
   type: LOGIN,
@@ -11,6 +13,11 @@ export const login = (email, token, playerName) => ({
 export const receiveQuestions = (questions) => ({
   type: QUESTIONS,
   questions,
+});
+
+export const sendScore = (score) => ({
+  type: SEND_SCORE,
+  score,
 });
 
 const fetchToken = async () => {
