@@ -11,18 +11,60 @@ class Game extends React.Component {
     this.state = {
       classRightAnswer: '',
       classWrongAnswer: '',
-      isDisabled: true,
+      isHidden: true,
+      secondsRemaining: 30,
+      disableQuestions: false,
     };
 
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
+    // Timer
+    this.startTimer = this.startTimer.bind(this);
+    this.decreaseTime = this.decreaseTime.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 1;
+    const MAGIC_NUMBER = 5000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
+    setTimeout(this.startTimer, MAGIC_NUMBER);
+  }
+
+  startTimer() {
+    const INTERVAL = 1000;
+    const intervalID = setInterval(() => {
+      this.decreaseTime();
+      this.setState({
+        intervalID,
+      });
+    }, INTERVAL);
+  }
+
+  stopTimer() {
+    const { intervalID } = this.state;
+    clearInterval(intervalID);
+  }
+
+  decreaseTime() {
+    const { secondsRemaining } = this.state;
+    this.setState({
+      secondsRemaining: secondsRemaining - 1,
+    });
+
+    if (secondsRemaining === 0) {
+      this.stopTimer();
+
+      this.setState({
+        secondsRemaining: 0,
+        classRightAnswer: 'green',
+        classWrongAnswer: 'red',
+        disableQuestions: true,
+        isHidden: false,
+      });
+    }
   }
 
   async handleQuestions() {
@@ -38,7 +80,7 @@ class Game extends React.Component {
     this.setState({
       classRightAnswer: 'green',
       classWrongAnswer: 'red',
-      isDisabled: false,
+      isHidden: false,
     });
   }
 
@@ -49,10 +91,18 @@ class Game extends React.Component {
 
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRightAnswer, classWrongAnswer } = this.state;
-    console.log('Teste');
+    const {
+      classRightAnswer,
+      classWrongAnswer,
+      secondsRemaining,
+      disableQuestions,
+    } = this.state;
+
     return (
       <div id="answers">
+        <div>
+          { secondsRemaining }
+        </div>
         {newArray.map((element, index) => {
           if (index === correctAnswerIndex) {
             return (
@@ -64,6 +114,7 @@ class Game extends React.Component {
                 className={ classRightAnswer }
                 value={ element }
                 onClick={ this.handleDisabled }
+                disabled={ disableQuestions }
               >
                 { element }
               </button>);
@@ -77,6 +128,7 @@ class Game extends React.Component {
               className={ classWrongAnswer }
               id="wrong"
               onClick={ this.handleDisabled }
+              disabled={ disableQuestions }
             >
               { element }
             </button>);
@@ -86,7 +138,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isDisabled } = this.state;
+    const { isHidden } = this.state;
     const { questions } = this.props;
     return (
       <div onChange={ this.handleDisabled }>
@@ -108,8 +160,8 @@ class Game extends React.Component {
               <button
                 data-testid="btn-next"
                 type="button"
-                hidden={ isDisabled }
-                // onClick={ this.handleDisabled }
+                hidden={ isHidden }
+                onClick={ this.handleDisabled }
               >
                 PRÓXIMA
               </button>
