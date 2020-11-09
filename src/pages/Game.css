@@ -7,6 +7,7 @@
   flex-direction: row;
   font-size: 2em;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   font-family: 'Big Shoulders Stencil Text', cursive;
 }
@@ -26,7 +27,6 @@
   font-family: 'Goldman', cursive;
 }
 
-
 .picture {
   border-radius: 10px;
   border: solid 2px rgb(14, 88, 131);
@@ -34,20 +34,14 @@
   -moz-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
   box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
 }
-
-.nextbutton {
-  min-height: 100px;
+.right {
+  margin: 7px;
 }
-
 .buttons {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 400px;
-}
-
-.right {
-  width: 50%;
+  height: 500px;
 }
 
 button {
@@ -55,8 +49,21 @@ button {
   -webkit-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
   -moz-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
   box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  min-height: 70px;
 }
 
 .question {
-  font-size: 1.8em;
+  font-size: 2em;
+  line-height: 40px;
+  text-shadow: 3px 3px black;
+}
+
+.timer {
+  font-size: 1.5em;
+  color: yellow;
+}
+
+.loading {
+  font-size: 3em;
+  height: 100px;
 }
