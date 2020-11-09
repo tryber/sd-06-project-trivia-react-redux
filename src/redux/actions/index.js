@@ -2,10 +2,7 @@ export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const SAVE_PLAYER_DATA = 'SAVE_PLAYER_DATA';
 export const QUESTIONS_SUCCESS = 'QUESTIONS_SUCCESS';
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
-export const SCORE = 'SCORE';
 export const SAVE_TIME_LEFT = 'SAVE_TIME_LEFT';
-export const SAVE_QUESTION = 'SAVE_QUESTION';
-export const STOPWATCH = 'STOPWATCH';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -42,9 +39,9 @@ export const fetchQuestionsAPI = (endpoint) => async (dispatch) => {
   dispatch(receiveQuestionsSuccess(data.results));
 };
 
-export const addPoints = (score) => ({
-  type: SCORE,
-  score,
+export const addPoints = (points) => ({
+  type: 'SCORE',
+  points,
 });
 
 export const saveTimeLeft = (seconds) => ({
@@ -52,12 +49,23 @@ export const saveTimeLeft = (seconds) => ({
   seconds,
 });
 
-export const stopWatch = (data) => ({
-  type: STOPWATCH,
-  data,
+export const toggleStopwatch = () => ({
+  type: 'TOGGLE_STOPWATCH',
 });
 
-export const updateQuestionNumber = (question) => ({
-  type: SAVE_QUESTION,
-  question,
+export const saveShuffledAnswers = (shuffledAnswers) => ({
+  type: 'SAVE_SHUFFLED_ANSWERS',
+  shuffledAnswers,
+});
+
+export const toggleShuffled = () => ({
+  type: 'TOGGLE_SHUFFLED',
+});
+
+export const toggleBtns = () => ({
+  type: 'TOGGLE_BUTTONS',
+});
+
+export const renderNextQuestionBtn = () => ({
+  type: 'TOGGLE_NEXT_QUESTION',
 });

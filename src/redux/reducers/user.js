@@ -5,6 +5,7 @@ const initialState = {
   name: '',
   email: '',
   loading: true,
+  score: 0,
 };
 
 function user(state = initialState, action) {
@@ -25,6 +26,11 @@ function user(state = initialState, action) {
     return {
       ...state,
       loading: action.loading,
+    };
+  case 'SCORE':
+    return {
+      ...state,
+      score: state.score + action.points,
     };
   default:
     return state;

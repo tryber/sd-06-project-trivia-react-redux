@@ -1,19 +1,22 @@
-import { STOPWATCH } from '../actions';
+import { SAVE_TIME_LEFT } from '../actions';
 
 const initialState = {
-  timerOn: true,
-  timerStart: 30,
-  timerTimer: 0,
+  seconds: 30,
+  clock: true,
 };
 
 function stopwatch(state = initialState, action) {
   switch (action.type) {
-  case STOPWATCH:
+  case SAVE_TIME_LEFT:
     return {
       ...state,
-      timerOn: action.data.timerOn,
-      timerStart: action.data.timerStart,
-      timerTimer: action.data.timeTimer,
+      seconds: action.seconds,
+    };
+  case 'TOGGLE_STOPWATCH':
+    return {
+      ...state,
+      seconds: 30,
+      clock: !state.clock,
     };
   default:
     return state;

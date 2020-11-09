@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import Questions from './Questions';
+import Trivia from './Trivia';
 
 class GameHeader extends React.Component {
   render() {
@@ -17,7 +17,7 @@ class GameHeader extends React.Component {
         />
         <h3 data-testid="header-player-name">{name}</h3>
         <p data-testid="header-score">{score}</p>
-        <Questions />
+        <Trivia />
       </div>
     );
   }
@@ -26,7 +26,7 @@ class GameHeader extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
-  score: state.game.score,
+  score: state.user.score,
 });
 
 export default connect(mapStateToProps)(GameHeader);
