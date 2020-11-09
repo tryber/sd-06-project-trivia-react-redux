@@ -10,3 +10,9 @@
   justify-content: space-evenly;
   padding-top: 100px;
 }
+
+.timer {
+  color: red;
+  font-weight: 600;
+  padding-top: 40px;
+}
