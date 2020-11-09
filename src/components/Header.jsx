@@ -23,13 +23,16 @@ class Header extends Component {
           >
             { playerName }
           </p>
-          <p
-            className="score"
-            data-testid="header-score"
-          >
+          <label htmlFor="header-score">
             Score:
-            {score}
-          </p>
+            <p
+              id="header-score"
+              className="score"
+              data-testid="header-score"
+            >
+              {score}
+            </p>
+          </label>
         </div>
       </header>
     );
