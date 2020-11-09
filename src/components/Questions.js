@@ -66,19 +66,20 @@ class Questions extends React.Component {
           </div>
         </div>
         <div className="gamepage-answer">
-          {questions && questions[0] && questions[0].incorrect_answers.map((result, i) => (
-            <div key={ result }>
-              <button
-                className={ !buttonBorder ? 'none-answer' : 'wrong' }
-                onClick={ this.handleClick }
-                data-testid={ `wrong-answer-${i}` }
-                type="button"
-                disabled={ buttonBorder }
-              >
-                {result}
-              </button>
-            </div>
-          ))}
+          {questions && questions[0] && questions[0].incorrect_answers
+            .map((result, i) => (
+              <div key={ result }>
+                <button
+                  className={ !buttonBorder ? 'none-answer' : 'wrong' }
+                  onClick={ this.handleClick }
+                  data-testid={ `wrong-answer-${i}` }
+                  type="button"
+                  disabled={ buttonBorder }
+                >
+                  {result}
+                </button>
+              </div>
+            ))}
           <button
             className={ !buttonBorder ? 'none-answer' : 'correct' }
             onClick={ this.handleClick }
