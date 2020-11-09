@@ -13,18 +13,18 @@ const composeWithDevTools = (
     }
 );
 
-const INITIAL_STATE = {
-  userInformation: {
-    token: loadState('token', ''),
-  },
-  questionsInformation: {
-    score: loadState('score', 0),
-  },
-};
+// const INITIAL_STATE = {
+//   userInformation: {
+//     token: loadState('token', ''),
+//   },
+//   questionsInformation: {
+//     score: loadState('score', 0),
+//     arrayQuestion: [],
+//   },
+// };
 
 const store = createStore(
   rootReducer,
-  INITIAL_STATE,
   composeWithDevTools(
     applyMiddleware(thunk),
   ),
@@ -33,7 +33,8 @@ const store = createStore(
 store.subscribe(() => {
   console.log(store.getState());
   saveState(store.getState().userInformation.token, 'token');
-  saveState(store.getState().questionsInformation.score, 'score');
+  saveState(store.getState().questionsInformation.ranking, 'ranking');
+  saveState({ player: store.getState().user.player }, 'state');
 });
 
 export default store;

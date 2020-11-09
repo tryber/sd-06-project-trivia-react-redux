@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import '../style/ButtonsGame.css';
-import { questionScore } from '../redux/actions';
+import { questionScore, questionScorePlayer } from '../redux/actions';
 
 class Game extends Component {
   constructor() {
@@ -27,10 +27,10 @@ class Game extends Component {
     this.timer();
   }
 
-  colorButton(boll) {
-    if (boll) {
+  colorButton(rightAnswer) {
+    if (rightAnswer) {
       const { time, index } = this.state;
-      const { arrayQuestion, saveScore } = this.props;
+      const { arrayQuestion, saveRanking, user, saveScorePlayer } = this.props;
       const objQuestion = arrayQuestion[index];
       let difficultyNumber = 0;
       const three = 3;
@@ -50,9 +50,12 @@ class Game extends Component {
       }
       const ten = 10;
       const score = ten + (time * difficultyNumber);
-      saveScore(score);
-      console.log('difficultyNumber', difficultyNumber);
-      console.log('score', score);
+      saveScorePlayer(score);
+      // saveRanking({
+      //   score,
+      //   name: user.login.name,
+      //   picture: user.login.picture,
+      // });
     }
     this.setState({
       green: 'correct-answer',
@@ -121,7 +124,7 @@ class Game extends Component {
       }), () => {
         const { time } = this.state;
         if (time <= 0) {
-          console.log('para');
+          console.log('para tempo encerrado');
           this.setState({
             disableAnwsers: true,
           });
@@ -139,6 +142,7 @@ class Game extends Component {
     const { arrayQuestion } = this.props;
     const { index, respondeu, time } = this.state;
     // const { category, question } = arrayQuestion[index];
+    // console.log('arrayQuestion', arrayQuestion);
     if (arrayQuestion.length === 0) {
       return (
         <span>Login não realizado</span>
@@ -166,15 +170,17 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   arrayQuestion: state.questionsInformation.arrayQuestion,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveScore: (score) => dispatch(questionScore(score)),
+  saveRanking: (ranking) => dispatch(questionScore(ranking)),
+  saveScorePlayer: (score) => dispatch(questionScorePlayer(score)),
 });
 
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
-  saveScore: PropTypes.number.isRequired,
+  saveRanking: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

@@ -1,19 +1,39 @@
-import { ADD_QUESTIONS, SCORE } from '../actions';
+import { loadState } from '../../services/localStorage';
+import { ADD_QUESTIONS, SCORE_RANKING } from '../actions';
 
 const INITIAL_STATE = {
   arrayQuestion: [],
-  score: 0,
+  ranking: loadState('ranking', []),
 };
+
+// A chave ranking deve conter a seguinte estrutura:
+// [
+//   { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
+// ]
+
+// function tratarRanking(ranking, action) {
+//   const rankingCopia = ranking.map((objScore) => ({ ...objScore }));
+//   const actionRanking = action.payload.ranking;
+//   const objASerAlterado = rankingCopia
+//     .find((objScoreCopia) => objScoreCopia.name === actionRanking.name);
+
+//   if (objASerAlterado) {
+//     objASerAlterado.score += actionRanking.score;
+//     return rankingCopia;
+//   }
+
+//   return rankingCopia.concat(action.payload.ranking);
+// }
 
 function questionsInformation(state = INITIAL_STATE, action) {
   switch (action.type) {
   case ADD_QUESTIONS:
     return { ...state, arrayQuestion: [...action.payload.questionsResults] };
-  case SCORE:
-    return {
-      ...state,
-      score: parseInt((state.score), 10) + parseInt((action.payload.score), 10),
-    };
+  // case SCORE_RANKING:
+  //   return {
+  //     ...state,
+  //     ranking: tratarRanking(state.ranking, action),
+  //   };
   default:
     return state;
   }

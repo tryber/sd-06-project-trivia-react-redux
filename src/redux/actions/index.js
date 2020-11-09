@@ -1,3 +1,5 @@
+import { loadState } from "../../services/localStorage";
+
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const tokenLogin = (token) => ({
   type: ADD_TOKEN,
@@ -15,26 +17,41 @@ export const questions = (objQuestion) => ({
 });
 
 export const USER = 'USER';
-export const user = (login) => ({
+export const user = (player) => ({
   type: USER,
   payload: {
-    login,
+    player,
   },
 });
 
-export const SCORE = 'SCORE';
-export const questionScore = (score) => ({
-  type: SCORE,
+export const SCORE_PLAYER = 'SCORE_PLAYER';
+// let { assertions } = loadState('state', {
+//   player: {
+//     name: '',
+//     gravatarEmail: '',
+//     picture: '',
+//     assertions: 0,
+//     score: 0,
+//   },
+// }).player;
+let assertions = 0;
+export function questionScorePlayer(scorePlayer) {
+  return (dispatch) => {
+    assertions += 1;
+    return dispatch({
+      type: SCORE_PLAYER,
+      payload: {
+        score: scorePlayer,
+        assertions,
+      },
+    });
+  };
+}
+
+export const SCORE_RANKING = 'SCORE_RANKING';
+export const questionScore = (ranking) => ({
+  type: SCORE_RANKING,
   payload: {
-    score,
+    ranking,
   },
 });
-
-// function fetchToken() {
-//   return (dispatch) => {
-//     fetchAPI()
-//       .then((token) => {
-//         dispatch(tokenLogin(token));
-//       });
-//   };
-// }
