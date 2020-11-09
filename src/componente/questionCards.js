@@ -14,6 +14,7 @@ class QuestionCards extends Component {
     this.counter = this.counter.bind(this);
     this.setDisableTimeout = this.setDisableTimeout.bind(this);
     this.getRate = this.getRate.bind(this);
+    this.stateToLocalStorage = this.stateToLocalStorage.bind(this);
 
     this.state = {
       currentIndex: 0,
@@ -22,6 +23,8 @@ class QuestionCards extends Component {
       visibility: 'button-visibility',
       isDisabled: false,
       time: 30,
+      score: 0,
+      assertions: 0,
     };
   }
 
@@ -52,14 +55,33 @@ class QuestionCards extends Component {
     console.log(time);
     switch (difficulty) {
     case 'hard':
-      return console.log(DEZ + (time * hard));
+      return this.setState((prevState) => ({
+        assertions: prevState.assertions + 1,
+        score: prevState.score + (DEZ + (time * hard)),
+      }));
     case 'medium':
-      return console.log(DEZ + (time * medium));
+      return this.setState((prevState) => ({
+        assertions: prevState.assertions + 1,
+        score: prevState.score + (DEZ + (time * medium)),
+      }));
     case 'easy':
-      return console.log(DEZ + (time * easy));
+      return this.setState((prevState) => ({
+        assertions: prevState.assertions + 1,
+        score: prevState.score + (DEZ + (time * easy)),
+      }));
     default:
       return console.log('não rolou');
     }
+  }
+
+  stateToLocalStorage() {
+    const { assertions, score } = this.state;
+    localStorage.setItem('state', JSON.stringify({ player: {
+      ...JSON.parse(localStorage.getItem('state')).player,
+      assertions,
+      score,
+    },
+    }));
   }
 
   nextQuestion() {
@@ -76,13 +98,17 @@ class QuestionCards extends Component {
     });
   }
 
-  correctAnswer() {
-    this.setState({
+  async correctAnswer({ target }) {
+    const { id } = target;
+    await this.setState({
       correct: 'buttonTrue',
       incorrect: 'buttonFalse',
       visibility: '',
     });
-    this.getRate();
+    if (id === 'correct') {
+      await this.getRate();
+      await this.stateToLocalStorage();
+    }
   }
 
   counter() {

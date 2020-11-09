@@ -23,6 +23,8 @@ class TriviaGame extends Component {
 
 const mapStateToProps = (state) => ({
   questionToken: state.tokenReducer.token,
+  userName: state.loginReducer.nome,
+  userEmail: state.loginReducer.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({

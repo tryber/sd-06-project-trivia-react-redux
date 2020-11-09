@@ -44,6 +44,15 @@ class Login extends Component {
     this.setState({
       isLoged: true,
     });
+
+    localStorage.setItem('state', JSON.stringify({ player: {
+      name: nome,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    },
+    }));
+    console.log(email);
   }
 
   render() {
