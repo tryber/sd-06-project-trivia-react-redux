@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import '../App.css';
 import logo from '../trivia.png';
 import { getUserAction, getUserToken } from '../actions';
 
@@ -55,40 +55,42 @@ class Login extends Component {
           <header className="App-header">
             <img src={ logo } className="App-logo" alt="logo" />
           </header>
-          <label htmlFor="email">
-            Email do Gravatar:
-            <input
-              id="email"
-              data-testid="input-gravatar-email"
-              name="email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="nome">
-            Nome do Jogador:
-            <input
-              id="nome"
-              data-testid="input-player-name"
-              name="nome"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            disabled={ disabled }
-            type="button"
-            data-testid="btn-play"
-            onClick={ this.handleLogin }
-          >
-            Jogar
-          </button>
-          <Link to="/settings">
+          <div className="card-login">
+            <label htmlFor="email">
+              Email do Gravatar:
+              <input
+                id="email"
+                data-testid="input-gravatar-email"
+                name="email"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="nome">
+              Nome do Jogador:
+              <input
+                id="nome"
+                data-testid="input-player-name"
+                name="nome"
+                onChange={ this.handleChange }
+              />
+            </label>
             <button
+              disabled={ disabled }
               type="button"
-              data-testid="btn-settings"
+              data-testid="btn-play"
+              onClick={ this.handleLogin }
             >
-              Settings
+              Jogar
             </button>
-          </Link>
+            <Link to="/settings">
+              <button
+                type="button"
+                data-testid="btn-settings"
+              >
+                Settings
+              </button>
+            </Link>
+          </div>
         </section>
       );
     }
