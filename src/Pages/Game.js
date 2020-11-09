@@ -142,6 +142,7 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
+  hash: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(Object).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
