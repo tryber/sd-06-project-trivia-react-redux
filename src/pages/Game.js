@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestionsAPI } from '../redux/actions';
 import GameHeader from '../components/GameHeader';
-import Timer from '../components/TimerBar';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor() {

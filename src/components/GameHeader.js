@@ -5,8 +5,23 @@ import md5 from 'crypto-js/md5';
 import Questions from './Questions';
 
 class GameHeader extends React.Component {
+  constructor() {
+    super();
+
+    this.sendToLocalStorage = this.sendToLocalStorage.bind(this);
+  }
+
+  sendToLocalStorage() {
+    const { name, email, score } = this.props;
+    const player = { player: { name, assertions: '', score, gravatarEmail: email } };
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   render() {
-    const { name, email } = this.props;
+    const { name, email, score } = this.props;
+
+    this.sendToLocalStorage();
+
     return (
       <div>
         <img
@@ -16,7 +31,7 @@ class GameHeader extends React.Component {
           alt="gravatar-profile-pic"
         />
         <h3 data-testid="header-player-name">{name}</h3>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{score}</p>
         <Questions />
       </div>
     );
@@ -26,6 +41,7 @@ class GameHeader extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
+  score: state.user.score,
 });
 
 export default connect(mapStateToProps)(GameHeader);
@@ -33,4 +49,5 @@ export default connect(mapStateToProps)(GameHeader);
 GameHeader.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
