@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import '../css/AnswersButton.css';
+import './QuestionCard.css';
 import { Link } from 'react-router-dom';
 
 class QuestionCard extends Component {
   constructor() {
     super();
     this.state = {
-      correct: false,
-      incorrect: false,
+      isDisabled: false,
       clicked: false,
       indexButtonNext: 0,
     };
@@ -51,8 +50,7 @@ class QuestionCard extends Component {
   nextQuestions() {
     const { indexButtonNext } = this.state;
     this.setState({
-      correct: false,
-      incorrect: false,
+      isDisabled: false,
       clicked: false,
       indexButtonNext: indexButtonNext + 1,
     });
@@ -60,31 +58,30 @@ class QuestionCard extends Component {
 
   handleClick() {
     this.setState({
-      correct: 'correct-answer',
-      incorrect: 'wrong-answer',
+      isDisabled: true,
       clicked: true,
     });
   }
 
   render() {
     const { questions } = this.props;
-    const { indexButtonNext } = this.state;
+    const { indexButtonNext, isDisabled } = this.state;
     const { category, question } = questions[indexButtonNext];
-    const { correct, incorrect } = this.state;
 
     return (
       <div>
         QUESTION CARD
-        <div data-testidclassName="question">
+        <div>
           <p data-testid="question-category">{ category }</p>
           <p data-testid="question-text">{ question }</p>
         </div>
         <div className="answers">
           <button
             data-testid="correct-answer"
-            className={ correct }
             onClick={ this.handleClick }
             type="button"
+            disabled={ isDisabled }
+            className="correct-answer"
           >
             { questions[indexButtonNext].correct_answer }
           </button>
@@ -93,8 +90,9 @@ class QuestionCard extends Component {
               data-testid={ `wrong-answer-${index}` }
               type="button"
               key={ index }
-              className={ incorrect }
               onClick={ this.handleClick }
+              disabled={ isDisabled }
+              className="incorrect-answer"
             >
               { answer }
             </button>
