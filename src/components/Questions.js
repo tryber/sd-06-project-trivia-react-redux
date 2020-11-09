@@ -118,6 +118,10 @@ class Questions extends Component {
     }
   }
 
+  checkTimer() {
+    this.setState({ timer: true });
+  }
+
   handleQuestions() {
     const { gameQuestions } = this.props;
     const { questionNumber, disableBTN, shuffledQuestions, shuffled } = this.state;
