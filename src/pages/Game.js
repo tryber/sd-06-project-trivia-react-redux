@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchQuestionsFromAPI } from '../actions';
-import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -14,19 +13,38 @@ class Game extends React.Component {
       classWrongAnswer: '',
       isDisabled: true,
       secondsRemaining: 30,
+      disableQuestions: false,
     };
 
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
     // Timer
+    this.startTimer = this.startTimer.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
     const NUMBER_OF_QUESTIONS = 1;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
+    setTimeout(this.startTimer, 5000);
+  }
+
+  startTimer() {
+    const INTERVAL = 1000;
+    const intervalID = setInterval(() => {
+      this.decreaseTime();
+      this.setState({
+        intervalID
+      })
+    }, INTERVAL);
+  }
+
+  stopTimer() {
+    const { intervalID } = this.state;
+    clearInterval(intervalID);
   }
 
   decreaseTime() {
@@ -34,6 +52,17 @@ class Game extends React.Component {
     this.setState({
       secondsRemaining: secondsRemaining - 1,
     });
+
+    if(secondsRemaining === 0) {
+      this.stopTimer();
+
+      this.setState({
+        secondsRemaining: 0,
+        classRightAnswer: 'green',
+        classWrongAnswer: 'red',
+        disableQuestions: true,
+      });
+    }
   }
 
   async handleQuestions() {
@@ -60,14 +89,13 @@ class Game extends React.Component {
 
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRightAnswer, classWrongAnswer, secondsRemaining } = this.state;
-    console.log('Teste');
+    const { classRightAnswer, classWrongAnswer, secondsRemaining, disableQuestions } = this.state;
+
     return (
       <div id="answers">
-        <Timer
-          seconds={ secondsRemaining }
-          handleTime={ this.decreaseTime }
-        />
+        <div>
+          { secondsRemaining }
+        </div>
         {newArray.map((element, index) => {
           if (index === correctAnswerIndex) {
             return (
@@ -79,6 +107,7 @@ class Game extends React.Component {
                 className={ classRightAnswer }
                 value={ element }
                 onClick={ this.handleDisabled }
+                disabled={ disableQuestions }
               >
                 { element }
               </button>);
@@ -92,6 +121,7 @@ class Game extends React.Component {
               className={ classWrongAnswer }
               id="wrong"
               onClick={ this.handleDisabled }
+              disabled={ disableQuestions }
             >
               { element }
             </button>);
@@ -123,8 +153,8 @@ class Game extends React.Component {
               <button
                 data-testid="btn-next"
                 type="button"
-                hidden={ isDisabled }
-                // onClick={ this.handleDisabled }
+                disabled={ isDisabled }
+                onClick={ this.handleDisabled }
               >
                 PRÓXIMA
               </button>
