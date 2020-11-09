@@ -29,8 +29,9 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { createInterval, handleLocalStorage } = this;
+    const startTime = 5000;
     handleLocalStorage('create');
-    setTimeout(createInterval(), 5000)
+    setTimeout(createInterval(), startTime);
   }
 
   componentDidUpdate() {
@@ -110,20 +111,9 @@ class Game extends React.Component {
     }));
   }
 
-  renderQuestions() {
-    const { questions } = this.props;
-    const { questionNumber } = this.state;
-    return (
-      <div>
-        <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
-        <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
-      </div>
-    );
-  }
-
   handleLocalStorage(action) {
     const { name, assertions, score, gravatarEmail } = this.props;
-    
+
     if (action === 'create') {
       const newPlayerStorage = {
         player: {
@@ -131,7 +121,7 @@ class Game extends React.Component {
           assertions,
           score,
           gravatarEmail,
-        }
+        },
       };
       localStorage.setItem('state', JSON.stringify(newPlayerStorage));
     } else if (action === 'update') {
@@ -142,6 +132,17 @@ class Game extends React.Component {
       currentLocalStorage.player.gravatarEmail = gravatarEmail;
       localStorage.setItem('state', JSON.stringify(currentLocalStorage));
     }
+  }
+
+  renderQuestions() {
+    const { questions } = this.props;
+    const { questionNumber } = this.state;
+    return (
+      <div>
+        <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
+        <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
+      </div>
+    );
   }
 
   renderAnswers() {
@@ -163,7 +164,7 @@ class Game extends React.Component {
     }
 
     return (
-      <div role="button" onClick={ handleScore } onKeyUp={handleScore}>
+      <div role="button" onClick={ handleScore } onKeyUp={ handleScore }>
         {
           answers.map((answer, index) => {
             if (answer === questions[questionNumber].correct_answer) {
@@ -258,6 +259,8 @@ Game.propTypes = {
   toUpdateScore: PropTypes.func.isRequired,
   toResetTimer: PropTypes.func.isRequired,
   timeController: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
   timer: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
