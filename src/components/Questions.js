@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { timerReset, timerStop, getPlayerScore } from '../redux/actions';
+import { timerReset, timerStop, getPlayerScore, correctAnswerCounter } from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -99,7 +99,7 @@ class Questions extends Component {
 
   handleAnswer({ target }, difficulty) {
     const { questionNumber } = this.state;
-    const { stopTimer, sendScore } = this.props;
+    const { stopTimer, sendScore, countAnswer } = this.props;
     const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
@@ -113,6 +113,7 @@ class Questions extends Component {
       const difValue = this.checkDifficulty(difficulty);
       const playerScore = mutiplier + (getTime * difValue);
       sendScore(playerScore);
+      countAnswer();
 
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
@@ -257,6 +258,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetTimer: () => dispatch(timerReset()),
   stopTimer: () => dispatch(timerStop()),
   sendScore: (score) => dispatch(getPlayerScore(score)),
+  countAnswer: () => dispatch(correctAnswerCounter()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
@@ -267,4 +269,5 @@ Questions.propTypes = {
   stopTimer: PropTypes.func.isRequired,
   lostTime: PropTypes.bool.isRequired,
   sendScore: PropTypes.func.isRequired,
+  countAnswer: PropTypes.func.isRequired,
 };
