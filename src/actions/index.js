@@ -37,9 +37,8 @@ export function thunkToken() {
 
 export function thunkQuestions() {
   const tokenExpire = 3;
-  const token = localStorage.getItem('token');
-  return async (dispatch) => (
-    fetchQuestionsApi(token)
+  return async (dispatch, getState) => (
+    fetchQuestionsApi(getState().tokenReducer.token)
       .then((questionInfo) => {
         if (questionInfo.response_code === tokenExpire) {
           thunkToken();
