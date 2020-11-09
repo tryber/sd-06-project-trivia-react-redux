@@ -16,7 +16,7 @@ class Ranking extends Component {
                 <span data-testid={ `player-name-${index}` }>{ item.name }</span>
                 <span data-testid={ `player-score-${index}` }>{ item.score }</span>
                 <img
-                  src={ `https://www.gravatar.com/avatar/ ${hash}` }
+                  src={ `https://www.gravatar.com/avatar/${hash}` }
                   alt="gravatar"
                 />
               </div>

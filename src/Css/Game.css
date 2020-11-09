@@ -1,0 +1,30 @@
+.advance-button {
+  color: whitesmoke;
+  background-color: rgb(56, 109, 12);
+  border: 0;
+  border-radius: 20px;
+  font-size: 1.5em;
+  height: 90px;
+  position: absolute;
+  text-align: center;
+  line-height: 1em;
+  top: 170px;
+  right: 20%;
+  width: 140px;
+}
+
+.advance-button:focus {
+  background-color: rgb(72, 109, 41);
+}
+
+.advance-button:hover {
+  background-color: rgb(77, 122, 40);
+}
+
+.advance-button:active {
+  background-color: rgb(102, 168, 48);
+}
+
+.advance-button:disabled {
+  background-color: rgb(168, 168, 168);
+}

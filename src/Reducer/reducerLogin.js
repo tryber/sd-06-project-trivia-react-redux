@@ -1,11 +1,15 @@
 import { LOGIN } from '../Action/actionLogin';
 import { GET_TOKEN } from '../Action/actionToken';
+import { UPDATE_SCORE } from '../Action/actionUpdateScore';
 
 const initialState = {
-  name: '',
   hash: '',
-  score: 0,
-  email: '',
+  player: {
+    score: 0,
+    gravatarEmail: '',
+    name: '',
+    assertions: 0,
+  },
   token: '',
 };
 
@@ -14,14 +18,18 @@ function reducerLogin(state = initialState, action) {
   case LOGIN:
     return {
       ...state,
-      email: action.email,
       hash: action.hash,
-      name: action.name,
+      player: { ...state.player, ...action.player },
     };
   case GET_TOKEN:
     return {
       ...state,
       token: action.token,
+    };
+  case UPDATE_SCORE:
+    return {
+      ...state,
+      player: { ...state.player, ...action.player },
     };
   default: {
     return state;
