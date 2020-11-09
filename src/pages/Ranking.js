@@ -1,4 +1,5 @@
 import React from 'react';
+import BtnHome from '../componente/BtnHome';
 
 class Ranking extends React.Component {
   constructor() {
@@ -24,17 +25,21 @@ class Ranking extends React.Component {
   render() {
     const { ranking } = this.state;
     return (
-      <h1 data-testid="ranking-title">
-        Ranking list
+      <div>
+        <h1 data-testid="ranking-title">
+          Ranking list
+        </h1>
         <ul>{ranking.map((position, index) =>
-          <li key={index} >
-            <img src={position.picture} alt="user" />
-            <div data-testid={`player-name-${index}`} >{position.name}</div>
-            <div data-testid={`player-score-${index}`}>{position.score}</div>
-            
-          </li>
-        )}</ul>
-      </h1>
+            <li key={index} >
+              <img src={position.picture} alt="user" />
+              <div data-testid={`player-name-${index}`} >{position.name}</div>
+              <div data-testid={`player-score-${index}`}>{position.score}</div>
+            </li>
+          )}</ul>
+        <section>
+          <BtnHome />
+        </section>
+      </div>
     );
   }
 }
