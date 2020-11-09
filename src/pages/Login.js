@@ -19,6 +19,13 @@ class Login extends React.Component {
     this.storePlayerAndRequestInfo = this.storePlayerAndRequestInfo.bind(this);
   }
 
+  componentDidMount() {
+    const ranking = [];
+    if (localStorage.getItem('ranking') === null) {
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
+  }
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value }, () => {
       const { name, gravatarEmail } = this.state;

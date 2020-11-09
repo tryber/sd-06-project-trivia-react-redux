@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 import { saveGameScore } from '../actions';
 
 class GameCard extends Component {
