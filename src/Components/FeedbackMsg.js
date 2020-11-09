@@ -12,20 +12,20 @@ class FeedbackMsg extends Component {
         <div className="Feedback-Msg orange-bg">
           <p data-testid="feedback-text">
             Podia ser melhor...
-            <span className="feeback-emoji">
-              &#128539;
-            </span>
           </p>
+          <span className="feeback-emoji" role="img" aria-label="emoji with tongue out">
+            &#128539;
+          </span>
         </div>
       )
       : (
         <div className="Feedback-Msg green-bg">
-          <p>
+          <p data-testid="feedback-text">
             Mandou bem!
-            <span className="feeback-emoji">
-              &#128526;
-            </span>
           </p>
+          <span className="feeback-emoji" role="img" aria-label="emoji with sunglasses">
+              &#128526;
+          </span>
         </div>
       );
 

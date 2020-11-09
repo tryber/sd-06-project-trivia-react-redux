@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import LoginButton from '../Components/LoginButton';
+import GenericButton from '../Components/GenericButton';
 import logo from '../trivia.png';
 import ButtonSettings from '../Components/ButtonSettings';
 import { responseToken } from '../Action/actionToken';
@@ -84,10 +84,11 @@ class Login extends Component {
               data-testid="input-gravatar-email"
             />
           </label>
-          <LoginButton
+          <GenericButton
             onClick={ this.handleClick }
             disabled={ validated }
             title="Jogar"
+            testid="btn-play"
           />
         </form>
         <ButtonSettings />
