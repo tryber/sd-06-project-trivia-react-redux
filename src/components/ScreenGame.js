@@ -6,8 +6,8 @@ import FeedbackHeader from './FeedbackHeader';
 import '../App.css';
 
 class ScreenGame extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       answered: false,
       btnNext: true,
