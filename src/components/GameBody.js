@@ -152,7 +152,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameBody.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
-  history: propTypes.shape({ push: propTypes.func }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
