@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import './Questions.css';
 
 class Questions extends React.Component {
   constructor() {
@@ -160,27 +161,34 @@ class Questions extends React.Component {
 
         <p>Alternativas:  </p>
         {question[currentQuestion].respostas.map((resposta, index) => (
-          <button
-            key={ index }
-            type="button"
-            value={ resposta.value }
-            data-testid={ resposta.dataTestid }
-            disabled={ disable }
-            onClick={ (event) => this.choosed(event) }
-          >
-            { resposta.resposta }
-          </button>
+          <div key={ index } className="text-center">
+            <button
+              className="col-md-6 option btn-sm"
+              key={ index }
+              type="button"
+              value={ resposta.value }
+              data-testid={ resposta.dataTestid }
+              disabled={ disable }
+              onClick={ (event) => this.choosed(event) }
+            >
+              { resposta.resposta }
+            </button>
+          </div>
         )) }
         {
           (disable
             && (
-              <button
-                data-testid="btn-next"
-                onClick={ this.nextQuestion }
-                type="button"
-              >
-                Próxima
-              </button>))
+              <div className="text-center">
+                <button
+                  className="btn-next btn btn-primary"
+                  data-testid="btn-next"
+                  onClick={ this.nextQuestion }
+                  type="button"
+                >
+                  Próxima
+                </button>
+              </div>
+            ))
         }
       </div>
     );

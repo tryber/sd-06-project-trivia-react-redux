@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FaCog } from 'react-icons/fa';
 import CustomInput from '../components/CustomInput';
 import loginRequirements from '../services/loginRequirements';
 import { tokenFetcher } from '../actions/actionsFetchToken';
+import './Login.css';
 
 class FormLogin extends React.Component {
   constructor() {
@@ -26,9 +28,11 @@ class FormLogin extends React.Component {
 
   settingsButton() {
     return (
-      <div>
+      <div className="float-right">
         <Link to="settings">
-          <button type="button" data-testid="btn-settings">Configurações</button>
+          <button type="button" data-testid="btn-settings" className="btn-set">
+            <FaCog /> 
+          </button>
         </Link>
       </div>
     );
@@ -69,34 +73,37 @@ class FormLogin extends React.Component {
   render() {
     const { Disabled, Nome, Email } = this.state;
     return (
-      <div>
-        <h1>Faça login para jogar</h1>
-        <form>
-          {
-            loginRequirements.map(({ name, type, dataTestId }) => (
-              <CustomInput
-                key={ name }
-                name={ name }
-                value={ name === 'Nome' ? Nome : Email }
-                type={ type }
-                dataTestId={ dataTestId }
-                onChange={ this.stateUpdater }
-              />
-            ))
-          }
-        </form>
-        <Link to="gamepage">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ Disabled }
-            onClick={ this.setLocalStorage }
-            id="play-button"
-          >
-            Jogar!!
-          </button>
-        </Link>
-        {this.settingsButton() }
+      <div className="full-container">
+        <div className="login-form">
+          <h1 className="text-center">Trivia</h1>
+          <form>
+            {
+              loginRequirements.map(({ name, type, dataTestId }) => (
+                <CustomInput
+                  key={ name }
+                  name={ name }
+                  value={ name === 'Nome' ? Nome : Email }
+                  type={ type }
+                  dataTestId={ dataTestId }
+                  onChange={ this.stateUpdater }
+                />
+              ))
+            }
+          </form>
+          <Link to="gamepage">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ Disabled }
+              onClick={ this.setLocalStorage }
+              id="play-button"
+              className="btn btn-primary btn-block"
+            >
+              Jogar!!
+            </button>
+          </Link>
+          {this.settingsButton() }
+        </div>
       </div>
     );
   }

@@ -89,7 +89,7 @@ class Game extends React.Component {
     }
 
     return (
-      <div>
+      <div className="full-container">
         <Header />
         {questions.length > 0
           ? <Questions question={ newQuestions } />

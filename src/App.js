@@ -6,6 +6,7 @@ import Game from './pages/Game';
 import Ranking from './pages/Ranking';
 import Feedback from './pages/Feedback';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 export default function App() {
   return (

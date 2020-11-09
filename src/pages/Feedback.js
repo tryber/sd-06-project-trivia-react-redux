@@ -55,8 +55,12 @@ class Feedback extends Component {
           {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
         </h2>
         {this.gameFeedback(assertions, score)}
-        <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
-        <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
+        <div>
+          <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
+        </div>
+        <div>
+          <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
+        </div>
       </main>
     );
   }
