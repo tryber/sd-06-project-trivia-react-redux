@@ -9,6 +9,7 @@ class Ranking extends React.Component {
       ranking: [],
     };
   }
+
   componentDidMount() {
     this.sortedRanking();
   }
@@ -18,9 +19,8 @@ class Ranking extends React.Component {
     console.log(newRanking.sort((a, b) => b.score - a.score));
     this.setState({
       ranking: newRanking,
-    })
+    });
   }
-
 
   render() {
     const { ranking } = this.state;
@@ -29,13 +29,16 @@ class Ranking extends React.Component {
         <h1 data-testid="ranking-title">
           Ranking list
         </h1>
-        <ul>{ranking.map((position, index) =>
-            <li key={index} >
-              <img src={position.picture} alt="user" />
-              <div data-testid={`player-name-${index}`} >{position.name}</div>
-              <div data-testid={`player-score-${index}`}>{position.score}</div>
+        <ul>
+          {ranking.map((position, index) => (
+            <li key={ index }>
+              <img src={ position.picture } alt="user" />
+              <div data-testid={ `player-name-${index}` }>{position.name}</div>
+              <div data-testid={ `player-score-${index}` }>{position.score}</div>
             </li>
-          )}</ul>
+          ))}
+        ;
+        </ul>
         <section>
           <BtnHome />
         </section>
