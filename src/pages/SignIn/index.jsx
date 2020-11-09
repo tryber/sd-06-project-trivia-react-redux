@@ -38,11 +38,11 @@ class SignIn extends React.Component {
   handleLogin(submitEvent) {
     submitEvent.preventDefault();
     const { email, name, token } = this.state;
-    const { logIn, history, loadQuestions } = this.props;
+    const { logIn, history, loadQuestions, config } = this.props;
 
     logIn({ name, email });
 
-    loadQuestions(token);
+    loadQuestions(token, config);
 
     history.push('/trivia');
   }
@@ -101,11 +101,17 @@ class SignIn extends React.Component {
 function mapDispatchToProps(dispatch) {
   return {
     logIn: ({ name, email }) => dispatch(loginActionCreator({ name, email })),
-    loadQuestions: (token) => dispatch(fetchQuestions(token)),
+    loadQuestions: (token, config) => dispatch(fetchQuestions(token, config)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(SignIn);
+function mapStateToProps(state) {
+  return {
+    config: state.trivia.config,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 SignIn.propTypes = {
   logIn: PropTypes.func.isRequired,

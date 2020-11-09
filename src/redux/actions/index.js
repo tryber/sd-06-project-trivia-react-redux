@@ -29,7 +29,7 @@ function loadQuestions({ questions, token }) {
   };
 }
 
-export function fetchQuestions(token) {
+export function fetchQuestions(token, config) {
   return (
     async (dispatch) => {
       let validToken = token;
@@ -39,11 +39,11 @@ export function fetchQuestions(token) {
         localStorage.setItem('token', validToken);
       }
 
-      let questions = await getTriviaQuestion(validToken);
+      let questions = await getTriviaQuestion(validToken, config);
 
       if (!questions.length) {
         validToken = await getAccessToken();
-        questions = await getTriviaQuestion(validToken);
+        questions = await getTriviaQuestion(validToken, config);
         localStorage.setItem('token', validToken);
       }
 
@@ -109,6 +109,22 @@ export function updateScore({ difficulty, timer }) {
     type: SCORED,
     payload: {
       addScore,
+    },
+  };
+}
+
+export const CONFIG = 'CONFIG';
+
+export function updateSettings({ amount, difficulty, type, category }) {
+  return {
+    type: CONFIG,
+    payload: {
+      config: {
+        amount,
+        difficulty,
+        type,
+        category,
+      },
     },
   };
 }

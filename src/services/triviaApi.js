@@ -7,16 +7,20 @@ export async function getAccessToken() {
   return token;
 }
 
-const defaultOfQuestions = 5;
+export async function getTriviaQuestion(token, config) {
+  const baseTriviaUrl = `https://opentdb.com/api.php?token=${token}`;
 
-export async function getTriviaQuestion(
-  token, numberOfQuestions = defaultOfQuestions,
-) {
-  const triviaUrl = `
-  https://opentdb.com/api.php?amount=${numberOfQuestions}&token=${token}
-  `;
+  const configUrl = Object.keys(config).reduce((baseString, currentConfig) => {
+    if (!config[currentConfig]) {
+      return baseString;
+    }
 
-  const response = await fetch(triviaUrl);
+    const pattern = `&${currentConfig}=${config[currentConfig]}`;
+
+    return baseString + pattern;
+  }, baseTriviaUrl);
+
+  const response = await fetch(configUrl);
   const { results } = await response.json();
 
   return results;

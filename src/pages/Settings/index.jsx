@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiSettings, FiSave, FiArrowLeft } from 'react-icons/fi';
+import { connect } from 'react-redux';
+
+import { updateSettings } from '../../redux/actions';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -8,18 +11,46 @@ import Button from '../../components/Button';
 import './styles.css';
 
 class Settings extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    const { config: { amount, difficulty, type, category } } = this.props;
 
     this.state = {
-      amount: 5,
-      difficulty: '',
-      type: '',
-      category: '',
+      amount,
+      difficulty,
+      type,
+      category,
     };
   }
 
+  handleInputChange({ name, value }) {
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  handleSubmit(formEvent) {
+    formEvent.preventDefault();
+    const { amount, difficulty, type, category } = this.state;
+    const { updateConfig, history } = this.props;
+
+    updateConfig({
+      amount,
+      difficulty,
+      type,
+      category,
+    });
+
+    history.push('/');
+  }
+
   render() {
+    const { amount, difficulty, type, category } = this.state;
+
     return (
       <div className="settings-page">
         <Link to="/">
@@ -27,7 +58,7 @@ class Settings extends React.Component {
             Voltar
         </Link>
 
-        <form>
+        <form onSubmit={ this.handleSubmit }>
           <h1>
             <FiSettings />
             <span data-testid="settings-title">Configurações</span>
@@ -40,6 +71,8 @@ class Settings extends React.Component {
               name="amount"
               type="number"
               step={ 1 }
+              value={ amount }
+              onChange={ ({ target }) => this.handleInputChange(target) }
             />
           </div>
 
@@ -47,7 +80,12 @@ class Settings extends React.Component {
             <label htmlFor="difficulty">Dificuldade</label>
             <div className="select-container">
 
-              <select name="difficulty" id="difficulty">
+              <select
+                value={ difficulty }
+                onChange={ ({ target }) => this.handleInputChange(target) }
+                name="difficulty"
+                id="difficulty"
+              >
                 <option value="">Aleatório</option>
                 <option value="easy">Fácil</option>
                 <option value="medium">Médio</option>
@@ -60,7 +98,12 @@ class Settings extends React.Component {
             <label htmlFor="type">Tipo das Questões</label>
             <div className="select-container">
 
-              <select name="type" id="type">
+              <select
+                value={ type }
+                onChange={ ({ target }) => this.handleInputChange(target) }
+                name="type"
+                id="type"
+              >
                 <option value="">Aleatório</option>
                 <option value="multiple">Múltipla Escolha</option>
                 <option value="boolean">Verdadeiro/Falso</option>
@@ -72,7 +115,12 @@ class Settings extends React.Component {
             <label htmlFor="category">Categoria</label>
             <div className="select-container">
 
-              <select name="category" id="category">
+              <select
+                value={ category }
+                onChange={ ({ target }) => this.handleInputChange(target) }
+                name="category"
+                id="category"
+              >
                 <option value="">Aleatório</option>
                 <option value="9">General Knowledge</option>
                 <option value="10">Entertainment: Books</option>
@@ -114,4 +162,18 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+function mapDispatchToProps(dispatch) {
+  return {
+    updateConfig: ({ amount, type, difficulty, category }) => dispatch(
+      updateSettings({ amount, type, difficulty, category }),
+    ),
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    config: state.trivia.config,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);
