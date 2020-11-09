@@ -27,9 +27,10 @@ class Game extends React.Component {
 
   componentDidMount() {
     const NUMBER_OF_QUESTIONS = 1;
+    const MAGIC_NUMBER = 5000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
-    setTimeout(this.startTimer, 5000);
+    setTimeout(this.startTimer, MAGIC_NUMBER);
   }
 
   startTimer() {
@@ -37,8 +38,8 @@ class Game extends React.Component {
     const intervalID = setInterval(() => {
       this.decreaseTime();
       this.setState({
-        intervalID
-      })
+        intervalID,
+      });
     }, INTERVAL);
   }
 
@@ -53,7 +54,7 @@ class Game extends React.Component {
       secondsRemaining: secondsRemaining - 1,
     });
 
-    if(secondsRemaining === 0) {
+    if (secondsRemaining === 0) {
       this.stopTimer();
 
       this.setState({
@@ -88,7 +89,7 @@ class Game extends React.Component {
     const newArray = incorrectAnswers.concat(correctAnswer);
 
     newArray.sort(); // já está alterado
-    const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
+    const correctAnswerIndex = newArray.indexOf(correctAnswer);
     const { classRightAnswer, classWrongAnswer, secondsRemaining, disableQuestions } = this.state;
 
     return (
