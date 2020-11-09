@@ -57,7 +57,7 @@ class Login extends React.Component {
     return (
       <div>
         <div>
-          <Link to="/config">
+          <Link to="/settings">
             <button
               type="button"
               data-testid="btn-settings"
