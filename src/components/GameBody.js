@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { thunkQuestions } from '../actions';
 import './gameBody.css';
 import Timer from './Timer';
@@ -16,7 +15,6 @@ class GameBody extends React.Component {
       disabled: true,
       disabledAnswer: false,
       renderTimer: false,
-      redirect: false,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
@@ -66,12 +64,11 @@ class GameBody extends React.Component {
       this.createQuestions(index);
     } else {
       const { history } = this.props;
-      history.push('/feedback')
+      history.push('/feedback');
     }
     this.setState({
       isCorrect: false,
       disabled: true,
-      redirect: true,
     });
   }
 
@@ -93,7 +90,7 @@ class GameBody extends React.Component {
 
   render() {
     const { category, question, correctAnswer,
-      answers, isCorrect, disabled, disabledAnswer, renderTimer, redirect } = this.state;
+      answers, isCorrect, disabled, disabledAnswer, renderTimer } = this.state;
     const randomNumber = 0.5;
 
     return (
@@ -155,6 +152,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameBody.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
