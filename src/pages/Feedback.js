@@ -4,7 +4,7 @@ class Feedback extends React.Component {
   render() {
     return (
       <section>
-        <h1 data-testid="settings-title">TESTE FEEDBACK</h1>
+        <h1 data-testid="feedback-text">TESTE FEEDBACK</h1>
       </section>
     );
   }

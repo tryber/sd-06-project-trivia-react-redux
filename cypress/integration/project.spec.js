@@ -269,7 +269,7 @@ describe('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após 
   });
 });
 
-describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
+describe.only('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

@@ -64,6 +64,9 @@ class GameBody extends React.Component {
     index += 1;
     if (questions.length > 0 && index < questions.length) {
       this.createQuestions(index);
+    } else {
+      const { history } = this.props;
+      history.push('/feedback')
     }
     this.setState({
       isCorrect: false,
@@ -130,7 +133,6 @@ class GameBody extends React.Component {
           disabled={ disabled }
           data-testid={ disabled ? '' : 'btn-next' }
           onClick={ () => this.handleNext() }
-          redirect={ redirect ? <Redirect to="feedback" /> : false }
         >
           Next
         </button>
