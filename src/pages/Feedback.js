@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  componentDidMount() {
+  cleanToken() {
     localStorage.setItem('token', '');
   }
 
@@ -27,7 +28,13 @@ class Feedback extends Component {
           <button data-testid="btn-ranking" type="button">Ranking</button>
         </Link>
         <Link to="/">
-          <button data-testid="btn-play-again" type="button">Jogar Novamente</button>
+          <button
+            data-testid="btn-play-again"
+            type="button"
+            onClick={ this.cleanToken() }
+          >
+          Jogar Novamente
+          </button>
         </Link>
         <Link to="/">
           <button type="button">Voltar</button>
@@ -42,4 +49,9 @@ Feedback.propTypes = {
   score: propTypes.number.isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  assertions: state.player.assertions,
+  score: state.player.score,
+});
+
+export default connect(mapStateToProps)(Feedback);
