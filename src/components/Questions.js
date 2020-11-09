@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { timerReset, timerStop } from '../redux/actions';
+import { timerReset, timerStop, getPlayerScore } from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -11,7 +11,6 @@ class Questions extends Component {
       disableBTN: false,
       shuffledQuestions: [],
       shuffled: false,
-      // answerTime: 0,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
@@ -59,7 +58,6 @@ class Questions extends Component {
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
       shuffled: false,
-      // answerTime: 0,
     });
 
     if (wrongList && rightQuestion) {
@@ -77,13 +75,27 @@ class Questions extends Component {
     if (lostTime && !disableBTN) {
       this.setState({
         disableBTN: true,
-        // answerTime: 0,
       });
     }
   }
 
-  handleAnswer({ target }) {
-    const { stopTimer } = this.props;
+  checkDifficulty(difficulty) {
+    const hardValue = 3;
+    const mediumValue = 2;
+    const easyValue = 1;
+
+    switch (difficulty) {
+    case 'hard':
+      return hardValue;
+    case 'medium':
+      return mediumValue;
+    default:
+      return easyValue;
+    }
+  }
+
+  handleAnswer({ target }, difficulty) {
+    const { stopTimer, sendScore } = this.props;
     const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
@@ -92,7 +104,11 @@ class Questions extends Component {
     stopTimer();
 
     if (target.className === 'rquestion') {
-      // const answerTime = this.getAnswerTime();
+      const getTime = this.getAnswerTime();
+      const mutiplier = 10;
+      const difValue = this.checkDifficulty(difficulty);
+      const playerScore = mutiplier + (getTime * difValue);
+      sendScore(playerScore);
 
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
@@ -101,7 +117,6 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
-        // answerTime,
       });
     }
 
@@ -113,7 +128,6 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
-        // answerTime: 0,
       });
     }
   }
@@ -124,6 +138,7 @@ class Questions extends Component {
     const initialIndex = -1;
     let answerIndex = initialIndex;
     if (shuffled && shuffledQuestions) {
+      const { difficuty } = gameQuestions[questionNumber];
       const CORRECT_ANSWER = gameQuestions[questionNumber].correct_answer;
       return (
         <div>
@@ -137,7 +152,7 @@ class Questions extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
-                  onClick={ this.handleAnswer }
+                  onClick={ (e) => this.handleAnswer(e, difficuty) }
                   className="rquestion"
                   key="correct"
                   disabled={ disableBTN }
@@ -182,6 +197,7 @@ class Questions extends Component {
         <button
           type="button"
           className="btn-next"
+          data-testid="btn-next"
           onClick={ this.changeToNextQuestion }
         >
           Next Question
@@ -194,11 +210,13 @@ class Questions extends Component {
 const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
   lostTime: state.timer.lostTime,
+  score: state.user.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resetTimer: () => dispatch(timerReset()),
   stopTimer: () => dispatch(timerStop()),
+  sendScore: (score) => dispatch(getPlayerScore(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
@@ -208,4 +226,5 @@ Questions.propTypes = {
   resetTimer: PropTypes.func.isRequired,
   stopTimer: PropTypes.func.isRequired,
   lostTime: PropTypes.bool.isRequired,
+  sendScore: PropTypes.func.isRequired,
 };

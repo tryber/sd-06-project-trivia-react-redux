@@ -1,10 +1,11 @@
-import { TOKEN_SUCCESS, SAVE_PLAYER_DATA, TOKEN_REQUEST } from '../actions';
+import { TOKEN_SUCCESS, SAVE_PLAYER_DATA, TOKEN_REQUEST, PLAYER_SCORE } from '../actions';
 
 const initialState = {
   tokenResponse: '',
   name: '',
   email: '',
   loading: true,
+  score: 0,
 };
 
 function user(state = initialState, action) {
@@ -25,6 +26,11 @@ function user(state = initialState, action) {
     return {
       ...state,
       loading: action.loading,
+    };
+  case PLAYER_SCORE:
+    return {
+      ...state,
+      score: state.score + action.score,
     };
   default:
     return state;

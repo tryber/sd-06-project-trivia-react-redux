@@ -6,6 +6,7 @@ export const TIMER_RESET = 'TIMER_RESET';
 export const TIMER_STOP = 'TIMER_STOP';
 export const TIMER_START = 'TIMER_START';
 export const TIMER_LOST = 'TIMER_LOST';
+export const PLAYER_SCORE = 'PLAYER_SCORE';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -65,4 +66,9 @@ export const timerStop = () => ({
 
 export const timerLost = () => ({
   type: TIMER_LOST,
+});
+
+export const getPlayerScore = (score) => ({
+  type: PLAYER_SCORE,
+  score,
 });
