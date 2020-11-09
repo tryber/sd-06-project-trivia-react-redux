@@ -58,7 +58,6 @@ class Question extends React.Component {
   saveScore(countdown) {
     const { getAnswers, setScore } = this.props;
     const { player } = this.state;
-    console.log(countdown);
     const { difficulty } = getAnswers[0];
     const difficultyPoints = { hard: 3, medium: 2, easy: 1 };
     const points = 10 + (difficultyPoints[difficulty] * countdown);
@@ -69,6 +68,7 @@ class Question extends React.Component {
     };
 
     localStorage.setItem('state', JSON.stringify({ player: tempPlayer }));
+    this.setState({ player: tempPlayer });
     setScore(tempPlayer);
   }
 
