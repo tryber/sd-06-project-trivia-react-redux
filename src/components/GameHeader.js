@@ -7,9 +7,9 @@ import triviaLogo from '../visual_identity/logo/trivia_logo_noBg2.png';
 
 class GameHeader extends Component {
   componentDidMount() {
-    const { name, gravatarEmail } = this.props;
+    const { name, gravatarEmail, score } = this.props;
 
-    createLocalStore(name, 0, gravatarEmail);
+    createLocalStore(name, score, gravatarEmail);
   }
 
   render() {

@@ -1,5 +1,6 @@
 @import '../../visual_identity/general_styles/flex_boxes.scss';
 @import '../../visual_identity/general_styles/color.scss';
+@import '../../visual_identity/general_styles/buttons.scss';
 
 .game-page {
   background: $lightGreen;
@@ -36,10 +37,41 @@
     @include flexCenter(column);
     margin-top: 20vh;
     height: 60vh;
+    text-align: center;
 
     & .game-board {
       @include flexCenter(row);
       width: 80vw;
+      
+      .question-text {
+        background-color: rgba(19,23,50, 0.8);
+        padding: 10%;
+        color: white;
+        margin-right: 5vw;
+      }
+      
+      & .game-board-inner-container {
+
+        & .game-answers {
+          @include flexCenter(column);
+
+          button {
+            @include btnDarkBlue();
+            transition: none;
+            margin-top: 2%
+          }
+
+          & button.wrong-answer {
+          border: 3px solid rgb(255, 0, 0);
+          transition: none;
+          }
+
+          & button.correct-answer {
+            border: 3px solid rgb(6, 240, 15);
+            transition: none;
+          }
+        }
+      }
     }
   }
 
@@ -70,10 +102,4 @@
   display: block;
 }
 
-.wrong-answer {
- border: 3px solid rgb(255, 0, 0);
-}
 
-.correct-answer {
-  border: 3px solid rgb(6, 240, 15);
-}

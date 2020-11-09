@@ -110,7 +110,7 @@ class Game extends Component {
               {currentQuestion.question}
             </div>
           </section>
-          <section className="game-board-container">
+          <section className="game-board-inner-container">
             <div className="game-answers">
               {currentAnswers.map((answer) => (
                 answer.isCorrect
@@ -135,15 +135,15 @@ class Game extends Component {
                     {answer.answer}
                   </button>
               ))}
-            </div>
-            <button
-              type="button"
-              data-testid="btn-next"
-              onClick={ this.nextButton }
-              className={ nextButtonClass }
-            >
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.nextButton }
+                className={ nextButtonClass }
+              >
             Próxima
-            </button>
+              </button>
+            </div>
           </section>
         </main>
       </section>
