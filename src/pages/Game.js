@@ -11,7 +11,7 @@ class Game extends React.Component {
     this.state = {
       classRightAnswer: '',
       classWrongAnswer: '',
-      isDisabled: true,
+      isHidden: true,
       secondsRemaining: 30,
       disableQuestions: false,
     };
@@ -62,6 +62,7 @@ class Game extends React.Component {
         classRightAnswer: 'green',
         classWrongAnswer: 'red',
         disableQuestions: true,
+        isHidden: false,
       });
     }
   }
@@ -79,7 +80,7 @@ class Game extends React.Component {
     this.setState({
       classRightAnswer: 'green',
       classWrongAnswer: 'red',
-      isDisabled: false,
+      isHidden: false,
     });
   }
 
@@ -137,7 +138,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isDisabled } = this.state;
+    const { isHidden } = this.state;
     const { questions } = this.props;
     return (
       <div onChange={ this.handleDisabled }>
@@ -159,7 +160,7 @@ class Game extends React.Component {
               <button
                 data-testid="btn-next"
                 type="button"
-                hidden={ isDisabled }
+                hidden={ isHidden }
                 onClick={ this.handleDisabled }
               >
                 PRÓXIMA
