@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import FeedbackMessage from '../components/FeedbackMessage';
 
 class FeedBack extends Component {
   render() {
     return (
-      <h1>
+      <div>
         Feedback
-      </h1>
+        <FeedbackMessage />
+      </div>
     );
   }
 }
