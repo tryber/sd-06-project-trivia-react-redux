@@ -6,7 +6,6 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   token: '',
-  playerScore: 0,
 };
 
 function userReducer(state = INITIAL_STATE, action) {

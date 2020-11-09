@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { savePlayer, gettingTokenThunk } from '../redux/actions';
 import BtnSettings from '../components/BtnSettings';
+import './Login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -55,11 +56,11 @@ class Login extends React.Component {
   render() {
     const { name, email, validFieldsOk } = this.state;
     return (
-      <div>
-        <h1>Project Trivia</h1>
-        <BtnSettings />
-        <form>
+      <div className="login-page">
+        <h1 classeName="login-title">Project Trivia</h1>
+        <form className="form-container">
           <input
+            className="input-form-login"
             type="text"
             value={ name }
             name="name"
@@ -68,6 +69,7 @@ class Login extends React.Component {
             onChange={ (e) => this.handleChange(e.target) }
           />
           <input
+            className="input-form-login"
             type="text"
             value={ email }
             name="email"
@@ -76,6 +78,7 @@ class Login extends React.Component {
             onChange={ (e) => this.handleChange(e.target) }
           />
           <button
+            className="button-form-login"
             type="button"
             data-testid="btn-play"
             disabled={ !(validFieldsOk) }
@@ -83,6 +86,7 @@ class Login extends React.Component {
           >
             Jogar
           </button>
+          <BtnSettings />
         </form>
       </div>
     );

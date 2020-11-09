@@ -8,15 +8,27 @@ class Header extends React.Component {
   constructor() {
     super();
     this.convertEmail = this.convertEmail.bind(this);
+    this.createPlayerScore = this.createPlayerScore.bind(this);
 
     this.state = {
       hash: '',
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount() {
+    this.createPlayerScore();
+  }
+
+  // componentDidUpdate(prevProps) {
+  // const { email } = this.props;
+  // if (prevProps.email !== email) this.convertEmail(email);
+  // }
+
+  createPlayerScore() {
+    localStorage.setItem('playerScore', 0);
+
     const { email } = this.props;
-    if (prevProps.email !== email) this.convertEmail(email);
+    if (email !== '') this.convertEmail(email);
   }
 
   convertEmail(email) {
@@ -28,7 +40,8 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name, playerScore } = this.props;
+    const { name } = this.props;
+    const playerScore = localStorage.getItem('playerScore');
     const { hash } = this.state;
     const urlImage = `https://www.gravatar.com/avatar/${hash}`;
     return (
@@ -52,13 +65,11 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.userReducer.name,
   email: state.userReducer.email,
-  playerScore: state.userReducer.playerScore,
 });
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  playerScore: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

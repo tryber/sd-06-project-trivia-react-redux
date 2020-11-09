@@ -2,22 +2,19 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
-import Questions from './components/Questions';
+import Game from './pages/Game';
 import Settings from './pages/Settings';
-import Header from './components/Header';
+import Feedback from './pages/Feedback';
 
 class App extends React.Component {
   render() {
     return (
-      <div>
-        {/* Header para testes, deve ser retirado do App */}
-        <Header />
-        <Switch>
-          <Route exact path="/" component={ Login } />
-          <Route path="/settings" component={ Settings } />
-          <Route exact path="/questions" component={ Questions } />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/settings" component={ Settings } />
+        <Route exact path="/questions" component={ Game } />
+        <Route exact path="feedback" component={ Feedback } />
+      </Switch>
     );
   }
 }
