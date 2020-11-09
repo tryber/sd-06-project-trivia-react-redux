@@ -43,7 +43,7 @@ class Timer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  timer: state.questions.timer,
+  timer: state.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

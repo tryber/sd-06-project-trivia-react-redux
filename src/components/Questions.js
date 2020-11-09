@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import Timer from './Timer';
 import './Questions.css';
 // import NextButton from './NextButton';
 import { reqQuestions } from '../services';
-import { getQuestions } from '../actions';
+import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
 // import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
@@ -28,6 +27,7 @@ class Questions extends Component {
   componentDidMount() {
     const TIMES = 30000;
     this.fetchAPIQuestions();
+    this.downTime();
     setTimeout(() => this.disableButtons(), TIMES);
   }
 
@@ -69,7 +69,9 @@ class Questions extends Component {
   countQuestionsAndRedirect() {
     const { questionsAnswer } = this.state;
     const magic = 5;
-    const { history } = this.props;
+    const { history, resetTime } = this.props;
+
+    resetTime(30);
     this.setState({
       checked: false,
     });
@@ -99,7 +101,24 @@ class Questions extends Component {
     });
   }
 
+  downTime() {
+    const ONE_SECOND = 1000;
+    const ALL_TIME = 30000;
+    const { timer } = this.props;
+    if (timer !== 0) {
+      const time = setInterval(() => {
+        const { sendTimer } = this.props;
+        sendTimer(timer);
+      }, ONE_SECOND);
+      setTimeout(() => {
+        clearInterval(time);
+      }, ALL_TIME);
+    }
+  }
+
   addClass() {
+    const { handleTimer, timer } = this.props;
+    clearInterval();
     this.setState({
       checked: true,
     });
@@ -107,7 +126,7 @@ class Questions extends Component {
 
   render() {
     const { loading, checked, disable, questionsAnswer, answers } = this.state;
-    const { questions } = this.props;
+    const { questions, timer } = this.props;
     // const randomNumber = 0.5;
     const nextButton = (
       <button
@@ -153,7 +172,10 @@ class Questions extends Component {
               {answer}
             </button>);
         })}
-        <Timer />
+        <div>
+        Tempo restante:
+          { timer }
+        </div>
         <div>
           {renderNextButton}
           {/* { this.randomQuestions() } */}
@@ -171,13 +193,17 @@ Questions.propTypes = {
 
 const mapStateToProps = (state) => (
   {
-    questions: state.questions.questions,
+    questions: state.questions,
+    timer: state.timer,
   }
 );
 
 const mapDispatchToProps = (dispatch) => (
   {
     handleApi: (state) => dispatch(getQuestions(state)),
+    handleTimer: (state) => dispatch(stopTimer(state)),
+    sendTimer: (state) => dispatch(getTimer(state)),
+    resetTime: (state) => dispatch(resetTimer(state)),
   }
 );
 

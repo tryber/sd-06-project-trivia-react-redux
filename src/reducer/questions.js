@@ -1,26 +1,13 @@
-import { HANDLE_QUESTION, HANDLE_LESS_TIMER, HANDLE_STOP_TIMER } from '../actions';
+import { HANDLE_QUESTION } from '../actions';
 
-const INITIAL_STATE = {
-  questions: [],
-  timer: 30,
-};
+const INITIAL_STATE = [];
 
 const questionReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case HANDLE_QUESTION:
     return {
       ...state,
-      questions: [...action.questions],
-    };
-  case HANDLE_LESS_TIMER:
-    return {
-      ...state,
-      timer: action.timer - 1,
-    };
-  case HANDLE_STOP_TIMER:
-    return {
-      ...state,
-      timer: action.timer,
+      ...action.questions,
     };
   default:
     return state;
