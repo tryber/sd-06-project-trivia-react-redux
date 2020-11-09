@@ -1,4 +1,4 @@
-import { LOGIN, TOKEN, SCORE } from '../actions';
+import { LOGIN, TOKEN, SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
