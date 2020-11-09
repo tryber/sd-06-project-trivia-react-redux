@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends Component {
@@ -20,6 +21,7 @@ class Feedback extends Component {
         <h1 data-testid="feedback-text">
           {feedbackMessage()}
         </h1>
+        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
       </>
     );
   }
@@ -29,8 +31,8 @@ const mapStateToProps = (state) => ({
   assertions: state.userReducer.assertions,
 });
 
-Feedback.propTypes = {
-  assertions: PropTypes.number.isRequired,
-};
+// Feedback.propTypes = {
+//   assertions: PropTypes.number.isRequired,
+// };
 
 export default connect(mapStateToProps, null)(Feedback);
