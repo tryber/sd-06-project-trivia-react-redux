@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import './Questions.css';
-// import NextButton from './NextButton';
 import { reqQuestions } from '../services';
 import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
-// import { fetchAPIQuestions } from '../services';
 
 class Questions extends Component {
   constructor(props) {
@@ -14,6 +12,7 @@ class Questions extends Component {
     this.disableButtons = this.disableButtons.bind(this);
     this.addClass = this.addClass.bind(this);
     this.countQuestionsAndRedirect = this.countQuestionsAndRedirect.bind(this);
+    this.downTime = this.downTime.bind(this);
 
     this.state = {
       loading: true,
@@ -21,14 +20,13 @@ class Questions extends Component {
       disable: false,
       questionsAnswer: 0,
       answers: [],
+      timeInterval: {},
     };
   }
 
   componentDidMount() {
-    const TIMES = 30000;
     this.fetchAPIQuestions();
     this.downTime();
-    setTimeout(() => this.disableButtons(), TIMES);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,7 +47,7 @@ class Questions extends Component {
     const questionsAPI = apiQuestions.results.map((el) => (
       {
         ...el, answers: [...el.incorrect_answers, el.correct_answer],
-      })); // colocando um array no fim de cada 'question' para randomizar as respostas
+      }));
     if (apiQuestions.response_code === limite) {
       localStorage.removeItem('token');
       const { history } = this.props;
@@ -68,20 +66,21 @@ class Questions extends Component {
 
   countQuestionsAndRedirect() {
     const { questionsAnswer } = this.state;
-    const magic = 5;
+    const lastQuestion = 5;
+    const answerTime = 30;
     const { history, resetTime } = this.props;
 
-    resetTime(30); // dispatch para resetar ao trocar de pergunta
+    resetTime(answerTime);
     this.setState({
       checked: false,
     });
-    // ZERAR TIMER, SETSTATE(TIMER) = 0 ???????????????????
-    if (questionsAnswer === magic) {
+    if (questionsAnswer === lastQuestion) {
       history.push('/feedback');
     }
-    if (questionsAnswer < magic) {
+    if (questionsAnswer < lastQuestion) {
       this.setState({ questionsAnswer: questionsAnswer + 1 });
     }
+    this.downTime();
   }
 
   randomQuestions() {
@@ -91,8 +90,6 @@ class Questions extends Component {
     const answerAPI = questions[questionsAnswer].answers
       .sort(() => Math.random() - randomNumber);
     return answerAPI;
-    // console.log(questions);
-    // console.log(`depois do sort ${teste}`);
   }
 
   callRandomQuestions() {
@@ -108,27 +105,28 @@ class Questions extends Component {
     if (timer !== 0) {
       const time = setInterval(() => {
         const { sendTimer } = this.props;
-        sendTimer(timer); // Dispatch
+        sendTimer(timer);
       }, ONE_SECOND);
       setTimeout(() => {
         clearInterval(time);
       }, ALL_TIME);
+      this.setState({
+        timeInterval: time,
+      });
     }
   }
 
   addClass() {
-    const { handleTimer, timer } = this.props;
-    clearInterval();
+    const { timeInterval } = this.state;
+    clearInterval(timeInterval);
     this.setState({
       checked: true,
     });
-    // handleTimer(timer);
   }
 
   render() {
     const { loading, checked, disable, questionsAnswer, answers } = this.state;
     const { questions, timer } = this.props;
-    // const randomNumber = 0.5;
     const nextButton = (
       <button
         type="button"
@@ -179,7 +177,6 @@ class Questions extends Component {
         </div>
         <div>
           {renderNextButton}
-          {/* { this.randomQuestions() } */}
         </div>
       </div>
     );
@@ -189,7 +186,10 @@ class Questions extends Component {
 Questions.propTypes = {
   history: propTypes.shape({ push: propTypes.func }).isRequired,
   questions: propTypes.arrayOf(propTypes.object).isRequired,
+  timer: propTypes.number.isRequired,
   handleApi: propTypes.func.isRequired,
+  sendTimer: propTypes.func.isRequired,
+  resetTime: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => (
