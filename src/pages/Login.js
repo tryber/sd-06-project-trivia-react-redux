@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
-import { saveToken, saveName } from '../actions';
+import { saveToken, saveName, saveEmail } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -18,6 +18,14 @@ class Login extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkValidity = this.checkValidity.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
+  }
+
+  componentDidMount() {
+    const currentRanking = localStorage.getItem('ranking');
+    if (currentRanking === null) {
+      const emptyRanking = JSON.stringify([]);
+      localStorage.setItem('ranking', emptyRanking);
+    }
   }
 
   checkValidity() {
@@ -46,11 +54,12 @@ class Login extends React.Component {
 
     localStorage.setItem('token', TOKEN);
 
-    const { dispatchSaveToken, dispatchSaveName } = this.props;
-    dispatchSaveToken(TOKEN);
+    const { dispatchSaveToken, dispatchSaveName, dispatchSaveEmail } = this.props;
+    const { userName, email } = this.state;
 
-    const { userName } = this.state;
+    dispatchSaveToken(TOKEN);
     dispatchSaveName(userName);
+    dispatchSaveEmail(email);
   }
 
   render() {
@@ -108,11 +117,13 @@ class Login extends React.Component {
 Login.propTypes = {
   dispatchSaveToken: propTypes.func.isRequired,
   dispatchSaveName: propTypes.func.isRequired,
+  dispatchSaveEmail: propTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveToken: (token) => dispatch(saveToken(token)),
   dispatchSaveName: (name) => dispatch(saveName(name)),
+  dispatchSaveEmail: (gravatarEmail) => dispatch(saveEmail(gravatarEmail)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

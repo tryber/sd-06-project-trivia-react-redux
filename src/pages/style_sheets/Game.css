@@ -16,3 +16,19 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.button-invisible {
+  display: none;
+}
+
+.button-visible {
+  display: block;
+}
+
+.wrong-answer {
+ border: 3px solid rgb(255, 0, 0);
+}
+
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}

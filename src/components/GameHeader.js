@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createLocalStore } from '../utils';
 
 class GameHeader extends Component {
+  componentDidMount() {
+    const { name, gravatarEmail } = this.props;
+
+    createLocalStore(name, 0, gravatarEmail);
+  }
+
   render() {
     const { name, gravatarEmail, score } = this.props;
     return (
@@ -16,18 +23,18 @@ class GameHeader extends Component {
             alt="gravatar"
           />
           <br />
-          <h3 data-testid="header-player-name">{name}</h3>
+          <h3 data-testid="header-player-name">{ name }</h3>
           <br />
-          <p data-testid="header-score">{score}</p>
+          <p data-testid="header-score">{ score }</p>
         </header>
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  name: state.player.name,
-  gravatarEmail: state.player.gravatarEmail,
-  score: state.player.score,
+  name: state.player.player.name,
+  gravatarEmail: state.player.player.gravatarEmail,
+  score: state.player.player.score,
 });
 
 GameHeader.propTypes = {

@@ -1,19 +1,37 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
-import GameHeader from '../components/GameHeader';
+import { GameHeader, GameTimer } from '../components';
+import {
+  randomizeAnswers,
+  createLocalStore,
+  calculateScore,
+  saveRankingLocalStorage } from '../utils';
+import { saveScore, saveCorrectAnswers } from '../actions';
 
 class Game extends Component {
   constructor() {
     super();
 
     this.saveQuestionsToState = this.saveQuestionsToState.bind(this);
-    this.randomizeAnswers = this.randomizeAnswers.bind(this);
+    this.nextButton = this.nextButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
 
     this.state = {
       questions: [],
       index: 0,
       isLoading: true,
+      nextButtonClass: 'button-invisible',
+      answerColor: false,
+      score: 0,
+      correctAnswers: 0,
+      currentQuestion: {},
+      currentAnswers: [],
+      isAnswered: false,
+      isCorrect: false,
     };
   }
 
@@ -21,45 +39,76 @@ class Game extends Component {
     const API_RESPONSE = await fetchGameQuestions();
     const QUESTIONS = API_RESPONSE.results;
 
-    this.saveQuestionsToState(QUESTIONS);
+    await this.saveQuestionsToState(QUESTIONS);
+    this.setCurrentQuestion();
+  }
+
+  componentWillUnmount() {
+    const { name, email, score } = this.props;
+    saveRankingLocalStorage(name, score, email);
+  }
+
+  setCurrentQuestion() {
+    const { questions, index } = this.state;
+    const nextQuestion = questions[index];
+    const { correct_answer: correct, incorrect_answers: incorrect } = nextQuestion;
+    const randomizedAnswers = randomizeAnswers(correct, incorrect);
+    this.setState({ currentAnswers: randomizedAnswers, currentQuestion: nextQuestion });
   }
 
   saveQuestionsToState(questions) {
     this.setState({ questions, isLoading: false });
   }
 
-  insertIndexIntoAnswers(array) {
-    const arrayWithIndexes = [];
+  async nextButton() {
+    let { index } = this.state;
+    index += 1;
 
-    array.forEach((item, index) => {
-      const newItem = { answer: item, index };
-      arrayWithIndexes.push(newItem);
-    });
-
-    return arrayWithIndexes;
-  }
-
-  randomizeAnswers(correctAnswer, wrongAnswers) {
-    const withIndex = this.insertIndexIntoAnswers(wrongAnswers);
-
-    const RANDOM_ANSWERS = [{ correctAnswer, isCorrect: true }, ...withIndex];
-
-    for (let i = RANDOM_ANSWERS.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * i);
-      const temp = RANDOM_ANSWERS[i];
-      RANDOM_ANSWERS[i] = RANDOM_ANSWERS[j];
-      RANDOM_ANSWERS[j] = temp;
+    const maxQuestions = 4;
+    if (index > maxQuestions) {
+      const { history } = this.props;
+      history.push('/feedback');
     }
 
-    return RANDOM_ANSWERS;
+    await this.setState({ index, answerColor: false, isAnswered: false });
+    this.setCurrentQuestion();
+  }
+
+  async handleClick({ target }) {
+    this.setState({ nextButtonClass: 'button-visible', isAnswered: true });
+    const { id } = target;
+
+    if (id === 'correct-answer') {
+      const { currentQuestion: { difficulty } } = this.state;
+      const { time, dispatchSaveScore, dispatchCorrectAnswers, name, email } = this.props;
+      const questionScore = calculateScore(time, difficulty);
+
+      await this.setState((currentState) => ({
+        ...currentState,
+        answerColor: true,
+        score: currentState.score + questionScore,
+        correctAnswers: currentState.correctAnswers + 1,
+      }));
+
+      const { score, correctAnswers } = this.state;
+      dispatchSaveScore(score);
+      dispatchCorrectAnswers(correctAnswers);
+      createLocalStore(name, score, email, correctAnswers);
+    } else {
+      this.setState({
+        answerColor: true,
+      });
+    }
   }
 
   renderGameBoard() {
-    const { questions, index } = this.state;
-    const currentQuestion = questions[index];
-    const { correct_answer: correct, incorrect_answers: incorrect } = currentQuestion;
-    const randomizedAnswers = this.randomizeAnswers(correct, incorrect);
-    console.log(randomizedAnswers);
+    const {
+      currentAnswers,
+      currentQuestion,
+      answerColor,
+      nextButtonClass,
+      isAnswered } = this.state;
+    const { time } = this.props;
 
     return (
       <main className="game-board">
@@ -73,22 +122,38 @@ class Game extends Component {
         </section>
         <section className="game-board-container">
           <div className="game-answers">
-            {randomizedAnswers.map((answer) => (
+            {currentAnswers.map((answer) => (
               answer.isCorrect
                 ? <button
                   type="button"
+                  id="correct-answer"
                   data-testid="correct-answer"
+                  className={ answerColor ? 'correct-answer' : null }
+                  onClick={ this.handleClick }
+                  disabled={ (time === 0 || isAnswered) ? true : null }
                 >
                   {answer.correctAnswer}
                 </button>
                 : <button
                   type="button"
+                  id="wrong-answer"
                   data-testid={ `wrong-answer-${answer.index}` }
+                  className={ answerColor ? 'wrong-answer' : null }
+                  onClick={ this.handleClick }
+                  disabled={ (time === 0 || isAnswered) ? true : null }
                 >
                   {answer.answer}
                 </button>
             ))}
           </div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextButton }
+            className={ nextButtonClass }
+          >
+            Próxima
+          </button>
         </section>
       </main>
     );
@@ -100,9 +165,33 @@ class Game extends Component {
       <div>
         <GameHeader />
         {isLoading ? <p>Loading</p> : this.renderGameBoard()}
+        <GameTimer />
       </div>
     );
   }
 }
 
-export default Game;
+Game.propTypes = {
+  history: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  dispatchSaveScore: PropTypes.func.isRequired,
+  dispatchCorrectAnswers: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  time: state.game.time,
+  name: state.player.player.name,
+  email: state.player.player.gravatarEmail,
+  score: state.player.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSaveScore: (score) => dispatch(saveScore(score)),
+  dispatchCorrectAnswers:
+    (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

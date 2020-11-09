@@ -1,6 +1,7 @@
 import React from 'react';
+import md5 from 'crypto-js/md5';
 
-export default TableRank = (players) => (
+const TableRank = (players) => (
   <table>
 
     <thead>
@@ -16,7 +17,7 @@ export default TableRank = (players) => (
         .map((player, index) => (
           <tr key={ player.name }>
             <th>
-              <img src={ player.picture } alt={ player.name } />
+              <img src={ `https://www.gravatar.com/avatar/${md5(player.gravatarEmail)}` } alt={ player.name } />
             </th>
             <th data-testeid={ `player-name-${index}` }>{player.name}</th>
             <th data-testeid={ `player-score-${index}` }>{player.score}</th>
@@ -26,3 +27,5 @@ export default TableRank = (players) => (
 
   </table>
 );
+
+export default TableRank;
