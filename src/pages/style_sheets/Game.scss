@@ -43,7 +43,7 @@
       @include flexCenter(row);
       width: 80vw;
       
-      .question-text {
+      & .question-text {
         background-color: rgba(19,23,50, 0.8);
         padding: 10%;
         color: white;
