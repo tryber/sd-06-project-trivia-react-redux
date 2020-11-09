@@ -22,10 +22,10 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 1;
+    const NUMBER_OF_QUESTIONS = 5;
     const { receivedQuestions } = this.props;
     const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
-    receivedQuestions(questions); //  populou o state
+    receivedQuestions(questions.results); //  populou o state
   }
 
   async handleFetch(num) {
@@ -98,30 +98,29 @@ class Game extends React.Component {
     return (
       <div onChange={ this.handleDisabled }>
         <Header />
-        {questions.map((element, index) => (
-          element.results.map((e) => (
-            <div key={ index } id="container">
-              <div id="questions">
-                <div data-testid="question-category">
-                CATEGORIA:
-                  <p>{e.category}</p>
-                </div>
-                <div data-testid="question-text">
-                PERGUNTA:
-                  <p>{e.question}</p>
-                </div>
+        {questions.map((e, index) => (
+          <div key={ index } id="container">
+            <div id="questions">
+              <div data-testid="question-category">
+              CATEGORIA:
+                <p>{e.category}</p>
               </div>
-              {this.randomArray(e)}
-              <button
-                data-testid="btn-next"
-                type="button"
-                hidden={ isDisabled }
-                // onClick={ this.handleDisabled }
-              >
-                PRÓXIMA
-              </button>
+              <div data-testid="question-text">
+              PERGUNTA:
+                <p>{e.question}</p>
+              </div>
             </div>
-          ))))}
+            {this.randomArray(e)}
+            <button
+              data-testid="btn-next"
+              type="button"
+              hidden={ isDisabled }
+              // onClick={ this.handleDisabled }
+            >
+              PRÓXIMA
+            </button>
+          </div>
+        ))}
       </div>
     );
   }
@@ -132,7 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  questions: state.questions.questions,
+  questions: state.questions,
 });
 
 Game.propTypes = {
