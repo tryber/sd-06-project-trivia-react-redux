@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   score: 0,
   assertions: 0,
   questions: [],
-  difficulty: 'medium',
+  difficulty: 'easy',
   timer: 30,
 };
 
@@ -17,7 +17,7 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.score,
-      assertions: action.assertions,
+      assertions: state.assertions + 1,
     };
   case RENDER_TIME:
     return { ...state, timer: state.timer - 1 };

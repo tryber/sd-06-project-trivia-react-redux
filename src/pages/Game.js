@@ -24,10 +24,12 @@ class Game extends React.Component {
     this.createInterval = this.createInterval.bind(this);
     this.clearIntervalTimer = this.clearIntervalTimer.bind(this);
     this.stopCreatingCorrectAnswer = this.stopCreatingCorrectAnswer.bind(this);
+    this.handleLocalStorage = this.handleLocalStorage.bind(this);
   }
 
   componentDidMount() {
-    const { createInterval } = this;
+    const { createInterval, handleLocalStorage } = this;
+    handleLocalStorage('create');
     setTimeout(createInterval(), 5000)
   }
 
@@ -56,34 +58,34 @@ class Game extends React.Component {
       difficulty,
       toUpdateScore,
       timer,
-      assertions,
       questions,
     } = this.props;
-    const { clearIntervalTimer } = this;
+    const { clearIntervalTimer, handleLocalStorage } = this;
     const { questionNumber } = this.state;
     const baseScore = 10;
     const easy = 1;
-    const hard = 1;
-    const medium = 1;
+    const medium = 2;
+    const hard = 3;
 
     let difficultyMultiplier = 0;
 
     switch (difficulty) {
-    case 'easy':
-      difficultyMultiplier = easy;
+    case 'medium':
+      difficultyMultiplier = medium;
       break;
     case 'hard':
       difficultyMultiplier = hard;
       break;
     default:
-      difficultyMultiplier = medium;
+      difficultyMultiplier = easy;
     }
 
     if (innerText === questions[questionNumber].correct_answer) {
       const addScore = baseScore + (timer * difficultyMultiplier);
-      toUpdateScore(addScore, assertions);
+      toUpdateScore(addScore);
     }
 
+    handleLocalStorage('update');
     clearIntervalTimer();
   }
 
@@ -119,9 +121,36 @@ class Game extends React.Component {
     );
   }
 
+  handleLocalStorage(action) {
+    const { name, assertions, score, gravatarEmail } = this.props;
+    
+    if (action === 'create') {
+      const newPlayerStorage = {
+        player: {
+          name,
+          assertions,
+          score,
+          gravatarEmail,
+        }
+      };
+      localStorage.setItem('state', JSON.stringify(newPlayerStorage));
+    } else if (action === 'update') {
+      const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
+      currentLocalStorage.player.name = name;
+      currentLocalStorage.player.assertions = assertions;
+      currentLocalStorage.player.score = score;
+      currentLocalStorage.player.gravatarEmail = gravatarEmail;
+      localStorage.setItem('state', JSON.stringify(currentLocalStorage));
+    }
+  }
+
   renderAnswers() {
     const { questionNumber, answered, generatedAnswer } = this.state;
-    const { chooseAnswer, stopCreatingCorrectAnswer, handleScore } = this;
+    const {
+      chooseAnswer,
+      stopCreatingCorrectAnswer,
+      handleScore,
+    } = this;
     const { questions, timer } = this.props;
     const correctAnswerPosition = Math
       .floor(Math
@@ -214,7 +243,7 @@ const mapStateToProps = (state) => ({
   questions: state.game.questions,
   difficulty: state.game.difficulty,
   timer: state.game.timer,
-  score: state.game.timer,
+  score: state.game.score,
   assertions: state.game.assertions,
 });
 

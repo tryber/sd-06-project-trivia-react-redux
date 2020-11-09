@@ -24,10 +24,9 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const updateScore = (score, assertions) => ({
+export const updateScore = (score) => ({
   type: UPDATE_SCORE,
   score,
-  assertions,
 });
 
 export const renderTime = () => ({
