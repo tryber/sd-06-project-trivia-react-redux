@@ -24,10 +24,26 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
-export const updateScore = (score) => ({
+const updateScore = (score) => ({
   type: UPDATE_SCORE,
   score,
 });
+
+export const updateLocalStorageAction = (
+  currentScore,
+  currentName,
+  currentAssertions,
+  currentGravatarEmail) => {
+  return async (dispatch) => {
+    await dispatch(updateScore(currentScore));
+    const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
+    currentLocalStorage.player.name = currentName;
+    currentLocalStorage.player.assertions = currentAssertions;
+    currentLocalStorage.player.score = currentScore;
+    currentLocalStorage.player.gravatarEmail = currentGravatarEmail;
+    localStorage.setItem('state', JSON.stringify(currentLocalStorage));
+  }
+}
 
 export const renderTime = () => ({
   type: RENDER_TIME,
