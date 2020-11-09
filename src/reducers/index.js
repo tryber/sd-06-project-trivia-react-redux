@@ -1,26 +1,10 @@
-import {
-  SAVE_TOKEN,
-} from '../actions';
+import { combineReducers } from 'redux';
+import player from './player';
+import game from './game';
 
-const INITIAL_STATE = {
-  player: {
-    name: '',
-    assertions: '',
-    score: '',
-    gravatarEmail: '',
-  },
-  ranking: '',
-  token: '',
-};
+const rootReducer = combineReducers({
+  player,
+  game,
+});
 
-export default function reducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case SAVE_TOKEN:
-    return {
-      ...state,
-      token: action.token,
-    };
-  default:
-    return state;
-  }
-}
+export default rootReducer;
