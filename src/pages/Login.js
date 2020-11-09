@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
 import { saveToken, saveName, saveEmail } from '../actions';
+import './style_sheets/Login.css';
 
 class Login extends React.Component {
   constructor() {
