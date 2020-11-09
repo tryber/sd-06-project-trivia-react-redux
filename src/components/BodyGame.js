@@ -51,7 +51,6 @@ class BodyGame extends Component {
 
   async componentDidUpdate(prevProps) {
     const { getToken, questionsFunction, questions } = this.props;
-    console.log(questions.length, prevProps.questions.length);
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
     }
@@ -177,7 +176,6 @@ class BodyGame extends Component {
     const { questions } = this.props;
     const { answers } = this.state;
     questions.forEach((question, index) => {
-      console.log(questions[index]);
       answers[index] = [question.correct_answer, ...question.incorrect_answers];
     });
     for (let i = 0; i < answers.length - 1; i += 1) {
@@ -191,7 +189,6 @@ class BodyGame extends Component {
         answers[i][currentIndex] = answers[i][randomIndex];
         answers[i][randomIndex] = temporaryValue;
       }
-      console.log(answers[i]);
     }
   }
 
