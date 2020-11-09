@@ -30,16 +30,17 @@ const updateScore = (score) => ({
 });
 
 export const updateLocalStorageAction = (
-  currentScore,
+  newScore,
   currentName,
   currentAssertions,
   currentGravatarEmail,
 ) => async (dispatch) => {
-  await dispatch(updateScore(currentScore));
+  await dispatch(updateScore(newScore));
   const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
   currentLocalStorage.player.name = currentName;
   currentLocalStorage.player.assertions = currentAssertions;
-  currentLocalStorage.player.score = currentScore;
+  const previousScore = currentLocalStorage.player.score;
+  currentLocalStorage.player.score = previousScore + newScore;
   currentLocalStorage.player.gravatarEmail = currentGravatarEmail;
   localStorage.setItem('state', JSON.stringify(currentLocalStorage));
 };
