@@ -22,30 +22,10 @@ class Questions extends Component {
     this.handleTime = this.handleTime.bind(this);
   }
 
-  changeToNextQuestion() {
-    const nextButton = document.querySelector('.btn-next');
-    const { questionNumber } = this.state;
-    const { resetTimer } = this.props;
-    const indexLimit = 4;
-    const wrongList = document.querySelectorAll('.wrong-question');
-    const rightQuestion = document.querySelector('.right-question');
-    nextButton.style.visibility = "hidden";
-    
-    resetTimer();
-
-    this.setState({
-      questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
-      disableBTN: false,
-      shuffled: false,
-      answerTime: 0,
-    });
-
-    if (wrongList && rightQuestion) {
-      wrongList.forEach((element) => {
-        element.className = 'wquestion';
-      });
-      rightQuestion.className = 'rquestion';
-    }
+  getAnswerTime() {
+    const time = document.querySelector('.timer');
+    const timeInt = parseInt(time.innerHTML);
+    return timeInt;
   }
 
   shuffleArray() {
@@ -64,17 +44,37 @@ class Questions extends Component {
     }
   }
 
-  getAnswerTime() {
-    const time = document.querySelector('.timer');
-    const timeInt = parseInt(time.innerHTML);
-    return timeInt;
+  changeToNextQuestion() {
+    const nextButton = document.querySelector('.btn-next');
+    const { questionNumber } = this.state;
+    const { resetTimer } = this.props;
+    const indexLimit = 4;
+    const wrongList = document.querySelectorAll('.wrong-question');
+    const rightQuestion = document.querySelector('.right-question');
+    nextButton.style.visibility = 'hidden';
+
+    resetTimer();
+
+    this.setState({
+      questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
+      disableBTN: false,
+      shuffled: false,
+      answerTime: 0,
+    });
+
+    if (wrongList && rightQuestion) {
+      wrongList.forEach((element) => {
+        element.className = 'wquestion';
+      });
+      rightQuestion.className = 'rquestion';
+    }
   }
 
   handleTime() {
     const { disableBTN } = this.state;
     const { lostTime } = this.props;
 
-    if(lostTime && !disableBTN) {
+    if (lostTime && !disableBTN) {
       this.setState({
         disableBTN: true,
         answerTime: 0,
@@ -82,13 +82,12 @@ class Questions extends Component {
     }
   }
 
-
   handleAnswer({ target }) {
     const { stopTimer } = this.props;
     const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
-    nextButton.style.visibility = "visible";
+    nextButton.style.visibility = 'visible';
 
     stopTimer();
 
@@ -99,10 +98,10 @@ class Questions extends Component {
         element.className = 'wrong-question';
       });
       rightQuestion.className = 'right-question';
-      console.log(answerTime)
+
       this.setState({
         disableBTN: true,
-        answerTime: answerTime,
+        answerTime,
       });
     }
     if (target.className === 'wquestion') {
@@ -167,10 +166,10 @@ class Questions extends Component {
   }
 
   render() {
-    const { shuffled  } = this.state;
+    const { shuffled } = this.state;
     const { gameQuestions } = this.props;
 
-    if(!shuffled && gameQuestions) {
+    if (!shuffled && gameQuestions) {
       this.shuffleArray();
     }
 
@@ -197,12 +196,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetTimer: () =>  dispatch(timerReset()),
+  resetTimer: () => dispatch(timerReset()),
   stopTimer: () => dispatch(timerStop()),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  resetTimer: PropTypes.func.isRequired,
+  stopTimer: PropTypes.func.isRequired,
+  lostTime: PropTypes.bool.isRequired,
 };

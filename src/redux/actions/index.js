@@ -47,7 +47,7 @@ export const timerStart = () => ({
   startCount: true,
   stopCount: false,
   resetCount: false,
-})
+});
 
 export const timerReset = () => ({
   type: TIMER_RESET,
