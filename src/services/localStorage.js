@@ -1,12 +1,12 @@
-export const loadState = () => {
+export const loadState = (key, initialValue) => {
   try {
-    const serializedState = localStorage.getItem('state');
+    const serializedState = localStorage.getItem(key);
     if (serializedState === null) {
-      return '';
+      return initialValue;
     }
     return JSON.parse(serializedState);
   } catch (err) {
-    return '';
+    return initialValue;
   }
 };
 

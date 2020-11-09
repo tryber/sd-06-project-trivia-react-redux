@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import '../style/ButtonsGame.css';
+import { questionScore, questionScorePlayer } from '../redux/actions';
 
 class Game extends Component {
   constructor() {
@@ -17,7 +18,7 @@ class Game extends Component {
       red: '',
       respondeu: false,
       time: 30,
-      seiLa: null,
+      timeInterval: null,
       disableAnwsers: false,
     };
   }
@@ -26,7 +27,36 @@ class Game extends Component {
     this.timer();
   }
 
-  colorButton() {
+  colorButton(rightAnswer) {
+    if (rightAnswer) {
+      const { time, index } = this.state;
+      const { arrayQuestion, saveScorePlayer } = this.props;
+      const objQuestion = arrayQuestion[index];
+      let difficultyNumber = 0;
+      const three = 3;
+      switch (objQuestion.difficulty) {
+      case 'hard':
+        difficultyNumber = three;
+        break;
+      case 'medium':
+        difficultyNumber = 2;
+        break;
+      case 'easy':
+        difficultyNumber = 1;
+        break;
+      default:
+        difficultyNumber = 0;
+        break;
+      }
+      const ten = 10;
+      const score = ten + (time * difficultyNumber);
+      saveScorePlayer(score);
+      // saveRanking({
+      //   score,
+      //   name: user.login.name,
+      //   picture: user.login.picture,
+      // });
+    }
     this.setState({
       green: 'correct-answer',
       red: 'wrong-answer',
@@ -48,7 +78,7 @@ class Game extends Component {
             type="button"
             data-testid="correct-answer"
             className={ green }
-            onClick={ () => this.colorButton() }
+            onClick={ () => this.colorButton(true) }
             disabled={ disableAnwsers }
           >
             {element}
@@ -62,7 +92,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           key={ countoString }
           className={ red }
-          onClick={ () => this.colorButton() }
+          onClick={ () => this.colorButton(false) }
           disabled={ disableAnwsers }
         >
           {element}
@@ -80,31 +110,31 @@ class Game extends Component {
       time: 30,
       disableAnwsers: false,
     }), () => {
-      const { seiLa } = this.state;
-      clearInterval(seiLa);
+      const { timeInterval } = this.state;
+      clearInterval(timeInterval);
       this.timer();
     });
   }
 
   timer() {
     const countTime = 1000;
-    const seiLa = setInterval(() => {
+    const timeInterval = setInterval(() => {
       this.setState((state) => ({
         time: state.time - 1,
       }), () => {
         const { time } = this.state;
         if (time <= 0) {
-          console.log('para');
+          console.log('para tempo encerrado');
           this.setState({
             disableAnwsers: true,
           });
-          clearInterval(seiLa);
+          clearInterval(timeInterval);
           this.colorButton();
         }
       });
     }, countTime);
     this.setState({
-      seiLa,
+      timeInterval,
     });
   }
 
@@ -112,6 +142,7 @@ class Game extends Component {
     const { arrayQuestion } = this.props;
     const { index, respondeu, time } = this.state;
     // const { category, question } = arrayQuestion[index];
+    // console.log('arrayQuestion', arrayQuestion);
     if (arrayQuestion.length === 0) {
       return (
         <span>Login não realizado</span>
@@ -139,10 +170,17 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   arrayQuestion: state.questionsInformation.arrayQuestion,
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  saveRanking: (ranking) => dispatch(questionScore(ranking)),
+  saveScorePlayer: (score) => dispatch(questionScorePlayer(score)),
 });
 
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
+  saveScorePlayer: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

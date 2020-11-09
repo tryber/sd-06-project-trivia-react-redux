@@ -15,18 +15,39 @@ export const questions = (objQuestion) => ({
 });
 
 export const USER = 'USER';
-export const user = (login) => ({
+export const user = (player) => ({
   type: USER,
   payload: {
-    login,
+    player,
   },
 });
 
-// function fetchToken() {
-//   return (dispatch) => {
-//     fetchAPI()
-//       .then((token) => {
-//         dispatch(tokenLogin(token));
-//       });
-//   };
-// }
+export const SCORE_PLAYER = 'SCORE_PLAYER';
+// let { assertions } = loadState('state', {
+//   player: {
+//     name: '',
+//     gravatarEmail: '',
+//     picture: '',
+//     assertions: 0,
+//     score: 0,
+//   },
+// }).player;
+export const questionScorePlayer = (scorePlayer) => ({
+  type: SCORE_PLAYER,
+  payload: {
+    score: scorePlayer,
+  },
+});
+
+export const SCORE_RESET = 'SCORE_RESET';
+export const scoreReset = () => ({
+  type: SCORE_RESET,
+});
+
+export const SCORE_RANKING = 'SCORE_RANKING';
+export const questionScore = (ranking) => ({
+  type: SCORE_RANKING,
+  payload: {
+    ranking,
+  },
+});

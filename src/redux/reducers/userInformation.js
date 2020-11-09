@@ -1,7 +1,8 @@
+import { loadState } from '../../services/localStorage';
 import { ADD_TOKEN } from '../actions';
 
 const INITIAL_STATE = {
-  token: '',
+  token: loadState('token', ''),
 };
 
 function userInformation(state = INITIAL_STATE, action) {
