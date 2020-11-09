@@ -12,8 +12,13 @@ class GameHeader extends React.Component {
   }
 
   sendToLocalStorage() {
-    const { name, email, score } = this.props;
-    const player = { player: { name, assertions: '', score, gravatarEmail: email } };
+    const { name, email, score, correctAnswers } = this.props;
+    const player = { player: {
+      name,
+      assertions: correctAnswers,
+      score,
+      gravatarEmail: email,
+    } };
     localStorage.setItem('state', JSON.stringify(player));
   }
 
@@ -42,6 +47,7 @@ const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
   score: state.user.score,
+  correctAnswers: state.game.correctAnswers,
 });
 
 export default connect(mapStateToProps)(GameHeader);
@@ -50,4 +56,5 @@ GameHeader.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  correctAnswers: PropTypes.number.isRequired,
 };

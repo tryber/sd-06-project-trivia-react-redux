@@ -415,7 +415,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
   });
 });
 
-describe.skip('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
+describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

@@ -32,7 +32,7 @@ class FeedbackComponent extends React.Component {
   }
 
   render() {
-    const { name, email, score } = this.props;
+    const { name, email, score, correctAnswers } = this.props;
 
     return (
       <div>
@@ -43,7 +43,8 @@ class FeedbackComponent extends React.Component {
           alt="gravatar-profile-pic"
         />
         <h3 data-testid="header-player-name">{name}</h3>
-        <p data-testid="header-score">{score}</p>
+        <p data-testid="feedback-total-score">{score}</p>
+        <p data-testid="feedback-total-question">{correctAnswers}</p>
         <button
           data-testid="btn-play"
           type="button"
