@@ -6,8 +6,8 @@ class GameScreen extends React.Component {
   render() {
     return (
       <div>
-        <GameBody />
         <HeaderGame />
+        <GameBody />
       </div>
     );
   }
