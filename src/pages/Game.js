@@ -104,6 +104,7 @@ class Game extends React.Component {
     const { createInterval, clearIntervalTimer } = this;
     const { toResetTimer, history } = this.props;
     const { questionNumber } = this.state;
+    const four = 4;
 
     toResetTimer();
     clearIntervalTimer();
@@ -114,7 +115,7 @@ class Game extends React.Component {
       generatedAnswer: false,
     }));
 
-    questionNumber > 4 && history.push('/feedback');
+    (questionNumber === four && history.push('/feedback'));
   }
 
   handleLocalStorage() {
@@ -266,6 +267,9 @@ Game.propTypes = {
   timer: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
