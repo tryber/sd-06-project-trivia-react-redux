@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { timerReset, timerStop, getPlayerScore } from '../redux/actions';
+import {
+  timerReset,
+  timerStop,
+  getPlayerScore,
+  correctAnswerCounter,
+} from '../redux/actions';
 
 class Questions extends Component {
   constructor() {
@@ -11,6 +17,8 @@ class Questions extends Component {
       disableBTN: false,
       shuffledQuestions: [],
       shuffled: false,
+      feedback: false,
+      hideNext: true,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
@@ -19,6 +27,8 @@ class Questions extends Component {
     this.shuffleArray = this.shuffleArray.bind(this);
     this.getAnswerTime = this.getAnswerTime.bind(this);
     this.handleTime = this.handleTime.bind(this);
+    this.renderFeedback = this.renderFeedback.bind(this);
+    this.renderNext = this.renderNext.bind(this);
   }
 
   getAnswerTime() {
@@ -44,13 +54,11 @@ class Questions extends Component {
   }
 
   changeToNextQuestion() {
-    const nextButton = document.querySelector('.btn-next');
     const { questionNumber } = this.state;
     const { resetTimer } = this.props;
     const indexLimit = 4;
     const wrongList = document.querySelectorAll('.wrong-question');
     const rightQuestion = document.querySelector('.right-question');
-    nextButton.style.visibility = 'hidden';
 
     resetTimer();
 
@@ -58,6 +66,7 @@ class Questions extends Component {
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
       shuffled: false,
+      hideNext: true,
     });
 
     if (wrongList && rightQuestion) {
@@ -95,11 +104,10 @@ class Questions extends Component {
   }
 
   handleAnswer({ target }, difficulty) {
-    const { stopTimer, sendScore } = this.props;
-    const nextButton = document.querySelector('.btn-next');
+    const { questionNumber } = this.state;
+    const { stopTimer, sendScore, countAnswer } = this.props;
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
-    nextButton.style.visibility = 'visible';
 
     stopTimer();
 
@@ -109,6 +117,7 @@ class Questions extends Component {
       const difValue = this.checkDifficulty(difficulty);
       const playerScore = mutiplier + (getTime * difValue);
       sendScore(playerScore);
+      countAnswer();
 
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
@@ -117,6 +126,7 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
+        hideNext: false,
       });
     }
 
@@ -128,6 +138,16 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
+        hideNext: false,
+      });
+    }
+
+    const questionIndexLimit = 4;
+
+    if (questionNumber === questionIndexLimit) {
+      this.setState({
+        feedback: true,
+        hideNext: false,
       });
     }
   }
@@ -181,8 +201,34 @@ class Questions extends Component {
     return <p>Loading</p>;
   }
 
+  renderNext() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.changeToNextQuestion }
+      >
+        Next Question
+      </button>
+    );
+  }
+
+  renderFeedback() {
+    return (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.changeToNextQuestion }
+        >
+          Next Question
+        </button>
+      </Link>
+    );
+  }
+
   render() {
-    const { shuffled } = this.state;
+    const { shuffled, hideNext, feedback } = this.state;
     const { gameQuestions } = this.props;
 
     if (!shuffled && gameQuestions) {
@@ -194,14 +240,8 @@ class Questions extends Component {
     return (
       <div>
         {this.handleQuestions()}
-        <button
-          type="button"
-          className="btn-next"
-          data-testid="btn-next"
-          onClick={ this.changeToNextQuestion }
-        >
-          Next Question
-        </button>
+        {!hideNext && !feedback ? this.renderNext() : ''}
+        {!hideNext && feedback ? this.renderFeedback() : '' }
       </div>
     );
   }
@@ -217,6 +257,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetTimer: () => dispatch(timerReset()),
   stopTimer: () => dispatch(timerStop()),
   sendScore: (score) => dispatch(getPlayerScore(score)),
+  countAnswer: () => dispatch(correctAnswerCounter()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
@@ -227,4 +268,5 @@ Questions.propTypes = {
   stopTimer: PropTypes.func.isRequired,
   lostTime: PropTypes.bool.isRequired,
   sendScore: PropTypes.func.isRequired,
+  countAnswer: PropTypes.func.isRequired,
 };
