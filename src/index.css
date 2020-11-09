@@ -13,9 +13,9 @@ code {
 }
 
 .green {
-  border: 3px solid rgb(6, 240, 15)
+  border: 3px solid rgb(6, 240, 15) !important
 }
 
 .red {
-  border: 3px solid rgb(255, 0, 0)
+  border: 3px solid rgb(255, 0, 0) !important;
 }

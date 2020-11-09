@@ -1,11 +1,14 @@
-import { QUESTION_LIST } from '../actions';
+import { SAVE_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = [];
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case QUESTION_LIST:
-    return [...state, ...action.questions];
+  case SAVE_QUESTIONS:
+    return {
+      ...state,
+      questions: [action.fetchedQuestions],
+    };
   default:
     return state;
   }

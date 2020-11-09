@@ -2,35 +2,88 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import triviaAPI from '../services/triviaAPI';
-import { requestQuestions } from '../actions';
+import { fetchQuestionsFromAPI, userScore } from '../actions';
 
 class Game extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      classRight: '',
-      classWrong: '',
-      isDisabled: true,
+      classRightAnswer: '',
+      classWrongAnswer: '',
+      isHidden: true,
+      secondsRemaining: 30,
+      disableQuestions: false,
+      disableAnswers: true,
     };
 
-    this.handleFetch = this.handleFetch.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
+    // Timer
+    this.startTimer = this.startTimer.bind(this);
+    this.decreaseTime = this.decreaseTime.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
+<<<<<<< HEAD
   async componentDidMount() {
     const NUMBER_OF_QUESTIONS = 5;
     const { receivedQuestions } = this.props;
     const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
     receivedQuestions(questions.results); //  populou o state
+=======
+  componentDidMount() {
+    const { state } = this.props;
+    localStorage.setItem('state', JSON.stringify(state));
+    const NUMBER_OF_QUESTIONS = 1;
+    const MAGIC_NUMBER = 5000;
+    const { fetchQuestionsAction } = this.props;
+    fetchQuestionsAction(NUMBER_OF_QUESTIONS);
+    setTimeout(this.startTimer, MAGIC_NUMBER);
+>>>>>>> main-group-27
   }
 
-  async handleFetch(num) {
-    const getQuestions = await triviaAPI(num);
-    return getQuestions;
+  componentDidUpdate(prevProps) {
+    const { state } = this.props;
+    if (JSON.stringify(prevProps.state) !== JSON.stringify(state)) {
+      localStorage.setItem('state', JSON.stringify(state));
+    }
+  }
+
+  startTimer() {
+    const INTERVAL = 1000;
+    const intervalID = setInterval(() => {
+      this.decreaseTime();
+      this.setState({
+        intervalID,
+        disableAnswers: false,
+      });
+    }, INTERVAL);
+  }
+
+  stopTimer() {
+    const { intervalID } = this.state;
+    clearInterval(intervalID);
+  }
+
+  decreaseTime() {
+    const { secondsRemaining } = this.state;
+    this.setState({
+      secondsRemaining: secondsRemaining - 1,
+    });
+
+    if (secondsRemaining === 0) {
+      this.stopTimer();
+
+      this.setState({
+        secondsRemaining: 0,
+        classRightAnswer: 'green',
+        classWrongAnswer: 'red',
+        disableQuestions: true,
+        isHidden: false,
+      });
+    }
   }
 
   async handleQuestions() {
@@ -38,15 +91,21 @@ class Game extends React.Component {
   }
 
   handleDisabled({ target }) {
-    // Lógica para mudar o disabled do botão
-    // Necessita que uma alternativa tenha sido selecionada
-    // target.id ? target.className = 'green' ;
+    this.stopTimer();
+    const { secondsRemaining } = this.state;
+    const { handleAnswerAction } = this.props;
+    const MAGIC_POINTS = 10;
+    if (target.id === 'correct') {
+      const questionScore = MAGIC_POINTS + (secondsRemaining * target.value);
 
-    console.log(target);
+      handleAnswerAction(questionScore);
+      // const { state } = this.props;
+      // localStorage.setItem('state', JSON.stringify(state));
+    }
     this.setState({
-      classRight: 'green',
-      classWrong: 'red',
-      isDisabled: false,
+      classRightAnswer: 'green',
+      classWrongAnswer: 'red',
+      isHidden: false,
     });
   }
 
@@ -54,23 +113,37 @@ class Game extends React.Component {
     const correctAnswer = e.correct_answer;
     const incorrectAnswers = e.incorrect_answers;
     const newArray = incorrectAnswers.concat(correctAnswer);
-
+    let difficultyPoints = 0;
+    if (e.difficulty === 'easy') difficultyPoints = 1;
+    if (e.difficulty === 'medium') difficultyPoints = 2;
+    if (e.difficulty === 'hard') difficultyPoints = 1 + 2;
     newArray.sort(); // já está alterado
-    const myIndex = newArray.indexOf(correctAnswer); // pego o indice
-    const { classRight, classWrong } = this.state;
+    const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
+    const {
+      classRightAnswer,
+      classWrongAnswer,
+      secondsRemaining,
+      disableQuestions,
+      disableAnswers,
+    } = this.state;
+
     return (
       <div id="answers">
+        <div>
+          { secondsRemaining }
+        </div>
         {newArray.map((element, index) => {
-          if (index === myIndex) {
+          if (index === correctAnswerIndex) {
             return (
               <button
                 type="button"
                 key={ index }
                 data-testid="correct-answer"
                 id="correct"
-                className={ classRight }
-                value={ element }
+                className={ classRightAnswer }
+                value={ difficultyPoints }
                 onClick={ this.handleDisabled }
+                disabled={ disableQuestions || disableAnswers }
               >
                 { element }
               </button>);
@@ -80,10 +153,10 @@ class Game extends React.Component {
               type="button"
               key={ index }
               data-testid={ `wrong-answer-${index}` }
-              value={ element }
-              className={ classWrong }
+              className={ classWrongAnswer }
               id="wrong"
               onClick={ this.handleDisabled }
+              disabled={ disableQuestions || disableAnswers }
             >
               { element }
             </button>);
@@ -93,7 +166,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isDisabled } = this.state;
+    const { isHidden } = this.state;
     const { questions } = this.props;
     return (
       <div onChange={ this.handleDisabled }>
@@ -109,6 +182,18 @@ class Game extends React.Component {
               PERGUNTA:
                 <p>{e.question}</p>
               </div>
+<<<<<<< HEAD
+=======
+              {this.randomArray(e)}
+              <button
+                data-testid="btn-next"
+                type="button"
+                hidden={ isHidden }
+                onClick={ this.handleDisabled }
+              >
+                PRÓXIMA
+              </button>
+>>>>>>> main-group-27
             </div>
             {this.randomArray(e)}
             <button
@@ -127,16 +212,28 @@ class Game extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  receivedQuestions: (e) => dispatch(requestQuestions(e)),
+  fetchQuestionsAction: (numberOfQuestions) => (
+    dispatch(fetchQuestionsFromAPI(numberOfQuestions))
+  ),
+  handleAnswerAction: (score) => (
+    dispatch(userScore(score))
+  ),
 });
 
 const mapStateToProps = (state) => ({
+<<<<<<< HEAD
   questions: state.questions,
+=======
+  questions: state.questions.questions,
+  state: state.state,
+>>>>>>> main-group-27
 });
 
 Game.propTypes = {
-  receivedQuestions: PropTypes.func.isRequired,
+  fetchQuestionsAction: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
+  state: PropTypes.shape().isRequired,
+  handleAnswerAction: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
