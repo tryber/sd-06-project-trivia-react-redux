@@ -133,7 +133,13 @@ class QuestionCards extends Component {
               {questionCard.length - 1 === currentIndex
                 ? (
                   <Link to="/feedback">
-                    <button data-testid="btn-next" className={ visibility } type="button">Finalizar</button>
+                    <button
+                      data-testid="btn-next"
+                      className={ visibility }
+                      type="button"
+                    >
+                      Finalizar
+                    </button>
                   </Link>
                 )
                 : (
