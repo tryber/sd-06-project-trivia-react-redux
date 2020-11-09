@@ -1,7 +1,7 @@
-.right-question {
+.right-answer {
   border: 3px solid rgb(6, 240, 15);
 }
 
-.wrong-question {
+.wrong-answer {
   border: 3px solid rgb(255, 0, 0);
 }

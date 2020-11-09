@@ -46,8 +46,18 @@ class LoginForm extends React.Component {
 
   handleClick() {
     const { fetchToken, saveData } = this.props;
+    const { name, email } = this.state;
     fetchToken();
     saveData(this.state);
+    const player = {
+      player: {
+        name,
+        assertions: '',
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   render() {
@@ -70,7 +80,7 @@ class LoginForm extends React.Component {
             onChange={ this.handleEmailChange }
           />
         </label>
-        <Link to="/game">
+        <Link to="/trivia">
           <button
             type="button"
             data-testid="btn-play"

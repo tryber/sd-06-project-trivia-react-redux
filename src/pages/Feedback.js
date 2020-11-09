@@ -2,22 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import Trivia from './Trivia';
 
-class GameHeader extends React.Component {
+class Feedback extends React.Component {
   render() {
-    const { name, email, score } = this.props;
+    const { email, name, score } = this.props;
     return (
       <div>
         <img
           data-testid="header-profile-picture"
-          // gravatar
           src={ `https://www.gravatar.com/avatar/${md5(email)}` }
           alt="gravatar-profile-pic"
         />
         <h3 data-testid="header-player-name">{name}</h3>
         <p data-testid="header-score">{score}</p>
-        <Trivia />
       </div>
     );
   }
@@ -29,9 +26,9 @@ const mapStateToProps = (state) => ({
   score: state.user.score,
 });
 
-export default connect(mapStateToProps)(GameHeader);
+export default connect(mapStateToProps)(Feedback);
 
-GameHeader.propTypes = {
+Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
