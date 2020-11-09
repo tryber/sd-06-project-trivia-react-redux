@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { fetchQuestion } from '../actions';
 import { QuestionCard, Header } from '../components';
 
@@ -50,7 +51,11 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions, isFetching } = this.state;
+    const { questions, isFetching, currentQuestionIdx } = this.state;
+    const afterLastQuestion = 5;
+    if (currentQuestionIdx === afterLastQuestion) {
+      return (<Redirect to="/feedback" />);
+    }
     return (
       <div>
         <Header />

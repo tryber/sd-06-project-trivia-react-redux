@@ -264,6 +264,7 @@ const mapStateToProps = (state) => ({
   score: state.userLogin.player.score,
   gravatarEmail: state.userLogin.player.gravatarEmail,
   assertions: state.userLogin.player.assertions,
+  questions: state.questions.questions.results,
 });
 
 const mapDispatchToProps = (dispatch) => ({
