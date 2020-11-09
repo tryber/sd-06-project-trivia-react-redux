@@ -21,7 +21,7 @@ class Questions extends React.Component {
     this.state = {
       correctAnswer,
       allAnswers,
-      timer: 10,
+      timer: 30,
     };
 
     this.updateAnswers = this.updateAnswers.bind(this);
@@ -69,7 +69,7 @@ class Questions extends React.Component {
     this.setState({
       correctAnswer,
       allAnswers,
-      timer: 10,
+      timer: 30,
     });
   }
 

@@ -2,25 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 
-class ButtonSettings extends Component {
+class ButtonRanking extends Component {
   render() {
     const { classProps } = this.props;
     return (
-      <Link to="/settings" className="ButtonSetting">
-        <button data-testid="btn-settings" type="button" className={ classProps }>
-          Config
+      <Link to="/ranking" className="ButtonRanking">
+        <button data-testid="btn-ranking" type="button" className={ classProps }>
+          Ver Ranking
         </button>
       </Link>
     );
   }
 }
 
-ButtonSettings.propTypes = {
+ButtonRanking.propTypes = {
   classProps: PropTypes.string,
 };
 
-ButtonSettings.defaultProps = {
+ButtonRanking.defaultProps = {
   classProps: '',
 };
 
-export default ButtonSettings;
+export default ButtonRanking;
