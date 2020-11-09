@@ -11,8 +11,35 @@ class ScreenGame extends React.Component {
     this.state = {
       answered: false,
       btnNext: true,
+      limitTime: 30,
+      isDisable: false,
     };
     this.changeColor = this.changeColor.bind(this);
+    this.timer = this.timer.bind(this);
+    this.regressTimer = this.regressTimer.bind(this);
+  }
+
+  componentDidMount() {
+    this.timer();
+  }
+
+  regressTimer() {
+    const { limitTime } = this.state;
+    if (limitTime > 0) {
+      return this.setState((previous) => ({
+        ...previous,
+        limitTime: previous.limitTime - 1,
+      }));
+    }
+  }
+
+  timer() {
+    const { limitTime } = this.state;
+    const countDown = setInterval(this.regressTimer, 1000);
+    if (limitTime === 0) {
+      clearInterval(countDown);
+      this.setState({ answered: false, isDisable: true });
+    }
   }
 
   changeColor() {
@@ -24,13 +51,14 @@ class ScreenGame extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { answered, btnNext } = this.state;
+    const { answered, btnNext, limitTime, isDisable } = this.state;
     return (
       <div className="game-container">
         <div className="header">
           <FeedbackHeader />
         </div>
         <div className="category">
+          <span>{ limitTime }</span>
           { questions && questions.results && questions.results.map((item) => (
             <p
               data-testid="question-category"
@@ -59,6 +87,7 @@ class ScreenGame extends React.Component {
               id="correct"
               onClick={ this.changeColor }
               className={ answered ? 'green-border' : null }
+              disabled={ isDisable }
             >
               {item.correct_answer}
             </button>
@@ -75,6 +104,7 @@ class ScreenGame extends React.Component {
                 id="incorrect"
                 onClick={ this.changeColor }
                 className={ answered ? 'red-border' : null }
+                disabled={ isDisable }
               >
                 {item}
               </button>
