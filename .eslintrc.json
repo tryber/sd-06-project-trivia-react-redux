@@ -77,7 +77,7 @@
     "react/state-in-constructor": ["error", "always"],
     "react/void-dom-elements-no-children": ["error"],
     "react/jsx-closing-bracket-location": ["error"],
-    "react/jsx-closing-tag-location": ["error"],
+    "react/jsx-closing-tag-location": [0],
     "react/jsx-curly-newline": ["error"],
     "react/jsx-fragments": ["error"],
     "react/jsx-max-depth": ["error", {"max": 8}],
