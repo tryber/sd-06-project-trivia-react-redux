@@ -55,7 +55,6 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   count: state.user.player,
 });
-
 Feedback.propTypes = {
   count: PropTypes.shape({
     score: PropTypes.number,

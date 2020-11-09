@@ -167,7 +167,8 @@ class Game extends Component {
             onClick={ () => this.nextQuestion() }
           >
             Próxima
-          </button>)}
+          </button>
+        )}
         <span>{ time }</span>
       </div>
     );
