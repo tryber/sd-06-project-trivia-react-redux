@@ -15,6 +15,8 @@ class BodyGame extends Component {
     this.handleScoreToLocalStorage = this.handleScoreToLocalStorage.bind(this);
     this.handleQuestionIndex = this.handleQuestionIndex.bind(this);
     this.handleAssertions = this.handleAssertions.bind(this);
+    this.handleShuffle = this.handleShuffle.bind(this);
+    this.handleAnswerBorderColor = this.handleAnswerBorderColor.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -23,13 +25,13 @@ class BodyGame extends Component {
       questionIndex: 0,
       redirect: false,
       assertions: 0,
+      answers: [],
     };
   }
 
   async componentDidMount() {
     const { email, name } = this.props;
-    const { score } = this.state;
-    const assertions = 1;
+    const { score, assertions } = this.state;
     const localStoragePlayerInfo = {
       player: {
         name,
@@ -47,14 +49,17 @@ class BodyGame extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { getToken, questionsFunction } = this.props;
-
+    const { getToken, questionsFunction, questions } = this.props;
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
+    }
+    if (questions.length > 0 && prevProps.questions.length !== questions.length) {
+      this.handleShuffle(questions);
     }
   }
 
   handleAnswerBorderColor() {
+    const { counter } = this.state;
     const rightAnswer = document.querySelector('#right-answer');
     rightAnswer.className = 'right-question';
     const wrongAnswers = document.querySelectorAll('#wrong-answer');
@@ -63,6 +68,16 @@ class BodyGame extends Component {
     });
     const nextButton = document.querySelector('#next-button');
     nextButton.style = 'display: block';
+    if (counter > 1) {
+      this.handleDisableButtonsOnClick(rightAnswer, wrongAnswers);
+    }
+  }
+
+  handleDisableButtonsOnClick(rightAnswer, wrongAnswers) {
+    rightAnswer.setAttribute('disabled', 'disabled');
+    wrongAnswers.forEach((eachWrongAnswer) => {
+      eachWrongAnswer.setAttribute('disabled', 'disabled');
+    });
   }
 
   disableAnswerButtons() {
@@ -113,8 +128,7 @@ class BodyGame extends Component {
 
   handleScoreToLocalStorage() {
     const { email, name } = this.props;
-    const { score } = this.state;
-    const assertions = 1;
+    const { score, assertions } = this.state;
     const localStoragePlayerInfo = {
       player: {
         name,
@@ -128,7 +142,9 @@ class BodyGame extends Component {
 
   handleAssertions() {
     const { assertions } = this.state;
-    this.setState({ assertions: assertions + 1 });
+    this.setState({ assertions: assertions + 1 }, () => {
+      this.handleClickAssertions();
+    });
   }
 
   handleQuestionIndex() {
@@ -140,6 +156,7 @@ class BodyGame extends Component {
     this.setState({
       questionIndex: questionIndex + 1,
       counter: 30,
+      isDisabled: false,
     });
   }
 
@@ -155,20 +172,40 @@ class BodyGame extends Component {
     dispatchAssertions(assertions);
   }
 
+  handleShuffle() {
+    const { questions } = this.props;
+    const { answers } = this.state;
+    questions.forEach((question, index) => {
+      answers[index] = [question.correct_answer, ...question.incorrect_answers];
+    });
+    for (let i = 0; i < answers.length - 1; i += 1) {
+      let currentIndex = answers[i].length;
+      let temporaryValue;
+      let randomIndex;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = answers[i][currentIndex];
+        answers[i][currentIndex] = answers[i][randomIndex];
+        answers[i][randomIndex] = temporaryValue;
+      }
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { isDisabled, counter, questionIndex, redirect } = this.state;
+    const { isDisabled, counter, questionIndex, redirect, answers } = this.state;
     return (
       <div className="container">
         {redirect ? <Redirect to="/feedback" /> : null}
-        {questions.map((question, index) => (
+        {answers.map((answer, index) => (
           <div key={ index }>
             <div className="box-question">
               <div className="field-category">
-                <h3 data-testid="question-category">{question.category}</h3>
+                <h3 data-testid="question-category">{questions[index].category}</h3>
               </div>
               <div className="field-question">
-                <p data-testid="question-text">{question.question}</p>
+                <p data-testid="question-text">{questions[index].question}</p>
               </div>
             </div>
             <div className="box-alternatives">
@@ -185,39 +222,46 @@ class BodyGame extends Component {
                 >
                   Próxima
                 </button>
-                <button
-                  id="right-answer"
-                  type="button"
-                  data-testid="correct-answer"
-                  name="right-answer"
-                  onClick={ () => {
-                    this.handleScore(question, counter);
-                    this.handleAnswerBorderColor();
-                    this.handleAssertions();
-                    this.handleClickAssertions();
-                  } }
-                  disabled={ isDisabled }
-                >
-                  {question.correct_answer}
-                </button>
-                {question.incorrect_answers.map((item, position) => (
-                  <button
-                    id="wrong-answer"
-                    type="button"
-                    key={ position }
-                    data-testid={ `wrong-answer-${position}` }
-                    name="wrong-answer"
-                    onClick={ this.handleAnswerBorderColor }
-                    disabled={ isDisabled }
-                  >
-                    {item}
-                  </button>
-                ))}
+                {answer.map((eachAnswer, i) => (
+                  (questions[index].correct_answer.includes(eachAnswer)
+                    ? (
+                      <button
+                        id="right-answer"
+                        type="button"
+                        data-testid="correct-answer"
+                        name="right-answer"
+                        key={ i }
+                        onClick={ () => {
+                          this.handleAnswerBorderColor();
+                          this.handleScore(questions[index], counter);
+                          this.handleAssertions();
+                          // this.handleClickAssertions();
+                        } }
+                        disabled={ isDisabled }
+                      >
+                        {eachAnswer}
+                      </button>
+                    )
+                    : (
+                      <button
+                        id="wrong-answer"
+                        type="button"
+                        key={ i }
+                        data-testid={ `wrong-answer-${i}` }
+                        name="wrong-answer"
+                        onClick={ this.handleAnswerBorderColor }
+                        disabled={ isDisabled }
+                      >
+                        {eachAnswer}
+                      </button>
+                    )
+                  )))}
               </div>
             </div>
           </div>
         )).filter((_, index) => index === questionIndex)}
         <Timer
+          handleAnswerBorderColor={ this.handleAnswerBorderColor }
           counter={ counter }
           handleCounter={ this.handleCounter }
           disableAnswerButtons={ this.disableAnswerButtons }

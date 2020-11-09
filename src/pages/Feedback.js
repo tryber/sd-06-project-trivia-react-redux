@@ -6,15 +6,16 @@ import Header from '../components/Header';
 class Feedback extends Component {
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const playerScore = state.player.score;
+    const { score } = state.player;
     const { assertions } = this.props;
 
-    const feedbackMessage = () => (assertions >= 2
+    const feedbackMessage = () => (assertions > 2
       ? 'Mandou bem!' : 'Podia ser melhor...');
 
     return (
       <>
-        <h2>{playerScore}</h2>
+        <h2 data-testid="feedback-total-score">{score}</h2>
+        <h2 data-testid="feedback-total-question">{assertions}</h2>
         <Header />
         <h1 data-testid="feedback-text">
           {feedbackMessage()}
