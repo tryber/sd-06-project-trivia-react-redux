@@ -11,7 +11,7 @@ class Questions extends Component {
       disableBTN: false,
       shuffledQuestions: [],
       shuffled: false,
-      answerTime: 0,
+      // answerTime: 0,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
@@ -24,7 +24,7 @@ class Questions extends Component {
 
   getAnswerTime() {
     const time = document.querySelector('.timer');
-    const timeInt = parseInt(time.innerHTML);
+    const timeInt = parseInt(time.innerHTML, 10);
     return timeInt;
   }
 
@@ -59,7 +59,7 @@ class Questions extends Component {
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
       shuffled: false,
-      answerTime: 0,
+      // answerTime: 0,
     });
 
     if (wrongList && rightQuestion) {
@@ -77,7 +77,7 @@ class Questions extends Component {
     if (lostTime && !disableBTN) {
       this.setState({
         disableBTN: true,
-        answerTime: 0,
+        // answerTime: 0,
       });
     }
   }
@@ -101,9 +101,10 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
-        answerTime,
+        // answerTime,
       });
     }
+
     if (target.className === 'wquestion') {
       wrongList.forEach((element) => {
         element.className = 'wrong-question';
@@ -112,7 +113,7 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
-        answerTime: 0,
+        // answerTime: 0,
       });
     }
   }
