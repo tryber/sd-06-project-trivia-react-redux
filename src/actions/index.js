@@ -1,21 +1,16 @@
 export const LOGIN = 'LOGIN';
-export const GET_SCORE = 'GET_SCORE';
 export const UPDATE_PLAYER_TOKEN = 'UPDATE_PLAYER_TOKEN';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const RENDER_TIME = 'RENDER_TIME';
+export const RESET_TIME = 'RESET_TIME';
 
 export function getLogin(name, email) {
+  localStorage.setItem('state', { player: { name, gravatarEmail: email } });
   return {
     type: LOGIN,
     name,
     email,
-  };
-}
-
-export function playerScore(score) {
-  return {
-    type: GET_SCORE,
-    score,
   };
 }
 
@@ -29,8 +24,32 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
+const updateScore = (score) => ({
+  type: UPDATE_SCORE,
+  score,
+});
+
+export const updateLocalStorageAction = (
+  currentScore,
+  currentName,
+  currentAssertions,
+  currentGravatarEmail,
+) => async (dispatch) => {
+  await dispatch(updateScore(currentScore));
+  const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
+  currentLocalStorage.player.name = currentName;
+  currentLocalStorage.player.assertions = currentAssertions;
+  currentLocalStorage.player.score = currentScore;
+  currentLocalStorage.player.gravatarEmail = currentGravatarEmail;
+  localStorage.setItem('state', JSON.stringify(currentLocalStorage));
+};
+
 export const renderTime = () => ({
   type: RENDER_TIME,
+});
+
+export const resetTimer = () => ({
+  type: RESET_TIME,
 });
 
 export const getToken = () => async (dispatch) => {
