@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
-import store from '../store';
 import Timer from '../components/timer';
 import Questions from '../components/Questions';
-import { scoreAction } from '../actions';
+import { scoreAction, answerAction } from '../actions';
+// import playerData from '../reducers/playerData';
 
 class Game extends Component {
   constructor(props) {
     super(props);
 
-    const { time } = this.props;
+    const { time, answered } = this.props;
     this.state = {
-      answered: false,
+      answered,
       index: 0,
       clicked: false,
       time,
       choice: '',
+      disableNextBtn: false,
     };
 
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
     this.setTimeUpdate = this.setTimeUpdate.bind(this);
+    this.handleButton = this.handleButton.bind(this);
+    this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
   }
 
   componentDidMount() {
     this.scoreLocalStorage();
   }
 
-  componentDidUpdate(_prev, newState) {
-    const { time } = this.props;
-    const { answered } = this.state;
-    if (newState.answered !== answered) this.handleScore();
-    if (newState.time !== time) this.setTimeUpdate(time);
+  componentDidUpdate(prev, prevState) {
+    // const { time } = this.props;
+    // if (prev.time !== prevState.time) this.setTimeUpdate(time);
     this.scoreLocalStorage();
   }
 
@@ -55,9 +56,9 @@ class Game extends Component {
   handleAnswer(value) {
     this.setState({
       clicked: true,
-      answered: true,
       choice: value,
     });
+    this.handleScore();
   }
 
   handleScore() {
@@ -71,8 +72,57 @@ class Game extends Component {
     if (APIQuestions[index].difficulty === 'easy') difficult = easy;
     if (APIQuestions[index].difficulty === 'medium') difficult = medium;
     if (APIQuestions[index].difficulty === 'hard') difficult = hard;
-    const points = (TEN + (time * difficult));
-    if (choice === 'correct-answer') scorePoints(points);
+    const points = choice === 'correct-answer' ? (TEN + (time * difficult)) : 0;
+    const respondida = {
+      answered: true,
+      score: points,
+      timeout: false,
+    };
+    scorePoints(respondida);
+  }
+
+  handleButton() {
+    const { clicked, disableNextBtn } = this.state;
+
+    if (clicked) {
+      return (
+        <button
+          type="button"
+          onClick={ () => this.handleClickButtonNext() }
+          data-testid="btn-next"
+          disabled={ disableNextBtn }
+        >
+          Próxima
+        </button>
+      );
+    }
+  }
+
+  handleClickButtonNext() {
+
+    this.setState(((prevState) => ({
+      index: prevState.index + 1,
+      clicked: false,
+      choice: '',
+    })), () => {
+      const { index } = this.state;
+      // const { history } = this.props;
+      const QUATRO = 4;
+
+      if (index === QUATRO) {
+        this.setState({ disableNextBtn: true });
+        // history.push('/feedback');
+      } else {
+        this.setState({ disableNextBtn: false });
+      }
+    });
+    const { answeredAction } = this.props;
+    const resetTime = {
+      time: 30,
+      answered: false,
+      timeout: false,
+    };
+    answeredAction(resetTime);
   }
 
   render() {
@@ -110,9 +160,10 @@ class Game extends Component {
           onClickWrong={ () => this.handleAnswer('wrong-answer') }
         />
         <section>
-          <Provider store={ store }>
-            <Timer />
-          </Provider>
+          { this.handleButton() }
+        </section>
+        <section>
+          <Timer />
         </section>
       </section>
     );
@@ -121,17 +172,20 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   info: state.token.response,
-  timeout: state.playerData.payload.timeout,
-  time: state.playerData.payload.time,
+  timeout: state.allQuestions.timeout,
+  time: state.allQuestions.time,
   name: state.login.name,
   email: state.login.email,
   score: state.allQuestions.score,
   assertions: state.allQuestions.assertions,
   APIQuestions: state.allQuestions.results,
+  answered: state.allQuestions.answered,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   scorePoints: (score) => dispatch(scoreAction(score)),
+  // playerDataReset: (time) => dispatch(playerData(time)),
+  answeredAction: (answerTime) => dispatch(answerAction(answerTime)),
 });
 
 Game.propTypes = {

@@ -12,6 +12,8 @@ export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const PLAYER_DATA = 'PLAYER_DATA';
 export const SCORED_POINT = 'SCORED_POINT';
+export const ANSWERED = 'ANSWERED';
+
 
 const requestToken = 'https://opentdb.com/api_token.php?command=request';
 const requestQuestions = 'https://opentdb.com/api.php?amount=5&category=31&token=';
@@ -29,17 +31,24 @@ export const tokenAction = (token) => ({
 
 export const scoreAction = (score) => ({
   type: SCORED_POINT,
-  score,
+  score: score.score,
+  answered: score.answered,
+  timeout: score.timeout,
+});
+
+export const answerAction = (payload) => ({
+  type: ANSWERED,
+  time: payload.time,
+  answered: payload.answered,
+  timeout: payload.timeout,
 });
 
 export const playerData = (payload) => ({
   type: PLAYER_DATA,
-  payload: {
-    name: payload.name,
-    score: payload.score,
-    timeout: payload.timeout,
-    time: payload.time,
-  },
+  name: payload.name,
+  score: payload.score,
+  timeout: payload.timeout,
+  time: payload.time,
 });
 
 export const getQuestionsAction = (payload) => ({

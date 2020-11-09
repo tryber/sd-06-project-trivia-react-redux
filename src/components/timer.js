@@ -1,43 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import { playerData } from '../actions';
+import { answerAction } from '../actions';
 
 class Timer extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.setTimeUpdate = this.setTimeUpdate.bind(this);
+    const { time } = this.props;
 
     this.state = {
-      timeLeft: 30,
+      timeLeft: time,
     };
   }
 
   componentDidMount() {
+    const { time } = this.props;
     const oneSecond = 1000;
     setTimeout(this.decreaseTime, oneSecond);
+    this.setTimeUpdate(time);
   }
 
   componentDidUpdate() {
     const { timeLeft } = this.state;
-    const { name, score, playerDataAction } = this.props;
+    const { answered, answeredAction } = this.props;
     const action = {
       timeout: true,
-      name,
-      score,
-      time: timeLeft,
     };
     const timer = {
       timeout: false,
-      score,
       time: timeLeft,
+      answered: true,
     };
     const oneSecond = 1000;
     const trinta = 30;
-    if (timeLeft > 0 && timeLeft <= trinta) playerDataAction(timer);
-    if (timeLeft < 1) playerDataAction(action);
-    setTimeout(this.decreaseTime, oneSecond);
+    if (answered === false) setTimeout(this.decreaseTime, oneSecond);
+    if (timeLeft > 0 && timeLeft <= trinta && answered === true) answeredAction(timer);
+    if (timeLeft < 1) answeredAction(action);
+  }
+
+  setTimeUpdate(time) {
+    this.setState({ timeLeft: time });
   }
 
   decreaseTime() {
@@ -57,25 +62,22 @@ Tempo:
   }
 }
 
-Timer.defaultProps = {
-  name: 'Player',
-  score: 0,
-};
-
 Timer.propTypes = {
-  name: propTypes.string,
-  score: propTypes.number,
-  playerDataAction: propTypes.func.isRequired,
+  answered: propTypes.bool.isRequired,
+  time: propTypes.number.isRequired,
+  answeredAction: propTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {
-  playerDataAction: playerData,
-};
+const mapDispatchToProps = (dispatch) => ({
+  answeredAction: (answerTime) => dispatch(answerAction(answerTime)),
+});
 
 function mapStateToProps(state) {
   return {
     name: state.login.name,
-    score: state.playerData.payload.score,
+    score: state.allQuestions.score,
+    answered: state.allQuestions.answered,
+    time: state.allQuestions.time,
   };
 }
 

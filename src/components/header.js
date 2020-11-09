@@ -32,7 +32,7 @@ function mapStateToProps(state) {
   return {
     avatar: state.login.imageProfile,
     name: state.login.name,
-    score: state.playerData.payload.score,
+    score: state.allQuestions.score,
   };
 }
 
