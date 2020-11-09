@@ -5,7 +5,7 @@ import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
 import { GameHeader, GameTimer } from '../components';
 import { randomizeAnswers, createLocalStore, calculateScore } from '../utils';
-import { saveScore } from '../actions';
+import { saveScore, saveCorrectAnswers } from '../actions';
 
 class Game extends Component {
   constructor() {
@@ -23,6 +23,7 @@ class Game extends Component {
       nextButtonClass: 'button-invisible',
       answerColor: false,
       score: 0,
+      correctAnswers: 0,
       currentQuestion: {},
       currentAnswers: [],
       isAnswered: false,
@@ -70,17 +71,19 @@ class Game extends Component {
 
     if (id === 'correct-answer') {
       const { currentQuestion: { difficulty } } = this.state;
-      const { time, dispatchSaveScore } = this.props;
+      const { time, dispatchSaveScore, dispatchCorrectAnswers } = this.props;
       const questionScore = calculateScore(time, difficulty);
 
       await this.setState((currentState) => ({
         ...currentState,
         answerColor: true,
         score: currentState.score + questionScore,
+        correctAnswers: currentState.correctAnswers + 1,
       }));
 
-      const { score } = this.state;
+      const { score, correctAnswers } = this.state;
       dispatchSaveScore(score);
+      dispatchCorrectAnswers(correctAnswers);
       createLocalStore(null, score);
     } else {
       this.setState({
@@ -163,6 +166,7 @@ Game.propTypes = {
   history: PropTypes.func.isRequired,
   time: PropTypes.number.isRequired,
   dispatchSaveScore: PropTypes.func.isRequired,
+  dispatchCorrectAnswers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -171,6 +175,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveScore: (score) => dispatch(saveScore(score)),
+  dispatchCorrectAnswers:
+    (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

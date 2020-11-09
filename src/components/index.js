@@ -1,4 +1,5 @@
 export { default as FeedbackHeader } from './FeedbackHeader';
+export { default as FeedbackMain } from './FeedbackMain';
 export { default as GameHeader } from './GameHeader';
 export { default as GoHome } from './GoHome';
 
