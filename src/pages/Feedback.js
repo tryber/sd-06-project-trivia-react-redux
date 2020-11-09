@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import HeaderGame from '../components/HeaderGame';
 
 class Feedback extends React.Component {
-
   feedbackScore() {
     const { hits } = this.props;
     const hitsMin = 3;

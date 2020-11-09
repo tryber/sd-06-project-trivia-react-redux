@@ -15,7 +15,7 @@ function points(state = INITIAL_STATE, action) {
       ...state,
       score: state.score + action.score,
       hits: state.hits + 1,
-    }
+    };
   default:
     return state;
   }
