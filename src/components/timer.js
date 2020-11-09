@@ -28,10 +28,15 @@ class Timer extends React.Component {
       score,
       time: timeLeft,
     };
+    const timer = {
+      timeout: false,
+      score,
+      time: timeLeft,
+    };
     const oneSecond = 1000;
-    if (timeLeft < 1) {
-      playerDataAction(action);
-    }
+    const trinta = 30;
+    if (timeLeft > 0 && timeLeft <= trinta) playerDataAction(timer);
+    if (timeLeft < 1) playerDataAction(action);
     setTimeout(this.decreaseTime, oneSecond);
   }
 

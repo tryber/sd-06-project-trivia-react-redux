@@ -21,6 +21,7 @@ class Game extends Component {
 
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
+    this.setTimeUpdate = this.setTimeUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -28,9 +29,15 @@ class Game extends Component {
   }
 
   componentDidUpdate(_prev, newState) {
+    const { time } = this.props;
     const { answered } = this.state;
     if (newState.answered !== answered) this.handleScore();
+    if (newState.time !== time) this.setTimeUpdate(time);
     this.scoreLocalStorage();
+  }
+
+  setTimeUpdate(time) {
+    this.setState({ time });
   }
 
   scoreLocalStorage() {
@@ -69,14 +76,13 @@ class Game extends Component {
 
   render() {
     const { APIQuestions, timeout } = this.props;
-    const { index, clicked, choice } = this.state;
+    const { index, clicked } = this.state;
     const random = 0.5;
     if (APIQuestions.length === 0) {
       return (
         <h3>Carregando...</h3>
       );
     }
-    console.log(choice);
     return (
       <section className="game-container">
         <section className="game-header">
