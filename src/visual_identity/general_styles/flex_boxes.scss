@@ -1,0 +1,6 @@
+@mixin flexCenter($flow) {
+  display: flex;
+  flex-flow: $flow nowrap;
+  justify-content: space-around;
+  align-items: center;
+}

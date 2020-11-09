@@ -36,7 +36,7 @@ class Game extends Component {
     const QUESTIONS = API_RESPONSE.results;
 
     await this.saveQuestionsToState(QUESTIONS);
-    this.setCurrentQuestion();
+    await this.setCurrentQuestion();
   }
 
   setCurrentQuestion() {
