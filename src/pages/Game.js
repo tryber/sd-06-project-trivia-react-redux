@@ -104,18 +104,21 @@ class Game extends React.Component {
     const { createInterval, clearIntervalTimer } = this;
     const { toResetTimer, history } = this.props;
     const { questionNumber } = this.state;
-    const four = 4;
+    const lastQuestion = 4;
 
     toResetTimer();
     clearIntervalTimer();
-    createInterval();
-    this.setState((prevState) => ({
-      questionNumber: prevState.questionNumber + 1,
-      answered: false,
-      generatedAnswer: false,
-    }));
-
-    (questionNumber === four && history.push('/feedback'));
+    
+    if (questionNumber === lastQuestion){
+      history.push('/feedback');
+    } else {
+      createInterval();
+      this.setState((prevState) => ({
+        questionNumber: prevState.questionNumber + 1,
+        answered: false,
+        generatedAnswer: false,
+      }));
+    }
   }
 
   handleLocalStorage() {
