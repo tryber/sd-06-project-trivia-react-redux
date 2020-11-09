@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 import { fetchQuestionsAPI } from '../redux/actions';
 
-class Game extends React.Component {
+class Trivia extends React.Component {
   componentDidUpdate() {
     const { fetchQuestions, tokenResponse } = this.props;
     if (tokenResponse) {
@@ -34,9 +34,9 @@ const mapStateToProps = (state) => ({
   loading: state.user.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
 
-Game.propTypes = {
+Trivia.propTypes = {
   tokenResponse: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
   fetchQuestions: PropTypes.func.isRequired,

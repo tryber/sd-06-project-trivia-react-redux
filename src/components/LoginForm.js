@@ -80,7 +80,7 @@ class LoginForm extends React.Component {
             onChange={ this.handleEmailChange }
           />
         </label>
-        <Link to="/game">
+        <Link to="/trivia">
           <button
             type="button"
             data-testid="btn-play"
