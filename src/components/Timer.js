@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Timer extends Component {
   componentDidMount() {
-    const { disableAnswerButtons } = this.props;
+    const { disableAnswerButtons, handleAnswerBorderColor } = this.props;
     const mil = 1000;
     this.timer = setInterval(() => {
       const { counter, handleCounter } = this.props;
@@ -11,7 +11,7 @@ class Timer extends Component {
         handleCounter();
       } else {
         disableAnswerButtons();
-        clearInterval(this.timer);
+        handleAnswerBorderColor();
       }
     }, mil);
   }
@@ -24,7 +24,7 @@ class Timer extends Component {
     const { counter } = this.props;
     return (
       <h2>
-tempo:
+        tempo:
         {' '}
         {counter}
       </h2>
@@ -36,6 +36,7 @@ Timer.propTypes = {
   disableAnswerButtons: PropTypes.func.isRequired,
   counter: PropTypes.number.isRequired,
   handleCounter: PropTypes.func.isRequired,
+  handleAnswerBorderColor: PropTypes.func.isRequired,
 };
 
 export default Timer;

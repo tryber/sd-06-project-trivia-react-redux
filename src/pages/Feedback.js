@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const playerScore = state.player.score;
-    const { assertions } = this.props;
+    const { score, assertions } = state.player;
+    // const { assertions } = this.props;
 
-    const feedbackMessage = () => (assertions >= 2
+    const feedbackMessage = () => (assertions > 2
       ? 'Mandou bem!' : 'Podia ser melhor...');
 
     return (
       <>
-        <h2>{playerScore}</h2>
+        <h2 data-testid="feedback-total-score">{score}</h2>
+        <h2 data-testid="feedback-total-question">{assertions}</h2>
         <Header />
         <h1 data-testid="feedback-text">
           {feedbackMessage()}
         </h1>
+        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
       </>
     );
   }
@@ -28,8 +31,8 @@ const mapStateToProps = (state) => ({
   assertions: state.userReducer.assertions,
 });
 
-Feedback.propTypes = {
-  assertions: PropTypes.number.isRequired,
-};
+// Feedback.propTypes = {
+//   assertions: PropTypes.number.isRequired,
+// };
 
 export default connect(mapStateToProps, null)(Feedback);
