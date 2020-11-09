@@ -3,8 +3,8 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions, sendScore, sendAssertions } from '../actions';
-import '../App.css';
 import Timer from './Timer';
+import '../App.css';
 
 class BodyGame extends Component {
   constructor() {
@@ -235,7 +235,6 @@ class BodyGame extends Component {
                           this.handleAnswerBorderColor();
                           this.handleScore(questions[index], counter);
                           this.handleAssertions();
-                          // this.handleClickAssertions();
                         } }
                         disabled={ isDisabled }
                       >
