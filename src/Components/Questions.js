@@ -21,7 +21,7 @@ class Questions extends React.Component {
     this.state = {
       correctAnswer,
       allAnswers,
-      timer: 30,
+      timer: 10,
     };
 
     this.updateAnswers = this.updateAnswers.bind(this);
@@ -39,21 +39,22 @@ class Questions extends React.Component {
   componentDidUpdate(prevProps) {
     const { questionObj } = this.props;
     const { timer } = this.state;
+    // console.log(questionObj);
 
     if (prevProps.questionObj.question !== questionObj.question) {
       const allAnswers = this.shuffleAnswers(questionObj);
       const timerInterval = 1000;
 
       this.updateAnswers(questionObj, allAnswers);
+      // a solução abaixo foi inspirada nesta thread:
+      // https://qastack.com.br/programming/36299174/setinterval-in-a-react-app
       this.activeTimer = setInterval(
         () => this.setState((prevState) => ({
           timer: prevState.timer - 1 })), timerInterval,
       );
-    }
-
-    if (timer === 0) {
+    } else if (timer === 0) {
       clearInterval(this.activeTimer);
-      const timerTarget = document.getElementById('timer-0');
+      const timerTarget = document.getElementById('timer');
       return (timerTarget) ? timerTarget.click() : null;
     }
   }
@@ -68,7 +69,7 @@ class Questions extends React.Component {
     this.setState({
       correctAnswer,
       allAnswers,
-      timer: 30,
+      timer: 10,
     });
   }
 
@@ -118,7 +119,7 @@ class Questions extends React.Component {
                   <button
                     key={ index }
                     type="button"
-                    id={ `timer-${index}` }
+                    id="timer"
                     data-testid={ `wrong-answer-${index}` }
                     className={ `answer-button
                     ${(answered) ? 'check-incorrect-answer' : ''}` }

@@ -1,5 +1,4 @@
 import { createHash } from 'crypto';
-
 export const LOGIN = 'LOGIN';
 
 export function playerLogin(name, email) {
