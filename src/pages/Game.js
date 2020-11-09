@@ -29,8 +29,7 @@ class Game extends Component {
 
   componentDidUpdate(_prev, newState) {
     const { answered } = this.state;
-    if (newState.answered !== answered
-      && newState.choice === 'correct-answer') this.handleScore();
+    if (newState.answered !== answered) this.handleScore();
     this.scoreLocalStorage();
   }
 
@@ -55,7 +54,7 @@ class Game extends Component {
 
   handleScore() {
     const { scorePoints, APIQuestions } = this.props;
-    const { time, index } = this.state;
+    const { time, index, choice } = this.state;
     const TEN = 10;
     const hard = 3;
     const medium = 2;
@@ -65,7 +64,7 @@ class Game extends Component {
     if (APIQuestions[index].difficulty === 'medium') difficult = medium;
     if (APIQuestions[index].difficulty === 'hard') difficult = hard;
     const points = (TEN + (time * difficult));
-    scorePoints(points);
+    if (choice === 'correct-answer') scorePoints(points);
   }
 
   render() {
