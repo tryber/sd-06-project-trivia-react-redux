@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Timer extends React.Component {
   constructor() {
@@ -14,7 +15,12 @@ class Timer extends React.Component {
 
   componentDidUpdate() {
     const { time } = this.state;
+    const { stopTimer } = this.props;
     if (time === 0) {
+      const { timer } = this.state;
+      clearInterval(timer);
+    }
+    if (stopTimer === true) {
       const { timer } = this.state;
       clearInterval(timer);
     }
@@ -35,7 +41,7 @@ class Timer extends React.Component {
       <div>
         <p>
           Tempo:
-          <span>
+          <span id="time-remain">
             {time}
           </span>
         </p>
@@ -44,8 +50,13 @@ class Timer extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  stopTimer: state.timerReducer.stopTimer,
+});
+
 Timer.propTypes = {
   disabledAnswer: PropTypes.func.isRequired,
+  stopTimer: PropTypes.bool.isRequired,
 };
 
-export default Timer;
+export default connect(mapStateToProps, null)(Timer);
