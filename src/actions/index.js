@@ -33,4 +33,4 @@ export const saveScore = (score) => ({
 export const saveCorrectAnswers = (correctAnswers) => ({
   type: SAVE_CORRECT_ANSWERS,
   correctAnswers,
-})
+});

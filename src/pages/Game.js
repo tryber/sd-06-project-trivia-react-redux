@@ -175,7 +175,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveScore: (score) => dispatch(saveScore(score)),
-  dispatchCorrectAnswers: (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
+  dispatchCorrectAnswers:
+    (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
