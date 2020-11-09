@@ -1,7 +1,7 @@
 // import MD5 from 'crypto-js/hmac-md5';
 
 const TOKEN_API = 'https://opentdb.com/api_token.php?command=request';
-const five = 30; // mudar para 5 de novo
+const five = 5; // mudar para 5 de novo
 
 export async function apiQuestions(token, numberQuestions = five) {
   const requestApiQuestions = await fetch(`https://opentdb.com/api.php?amount=${numberQuestions}&token=${token}`);
