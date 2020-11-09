@@ -29,7 +29,6 @@ class Header extends React.Component {
 
     const { email } = this.props;
     if (email !== '') this.convertEmail(email);
-
   }
 
   convertEmail(email) {
