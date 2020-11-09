@@ -6,13 +6,11 @@ class ButtonSettings extends Component {
   render() {
     const { classProps } = this.props;
     return (
-      <div className="ButtonSetting">
+      <Link to="/settings" className="ButtonSetting">
         <button data-testid="btn-settings" type="button" className={ classProps }>
-          <Link to="/Settings">
-            Config
-          </Link>
+          Config
         </button>
-      </div>
+      </Link>
     );
   }
 }
