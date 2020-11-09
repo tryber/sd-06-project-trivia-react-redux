@@ -11,7 +11,7 @@ class Feedback extends Component {
       <div>
         <Header />
         <section data-testid="feedback-text">
-          {assertions < three ? <h3>Podia ser melhor...</h3> : <h3>Mandou bem!</h3>}
+          { assertions < three ? <h3>Podia ser melhor...</h3> : <h3>Mandou bem!</h3> }
         </section>
       </div>
     );
