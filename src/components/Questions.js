@@ -110,7 +110,7 @@ class Questions extends Component {
         element.className = 'wrong-question';
       });
       rightQuestion.className = 'right-question';
-  
+
       this.setState({
         disableBTN: true,
         answerTime: 0,
