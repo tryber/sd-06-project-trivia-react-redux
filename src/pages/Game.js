@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
 import './style_sheets/Game.css';
-import GameHeader from '../components/GameHeader';
-import GameTimer from '../components/GameTimer';
+import { GameHeader, GameTimer } from '../components';
 import { randomizeAnswers, createLocalStore, calculateScore } from '../utils';
 import { saveScore } from '../actions';
 
