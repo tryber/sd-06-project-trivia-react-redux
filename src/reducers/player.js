@@ -2,6 +2,7 @@ import {
   SAVE_TOKEN,
   SAVE_NAME,
   SAVE_EMAIL,
+  SAVE_SCORE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -39,6 +40,15 @@ export default function player(state = INITIAL_STATE, action) {
       player: {
         ...state.player,
         gravatarEmail: action.gravatarEmail,
+      },
+    };
+
+  case SAVE_SCORE:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        score: action.score,
       },
     };
 

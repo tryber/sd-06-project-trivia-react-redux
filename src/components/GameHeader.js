@@ -2,21 +2,14 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createLocalStore } from '../utils';
 
 class GameHeader extends Component {
-  //
   componentDidMount() {
-    const object = {
-      player: {
-        name: 'nome',
-        score: 0,
-        gravatarEmail: 'nome@nome.com',
-      },
-    };
-    const stringfiedObjetc = JSON.stringify(object);
-    localStorage.setItem('state', stringfiedObjetc);
+    const { name, gravatarEmail } = this.props;
+
+    createLocalStore(name, 0, gravatarEmail);
   }
-  //
 
   render() {
     const { name, gravatarEmail, score } = this.props;
