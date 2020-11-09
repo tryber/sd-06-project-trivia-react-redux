@@ -124,6 +124,25 @@ class Questions extends React.Component {
     const { question } = this.props;
     const timer = this.timer();
     if (currentQuestion === question.length) {
+      const state = JSON.parse(localStorage.state);
+      if (localStorage.ranking) {
+        localStorage.ranking = JSON.stringify([
+          ...JSON.parse(localStorage.ranking),
+          {
+            name: state.player.name,
+            score: state.player.score,
+            picture: state.player.gravatarEmail,
+          },
+        ]);
+      } else {
+        localStorage.ranking = JSON.stringify([
+          {
+            name: state.player.name,
+            score: state.player.score,
+            picture: state.player.gravatarEmail,
+          },
+        ]);
+      }
       return <Redirect to="/feedback" />;
     }
     return (

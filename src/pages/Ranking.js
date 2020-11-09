@@ -4,6 +4,7 @@ import NenhumRegistro from '../components/NenhumRegistroEncontrado';
 import Player from '../components/Player';
 
 const players = JSON.parse(localStorage.getItem('state'));
+
 // if (players) {
 //   players = players.sort(
 //     (a, b) => (parseInt(b.score, 10) - parseInt(a.score, 10)),
