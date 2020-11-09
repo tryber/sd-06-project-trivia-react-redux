@@ -28,11 +28,16 @@ export function randomizeAnswers(correctAnswer, wrongAnswers) {
 
 // Local Storage management
 
-export function createLocalStore(name = 'nome', score, gravatarEmail = 'nome@nome.com') {
+export function createLocalStore(
+  name = 'nome',
+  score,
+  gravatarEmail = 'nome@nome.com',
+  assertions = 0,
+) {
   const createdObject = {
     player: {
       name,
-      assertions: 0,
+      assertions,
       score,
       gravatarEmail,
     },
