@@ -11,36 +11,46 @@ class ScreenGame extends React.Component {
     this.state = {
       answered: false,
       btnNext: true,
-      limitTime: 30,
+      limitTime: 8,
       isDisable: false,
+      countDown: null,
     };
     this.changeColor = this.changeColor.bind(this);
     this.timer = this.timer.bind(this);
-    this.regressTimer = this.regressTimer.bind(this);
+    // this.regressTimer = this.regressTimer.bind(this);
+    this.updateCoutdownState = this.updateCoutdownState.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
   }
 
   componentDidMount() {
-    this.timer();
+    const callInterval = 1000;
+    const countDown = setInterval(this.timer, callInterval);
+    this.updateCoutdownState(countDown);
   }
 
-  regressTimer() {
-    const { limitTime } = this.state;
+  updateCoutdownState() {
+    const { countDown } = this.state;
+    return this.setState({
+      countDown,
+    });
+  }
+
+  timer() {
+    const { limitTime, countDown } = this.state;
+
     if (limitTime > 0) {
       return this.setState((previous) => ({
         ...previous,
         limitTime: previous.limitTime - 1,
       }));
     }
+
+    clearInterval(countDown);
+    this.handleDisable(true);
   }
 
-  timer() {
-    const { limitTime } = this.state;
-    const callInterval = 1000;
-    const countDown = setInterval(this.regressTimer, callInterval);
-    if (limitTime === 0) {
-      clearInterval(countDown);
-      this.setState({ answered: false, isDisable: true });
-    }
+  handleDisable(truex) {
+    this.setState({ isDisable: truex });
   }
 
   changeColor() {
@@ -86,9 +96,9 @@ class ScreenGame extends React.Component {
               data-testid="correct-answer"
               key={ item.category }
               id="correct"
+              disabled={ isDisable }
               onClick={ this.changeColor }
               className={ answered ? 'green-border' : null }
-              disabled={ isDisable }
             >
               {item.correct_answer}
             </button>
@@ -103,9 +113,9 @@ class ScreenGame extends React.Component {
                 key={ item.question }
                 data-testid={ `wrong-answer-${index}` }
                 id="incorrect"
+                disabled={ isDisable }
                 onClick={ this.changeColor }
                 className={ answered ? 'red-border' : null }
-                disabled={ isDisable }
               >
                 {item}
               </button>
