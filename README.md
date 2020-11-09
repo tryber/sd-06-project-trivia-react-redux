@@ -39,7 +39,7 @@ Nesse projeto, você será capaz de:
   - [API de Trivia](#api-de-trivia)
   - [Gravatar](#gravatar)
   - [Grupos de prioridade](#grupos-de-prioridade)
-  - [Observações técnicas](#observações-tecnicas)
+  - [Observações técnicas](#observações-técnicas)
 - [Lista de requisitos](#lista-de-requisitos)
   - [Tela de início](#tela-de-inicio)
     - [1 - Crie a tela de login, onde a pessoa que joga deve preencher as informações para iniciar um jogo](#1-crie-a-tela-de-login-onde-a-pessoa-que-joga-deve-preencher-as-informações-para-iniciar-um-jogo)
@@ -74,9 +74,9 @@ Nesse projeto, você será capaz de:
 
 ## O QUE DEVERÁ SER DESENVOLVIDO
 
-Você deverá desenvolver um jogo de perguntas e respostas baseado no jogo **Trivia** _(tipo um show do milhão americano rs)_ utilizando _React e Redux_, desenvolvendo em grupo suas funcionalidades de acordo com as demanas definidas em um quadro _Kanban_. Para viver um cenário mais próximo do mercado de trabalho, você deve fazer uma cópia desse quadro para utilizar com seu grupo. A partir dessas demandas, teremos uma aplicação onde a pessoa usuária poderá:
+Você deverá desenvolver um jogo de perguntas e respostas baseado no jogo **Trivia** _(tipo um show do milhão americano rs)_ utilizando _React e Redux_, desenvolvendo em grupo suas funcionalidades de acordo com as demandas definidas em um quadro _Kanban_. Para viver um cenário mais próximo do mercado de trabalho, você deve fazer uma cópia desse quadro para utilizar com seu grupo. A partir dessas demandas, teremos uma aplicação onde a pessoa usuária poderá:
 
-  - Logar no jogo e, se o email tiver cadastro no site [Gravatar](https://pt.gravatar.com/), ter sua foto associada ao perfil de usuária.
+  - Logar no jogo e, se o email tiver cadastro no site [Gravatar](https://pt.gravatar.com/), ter sua foto associada ao perfil de pessoa usuária.
   - Acessar a página referente ao jogo, onde se deverá escolher uma das respostas disponíveis para cada uma das perguntas apresentadas. A resposta deve ser marcada antes do contador de tempo chegar a zero, caso contrário a resposta deverá ser considerada errada.
   - Ser redirecionada, após 5 perguntas respondidas, para a tela de score, onde o texto mostrado depende do número de acertos.
   - Visualizar a página de ranking, se quiser, ao final de cada jogo.
@@ -96,7 +96,7 @@ Você pode acessar um protótipo completo da interface desejada para o projeto [
 
   - Serão cinco dias de projeto.
 
-  - O projeto tem até a seguinte data: `dd/mm/yyyy - 14:00h` para ter entregue a avaliação final.
+  - O projeto tem até a seguinte data: `17/11/2020 - 14:00h` para ter entregue a avaliação final.
 
 ---
 
@@ -145,7 +145,7 @@ Este repositório **já conta com uma `main-group` para cada grupo**, identifica
         * `git status` (devem aparecer listadas as novas alterações em verde)
   * Faça seus `commit`
       * Exemplo:
-        * `git commit -m 'cria componente de input`
+        * `git commit -m 'cria componente de input'`
         * `git status` (deve aparecer uma mensagem tipo _nothing to commit_ )
 
 5. Adicione a sua branch com o novo `commit` ao repositório remoto
@@ -168,7 +168,7 @@ Este repositório **já conta com uma `main-group` para cada grupo**, identifica
 
 Para o bom andamento deste projeto disponibilizamos, além do README a seguir, um _quadro Kanban_ com as demandas a realizar para o projeto ser concluído com sucesso. Confira o _Slack_ para saber como acessar o quadro! É de suma importância que o grupo se organize utilizando o quadro para maior eficiência e para que se minimizem os conflitos que a união de vários códigos trará.
 
-Além disso, você verá que os requisitos do projeto tem, além das observações técnicas e do que será validado, descrições tais quais se veriam em um projeto real. **É muito importante ser capaz de ler descrições como essa e transformá-las em produtos ou, se houver dúvida, saber tirar tais dúvidas!** Seguimos à disposição no Slack para isso.
+Além disso, você verá que os requisitos do projeto têm, além das observações técnicas e do que será validado, descrições tais quais se veriam em um projeto real. **É muito importante ser capaz de ler descrições como essa e transformá-las em produtos ou, se houver dúvida, saber tirar tais dúvidas!** Seguimos à disposição no Slack para isso.
 
 Este repositório já contem um _template_ com um App React criado, configurado e com os testes automatizados que fazem parte da correção. Ele também conta com uma branch **main-group** para cada grupo, identificada como `main-group-1` para o grupo 1, `main-group-2` para o grupo 2 e assim por diante.
 
