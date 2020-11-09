@@ -1,8 +1,10 @@
 import React from 'react';
 import './Game.css';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
+import { Icon } from 'semantic-ui-react';
 import { fetchApi, scoreFunction } from '../actions';
 
 class Game extends React.Component {
@@ -14,15 +16,28 @@ class Game extends React.Component {
     this.state = {
       stop: false,
       counter: 0,
-      randomNumber: 0,
       timer: 30,
+      randomNumber: 0,
     };
   }
 
   componentDidMount() {
     this.random();
     const { questionFetch } = this.props;
+    const miliseconds = 1000;
     questionFetch();
+    this.timerID = setInterval(() => this.timerFunction(), miliseconds);
+  }
+
+  timerFunction() {
+    const { timer, stop } = this.state;
+    if (timer > 0 && !stop) {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    } else {
+      this.setState({ stop: true });
+    }
   }
 
   decodeHTML(text) {
@@ -36,6 +51,7 @@ class Game extends React.Component {
     this.setState({
       stop: false,
       counter: counter + 1,
+      timer: 30,
     });
     this.random();
   }
@@ -58,9 +74,12 @@ class Game extends React.Component {
     const { name, email, results, score, scoreSum, assertions, isFetching } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
+    const five = 5;
     localStorage.setItem('state', JSON
       .stringify({ player: { name, score, gravatarEmail: email, assertions } }));
-
+    if (counter === five) {
+      return <Redirect to="/feedback" />;
+    }
     if (isFetching) {
       return <div className="container-game loading">CARREGANDO...</div>;
     }
@@ -86,6 +105,11 @@ class Game extends React.Component {
         </header>
         <div className="container-game">
           <div className="right">
+            <div className="timer">
+              <Icon fitted name="hourglass half" />
+              { timer > 0 ? `TEMPO: ${timer}s` : 'TEMPO ESGOTADO' }
+            </div>
+            <br />
             <div data-testid="question-category">
               CATEGORIA[
               { this.decodeHTML(results[counter].category) }
@@ -99,6 +123,7 @@ class Game extends React.Component {
             { this.shuffle([(
               <button
                 key="correct"
+                style={ { border: `${stop ? '3' : '0'}px solid rgb(6, 240, 15)` } }
                 type="button"
                 className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid="correct-answer"
@@ -112,6 +137,7 @@ class Game extends React.Component {
             ...results[counter].incorrect_answers.map((answer, index) => (
               <button
                 key={ `incorrect-${index}` }
+                style={ { border: `${stop ? '3' : '0'}px solid rgb(255, 0, 0)` } }
                 type="button"
                 className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid={ `wrong-answer-${index}` }
