@@ -1,9 +1,10 @@
-import { TIMER_RESET, TIMER_STOP, TIMER_START } from '../actions';
+import { TIMER_RESET, TIMER_STOP, TIMER_START, TIMER_LOST } from '../actions';
 
 const initialState = {
   stopTime: false,
   resetTime: true,
   startTime: false,
+  lostTime: false,
 };
 
 function timer(state = initialState, action) {
@@ -28,6 +29,11 @@ function timer(state = initialState, action) {
       stopTime: action.stopCount,
       resetTime: action.resetCount,
       startTime: action.startCount,
+    }
+  case TIMER_LOST:
+    return {
+      ...state,
+      lostTime: true,
     }
   default:
     return state;

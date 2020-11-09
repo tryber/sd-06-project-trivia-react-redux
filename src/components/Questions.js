@@ -19,15 +19,18 @@ class Questions extends Component {
     this.handleAnswer = this.handleAnswer.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
     this.getAnswerTime = this.getAnswerTime.bind(this);
+    this.handleTime = this.handleTime.bind(this);
   }
 
   changeToNextQuestion() {
+    const nextButton = document.querySelector('.btn-next');
     const { questionNumber } = this.state;
     const { resetTimer } = this.props;
     const indexLimit = 4;
     const wrongList = document.querySelectorAll('.wrong-question');
     const rightQuestion = document.querySelector('.right-question');
-
+    nextButton.style.visibility = "hidden";
+    
     resetTimer();
 
     this.setState({
@@ -67,11 +70,25 @@ class Questions extends Component {
     return timeInt;
   }
 
+  handleTime() {
+    const { disableBTN } = this.state;
+    const { lostTime } = this.props;
+
+    if(lostTime && !disableBTN) {
+      this.setState({
+        disableBTN: true,
+        answerTime: 0,
+      });
+    }
+  }
+
 
   handleAnswer({ target }) {
     const { stopTimer } = this.props;
+    const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
+    nextButton.style.visibility = "visible";
 
     stopTimer();
 
@@ -150,18 +167,25 @@ class Questions extends Component {
   }
 
   render() {
-
-    const { shuffled } = this.state;
+    const { shuffled  } = this.state;
     const { gameQuestions } = this.props;
 
     if(!shuffled && gameQuestions) {
       this.shuffleArray();
     }
 
+    this.handleTime();
+
     return (
       <div>
         {this.handleQuestions()}
-        <button type="button" onClick={ this.changeToNextQuestion }>Next Question</button>
+        <button
+          type="button"
+          className="btn-next"
+          onClick={ this.changeToNextQuestion }
+        >
+          Next Question
+        </button>
       </div>
     );
   }
@@ -169,6 +193,7 @@ class Questions extends Component {
 
 const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
+  lostTime: state.timer.lostTime,
 });
 
 const mapDispatchToProps = (dispatch) => ({
