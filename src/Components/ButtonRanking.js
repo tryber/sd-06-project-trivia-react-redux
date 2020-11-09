@@ -6,13 +6,11 @@ class ButtonRanking extends Component {
   render() {
     const { classProps } = this.props;
     return (
-      <div className="ButtonRanking">
+      <Link to="/ranking" className="ButtonRanking">
         <button data-testid="btn-ranking" type="button" className={ classProps }>
-          <Link to="/Ranking">
-            Ver Ranking
-          </Link>
+          Ver Ranking
         </button>
-      </div>
+      </Link>
     );
   }
 }
