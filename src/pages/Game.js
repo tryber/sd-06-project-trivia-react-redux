@@ -68,6 +68,7 @@ class Game extends React.Component {
           player: {
             name: userName,
             score: 0,
+            assertions: correct + 1,
           },
         }));
       }
@@ -90,14 +91,16 @@ class Game extends React.Component {
       localStorage.state = JSON.stringify({
         player: {
           name: userName,
-          score,
+          score: Number(score),
+          assertions: correct + 1,
         },
       });
     } else {
       localStorage.setItem('state', JSON.stringify({
         player: {
           name: userName,
-          score: 0,
+          score: Number(points),
+          assertions: correct,
         },
       }));
       scoreAdd('0');
