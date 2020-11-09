@@ -50,10 +50,13 @@ class BodyGame extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { getToken, questionsFunction } = this.props;
-
+    const { getToken, questionsFunction, questions } = this.props;
+    console.log(questions.length, prevProps.questions.length);
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
+    }
+    if (questions.length > 0 && prevProps.questions.length !== questions.length) {
+      this.handleShuffle(questions);
     }
   }
 
@@ -172,26 +175,23 @@ class BodyGame extends Component {
 
   handleShuffle() {
     const { questions } = this.props;
-    const { answers, counter } = this.state;
-    const timerIsRunning = 29;
-    if (counter > timerIsRunning) {
-      questions.forEach((question, index) => {
-        console.log(questions[index]);
-        answers[index] = [question.correct_answer, ...question.incorrect_answers];
-      });
-      for (let i = 0; i < answers.length - 1; i += 1) {
-        let currentIndex = answers[i].length;
-        let temporaryValue;
-        let randomIndex;
-        while (currentIndex !== 0) {
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-          temporaryValue = answers[i][currentIndex];
-          answers[i][currentIndex] = answers[i][randomIndex];
-          answers[i][randomIndex] = temporaryValue;
-        }
-        console.log(answers[i]);
+    const { answers } = this.state;
+    questions.forEach((question, index) => {
+      console.log(questions[index]);
+      answers[index] = [question.correct_answer, ...question.incorrect_answers];
+    });
+    for (let i = 0; i < answers.length - 1; i += 1) {
+      let currentIndex = answers[i].length;
+      let temporaryValue;
+      let randomIndex;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = answers[i][currentIndex];
+        answers[i][currentIndex] = answers[i][randomIndex];
+        answers[i][randomIndex] = temporaryValue;
       }
+      console.log(answers[i]);
     }
   }
 
@@ -200,7 +200,6 @@ class BodyGame extends Component {
     const { isDisabled, counter, questionIndex, redirect, answers } = this.state;
     return (
       <div className="container">
-        {this.handleShuffle(questions)}
         {redirect ? <Redirect to="/feedback" /> : null}
         {answers.map((answer, index) => (
           <div key={ index }>
