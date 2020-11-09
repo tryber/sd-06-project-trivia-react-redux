@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { thunkQuestions } from '../actions';
 import './gameBody.css';
 import Timer from './Timer';
+import { Redirect } from 'react-router-dom';
 
 class GameBody extends React.Component {
   constructor() {
@@ -15,6 +16,7 @@ class GameBody extends React.Component {
       disabled: true,
       disabledAnswer: false,
       renderTimer: false,
+      redirect: false,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
@@ -66,6 +68,7 @@ class GameBody extends React.Component {
     this.setState({
       isCorrect: false,
       disabled: true,
+      redirect: true,
     });
   }
 
@@ -87,7 +90,7 @@ class GameBody extends React.Component {
 
   render() {
     const { category, question, correctAnswer,
-      answers, isCorrect, disabled, disabledAnswer, renderTimer } = this.state;
+      answers, isCorrect, disabled, disabledAnswer, renderTimer, redirect } = this.state;
     const randomNumber = 0.5;
 
     return (
@@ -122,14 +125,15 @@ class GameBody extends React.Component {
         }).sort(() => Math.random() - randomNumber) }
         <br />
         <br />
-        <button
-          type="button"
-          disabled={ disabled }
-          data-testid={ disabled ? '' : 'btn-next' }
-          onClick={ () => this.handleNext() }
-        >
-          Next
-        </button>
+          <button
+            type="button"
+            disabled={ disabled }
+            data-testid={ disabled ? '' : 'btn-next' }
+            onClick={ () => this.handleNext() }
+            redirect={ redirect ? <Redirect to="feedback" /> : false }
+          >
+            Next
+          </button>
         <div>
           {renderTimer === true ? <Timer disabledAnswer={ this.disabledAnswer } /> : null}
         </div>
