@@ -27,6 +27,7 @@ class GameScreen extends Component {
       disabled: false,
       click: 0,
       assertions: 0,
+      checked: false,
     };
   }
 
@@ -53,11 +54,12 @@ class GameScreen extends Component {
   }
 
   updateInfoPlayerStorage() {
-    const { score: points } = this.state;
+    const { score: points, assertions } = this.state;
     console.log(points);
     const statee = localStorage.getItem('state');
     const result = JSON.parse(statee);
     result.player.score = points;
+    result.player.assertions = assertions;
     localStorage.setItem('state', JSON.stringify(result));
     console.log(result.player.score);
   }
@@ -109,7 +111,7 @@ class GameScreen extends Component {
     buttons.forEach((button) => {
       if (button.className === 'wrong') {
         button.className += ' red';
-        this.setState({ disabled: true });
+        this.setState({ disabled: true, checked: true });
       } else if (button.className === 'correct') {
         button.className += ' green';
         this.setState({ disabled: true });
@@ -124,6 +126,8 @@ class GameScreen extends Component {
       index: state.index + 1,
       disabled: false,
       click: state.click + 1,
+      checked: false,
+      timer: 30,
     }));
     const buttons = document.querySelectorAll('button');
     buttons.forEach((button) => {
@@ -149,9 +153,14 @@ class GameScreen extends Component {
 
   temporizer() {
     const interval = 1000;
-    setInterval(() => this.setState((state) => ({
-      timer: state.timer - 1,
-    })), interval);
+    setInterval(() => {
+      const { timer, checked } = this.state;
+      if (timer !== 0 && checked === false) {
+        this.setState((state) => ({
+          timer: state.timer - 1,
+        }));
+      }
+    }, interval);
   }
 
   timeHandle() {

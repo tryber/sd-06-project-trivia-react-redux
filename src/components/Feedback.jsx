@@ -18,6 +18,7 @@ class Feedback extends Component {
     const three = 3;
     return (
       <header>
+        <p data-testid="header-score">{ score }</p>
         {assertions < three ? <h1 data-testid="feedback-text">Podia ser melhor...</h1>
           : <h1 data-testid="feedback-text">Mandou bem!</h1>}
 
@@ -28,7 +29,9 @@ class Feedback extends Component {
           src={ imagePath }
         />
         <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
+        <p data-testid="feedback-total-score">{ score }</p>
+
         <button
           type="button"
           data-testid="btn-play-again"
