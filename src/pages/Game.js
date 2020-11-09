@@ -102,7 +102,9 @@ class Game extends React.Component {
 
   chooseNextQuestion() {
     const { createInterval, clearIntervalTimer } = this;
-    const { toResetTimer } = this.props;
+    const { toResetTimer, history } = this.props;
+    const { questionNumber } = this.state;
+
     toResetTimer();
     clearIntervalTimer();
     createInterval();
@@ -111,6 +113,8 @@ class Game extends React.Component {
       answered: false,
       generatedAnswer: false,
     }));
+
+    questionNumber > 4 && history.push('/feedback');
   }
 
   handleLocalStorage() {
