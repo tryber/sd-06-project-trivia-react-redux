@@ -71,7 +71,7 @@ class Game extends Component {
 
     if (id === 'correct-answer') {
       const { currentQuestion: { difficulty } } = this.state;
-      const { time, dispatchSaveScore, dispatchCorrectAnswers } = this.props;
+      const { time, dispatchSaveScore, dispatchCorrectAnswers, name, email } = this.props;
       const questionScore = calculateScore(time, difficulty);
 
       await this.setState((currentState) => ({
@@ -84,7 +84,7 @@ class Game extends Component {
       const { score, correctAnswers } = this.state;
       dispatchSaveScore(score);
       dispatchCorrectAnswers(correctAnswers);
-      createLocalStore(null, score);
+      createLocalStore(name, score, email, correctAnswers);
     } else {
       this.setState({
         answerColor: true,
@@ -165,12 +165,16 @@ class Game extends Component {
 Game.propTypes = {
   history: PropTypes.func.isRequired,
   time: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   dispatchSaveScore: PropTypes.func.isRequired,
   dispatchCorrectAnswers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   time: state.game.time,
+  name: state.player.player.name,
+  email: state.player.player.gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({

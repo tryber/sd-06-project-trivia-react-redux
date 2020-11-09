@@ -15,12 +15,12 @@ class Feedback extends Component {
         }
         <p>
           Um total de
-          <span data-testid="feedback-total-score">{score}</span>
+          <span data-testid="feedback-total-score">{ score }</span>
           pontos!
         </p>
         <p>
           Você acertou
-          <span data-testid="feedback-total-question">{sumCorrectAnswers}</span>
+          <span data-testid="feedback-total-question">{ sumCorrectAnswers }</span>
           questões!
         </p>
       </div>
@@ -35,6 +35,7 @@ Feedback.propTypes = {
 
 const mapStateToProps = (state) => ({
   sumCorrectAnswers: state.player.player.correctAnswers,
+  score: state.player.player.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
