@@ -36,7 +36,7 @@ export default class QuestionCard extends Component {
       [answers[i], answers[j]] = [answers[j], answers[i]];
     }
 
-    console.log(answers);
+    // console.log(answers);
 
     this.setState({
       answers,
