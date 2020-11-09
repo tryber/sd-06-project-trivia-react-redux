@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import questionsAPI from '../services/questionAPI';
@@ -35,8 +35,6 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
-    console.log(questions[0]);
     const { buttonBorder } = this.state;
     return (
       <div>
@@ -118,6 +116,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(Questions);
 
-Questions.propTypes = {
-  questions: PropTypes.arrayOf(Object).isRequired,
-};
+// Questions.propTypes = {
+//   questions: PropTypes.arrayOf(Object).isRequired,
+// };
