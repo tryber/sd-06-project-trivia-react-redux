@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../css/AnswersButton.css';
+import { Link } from 'react-router-dom';
 
 class QuestionCard extends Component {
   constructor() {
@@ -9,21 +10,66 @@ class QuestionCard extends Component {
     this.state = {
       correct: false,
       incorrect: false,
+      clicked: false,
+      indexButtonNext: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.nextButton = this.nextButton.bind(this);
+    this.nextQuestions = this.nextQuestions.bind(this);
+  }
+
+  nextButton() {
+    const { clicked, indexButtonNext } = this.state;
+    const indexLimit = 4;
+    if (clicked === true && indexButtonNext < indexLimit) {
+      return (
+        <div data-testid="btn-next">
+          <button
+            type="button"
+            onClick={ this.nextQuestions }
+          >
+            Próxima
+          </button>
+        </div>
+      );
+    } if (clicked === true && indexButtonNext === indexLimit) {
+      return (
+        <div data-testid="btn-next">
+          <Link to="/feedback">
+            <button
+              type="button"
+            >
+             Próxima
+            </button>
+          </Link>
+        </div>
+      );
+    }
+  }
+
+  nextQuestions() {
+    const { indexButtonNext } = this.state;
+    this.setState({
+      correct: false,
+      incorrect: false,
+      clicked: false,
+      indexButtonNext: indexButtonNext + 1,
+    });
   }
 
   handleClick() {
     this.setState({
       correct: 'correct-answer',
       incorrect: 'wrong-answer',
+      clicked: true,
     });
   }
 
   render() {
     const { questions } = this.props;
-    const { category, question } = questions[0];
+    const { indexButtonNext } = this.state;
+    const { category, question } = questions[indexButtonNext];
     const { correct, incorrect } = this.state;
 
     return (
@@ -40,9 +86,9 @@ class QuestionCard extends Component {
             onClick={ this.handleClick }
             type="button"
           >
-            { questions[0].correct_answer }
+            { questions[indexButtonNext].correct_answer }
           </button>
-          {questions[0].incorrect_answers.map((answer, index) => (
+          {questions[indexButtonNext].incorrect_answers.map((answer, index) => (
             <button
               data-testid={ `wrong-answer-${index}` }
               type="button"
@@ -54,7 +100,7 @@ class QuestionCard extends Component {
             </button>
           ))}
         </div>
-        <button type="button">Próxima</button>
+        { this.nextButton() }
       </div>
     );
   }
