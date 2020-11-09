@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Input from '../components/Input';
-import { actionLogin, fetchToken, getQuestions } from '../actions';
+import { actionLogin, fetchToken } from '../actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -28,8 +28,8 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { getToken, history } = this.props;
-    getToken();
+    const { history, actionToken } = this.props;
+    actionToken();
     return history.push('/game');
   }
 
@@ -42,7 +42,6 @@ class Login extends Component {
   }
 
   render() {
-    const { history } = this.props;
     const { disabled } = this.state;
     return (
       <div className="App">
@@ -92,16 +91,19 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  info: state.token.response,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   login: (state) => dispatch(actionLogin(state)),
-  getToken: () => dispatch(fetchToken()),
-  questions: (token) => dispatch(getQuestions(token)),
+  actionToken: () => dispatch(fetchToken()),
 });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  getToken: PropTypes.func.isRequired,
+  actionToken: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

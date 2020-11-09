@@ -1,16 +1,21 @@
-import { GET_QUESTIONS, REQUEST_QUESTIONS } from '../actions';
+import { GET_QUESTIONS, SCORED_POINT } from '../actions';
 
 const INITIAL_STATE = {
   results: [],
-  isFetching: false,
+  score: 0,
+  assertions: 0,
 };
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case REQUEST_QUESTIONS:
-    return { ...state, isFetching: true };
   case GET_QUESTIONS:
-    return { ...state, ...action.payload, isFetching: false };
+    return { ...state, results: action.payload.results };
+  case SCORED_POINT:
+    return {
+      ...state,
+      score: state.score + action.score,
+      assertions: state.assertions + 1,
+    };
   default:
     return state;
   }

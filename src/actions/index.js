@@ -10,8 +10,11 @@ payload é convenção. está email como no Readme.
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const PLAYER_DATA = 'PLAYER_DATA';
+export const SCORED_POINT = 'SCORED_POINT';
+
+const requestToken = 'https://opentdb.com/api_token.php?command=request';
+const requestQuestions = 'https://opentdb.com/api.php?amount=5&category=31&token=';
 
 export const actionLogin = ({ email, name }) => ({
   type: LOGIN,
@@ -19,22 +22,24 @@ export const actionLogin = ({ email, name }) => ({
   name,
 });
 
-const tokenAction = (payload) => ({
+export const tokenAction = (token) => ({
   type: TOKEN,
-  payload,
+  token,
+});
+
+export const scoreAction = (score) => ({
+  type: SCORED_POINT,
+  score,
 });
 
 export const playerData = (payload) => ({
-  type: 'PLAYER_DATA',
+  type: PLAYER_DATA,
   payload: {
     name: payload.name,
     score: payload.score,
     timeout: payload.timeout,
+    time: payload.time,
   },
-});
-
-const requestQuestions = () => ({
-  type: REQUEST_QUESTIONS,
 });
 
 export const getQuestionsAction = (payload) => ({
@@ -42,22 +47,16 @@ export const getQuestionsAction = (payload) => ({
   payload,
 });
 
-export function getQuestions(token) {
-  return async (dispatch) => {
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&category=31&token=${token}`);
-    const data = await response.json();
-    // console.log(data);
-    return dispatch(getQuestionsAction(data));
-  };
-}
+export const getQuestions = (token) => async (dispatch) => {
+  const apiQuestions = await fetch(`${requestQuestions}${token}`);
+  const results = await apiQuestions.json();
+  return dispatch(getQuestionsAction(results));
+};
 
-export const fetchToken = () => (dispatch) => {
-  dispatch(requestQuestions());
-  fetch('https://opentdb.com/api_token.php?command=request')
-    .then((response) => response.json())
-    .then((data) => {
-      dispatch(tokenAction(data));
-      return data;
-    })
-    .then((data) => dispatch(getQuestions(data.token)));
+export const fetchToken = () => async (dispatch) => {
+  const apiAnswer = await fetch(requestToken);
+  const token = await apiAnswer.json();
+  localStorage.setItem('token', token.token);
+  await dispatch(tokenAction(token.token));
+  return dispatch(getQuestions(token.token));
 };

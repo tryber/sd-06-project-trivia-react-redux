@@ -26,6 +26,7 @@ class Timer extends React.Component {
       timeout: true,
       name,
       score,
+      time: timeLeft,
     };
     const oneSecond = 1000;
     if (timeLeft < 1) {
@@ -36,7 +37,8 @@ class Timer extends React.Component {
 
   decreaseTime() {
     const { timeLeft } = this.state;
-    this.setState({ timeLeft: timeLeft - 1 });
+    const trinta = 30;
+    if (timeLeft > 0 && timeLeft <= trinta) this.setState({ timeLeft: timeLeft - 1 });
   }
 
   render() {
@@ -44,7 +46,7 @@ class Timer extends React.Component {
     return (
       <h4>
 Tempo:
-        {timeLeft}
+        { timeLeft }
       </h4>
     );
   }

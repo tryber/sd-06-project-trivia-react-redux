@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     name: '',
     score: 0,
     timeout: false,
+    time: 30,
   },
 };
 
