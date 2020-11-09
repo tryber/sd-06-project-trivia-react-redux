@@ -31,6 +31,36 @@ class Game extends React.Component {
     if (questions.length > 0) {
       newQuestions = questions[0].results.map((pergunta) => {
         const { correct_answer: correct, incorrect_answers: incorrect } = pergunta;
+        if (pergunta.type === 'boolean') {
+          if (correct === 'True') {
+            const detalhes = [
+              {
+                resposta: correct,
+                dataTestid: 'correct-answer',
+                value: 'CorrectAnswer',
+              },
+              {
+                resposta: incorrect[0],
+                dataTestid: 'wrong-answer-0',
+                value: 'WrongAnswer',
+              },
+            ];
+            return { ...pergunta, respostas: detalhes };
+          }
+          const detalhes = [
+            {
+              resposta: incorrect[0],
+              dataTestid: 'wrong-answer-0',
+              value: 'WrongAnswer',
+            },
+            {
+              resposta: correct,
+              dataTestid: 'correct-answer',
+              value: 'CorrectAnswer',
+            },
+          ];
+          return { ...pergunta, respostas: detalhes };
+        }
         const detalhes = [
           {
             resposta: correct,
