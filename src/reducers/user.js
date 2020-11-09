@@ -1,10 +1,11 @@
-import { LOGIN, TOKEN, SCORE } from '../actions';
+import { LOGIN, TOKEN, SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
   score: 0,
   token: '',
+  assertions: 0,
 };
 
 export default function (state = INITIAL_STATE, action) {
@@ -17,6 +18,8 @@ export default function (state = INITIAL_STATE, action) {
     return { ...state, token: action.token };
   case SCORE:
     return { ...state, score: action.score };
+  case ASSERTIONS:
+    return { ...state, score: action.assertions };
   default:
     return state;
   }

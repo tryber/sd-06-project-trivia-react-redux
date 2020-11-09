@@ -12,6 +12,9 @@ export const sendQuestions = (questions) => ({ type: QUESTIONS, questions });
 export const SCORE = 'SCORE';
 export const sendScore = (score) => ({ type: SCORE, score });
 
+export const ASSERTIONS = 'ASSERTIONS';
+export const sendAssertion = (assertions) => ({ type: ASSERTIONS, assertions });
+
 export function handleToken() {
   return async (dispatch) => {
     const tokenObjResponse = await fetchAPITrivia();
@@ -25,5 +28,15 @@ export function getQuestions(token) {
   return async (dispatch) => {
     const questionObject = await fetchAPIQuestions(token);
     dispatch(sendQuestions(questionObject));
+  };
+}
+
+export function updateScoreAndAssertions(score, assertions) {
+  return (dispatch, setState) => {
+    const { name, email, score, assertions } = setState().user;
+    dispatch(sendAssertion(assertions));
+    dispatch(sendScore(score));
+    const playerObject = { name, gravatarEmail: email, score, assertions };
+    localStorage.setItem('player', JSON.stringify(playerObject));
   };
 }
