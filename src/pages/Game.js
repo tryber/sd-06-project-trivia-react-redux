@@ -102,15 +102,23 @@ class Game extends React.Component {
 
   chooseNextQuestion() {
     const { createInterval, clearIntervalTimer } = this;
-    const { toResetTimer } = this.props;
+    const { toResetTimer, history } = this.props;
+    const { questionNumber } = this.state;
+    const lastQuestion = 4;
+
     toResetTimer();
     clearIntervalTimer();
-    createInterval();
-    this.setState((prevState) => ({
-      questionNumber: prevState.questionNumber + 1,
-      answered: false,
-      generatedAnswer: false,
-    }));
+
+    if (questionNumber === lastQuestion) {
+      history.push('/feedback');
+    } else {
+      createInterval();
+      this.setState((prevState) => ({
+        questionNumber: prevState.questionNumber + 1,
+        answered: false,
+        generatedAnswer: false,
+      }));
+    }
   }
 
   handleLocalStorage() {
@@ -262,6 +270,9 @@ Game.propTypes = {
   timer: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
