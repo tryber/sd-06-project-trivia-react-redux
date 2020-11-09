@@ -1,6 +1,4 @@
 import React from 'react';
-// import { Redirect } from 'react-router-dom';
-// import { fetchTokenTrivia } from '../services/fetchApi';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -26,17 +24,8 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    // const { name, email } = this.state;
     const { getToken } = this.props;
-    // getToken()
-    //   .then(() => {
-    //     getTriviaQuestions(token);
-    //     localStorage.setItem('token', token);
-    //     console.log(token);
-    //   });
     getToken();
-    // const responseTrivia = await getTriviaQuestions(token);
-    // console.log(responseTrivia);
     this.handleUserInfo();
     this.setState({
       redirect: true,
