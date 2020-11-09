@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { thunkQuestions } from '../actions';
+import { thunkQuestions, freezeTimer, score } from '../actions';
 import './gameBody.css';
 import Timer from './Timer';
 
@@ -15,12 +15,17 @@ class GameBody extends React.Component {
       disabled: true,
       disabledAnswer: false,
       renderTimer: false,
+      userAssertions: 0,
+      userScore: 0,
     };
     this.handleNext = this.handleNext.bind(this);
     this.createQuestions = this.createQuestions.bind(this);
     this.changeColor = this.changeColor.bind(this);
     this.handleTimer = this.handleTimer.bind(this);
     this.disabledAnswer = this.disabledAnswer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.sumScore = this.sumScore.bind(this);
+    this.saveScoreLocalState = this.saveScoreLocalState.bind(this);
   }
 
   async componentDidMount() {
@@ -48,6 +53,11 @@ class GameBody extends React.Component {
     }
   }
 
+  stopTimer() {
+    const { stopTime } = this.props;
+    stopTime(true);
+  }
+
   disabledAnswer() {
     this.setState({
       disabledAnswer: true,
@@ -57,7 +67,8 @@ class GameBody extends React.Component {
 
   async handleNext() {
     await this.handleTimer();
-    const { questions } = this.props;
+    const { questions, stopTime } = this.props;
+    stopTime(false);
     let { index } = this.state;
     index += 1;
     if (questions.length > 0 && index < questions.length) {
@@ -66,7 +77,47 @@ class GameBody extends React.Component {
     this.setState({
       isCorrect: false,
       disabled: true,
+      disabledAnswer: false,
     });
+  }
+
+  sumScore() {
+    const { questions } = this.props;
+    const { userAssertions, userScore, index } = this.state;
+    const { difficulty } = questions[index];
+    let difficultyLevel = 1;
+    if (difficulty === 'medium') { difficultyLevel += 1; }
+    if (difficulty === 'hard') { difficultyLevel += 2; }
+    const timeNumber = parseFloat(document.getElementById('time-remain').textContent);
+    const fixedScore = 10;
+    const questionScore = (fixedScore + (timeNumber * difficultyLevel));
+    const totalScore = userScore + questionScore;
+    const totalAssertions = userAssertions + 1;
+    this.setState({
+      userAssertions: totalAssertions,
+      userScore: totalScore,
+    });
+    this.saveScoreLocalState(totalScore, totalAssertions);
+  }
+
+  saveScoreLocalState(totalScore, totalAssertions) {
+    const { userName, userEmail, userScore } = this.props;
+    const userInfo = {
+      score: totalScore,
+      assertions: totalAssertions,
+    };
+    const playerInfo = {
+      player: {
+        name: userName,
+        assertions: totalAssertions,
+        score: totalScore,
+        gravatarEmail: userEmail,
+      },
+    };
+    userScore(userInfo);
+    localStorage.setItem('state', JSON.stringify(playerInfo));
+    const localStor = JSON.parse(localStorage.getItem('state'));
+    console.log('localStorage', localStor);
   }
 
   changeColor() {
@@ -103,7 +154,11 @@ class GameBody extends React.Component {
                 className={ isCorrect ? 'buttonCorrect' : '' }
                 key={ answer }
                 data-testid="correct-answer"
-                onClick={ () => this.changeColor() }
+                onClick={ () => {
+                  this.changeColor();
+                  this.stopTimer();
+                  this.sumScore();
+                } }
               >
                 { answer }
               </button>);
@@ -115,7 +170,7 @@ class GameBody extends React.Component {
               className={ isCorrect ? 'buttonIncorrect' : '' }
               key={ answer }
               data-testid={ `wrong-answer-${index - 1}` }
-              onClick={ () => this.changeColor() }
+              onClick={ () => { this.changeColor(); this.stopTimer(); } }
             >
               { answer }
             </button>);
@@ -140,15 +195,23 @@ class GameBody extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.questionReducer.questions,
+  userName: state.loginReducer.name,
+  userEmail: state.loginReducer.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(thunkQuestions()),
+  stopTime: (condition) => dispatch(freezeTimer(condition)),
+  userScore: (scoreInfo) => dispatch(score(scoreInfo)),
 });
 
 GameBody.propTypes = {
   getQuestions: PropTypes.func.isRequired,
+  stopTime: PropTypes.func.isRequired,
+  userScore: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
+  userName: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBody);
