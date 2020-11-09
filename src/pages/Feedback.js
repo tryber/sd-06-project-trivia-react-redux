@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { FeedbackMenssage } from '../components';
 
 class Feedback extends Component {
   render() {
     return (
       <div>
         Tela de feedback:
-        Quantidade de acertos e pontos da partida, opção de ver ranking e jogar novamente
+        <FeedbackMenssage />
       </div>
     );
   }
