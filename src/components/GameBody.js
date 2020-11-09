@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { thunkQuestions } from '../actions';
 import './gameBody.css';
 import Timer from './Timer';
-import { Redirect } from 'react-router-dom';
 
 class GameBody extends React.Component {
   constructor() {
@@ -125,15 +125,15 @@ class GameBody extends React.Component {
         }).sort(() => Math.random() - randomNumber) }
         <br />
         <br />
-          <button
-            type="button"
-            disabled={ disabled }
-            data-testid={ disabled ? '' : 'btn-next' }
-            onClick={ () => this.handleNext() }
-            redirect={ redirect ? <Redirect to="feedback" /> : false }
-          >
-            Next
-          </button>
+        <button
+          type="button"
+          disabled={ disabled }
+          data-testid={ disabled ? '' : 'btn-next' }
+          onClick={ () => this.handleNext() }
+          redirect={ redirect ? <Redirect to="feedback" /> : false }
+        >
+          Next
+        </button>
         <div>
           {renderTimer === true ? <Timer disabledAnswer={ this.disabledAnswer } /> : null}
         </div>
