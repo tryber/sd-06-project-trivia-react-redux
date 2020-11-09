@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { fetchQuestionsFromAPI } from '../actions';
+import { fetchQuestionsFromAPI, userScore } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -14,6 +14,7 @@ class Game extends React.Component {
       isHidden: true,
       secondsRemaining: 30,
       disableQuestions: false,
+      disableAnswers: true,
     };
 
     this.handleQuestions = this.handleQuestions.bind(this);
@@ -26,11 +27,20 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { state } = this.props;
+    localStorage.setItem('state', JSON.stringify(state));
     const NUMBER_OF_QUESTIONS = 1;
     const MAGIC_NUMBER = 5000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
     setTimeout(this.startTimer, MAGIC_NUMBER);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { state } = this.props;
+    if (JSON.stringify(prevProps.state) !== JSON.stringify(state)) {
+      localStorage.setItem('state', JSON.stringify(state));
+    }
   }
 
   startTimer() {
@@ -39,6 +49,7 @@ class Game extends React.Component {
       this.decreaseTime();
       this.setState({
         intervalID,
+        disableAnswers: false,
       });
     }, INTERVAL);
   }
@@ -72,11 +83,17 @@ class Game extends React.Component {
   }
 
   handleDisabled({ target }) {
-    // Lógica para mudar o disabled do botão
-    // Necessita que uma alternativa tenha sido selecionada
-    // target.id ? target.className = 'green' ;
+    this.stopTimer();
+    const { secondsRemaining } = this.state;
+    const { handleAnswerAction } = this.props;
+    const MAGIC_POINTS = 10;
+    if (target.id === 'correct') {
+      const questionScore = MAGIC_POINTS + (secondsRemaining * target.value);
 
-    console.log(target);
+      handleAnswerAction(questionScore);
+      // const { state } = this.props;
+      // localStorage.setItem('state', JSON.stringify(state));
+    }
     this.setState({
       classRightAnswer: 'green',
       classWrongAnswer: 'red',
@@ -88,7 +105,10 @@ class Game extends React.Component {
     const correctAnswer = e.correct_answer;
     const incorrectAnswers = e.incorrect_answers;
     const newArray = incorrectAnswers.concat(correctAnswer);
-
+    let difficultyPoints = 0;
+    if (e.difficulty === 'easy') difficultyPoints = 1;
+    if (e.difficulty === 'medium') difficultyPoints = 2;
+    if (e.difficulty === 'hard') difficultyPoints = 1 + 2;
     newArray.sort(); // já está alterado
     const correctAnswerIndex = newArray.indexOf(correctAnswer); // pego o indice
     const {
@@ -96,6 +116,7 @@ class Game extends React.Component {
       classWrongAnswer,
       secondsRemaining,
       disableQuestions,
+      disableAnswers,
     } = this.state;
 
     return (
@@ -112,9 +133,9 @@ class Game extends React.Component {
                 data-testid="correct-answer"
                 id="correct"
                 className={ classRightAnswer }
-                value={ element }
+                value={ difficultyPoints }
                 onClick={ this.handleDisabled }
-                disabled={ disableQuestions }
+                disabled={ disableQuestions || disableAnswers }
               >
                 { element }
               </button>);
@@ -124,11 +145,10 @@ class Game extends React.Component {
               type="button"
               key={ index }
               data-testid={ `wrong-answer-${index}` }
-              value={ element }
               className={ classWrongAnswer }
               id="wrong"
               onClick={ this.handleDisabled }
-              disabled={ disableQuestions }
+              disabled={ disableQuestions || disableAnswers }
             >
               { element }
             </button>);
@@ -176,15 +196,21 @@ const mapDispatchToProps = (dispatch) => ({
   fetchQuestionsAction: (numberOfQuestions) => (
     dispatch(fetchQuestionsFromAPI(numberOfQuestions))
   ),
+  handleAnswerAction: (score) => (
+    dispatch(userScore(score))
+  ),
 });
 
 const mapStateToProps = (state) => ({
   questions: state.questions.questions,
+  state: state.state,
 });
 
 Game.propTypes = {
   fetchQuestionsAction: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
+  state: PropTypes.shape().isRequired,
+  handleAnswerAction: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
