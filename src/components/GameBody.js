@@ -116,8 +116,6 @@ class GameBody extends React.Component {
     };
     userScore(userInfo);
     localStorage.setItem('state', JSON.stringify(playerInfo));
-    const localStor = JSON.parse(localStorage.getItem('state'));
-    console.log('localStorage', localStor);
   }
 
   changeColor() {
