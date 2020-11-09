@@ -29,8 +29,21 @@ class Login extends React.Component {
   }
 
   setLocalStorage() {
+    const info = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
     const { tokenLocalStorage } = this.props;
+    const { name, email } = this.state;
+    info.player.name = name;
+    info.player.gravatarEmail = email;
+    const newInfo = JSON.stringify(info);
     localStorage.setItem('token', tokenLocalStorage);
+    localStorage.setItem('state', newInfo);
   }
 
   handleChange({ name, value }) {
