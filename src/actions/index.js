@@ -30,3 +30,13 @@ export function getQuestions(token) {
     dispatch(sendQuestions(questionObject));
   };
 }
+
+export function updateScoreAndAssertions(score, assertions) {
+  return (dispatch, setState) => {
+    const { name, email } = setState().user;
+    dispatch(sendAssertions(assertions));
+    dispatch(sendScore(score));
+    const playerObject = { player: { name, gravatarEmail: email, score, assertions } };
+    localStorage.setItem('state', JSON.stringify(playerObject));
+  };
+}
