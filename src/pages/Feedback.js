@@ -25,10 +25,6 @@ class Ranking extends React.Component {
     });
   }
 
-  resetState() {
-    localStorage.clear();
-  }
-
   render() {
     const { assertions, score } = this.state;
     const three = 3;
@@ -46,7 +42,6 @@ class Ranking extends React.Component {
           <button
             data-testid="btn-play-again"
             type="button"
-            onClick={ this.resetState }
           >
             Jogar Novamente
           </button>

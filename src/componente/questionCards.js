@@ -15,6 +15,7 @@ class QuestionCards extends Component {
     this.setDisableTimeout = this.setDisableTimeout.bind(this);
     this.getRate = this.getRate.bind(this);
     this.stateToLocalStorage = this.stateToLocalStorage.bind(this);
+    this.setRanking = this.setRanking.bind(this);
 
     this.state = {
       currentIndex: 0,
@@ -71,6 +72,22 @@ class QuestionCards extends Component {
       }));
     default:
       return console.log('não rolou');
+    }
+  }
+
+  setRanking() {
+    const getRanking = localStorage.getItem('ranking');
+    const { userName, userImage } = this.props;
+    const { score } = this.state;
+    if (getRanking === null) {
+      localStorage.setItem('ranking', JSON.stringify([
+        { name: userName, score, picture: userImage },
+      ]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([
+        ...JSON.parse(localStorage.getItem('ranking')),
+        { name: userName, score, picture: userImage },
+      ]));
     }
   }
 
@@ -163,6 +180,7 @@ class QuestionCards extends Component {
                       data-testid="btn-next"
                       className={ visibility }
                       type="button"
+                      onClick={ this.setRanking }
                     >
                       Finalizar
                     </button>
@@ -187,10 +205,14 @@ class QuestionCards extends Component {
 
 const mapStateToProps = (state) => ({
   questionCard: state.questionReducer.question.results,
+  userName: state.loginReducer.nome,
+  userImage: state.loginReducer.image,
 });
 
 QuestionCards.propTypes = {
   questionCard: propTypes.arrayOf(Object).isRequired,
+  userName: propTypes.string.isRequired,
+  userImage: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(QuestionCards);
