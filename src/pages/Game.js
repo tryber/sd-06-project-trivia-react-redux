@@ -58,7 +58,6 @@ class Game extends React.Component {
     const {
       difficulty,
       name,
-      score,
       gravatarEmail,
       assertions,
       timer,
@@ -116,14 +115,14 @@ class Game extends React.Component {
 
   handleLocalStorage() {
     const { name, assertions, score, gravatarEmail } = this.props;
-      const newPlayerStorage = {
-        player: {
-          name,
-          assertions,
-          score,
-          gravatarEmail,
-        },
-      };
+    const newPlayerStorage = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    };
     localStorage.setItem('state', JSON.stringify(newPlayerStorage));
   }
 

@@ -33,7 +33,8 @@ export const updateLocalStorageAction = (
   currentScore,
   currentName,
   currentAssertions,
-  currentGravatarEmail) => {
+  currentGravatarEmail,
+  ) => {
   return async (dispatch) => {
     await dispatch(updateScore(currentScore));
     const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
@@ -42,8 +43,8 @@ export const updateLocalStorageAction = (
     currentLocalStorage.player.score = currentScore;
     currentLocalStorage.player.gravatarEmail = currentGravatarEmail;
     localStorage.setItem('state', JSON.stringify(currentLocalStorage));
-  }
-}
+  };
+};
 
 export const renderTime = () => ({
   type: RENDER_TIME,
