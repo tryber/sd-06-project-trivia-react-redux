@@ -11,7 +11,7 @@ export default function App() {
       <Switch>
         <Route path="/config" component={ ScreenConfig } />
         <Route path="/game" component={ ScreenGame } />
-        <Route exact path="/" component={ Login } />
+        <Route path="/" component={ Login } />
       </Switch>
     </BrowserRouter>
     // <div className="App">

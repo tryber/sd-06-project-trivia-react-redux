@@ -6,10 +6,11 @@ import FeedbackHeader from './FeedbackHeader';
 import '../App.css';
 
 class ScreenGame extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       answered: false,
+      btnNext: true,
     };
     this.changeColor = this.changeColor.bind(this);
   }
@@ -17,12 +18,13 @@ class ScreenGame extends React.Component {
   changeColor() {
     this.setState({
       answered: true,
+      btnNext: false,
     });
   }
 
   render() {
     const { questions } = this.props;
-    const { answered } = this.state;
+    const { answered, btnNext } = this.state;
     return (
       <div className="game-container">
         <div className="header">
@@ -77,6 +79,15 @@ class ScreenGame extends React.Component {
                 {item}
               </button>
             ))}
+        </div>
+        <div className="btnNext">
+          <button
+            type="button"
+            data-testid="btn-next"
+            hidden={ btnNext }
+          >
+            Próxima
+          </button>
         </div>
       </div>
     );
