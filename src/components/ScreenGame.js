@@ -35,7 +35,8 @@ class ScreenGame extends React.Component {
 
   timer() {
     const { limitTime } = this.state;
-    const countDown = setInterval(this.regressTimer, 1000);
+    const callInterval = 1000;
+    const countDown = setInterval(this.regressTimer, callInterval);
     if (limitTime === 0) {
       clearInterval(countDown);
       this.setState({ answered: false, isDisable: true });
