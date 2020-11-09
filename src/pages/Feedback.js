@@ -6,8 +6,8 @@ import Header from '../components/Header';
 class Feedback extends Component {
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const { score } = state.player;
-    const { assertions } = this.props;
+    const { score, assertions } = state.player;
+    // const { assertions } = this.props;
 
     const feedbackMessage = () => (assertions > 2
       ? 'Mandou bem!' : 'Podia ser melhor...');
