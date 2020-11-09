@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { saveRanking } from '../actions';
 
 class Feedback extends Component {
-  cleanToken() {
-    localStorage.setItem('token', '');
+  componentDidMount() {
+    const { name, score, hash, saveRankingtoStore } = this.props;
+    const picture = `https://www.gravatar.com/avatar/${hash}`;
+    const playerAtual = {
+      name,
+      picture,
+      score,
+    };
+    saveRankingtoStore(playerAtual);
+    const { ranking } = this.props;
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
+  reset() {
   }
 
   render() {
@@ -31,13 +44,10 @@ class Feedback extends Component {
           <button
             data-testid="btn-play-again"
             type="button"
-            onClick={ this.cleanToken() }
+            onClick={ this.reset() }
           >
           Jogar Novamente
           </button>
-        </Link>
-        <Link to="/">
-          <button type="button">Voltar</button>
         </Link>
       </div>
     );
@@ -45,13 +55,25 @@ class Feedback extends Component {
 }
 
 Feedback.propTypes = {
-  assertions: propTypes.number.isRequired,
-  score: propTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  hash: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  ranking: PropTypes.arrayOf(PropTypes.object).isRequired,
+  saveRankingtoStore: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
   score: state.player.score,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  ranking: state.ranking,
+  hash: state.requestInfo.hash,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  saveRankingtoStore: (playerAtual) => dispatch(saveRanking(playerAtual)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
