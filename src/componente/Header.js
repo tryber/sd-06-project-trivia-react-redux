@@ -4,6 +4,10 @@ import propTypes from 'prop-types';
 import './questionCards.css';
 
 class Header extends Component {
+  totalScore() {
+    return JSON.parse(localStorage.getItem('state')).player.score;
+  }
+
   render() {
     const { userName, userImage } = this.props;
 
@@ -19,7 +23,7 @@ class Header extends Component {
         >
           {userName}
         </h3>
-        <h3 data-testid="header-score">0</h3>
+        <h3 data-testid="header-score">{ this.totalScore() }</h3>
       </header>
     );
   }

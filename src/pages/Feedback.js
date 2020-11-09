@@ -6,6 +6,7 @@ class Ranking extends React.Component {
     return (
       <section>
         <Header />
+        <p data-testid="feedback-text">Feedbackzão</p>
       </section>
     );
   }
