@@ -498,19 +498,15 @@ table {
   -webkit-text-shadow: 0 0 5px #000;
 }
 
-th {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-td {
-  margin-top: 10px;
-  font-size: 45px;
+thead tr {
+  font-size: 40px;
+  text-shadow: 0 0 6px #000;
+  -moz-text-shadow: 0 0 5px #000;
+  -webkit-text-shadow: 0 0 5px #000;
 }
 
 .hr-table {
-  width: 100px;
+  width: 10px;
   border: rgb(56, 55, 55) solid 1px;
   transform:rotate(90deg);
   -ms-transform:rotate(90deg);
@@ -519,12 +515,11 @@ td {
   padding: 0;
 }
 
-.td-score {
-  padding-right: 35px;
-}
+th {background: rgb(88, 86, 86)}
+td {text-align: center;}
 
-th:nth-child(even) {background: inherit}
-th:nth-child(odd) {background: rgb(88, 86, 86)}
+tr:nth-child(odd) {background: inherit}
+tr:nth-child(even) {background: rgb(88, 86, 86)}
 
 .home-button {
   margin-bottom: 15px;

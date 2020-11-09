@@ -1,92 +1,72 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { fetchGravatar } from '../services';
 
 class Ranking extends React.Component {
-  // constructor() {
-  //   super();
-  // }
-
-  componentDidMount() {
-    this.fetchProfileImg();
+  constructor() {
+    super();
+    this.handleRanking = this.handleRanking.bind(this);
+    this.state = {
+      ranking: [],
+    };
   }
 
-  fetchProfileImg() {
-    const { hashGravatar } = this.props;
-    fetchGravatar(hashGravatar);
+  componentDidMount() {
+    this.handleRanking();
+  }
+
+  handleRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const one = 1;
+    const sortedRanking = ranking.sort((a, b) => (
+      (a.score > b.score || b.score === a.score) ? -one : 0
+    ));
+    this.setState({
+      ranking: [...sortedRanking],
+    });
   }
 
   render() {
-    const { hashGravatar, userName, score } = this.props;
-    const src = `https://www.gravatar.com/avatar/${hashGravatar}`;
+    const { ranking } = this.state;
     return (
       <div className="ranking-container game-container">
         <header className="profile-header ranking-header">
           <h1 data-testid="ranking-title">Ranking</h1>
         </header>
         <section className="table-container">
-          <table>
-            <thead>
-              <th>
-                <td>
-                  <img
-                    data-testid="header-profile-picture"
-                    alt="profile"
-                    src={ src }
-                    width="120"
-                    className="profile-img-feedback-ranking"
-                  />
-                </td>
-                <hr className="hr-table" />
-                <td>
-                  {userName}
-                </td>
-                <hr className="hr-table" />
-                <td className="td-score">
-                  {score}
-                </td>
-              </th>
-              <th>
-                <td>
-                  <img
-                    data-testid="header-profile-picture"
-                    alt="profile"
-                    src={ src }
-                    width="120"
-                    className="profile-img-feedback-ranking"
-                  />
-                </td>
-                <hr className="hr-table" />
-                <td>
-                  {userName}
-                </td>
-                <hr className="hr-table" />
-                <td className="td-score">
-                  {score}
-                </td>
-              </th>
-              <th>
-                <td>
-                  <img
-                    data-testid="header-profile-picture"
-                    alt="profile"
-                    src={ src }
-                    width="120"
-                    className="profile-img-feedback-ranking"
-                  />
-                </td>
-                <hr className="hr-table" />
-                <td>
-                  {userName}
-                </td>
-                <hr className="hr-table" />
-                <td className="td-score">
-                  {score}
-                </td>
-              </th>
+          <table cellSpacing="0" cellPadding="0">
+            <thead className="thead">
+              <tr>
+                <th scope="col">Foto de Perfil</th>
+                <th>Nome</th>
+                <th>Pontuação</th>
+              </tr>
             </thead>
+            <tbody>
+              {
+                ranking.map((player, index) => (
+                  <tr key={ index } className="bla">
+                    <td datatestid="header-profile-picture">
+                      <img
+                        src={ `https://www.gravatar.com/avatar/${player.hash}` }
+                        alt="avatar"
+                      />
+                    </td>
+                    {/* <hr className="hr-table" /> */}
+                    <td>
+                      <span data-testid={ `player-name-${index}` }>{ player.name }</span>
+                    </td>
+                    {/* <hr className="hr-table" /> */}
+                    <td>
+                      <span
+                        data-testid={ `player-score-${index}` }
+                      >
+                        { player.score }
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
           </table>
         </section>
         <Link to="/">
@@ -99,16 +79,4 @@ class Ranking extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  hashGravatar: state.user.hash,
-  userName: state.user.player.name,
-  score: state.user.player.score,
-});
-
-Ranking.propTypes = {
-  hashGravatar: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
-};
-
-export default connect(mapStateToProps)(Ranking);
+export default Ranking;

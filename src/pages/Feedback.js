@@ -8,10 +8,12 @@ class Feedback extends React.Component {
   constructor() {
     super();
     this.fetchProfileImg = this.fetchProfileImg.bind(this);
+    this.rankingStorage = this.rankingStorage.bind(this);
   }
 
   async componentDidMount() {
     this.fetchProfileImg();
+    this.rankingStorage();
   }
 
   fetchProfileImg() {
@@ -26,6 +28,23 @@ class Feedback extends React.Component {
       return 'Podia ser melhor...';
     }
     return 'Mandou bem!';
+  }
+
+  rankingStorage() {
+    const { hashGravatar, userName, score } = this.props;
+    if (!localStorage.ranking) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const updatedRanking = [
+      ...ranking,
+      {
+        name: userName,
+        score,
+        picture: `https://www.gravatar.com/avatar/${hashGravatar}`,
+      },
+    ];
+    localStorage.setItem('ranking', JSON.stringify(updatedRanking));
   }
 
   render() {
