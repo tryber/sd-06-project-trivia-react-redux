@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginAction } from '../actions';
+import { loginAction, questionsThunk } from '../actions';
 import trivia from '../images/trivia.png';
 import tokenAPI from '../services/tokenAPI';
 
@@ -35,10 +35,11 @@ class Login extends React.Component {
 
   async handleClick() {
     const { email, username } = this.state;
-    const { login } = this.props;
+    const { login, questions } = this.props;
     const token = await tokenAPI();
     localStorage.setItem('token', token);
     login(email, username);
+    questions();
   }
 
   render() {
@@ -106,10 +107,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (email, username) => dispatch(loginAction(email, username)),
+  questions: () => dispatch(questionsThunk()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  questions: PropTypes.func.isRequired,
 };
