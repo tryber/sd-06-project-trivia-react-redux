@@ -26,22 +26,14 @@ class Game extends React.Component {
     this.stopTimer = this.stopTimer.bind(this);
   }
 
-<<<<<<< HEAD
-  async componentDidMount() {
-    const NUMBER_OF_QUESTIONS = 5;
-    const { receivedQuestions } = this.props;
-    const questions = await this.handleFetch(NUMBER_OF_QUESTIONS);
-    receivedQuestions(questions.results); //  populou o state
-=======
   componentDidMount() {
     const { state } = this.props;
     localStorage.setItem('state', JSON.stringify(state));
-    const NUMBER_OF_QUESTIONS = 1;
-    const MAGIC_NUMBER = 5000;
+    const NUMBER_OF_QUESTIONS = 5;
+    const MAGIC_NUMBER = 1000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
     setTimeout(this.startTimer, MAGIC_NUMBER);
->>>>>>> main-group-27
   }
 
   componentDidUpdate(prevProps) {
@@ -182,8 +174,6 @@ class Game extends React.Component {
               PERGUNTA:
                 <p>{e.question}</p>
               </div>
-<<<<<<< HEAD
-=======
               {this.randomArray(e)}
               <button
                 data-testid="btn-next"
@@ -193,7 +183,6 @@ class Game extends React.Component {
               >
                 PRÓXIMA
               </button>
->>>>>>> main-group-27
             </div>
             {this.randomArray(e)}
             <button
@@ -221,12 +210,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-<<<<<<< HEAD
-  questions: state.questions,
-=======
   questions: state.questions.questions,
   state: state.state,
->>>>>>> main-group-27
 });
 
 Game.propTypes = {
