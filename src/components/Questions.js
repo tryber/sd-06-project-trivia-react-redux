@@ -13,6 +13,7 @@ class Questions extends Component {
       shuffledQuestions: [],
       shuffled: false,
       feedback: false,
+      hideNext: true,
     };
 
     this.changeToNextQuestion = this.changeToNextQuestion.bind(this);
@@ -47,13 +48,11 @@ class Questions extends Component {
   }
 
   changeToNextQuestion() {
-    const nextButton = document.querySelector('.btn-next');
     const { questionNumber } = this.state;
     const { resetTimer } = this.props;
     const indexLimit = 4;
     const wrongList = document.querySelectorAll('.wrong-question');
     const rightQuestion = document.querySelector('.right-question');
-    nextButton.style.visibility = 'hidden';
 
     resetTimer();
 
@@ -61,6 +60,7 @@ class Questions extends Component {
       questionNumber: (questionNumber < indexLimit ? questionNumber + 1 : 0),
       disableBTN: false,
       shuffled: false,
+      hideNext: true,
     });
 
     if (wrongList && rightQuestion) {
@@ -100,10 +100,8 @@ class Questions extends Component {
   handleAnswer({ target }, difficulty) {
     const { questionNumber } = this.state;
     const { stopTimer, sendScore, countAnswer } = this.props;
-    const nextButton = document.querySelector('.btn-next');
     const wrongList = document.querySelectorAll('.wquestion');
     const rightQuestion = document.querySelector('.rquestion');
-    nextButton.style.visibility = 'visible';
 
     stopTimer();
 
@@ -122,6 +120,7 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
+        hideNext: false,
       });
     }
 
@@ -133,6 +132,7 @@ class Questions extends Component {
 
       this.setState({
         disableBTN: true,
+        hideNext: false,
       });
     }
 
@@ -141,6 +141,7 @@ class Questions extends Component {
     if (questionNumber === questionIndexLimit) {
       this.setState({
         feedback: true,
+        hideNext: false,
       });
     }
   }
@@ -195,8 +196,8 @@ class Questions extends Component {
   }
 
   handleRedirectFeedback() {
-    const { feedback } = this.state;
-    if (!feedback) {
+    const { feedback, hideNext } = this.state;
+    if (!feedback, !hideNext) {
       const nextBtn = (
         <button
           type="button"
@@ -209,28 +210,25 @@ class Questions extends Component {
       );
 
       return nextBtn;
+    } else if (feedback, !hideNext) {
+      const feedbackBtn = (
+        <Link to="/feedback">
+          <button
+            type="button"
+            className="btn-next"
+            data-testid="btn-next"
+          >
+            Next Question
+          </button>
+        </Link>
+      );
+  
+      return feedbackBtn;
     }
-
-    const nextButton = document.querySelector('.btn-next');
-    nextButton.style.visibility = 'visible';
-
-    const feedbackBtn = (
-      <Link to="/feedback">
-        <button
-          type="button"
-          className="btn-next"
-          data-testid="btn-next"
-        >
-          Next Question
-        </button>
-      </Link>
-    );
-
-    return feedbackBtn;
   }
 
   render() {
-    const { shuffled } = this.state;
+    const { shuffled, hideNext, feedback } = this.state;
     const { gameQuestions } = this.props;
 
     if (!shuffled && gameQuestions) {
@@ -242,7 +240,16 @@ class Questions extends Component {
     return (
       <div>
         {this.handleQuestions()}
-        {this.handleRedirectFeedback()}
+        {!hideNext && !feedback
+          ? <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.changeToNextQuestion }
+          >
+            Next Question
+        </button>
+          : ''}
+        {!hideNext && feedback ? <Link to="/feedback"><button type="button" data-testid="btn-next" onClick={ this.changeToNextQuestion }>Next Question</button></Link> : ''}
       </div>
     );
   }
