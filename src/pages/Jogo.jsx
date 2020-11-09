@@ -51,7 +51,11 @@ class Jogo extends React.Component {
     }
   }
 
-  handleClass() {
+handleClass({ target }) {
+    const { contagem } = this.state;
+    const { value } = target;
+    console.log(value);
+    console.log(contagem);
     this.setState({
       classe: true,
       nextBtnDisable: true,
@@ -61,6 +65,7 @@ class Jogo extends React.Component {
   handleClique() {
     this.setState((prevState) => ({
       contador: prevState.contador + 1,
+      contagem: 30,
       classe: false,
       nextBtnDisable: false,
       click: prevState.click + 1,
@@ -70,7 +75,6 @@ class Jogo extends React.Component {
   render() {
     const { perguntas } = this.props;
     const { contador, classe, disable, contagem, nextBtnDisable } = this.state;
-    console.log('perguntas no render', perguntas);
     let correctAnswer = '';
     let options = '';
     if (perguntas.length > 0) {
@@ -95,9 +99,12 @@ class Jogo extends React.Component {
                   data-testid={ option === correctAnswer ? 'correct-answer'
                     : `wrong-answer${index}` }
                   disabled={ disable }
-                  onClick={ this.handleClass }
+                  onClick={ (event) => {
+                    this.handleClass(event)}
+                  }
                   className={ option === correctAnswer ? `${classe ? 'correct' : ''}`
                     : `${classe ? 'wrong' : ''}` }
+                  value={ option }
                 >
                   {option}
                 </button>
