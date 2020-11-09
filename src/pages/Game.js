@@ -102,6 +102,12 @@ class Game extends Component {
   }
 
   nextQuestion() {
+    const { index } = this.state;
+    const four = 4;
+    if (index === four) {
+      const { history } = this.props;
+      history.push('feedback');
+    }
     this.setState((state) => ({
       index: state.index + 1,
       green: '',
@@ -161,7 +167,8 @@ class Game extends Component {
             onClick={ () => this.nextQuestion() }
           >
             Próxima
-          </button>)}
+          </button>
+        )}
         <span>{ time }</span>
       </div>
     );
@@ -181,6 +188,9 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
   saveScorePlayer: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
