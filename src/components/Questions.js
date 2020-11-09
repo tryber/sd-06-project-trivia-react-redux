@@ -21,6 +21,7 @@ class Questions extends Component {
       checked: false,
       disable: false,
       questionsAnswer: 0,
+      answers: [],
     };
   }
 
@@ -28,6 +29,15 @@ class Questions extends Component {
     const TIMES = 30000;
     this.fetchAPIQuestions();
     setTimeout(() => this.disableButtons(), TIMES);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { questionsAnswer } = this.state;
+    const { questions } = this.props;
+    if (prevState.questionsAnswer !== questionsAnswer
+      || prevProps.questions.length !== questions.length) {
+      this.callRandomQuestions();
+    }
   }
 
   async fetchAPIQuestions() {
@@ -72,17 +82,33 @@ class Questions extends Component {
     }
   }
 
-  addClass(e) {
-    e.preventDefault();
+  randomQuestions() {
+    const { questionsAnswer } = this.state;
+    const randomNumber = 0.5;
+    const { questions } = this.props;
+    const answerAPI = questions[questionsAnswer].answers
+      .sort(() => Math.random() - randomNumber);
+    return answerAPI;
+    // console.log(questions);
+    // console.log(`depois do sort ${teste}`);
+  }
+
+  callRandomQuestions() {
+    this.setState({
+      answers: this.randomQuestions(),
+    });
+  }
+
+  addClass() {
     this.setState({
       checked: true,
     });
   }
 
   render() {
-    const { loading, checked, disable, questionsAnswer } = this.state;
+    const { loading, checked, disable, questionsAnswer, answers } = this.state;
     const { questions } = this.props;
-    const randomNumber = 0.5;
+    // const randomNumber = 0.5;
     const nextButton = (
       <button
         type="button"
@@ -101,7 +127,7 @@ class Questions extends Component {
       <div>
         <p data-testid="question-category">{questions[questionsAnswer].category}</p>
         <p data-testid="question-text">{questions[questionsAnswer].question}</p>
-        {questions[questionsAnswer].answers.map((answer, index) => {
+        {answers.map((answer, index) => {
           if (answer === questions[questionsAnswer].correct_answer) {
             return (
               <button
@@ -126,10 +152,11 @@ class Questions extends Component {
             >
               {answer}
             </button>);
-        }).sort(() => Math.random() - randomNumber)}
+        })}
         <Timer />
         <div>
           {renderNextButton}
+          {/* { this.randomQuestions() } */}
         </div>
       </div>
     );
@@ -144,7 +171,7 @@ Questions.propTypes = {
 
 const mapStateToProps = (state) => (
   {
-    questions: state.questions,
+    questions: state.questions.questions,
   }
 );
 

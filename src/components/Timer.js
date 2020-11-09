@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getTimer } from '../actions';
 
 class Timer extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class Timer extends Component {
     const { timer } = this.state;
     if (timer !== 0) {
       const time = setInterval(() => {
-        this.setState((last) => ({ timer: last.timer - 1 }));
+        const { sendTimer } = this.props;
+        sendTimer(timer);
       }, ONE_SECOND);
       setTimeout(() => {
         clearInterval(time);
@@ -29,7 +32,7 @@ class Timer extends Component {
   }
 
   render() {
-    const { timer } = this.state;
+    const { timer } = this.props;
     return (
       <div>
       Tempo restante:
@@ -39,4 +42,12 @@ class Timer extends Component {
   }
 }
 
-export default Timer;
+const mapStateToProps = (state) => ({
+  timer: state.questions.timer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  sendTimer: (state) => dispatch(getTimer(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
