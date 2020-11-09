@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { FeedbackHeader, FeedbackMain } from '../components';
+import { FeedbackHeader, PlayAgain, RankingButton, FeedbackMain } from '../components';
 
 class Feedback extends Component {
   render() {
     return (
-      <div>
+      <div data-testid="feedback-text">
         <FeedbackHeader />
         <FeedbackMain />
-        Feedback
+        <RankingButton />
+        <PlayAgain />
       </div>
     );
   }

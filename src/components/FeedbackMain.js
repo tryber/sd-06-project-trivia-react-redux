@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Feedback extends Component {
   render() {
@@ -21,4 +22,8 @@ Feedback.propTypes = {
   sumCorrectAnswers: PropTypes.number.isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  sumCorrectAnswers: state.player.player.correctAnswers,
+});
+
+export default connect(mapStateToProps)(Feedback);
