@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginUsers } from '../actions';
-import { solicitacaoToken } from '../actions';
+import { solicitacaoToken, solicitacaoQuestoes } from '../actions';
 // import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -33,10 +33,11 @@ class Login extends React.Component {
 
   enviaDados() {
     console.log('teste');
-    const { dispatchDados, dispatchToken, history } = this.props;
+    const { dispatchDados, dispatchToken, dispatchPerguntas, history, token } = this.props;
     const { name, email } = this.state;
     dispatchDados(name, email);
     dispatchToken();
+    dispatchPerguntas(token);
     history.push('/jogo');
   }
 
@@ -90,9 +91,14 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  token: state.reducerAPI.token,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   dispatchDados: (name, email) => dispatch(loginUsers(name, email)),
   dispatchToken: () => dispatch(solicitacaoToken()),
+  dispatchPerguntas: (token) => dispatch(solicitacaoQuestoes(token)),
 });
 
 Login.propTypes = ({
@@ -100,4 +106,4 @@ Login.propTypes = ({
   dispatchToken: propTypes.func.isRequired,
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

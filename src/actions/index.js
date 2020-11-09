@@ -7,6 +7,7 @@ export const TOKEN_ERROR = 'TOKEN_ERROR';
 export const FETCH_QUESTIONS = 'FETCH_QUESTIONS';
 export const SUCESS_QUESTIONS = 'SUCESS_QUESTIONS';
 export const QUESTIONS_ERROR = 'QUESTIONS_ERROR';
+export const PONTOS_QUESTOES = 'PONTOS_QUESTOES';
 
 export const loginUsers = (name, email) => ({
   type: LOGIN,
@@ -63,3 +64,8 @@ export const solicitacaoQuestoes = (token) => async (dispatch) => {
     dispatch(questionsError(error));
   }
 };
+
+export const repassaPontos = (pontos) => ({
+  type: PONTOS_QUESTOES,
+  pontos,
+});
