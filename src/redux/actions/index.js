@@ -4,6 +4,7 @@ export const SAVE_USER = 'SAVE_USER';
 export const REQUEST_FETCH_API = 'REQUEST_FETCH_API';
 export const RECEIVED_RESPONSE_API = 'RECEIVED_RESPONSE_API';
 export const RECEIVED_QUESTIONS = 'RECEIVED_QUESTIONS';
+export const TIME_FINISHED = 'TIME_FINISHED';
 
 export const savePlayer = (name, email) => (
   {
@@ -12,6 +13,11 @@ export const savePlayer = (name, email) => (
     email,
   }
 );
+
+export const timeFinished = (state) => ({
+  type: TIME_FINISHED,
+  timeQuestion: state,
+});
 
 export const requestApi = () => ({
   type: REQUEST_FETCH_API,
