@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { apiToken } from '../services/request';
-import { questions, tokenLogin, user } from '../redux/actions';
+import { questions, scoreReset, tokenLogin, user } from '../redux/actions';
 import configuration from '../images/configuration.png';
 import '../style/Login.css';
 
@@ -38,11 +38,12 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history, saveToken, saveQuestion, saveUser } = this.props;
+    const { history, saveToken, saveQuestion, saveUser, resetPlayer } = this.props;
     const objTokenQuestion = await apiToken();
     saveUser(this.state);
     saveToken(objTokenQuestion.token);
     saveQuestion(objTokenQuestion.questions);
+    resetPlayer();
     history.push('/game');
     // Após clicar no botão "Jogar", a pessoa deve ser redirecionada para a tela do jogo
     // Ao clicar no botão "Jogar", um requisição para a API do Trivia deve ser feita para obter o token de jogador
@@ -106,6 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveToken: (token) => dispatch(tokenLogin(token)),
   saveQuestion: (question) => dispatch(questions(question)),
   saveUser: (login) => dispatch(user(login)),
+  resetPlayer: () => dispatch(scoreReset()),
 });
 
 Login.propTypes = {
@@ -115,6 +117,7 @@ Login.propTypes = {
   saveToken: PropTypes.func.isRequired,
   saveQuestion: PropTypes.func.isRequired,
   saveUser: PropTypes.func.isRequired,
+  resetPlayer: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

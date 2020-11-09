@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
-import { saveState, loadState } from '../../services/localStorage';
+import { saveState } from '../../services/localStorage';
 
 const composeWithDevTools = (
   typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -12,16 +12,6 @@ const composeWithDevTools = (
       return compose(...args);
     }
 );
-
-// const INITIAL_STATE = {
-//   userInformation: {
-//     token: loadState('token', ''),
-//   },
-//   questionsInformation: {
-//     score: loadState('score', 0),
-//     arrayQuestion: [],
-//   },
-// };
 
 const store = createStore(
   rootReducer,

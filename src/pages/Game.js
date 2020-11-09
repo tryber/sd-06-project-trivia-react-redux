@@ -30,7 +30,7 @@ class Game extends Component {
   colorButton(rightAnswer) {
     if (rightAnswer) {
       const { time, index } = this.state;
-      const { arrayQuestion, saveRanking, user, saveScorePlayer } = this.props;
+      const { arrayQuestion, saveScorePlayer } = this.props;
       const objQuestion = arrayQuestion[index];
       let difficultyNumber = 0;
       const three = 3;
@@ -180,7 +180,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
-  saveRanking: PropTypes.func.isRequired,
+  saveScorePlayer: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

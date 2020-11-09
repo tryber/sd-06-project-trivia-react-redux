@@ -1,21 +1,19 @@
 import md5 from 'crypto-js/md5';
-import { loadState } from '../../services/localStorage';
-import { SCORE_PLAYER, USER } from '../actions';
+import { SCORE_PLAYER, SCORE_RESET, USER } from '../actions';
 
 const INITIAL_STATE = {
-  // ...loadState('state', {
-    player: {
-      name: '',
-      gravatarEmail: '',
-      picture: '',
-      assertions: 0,
-      score: 0,
-    },
-  // }),
+  player: {
+    name: '',
+    gravatarEmail: '',
+    picture: '',
+    assertions: 0,
+    score: 0,
+  },
 };
 
-// function funcAleatoria(state, action) {
-// }
+function currentAssertions(state) {
+  return state.player.assertions + 1;
+}
 
 function user(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -35,8 +33,16 @@ function user(state = INITIAL_STATE, action) {
       player: {
         ...state.player,
         score: state.player.score + action.payload.score,
-        assertions: action.payload.assertions,
-        // assertions: funcAleatoria(state, action),
+        assertions: currentAssertions(state, action),
+      },
+    };
+  case SCORE_RESET:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        score: 0,
+        assertions: 0,
       },
     };
   default:

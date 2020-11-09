@@ -1,5 +1,5 @@
 import { loadState } from '../../services/localStorage';
-import { ADD_QUESTIONS, SCORE_RANKING } from '../actions';
+import { ADD_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
   arrayQuestion: [],

@@ -1,5 +1,3 @@
-import { loadState } from "../../services/localStorage";
-
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const tokenLogin = (token) => ({
   type: ADD_TOKEN,
@@ -34,19 +32,17 @@ export const SCORE_PLAYER = 'SCORE_PLAYER';
 //     score: 0,
 //   },
 // }).player;
-let assertions = 0;
-export function questionScorePlayer(scorePlayer) {
-  return (dispatch) => {
-    assertions += 1;
-    return dispatch({
-      type: SCORE_PLAYER,
-      payload: {
-        score: scorePlayer,
-        assertions,
-      },
-    });
-  };
-}
+export const questionScorePlayer = (scorePlayer) => ({
+  type: SCORE_PLAYER,
+  payload: {
+    score: scorePlayer,
+  },
+});
+
+export const SCORE_RESET = 'SCORE_RESET';
+export const scoreReset = () => ({
+  type: SCORE_RESET,
+});
 
 export const SCORE_RANKING = 'SCORE_RANKING';
 export const questionScore = (ranking) => ({
