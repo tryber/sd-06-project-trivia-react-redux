@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
-import store from '../store';
 import Timer from '../components/timer';
+import PlayAgain from '../components/PlayAgain';
 // import { getQuestions } from '../actions';
 
 class Game extends Component {
@@ -94,9 +94,8 @@ class Game extends Component {
               }
             </section>)}
         <section>
-          <Provider store={ store }>
-            <Timer />
-          </Provider>
+          <Timer />
+          <PlayAgain />
         </section>
       </section>
     );
