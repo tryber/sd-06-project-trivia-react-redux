@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { gettingQuestionsThunk } from '../redux/actions';
+import Timer from './Timer';
 import './Questions.css';
 
 class Questions extends Component {
@@ -9,14 +10,24 @@ class Questions extends Component {
     super();
 
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.disableAllButtons = this.disableAllButtons.bind(this);
 
-    this.state = { questionNumber: 0 };
+    this.state = {
+      questionNumber: 0,
+      time: false,
+    };
   }
 
   componentDidMount() {
     const { getQuestions } = this.props;
-
     getQuestions();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { timeIsOver } = this.props;
+    if (prevProps.timeIsOver !== timeIsOver) {
+      this.disableAllButtons();
+    }
   }
 
   checkAnswer() {
@@ -34,9 +45,13 @@ class Questions extends Component {
     btnNext.style.display = 'block';
   }
 
+  disableAllButtons() {
+    return this.setState({ time: true });
+  }
+
   randomizeAnswers() {
     const { questions } = this.props;
-    const { questionNumber } = this.state;
+    const { questionNumber, time } = this.state;
     const answersArray = [];
 
     if (questions !== undefined) {
@@ -47,6 +62,7 @@ class Questions extends Component {
           key="correct-answer"
           id="correct"
           onClick={ this.checkAnswer }
+          disabled={ time }
         >
           { questions.results[Number(questionNumber)].correct_answer }
         </button>
@@ -59,6 +75,7 @@ class Questions extends Component {
             key={ answer }
             type="button"
             onClick={ this.checkAnswer }
+            disabled={ time }
           >
             { answer }
           </button>)));
@@ -97,7 +114,6 @@ class Questions extends Component {
   render() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
-
     return (
       questions === undefined ? <p>Loading...</p> : (
         <div>
@@ -121,6 +137,7 @@ class Questions extends Component {
               Próxima
             </button>
           </div>
+          <Timer />
         </div>
       ));
   }
@@ -129,14 +146,17 @@ class Questions extends Component {
 Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.number])),
+  timeIsOver: PropTypes.number,
 };
 
 Questions.defaultProps = {
   questions: undefined,
+  timeIsOver: '',
 };
 
 const mapStateToProps = (state) => ({
   questions: state.userReducer.questions,
+  timeIsOver: state.timerReducer.timeQuestion,
 });
 
 const mapDispatchToProps = (dispatch) => ({
