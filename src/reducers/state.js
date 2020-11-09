@@ -25,8 +25,8 @@ export default function (state = INITIAL_STATE, action) {
       ...state,
       player: {
         ...state.player,
-        score: action.score,
-        assertions: action.assertions,
+        score: state.player.score + action.score,
+        assertions: state.player.assertions + 1,
       },
     };
   default:
