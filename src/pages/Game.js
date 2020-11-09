@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/header';
 import store from '../store';
 import Timer from '../components/timer';
+import Questions from '../components/Questions';
 import { scoreAction } from '../actions';
 
 class Game extends Component {
@@ -77,7 +78,6 @@ class Game extends Component {
   render() {
     const { APIQuestions, timeout } = this.props;
     const { index, clicked } = this.state;
-    const random = 0.5;
     if (APIQuestions.length === 0) {
       return (
         <h3>Carregando...</h3>
@@ -100,42 +100,15 @@ class Game extends Component {
             </section>
           </section>
         </section>
-        <section className="game-answers">
-          {
-            APIQuestions[index]
-              .incorrect_answers.concat(APIQuestions[index].correct_answer)
-              .map((question, i) => {
-                if (question === APIQuestions[index].correct_answer) {
-                  return (
-                    <button
-                      type="button"
-                      data-testid="correct-answer"
-                      value="correct-answer"
-                      key={ i }
-                      disabled={ timeout }
-                      className={ clicked ? 'correct-answer' : null }
-                      onClick={ () => this.handleAnswer('correct-answer') }
-                    >
-                      {question}
-                    </button>
-                  );
-                }
-                return (
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${i}` }
-                    value="wrong-answer"
-                    key={ i }
-                    disabled={ timeout }
-                    className={ clicked ? 'wrong-answer' : null }
-                    onClick={ () => this.handleAnswer('wrong-answer') }
-                  >
-                    {question}
-                  </button>
-                );
-              }).sort(() => Math.random() - random)
-          }
-        </section>
+        <Questions
+          APIQuestions={ APIQuestions }
+          indexDinamico={ index }
+          disabled={ timeout }
+          classCorrect={ clicked ? 'correct-answer' : null }
+          classWrong={ clicked ? 'wrong-answer' : null }
+          onClickCorrect={ () => this.handleAnswer('correct-answer') }
+          onClickWrong={ () => this.handleAnswer('wrong-answer') }
+        />
         <section>
           <Provider store={ store }>
             <Timer />
