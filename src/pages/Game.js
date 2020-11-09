@@ -89,7 +89,7 @@ class Game extends React.Component {
     const newArray = incorrectAnswers.concat(correctAnswer);
 
     newArray.sort(); // já está alterado
-    const correctAnswerIndex;
+    const correctAnswerIndex = '';
     correctAnswer = newArray.indexOf(correctAnswer);
     const { classRightAnswer, classWrongAnswer, secondsRemaining, disableQuestions } = this.state;
 
