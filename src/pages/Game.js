@@ -5,23 +5,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
 import { Icon } from 'semantic-ui-react';
-import { fetchApi } from '../actions';
+import { fetchApi, scoreFunction } from '../actions';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.optionChoose = this.optionChoose.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.decodeHTMLEntities = this.decodeHTMLEntities.bind(this);
     this.state = {
-      scoreBoard: 0,
-      nextButton: 'none',
+      stop: false,
       counter: 0,
       answers: '',
-      borderGreen: 0,
-      borderRed: 0,
       timer: 30,
-      choice: '',
     };
   }
 
@@ -51,13 +46,13 @@ class Game extends React.Component {
   }
 
   timerFunction() {
-    const { timer, choice } = this.state;
-    if (timer > 0 && choice === '') {
+    const { timer, stop } = this.state;
+    if (timer > 0 && !stop) {
       this.setState((prevState) => ({
         timer: prevState.timer - 1,
       }));
     } else {
-      this.changeState();
+      this.setState({ stop: true });
     }
   }
 
@@ -67,31 +62,12 @@ class Game extends React.Component {
     return textArea.value;
   }
 
-  changeState() {
-    this.setState({
-      nextButton: 'block',
-      borderGreen: '3px solid rgb(6, 240, 15)',
-      borderRed: '3px solid rgb(255, 0, 0)',
-    });
-  }
-
-  async optionChoose(event) {
-    await this.setState({
-      choice: event.target.id,
-    });
-    this.changeState();
-    this.score();
-  }
-
   async nextQuestion() {
     const { counter } = this.state;
     await this.setState({
-      borderGreen: 0,
-      borderRed: 0,
+      stop: false,
       counter: counter + 1,
-      nextButton: 'none',
       timer: 30,
-      choice: '',
     });
     this.getAnswers();
   }
@@ -110,42 +86,14 @@ class Game extends React.Component {
     return array;
   }
 
-  score() {
-    const { results } = this.props;
-    const { counter, timer, scoreBoard, choice } = this.state;
-    let total = scoreBoard;
-    const ten = 10;
-    const three = 3;
-    if (choice === 'correct-answer') {
-      switch (results[counter].difficulty) {
-      case 'easy':
-        total = scoreBoard + ten + (timer * 1);
-        console.log(timer);
-        break;
-      case 'medium':
-        total = scoreBoard + ten + (timer * 2);
-        break;
-      case 'hard':
-        total = scoreBoard + ten + (timer * three);
-        break;
-      default:
-        total = scoreBoard;
-      }
-    }
-    this.setState({
-      scoreBoard: total,
-    });
-  }
-
   render() {
-    const { nextButton, counter, answers,
-      borderGreen, borderRed, timer, scoreBoard } = this.state;
-    const { name, email, results } = this.props;
+    const { counter, answers, timer, stop } = this.state;
+    const { name, email, results, score, scoreSum, assertions } = this.props;
     const gravatarLink = 'https://www.gravatar.com/avatar/';
     const emailMD5 = MD5(email);
     const four = 4;
     localStorage.setItem('state', JSON
-      .stringify({ player: { name, score: scoreBoard, gravatarEmail: email } }));
+      .stringify({ player: { name, score, gravatarEmail: email, assertions } }));
 
     return (
       <div>
@@ -164,14 +112,14 @@ class Game extends React.Component {
           </div>
           <div data-testid="header-score">
             Placar:
-            { scoreBoard }
+            { score }
           </div>
         </header>
         <div className="container-game">
           <div className="right">
             <div className="timer">
               <Icon fitted name="hourglass half" />
-              { timer >= 0 ? `TEMPO: ${timer}s` : 'TEMPO ESGOTADO' }
+              { timer > 0 ? `TEMPO: ${timer}s` : 'TEMPO ESGOTADO' }
             </div>
             <br />
             <div data-testid="question-category">
@@ -180,21 +128,24 @@ class Game extends React.Component {
               ]
             </div>
             <div className="question" data-testid="question-text">
-              { results !== '' ? this.decodeHTMLEntities(results[counter].question) : '' }
+              { results !== ''
+                ? this.decodeHTMLEntities(results[counter].question) : 'CARREGANDO...' }
             </div>
           </div>
           <div className="buttons">
             { answers !== '' ? answers.map((answer, index) => (
               <button
                 key={ index }
-                id={ answer.correction }
                 style={ answer.correction === 'correct-answer'
-                  ? { border: borderGreen } : { border: borderRed } }
+                  ? { border: `${stop ? '3' : '0'}px solid rgb(6, 240, 15)` }
+                  : { border: `${stop ? '3' : '0'}px solid rgb(255, 0, 0)` } }
                 type="button"
                 className="btn btn-secondary btn-lg mt-4 ml-2 mr-2"
                 data-testid={ answer.correction }
-                onClick={ this.optionChoose }
-                disabled={ nextButton === 'block' }
+                onClick={ answer.correction === 'correct-answer'
+                  ? () => { scoreSum(timer, counter); this.setState({ stop: true }); }
+                  : () => { this.setState({ stop: true }); } }
+                disabled={ stop }
               >
                 { this.decodeHTMLEntities(answer.result) }
               </button>
@@ -209,7 +160,7 @@ class Game extends React.Component {
                     type="button"
                     className="btn btn-warning btn-block mt-4"
                     data-testid="btn-next"
-                    style={ { display: nextButton } }
+                    style={ stop ? { display: 'block' } : { display: 'none' } }
                   >
                       PRÓXIMA
                   </button>
@@ -219,7 +170,7 @@ class Game extends React.Component {
                     type="button"
                     className="btn btn-warning btn-block mt-4"
                     data-testid="btn-next"
-                    style={ { display: nextButton } }
+                    style={ stop ? { display: 'block' } : { display: 'none' } }
                     onClick={ this.nextQuestion }
                   >
                     PRÓXIMA
@@ -233,20 +184,26 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  name: PropTypes.func.isRequired,
-  email: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   questionFetch: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(Object).isRequired,
+  score: PropTypes.number.isRequired,
+  scoreSum: PropTypes.func.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   name: state.user.player.name,
   email: state.user.player.email,
   results: state.game.results,
+  score: state.game.game.score,
+  assertions: state.game.game.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   questionFetch: () => dispatch(fetchApi()),
+  scoreSum: (timer, counter) => dispatch(scoreFunction(timer, counter)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

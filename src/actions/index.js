@@ -3,6 +3,7 @@ import mainAPI from '../services/mainAPI';
 
 export const PLAY_GAME = 'PLAY_GAME';
 export const GET_API = 'GET_API';
+export const SCORE = 'SCORE';
 
 const getApi = (answer) => ({
   type: GET_API,
@@ -14,6 +15,12 @@ const playTheGame = (name, email, token) => ({
   name,
   email,
   token,
+});
+
+export const scoreFunction = (timer, counter) => ({
+  type: SCORE,
+  counter,
+  timer,
 });
 
 export function enterUser(name, email) {
