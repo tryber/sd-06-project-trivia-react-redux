@@ -43,6 +43,12 @@
     }
   }
 
+  & .timer {
+    border-radius: 100%;
+    background-color: $darkBlue;
+    color: white;
+    padding: 1.5vw;
+  }
 }
 
 .game-board-container {

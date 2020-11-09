@@ -33,7 +33,7 @@ class GameTimer extends Component {
   render() {
     const { count } = this.state;
     return (
-      <div>
+      <div className="timer">
         { count }
       </div>
     );
