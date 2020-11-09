@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 import GameCard from '../components/GameCard';
 import Header from '../components/Header';
 
@@ -16,7 +17,10 @@ class Game extends React.Component {
   nextQuestion() {
     const { currentID } = this.state;
     const questionNumber = 4;
-    if (currentID >= questionNumber) return;
+    const { history } = this.props;
+    if (currentID >= questionNumber) {
+      history.push('/feedback');
+    }
     this.setState((prevState) => ({
       currentID: prevState.currentID + 1,
     }));
@@ -31,7 +35,6 @@ class Game extends React.Component {
       <div>
         <Header />
         <GameCard question={ currentCard } nextQuestion={ this.nextQuestion } />
-        <br />
       </div>
     );
   }
@@ -39,6 +42,9 @@ class Game extends React.Component {
 
 Game.propTypes = {
   questionsInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
