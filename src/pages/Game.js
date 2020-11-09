@@ -164,7 +164,12 @@ class Game extends React.Component {
     }
 
     return (
-      <div role="button" onClick={ handleScore } onKeyUp={ handleScore }>
+      <div
+        role="button"
+        onClick={ handleScore }
+        onKeyUp={ handleScore }
+        tabIndex={ 0 }
+      >
         {
           answers.map((answer, index) => {
             if (answer === questions[questionNumber].correct_answer) {
