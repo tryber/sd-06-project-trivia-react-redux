@@ -3,15 +3,11 @@ import { Link } from 'react-router-dom';
 import NenhumRegistro from '../components/NenhumRegistroEncontrado';
 import Player from '../components/Player';
 
-const players = JSON.parse(localStorage.getItem('state'));
+let players = JSON.parse(localStorage.ranking);
 
-// if (players) {
-//   players = players.sort(
-//     (a, b) => (parseInt(b.score, 10) - parseInt(a.score, 10)),
-//   );
-// } else {
-//   players = undefined;
-// }
+if (players.length > 1) {
+  players = players.sort((a, b) => (parseInt(b.score, 10) - parseInt(a.score, 10)));
+}
 
 const Ranking = () => (
   <div>
