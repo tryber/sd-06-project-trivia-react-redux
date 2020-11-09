@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { fetchQuestions, sendScore, sendAssertions } from '../actions';
 import Timer from './Timer';
 import '../App.css';
@@ -17,6 +18,7 @@ class BodyGame extends Component {
     this.handleAssertions = this.handleAssertions.bind(this);
     this.handleShuffle = this.handleShuffle.bind(this);
     this.handleAnswerBorderColor = this.handleAnswerBorderColor.bind(this);
+    this.handleRanking = this.handleRanking.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -40,6 +42,14 @@ class BodyGame extends Component {
         gravatarEmail: email,
       },
     };
+
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+
+    if (ranking === null) {
+      const localStorageRanking = [];
+      localStorage.setItem('ranking', JSON.stringify(localStorageRanking));
+    }
+
     localStorage.setItem('state', JSON.stringify(localStoragePlayerInfo));
     const { questionsFunction, getToken } = this.props;
 
@@ -147,10 +157,24 @@ class BodyGame extends Component {
     });
   }
 
+  handleRanking() {
+    const { name, email } = this.props;
+    const { score } = this.state;
+    const picture = `https://www.gravatar.com/avatar/${md5(email)}`;
+    const localStorageRanking = {
+      name,
+      score,
+      picture,
+    };
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    localStorage.setItem('ranking', JSON.stringify([...ranking, localStorageRanking]));
+  }
+
   handleQuestionIndex() {
     const { questionIndex } = this.state;
     const lastQuestion = 4;
     if (questionIndex === lastQuestion) {
+      this.handleRanking();
       this.setState({ redirect: true });
     }
     this.setState({
