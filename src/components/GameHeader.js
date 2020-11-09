@@ -3,6 +3,7 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createLocalStore } from '../utils';
+import triviaLogo from '../visual_identity/logo/trivia_logo_noBg2.png';
 
 class GameHeader extends Component {
   componentDidMount() {
@@ -14,20 +15,22 @@ class GameHeader extends Component {
   render() {
     const { name, gravatarEmail, score } = this.props;
     return (
-      <div>
-        <h1>Game</h1>
-        <header>
+      <header>
+        <img src={ triviaLogo } width="80px" alt="Trivia Logo" />
+
+        <div className="player-stats-container">
           <img
             data-testid="header-profile-picture"
             src={ `https://www.gravatar.com/avatar/${md5(gravatarEmail)}` }
             alt="gravatar"
+            width="40px"
           />
-          <br />
-          <h3 data-testid="header-player-name">{ name }</h3>
-          <br />
-          <p data-testid="header-score">{ score }</p>
-        </header>
-      </div>
+          <div className="player-stats">
+            <h3 data-testid="header-player-name">{ name }</h3>
+            <p data-testid="header-score">{ `Score: ${score}` }</p>
+          </div>
+        </div>
+      </header>
     );
   }
 }
