@@ -1,113 +1,128 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Timer from './Timer';
+import QuestionCard from './QuestionCard';
+import { saveScoreToState } from '../actions';
 import '../styles/Question.css';
-import Timer from '../Components/Timer';
 
 class Question extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
 
-    this.state = {
-      disabled: false,
-    };
+    const { getLogin: { name, gravatarEmail } } = props;
 
-    this.randomQuestions = this.randomQuestions.bind(this);
-    this.shuffleArray = this.shuffleArray.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
     this.changeDisabled = this.changeDisabled.bind(this);
-  }
+    this.saveScore = this.saveScore.bind(this);
+    this.nextIndex = this.nextIndex.bind(this);
 
-  shuffleArray(array) {
-    let currentIndex = array.length;
-    let temporaryValue;
-    let randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
+    this.state = {
+      player: {
+        name,
+        assertions: '',
+        score: 0,
+        gravatarEmail,
+      },
+      answerIndex: 0,
+      disabled: false,
+      isCorrect: false,
+    };
   }
 
   changeDisabled(disabled) {
     this.setState({ disabled });
   }
 
-  checkAnswer() {
+  checkAnswer({ target }) {
     const button = document.querySelectorAll('.btn');
     Object.values(button).forEach((item) => {
       if (item.id === 'correct-answer') {
         item.classList.add('correct');
-      } else {
+      }
+      if (item.id === 'wrong-answer') {
         item.classList.add('incorrect');
       }
     });
+
     const nextButton = document.querySelector('.invisible');
-    nextButton.className = "btn";
+    if (nextButton) {
+      nextButton.className = 'btn';
+    }
+
+    if (target.id === 'correct-answer') {
+      this.setState({ isCorrect: true });
+    }
   }
 
-  randomQuestions(ramdomize) {
-    const { getQuestions } = this.props;
-    const { disabled } = this.state;
-    const arrayHTML = getQuestions[0].incorrect_answers.map((incorrect, index) => (
-      <button
-        id="wrong-answer"
-        type="button"
-        key={ index }
-        disabled={ disabled }
-        className="btn"
-        data-testid={ `wrong-answer${index}` }
-        onClick={ this.checkAnswer }
-      >
-        {incorrect}
-      </button>
-    ));
-    arrayHTML.push(
-      <button
-        id="correct-answer"
-        type="button"
-        key="correct"
-        disabled={ disabled }
-        className="btn"
-        data-testid="correct-answer"
-        onClick={ this.checkAnswer }
-      >
-        {getQuestions[0].correct_answer}
-      </button>,
-    );
+  saveScore(countdown) {
+    const { getAnswers, setScore } = this.props;
+    const { player } = this.state;
+    console.log(countdown);
+    const { difficulty } = getAnswers[0];
+    const difficultyPoints = { hard: 3, medium: 2, easy: 1 };
+    const points = 10 + (difficultyPoints[difficulty] * countdown);
 
-    if (ramdomize) {
-      return this.shuffleArray(arrayHTML);
-    }
-    return arrayHTML;
+    const tempPlayer = {
+      ...player,
+      score: player.score + points,
+    };
+
+    localStorage.setItem('state', JSON.stringify({ player: tempPlayer }));
+    setScore(tempPlayer);
+  }
+
+  nextIndex() {
+    this.setState((previous) => ({
+      ...previous,
+      answerIndex: previous.answerIndex + 1,
+    }));
   }
 
   render() {
-    const { disabled } = this.state;
-    const { getQuestions } = this.props;
+    const { isCorrect, disabled, answerIndex } = this.state;
+    const { getAnswers } = this.props;
+    const questions = getAnswers[answerIndex];
 
     return (
       <div>
-        <h2 data-testid="question-category">{getQuestions[0].category}</h2>
-        <h1 data-testid="question-text">{getQuestions[0].question}</h1>
-        <div>{ this.randomQuestions().map((answer) => answer) }</div>
-        <Timer changeDisabled={ this.changeDisabled } disabled={ disabled } />
-        <button data-testid="btn-next" className="invisible">Vamo ver se vai</button>
+        <QuestionCard
+          disabled={ disabled }
+          checkAnswer={ this.checkAnswer }
+          answerIndex={ answerIndex }
+          questions={ questions }
+        />
+        <Timer
+          changeDisabled={ this.changeDisabled }
+          isCorrect={ isCorrect }
+          saveScore={ this.saveScore }
+        />
+        <button
+          type="button"
+          data-testid="btn-next"
+          className="invisible"
+          onClick={ this.nextIndex }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
 }
 
-Question.propTypes = {
-  getQuestions: PropTypes.arrayOf(Object).isRequired,
-};
-
 const mapStateToProps = (state) => ({
-  getQuestions: state.questions.questionsArray,
+  getAnswers: state.questions.questionsArray,
+  getLogin: state.login,
 });
 
-export default connect(mapStateToProps, null)(Question);
+const mapDispatchToProps = (dispatch) => ({
+  setScore: (score) => dispatch(saveScoreToState(score)),
+});
+
+Question.propTypes = {
+  getAnswers: PropTypes.arrayOf(Object).isRequired,
+  getLogin: PropTypes.arrayOf(Object).isRequired,
+  setScore: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
