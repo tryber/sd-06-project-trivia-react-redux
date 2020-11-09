@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Questions from './pages/Questions';
 import Settings from './pages/Settings';
-import { Feedback } from './pages/Feedback';
+import Feedback from './pages/Feedback';
 
 import './App.css';
 
