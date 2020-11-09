@@ -5,14 +5,10 @@ class Ranking extends Component {
   render() {
     return (
       <div>
-        <div>
-          <h2 data-testid="ranking-title">Ranking</h2>
-        </div>
-        <div>
-          <Link to="/" data-testid="btn-go-home">
+        <h2 data-testid="ranking-title">Ranking</h2>
+        <Link to="/" data-testid="btn-go-home">
             Voltar para home
-          </Link>
-        </div>
+        </Link>
       </div>
     );
   }
