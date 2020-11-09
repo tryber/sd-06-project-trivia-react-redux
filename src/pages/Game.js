@@ -109,7 +109,7 @@ class Game extends React.Component {
     toResetTimer();
     clearIntervalTimer();
     
-    if (questionNumber === lastQuestion){
+    if (questionNumber === lastQuestion) {
       history.push('/feedback');
     } else {
       createInterval();
