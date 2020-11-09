@@ -71,7 +71,7 @@ class QuestionCard extends Component {
     return (
       <div>
         QUESTION CARD
-        <div data-testidclassName="question">
+        <div>
           <p data-testid="question-category">{ category }</p>
           <p data-testid="question-text">{ question }</p>
         </div>
