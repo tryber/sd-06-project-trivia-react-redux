@@ -25,6 +25,7 @@ class Game extends React.Component {
     this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
+    this.handleFeebackPage = this.handleFeebackPage.bind(this);
   }
 
   componentDidMount() {
@@ -35,16 +36,6 @@ class Game extends React.Component {
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
-  // componentDidUpdate() {
-  //   const { answered, index } = this.state;
-  //   const { history } = this.props;
-  //   const lastQuestion = 4;
-
-  //   if (answered === true && index === lastQuestion) {
-  //     history.push('/feedback');
-  //   }
-  // }
-
   async getTheFetchQuestions() {
     const { fetchQuestions } = this.props;
 
@@ -53,13 +44,22 @@ class Game extends React.Component {
   }
 
   handleNextQuestion() {
-    const { index } = this.state;
-    const { history } = this.props;
-    const finalQuestion = 4;
+    this.setState((prevState) => ({ index: prevState.index + 1, answered: false }));
+  }
 
-    return (index < finalQuestion)
-      ? this.setState((prevState) => ({ index: prevState.index + 1, answered: false }))
-      : history.push('/feedback');
+  handleFeebackPage() {
+    const { history, hash } = this.props;
+    const localStorageRanking = JSON.parse(localStorage.getItem('ranking'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const newScore = { name: player.name, score: player.score, picture: (`https://www.gravatar.com/avatar/${hash}`) };
+
+    if (!localStorageRanking) {
+      localStorage.setItem('ranking', JSON.stringify([newScore]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([...localStorageRanking, newScore]));
+    }
+
+    history.push('/feedback');
   }
 
   handleAnswer({ target }, timer) {
@@ -115,7 +115,7 @@ class Game extends React.Component {
                   />)
                 : (
                   <GenericButton
-                    onClick={ this.handleNextQuestion }
+                    onClick={ this.handleFeebackPage }
                     title="Ver resultado!"
                     className="advance-button"
                     disabled={ !answered }
@@ -131,6 +131,7 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.reducerQuestions.questions,
   player: state.reducerLogin.player,
+  hash: state.reducerLogin.hash,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -141,6 +142,7 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
+  hash: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(Object).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
