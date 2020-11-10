@@ -5,8 +5,23 @@ import md5 from 'crypto-js/md5';
 import Questions from '../components/Questions';
 
 class Gamepage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      questionIndex: 0,
+    };
+    this.changeQuestion = this.changeQuestion.bind(this);
+  }
+
+  changeQuestion() {
+    console.log('change question:', 'Hello');
+  }
+
   render() {
-    const { email, username } = this.props;
+    const { email, username, questions } = this.props;
+    console.log('questions do Redux:', questions);
+    const { questionIndex } = this.state;
+    const questionAtual = questions[questionIndex];
     const hash = md5(email);
     return (
       <div className="gamepage-container">
@@ -28,7 +43,13 @@ class Gamepage extends React.Component {
             Placar: 0
           </span>
         </header>
-        <Questions />
+        <Questions questionAtual={ questionAtual } />
+        <button
+          type="button"
+          onClick={ this.changeQuestion() }
+        >
+          PRÓXIMA
+        </button>
       </div>
     );
   }
@@ -37,6 +58,7 @@ class Gamepage extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.login.email,
   username: state.login.username,
+  questions: state.question.questions,
 });
 
 export default connect(mapStateToProps)(Gamepage);
@@ -44,4 +66,5 @@ export default connect(mapStateToProps)(Gamepage);
 Gamepage.propTypes = {
   email: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-};
+  questions: PropTypes.object.isRequired,
+}.isRequired;

@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import questionsAPI from '../services/questionAPI';
 
 class Questions extends React.Component {
@@ -32,8 +30,9 @@ class Questions extends React.Component {
 
   render() {
     const { buttonBorder } = this.state;
-    const { questions } = this.props;
-    console.log(questions);
+    const { questionAtual } = this.props;
+    // const testeObjectQuestion = Object.assign(questionAtual);
+    console.log('question atual no componente Questions:', questionAtual);
     return (
       <div>
         <div className="gamepage-questions">
@@ -42,12 +41,7 @@ class Questions extends React.Component {
             className="question-category"
           >
             Categoria:
-            {/* {questions && questions.map((result) => ( */}
-            {/* <div>
-                  // {questions[0].category}
-                </div> */}
-            {/* ))} */}
-            {questions && questions[0] && questions[0].category}
+            {questionAtual && questionAtual.category}
             <br />
           </div>
           <div
@@ -56,11 +50,11 @@ class Questions extends React.Component {
           >
             Pergunta:
             <br />
-            {questions && questions[0] && questions[0].question}
+            {questionAtual && questionAtual.question}
           </div>
         </div>
         <div className="gamepage-answer">
-          {questions && questions[0] && questions[0].incorrect_answers
+          {questionAtual && questionAtual.incorrect_answers
             .map((result, i) => (
               <div key={ result }>
                 <button
@@ -81,25 +75,16 @@ class Questions extends React.Component {
             type="button"
             disabled={ buttonBorder }
           >
-            {questions && questions[0] && questions[0].correct_answer}
+            {questionAtual && questionAtual.correct_answer}
           </button>
-          <Link to="/feedback">
-            <button
-              type="button"
-            >
-              PRÓXIMA
-            </button>
-          </Link>
         </div>
       </div>
     );
   }
 }
-const mapStateToProps = (state) => ({
-  questions: state.question.questions,
-});
-export default connect(mapStateToProps)(Questions);
 
 Questions.propTypes = {
-  questions: PropTypes.arrayOf(Object).isRequired,
+  questionAtual: PropTypes.arrayOf(Object).isRequired,
 };
+
+export default Questions;
