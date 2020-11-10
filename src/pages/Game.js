@@ -8,7 +8,11 @@ import Header from '../components/Header';
 class Game extends React.Component {
   componentDidMount() {
     const { fetchQuestion, token } = this.props;
-    const settings = JSON.parse(localStorage.settings);
+    let settings = '';
+    if (localStorage.settings) {
+      settings = JSON.parse(localStorage.settings);
+    }
+    console.log(settings)
     fetchQuestion(token, settings);
   }
 
