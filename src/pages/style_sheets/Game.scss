@@ -4,7 +4,7 @@
 
 .game-page {
   background: $lightGreen;
-  height: 100vh;
+  height: 80vh;
 
   & header {
     @include flexCenter(column);
@@ -36,30 +36,39 @@
   & .game-board-container {
     @include flexCenter(column);
     margin-top: 20vh;
-    height: 60vh;
+    height: 80vh;
     text-align: center;
 
     & .game-board {
-      @include flexCenter(row);
-      width: 80vw;
+      @include flexCenter(column);
+      width: 90vw;
       
       & .question-text {
         background-color: rgba(19,23,50, 0.8);
-        padding: 10%;
+        padding: 5%;
         color: white;
-        margin-right: 5vw;
       }
       
-      & .game-board-inner-container {
+      & .game-board-inner-container-bottom {
+        @include flexCenter(column);
+        height: 35vh;
+
+        button {
+          @include btnDarkBlue();
+          transition: none;
+        }
+
+        .button-invisible {
+          display: none;
+        }
+        
+        .button-visible {
+          display: block;
+        }
 
         & .game-answers {
-          @include flexCenter(column);
-
-          button {
-            @include btnDarkBlue();
-            transition: none;
-            margin-top: 2%
-          }
+          @include flexCenter(row);
+          width: 90vw;
 
           & button.wrong-answer {
           border: 3px solid rgb(255, 0, 0);
@@ -83,23 +92,6 @@
   }
 }
 
-.game-board-container {
-  height: 50%;
-}
 
-.game-answers {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button-invisible {
-  display: none;
-}
-
-.button-visible {
-  display: block;
-}
 
 
