@@ -1,28 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+.div-conf {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  padding: 50px;
+}
 
 .div-login {
   align-items: center;
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
-  height: 350px;
   margin: auto;
   padding: 50px;
-  width: 300px;
 }
 
 .img-conf {
   width: 20px;
 }
 
+.nome-logo{
+  animation: anime-text 1.5s linear infinite;
+
+}
+
+@keyframes anime-text {
+  0% {
+    color: black;
+  }
+
+  25% {
+    color: rgb(251, 248, 70);
+  }
+
+  50% {
+    color: white;
+  }
+
+  75% {
+    color: rgb(255, 238, 0);
+  }
+
+  100% {
+    color: black;
+  }
+}
+
+.img-logo {
+  margin-bottom: 30px;
+  width: 200px;
+}
+
 .bttn-config {
-  background-color: rgb(182, 175, 175);
+  background-color: #e9eaec;
   border: none;
   border-radius: 30px;
   height: 40px;
-  margin-bottom: 15px;
-  margin-left: 250px;
+  margin-bottom: 10px;
   width: 40px;
+  /* display: flex; */
 }
 
 .bttn-config:hover {
@@ -33,6 +69,7 @@
 .input {
   border: 1px solid gainsboro;
   border-radius: 5px;
+  font-family: 'PT Sans', sans-serif;
   height: 30px;
   margin-bottom: 5px;
   text-align: center;
@@ -40,11 +77,10 @@
 }
 
 .bttn-play {
-  background-color: rgb(65, 185, 65);
+  background-color: #e4b61a;
   border: none;
   border-radius: 5px;
-  color:white;
-  font-family: 'Open Sans', sans-serif;
+  color: #2a2e34;
   font-size: 20px;
   height: 40px;
   margin-top: 5px;
@@ -52,6 +88,6 @@
 }
 
 .bttn-play:hover {
-  background-color: rgb(59, 141, 59);
+  background-color: rgb(212, 162, 23);
   cursor: pointer;
 }

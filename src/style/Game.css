@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+.game {
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.text-category {
+  color: #e9eaec;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 30px;
+  font-weight: bolder;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.text-question {
+  color: #e9eaec;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 25px;
+  font-weight: bolder;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.bttn-question {
+  background-color: #e4b61a;
+  border: none;
+  border-radius: 5px;
+  color:#2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 5px;
+  min-width: 300px;
+}
+
+.bttn-question:hover {
+  background-color: rgb(212, 162, 23);
+  cursor: pointer;
+}
+
+.correct-answer {
+  background-color: rgb(6, 240, 15);
+  border: 3px solid rgb(6, 240, 15);
+  border-radius: 5px;
+  color: #2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 10px;
+  min-width: 300px;
+}
+
+.wrong-answer {
+  background-color: rgb(255, 0, 0);
+  border: 3px solid rgb(255, 0, 0);
+  border-radius: 5px;
+  color: #2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 10px;
+  min-width: 300px;
+}
+
+.bttn-next {
+  background-color: #e4b61a;
+  border: none;
+  border-radius: 5px;
+  color: #2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 50px;
+  width: 300px;
+}
+
+.bttn-next:hover {
+  background-color: rgb(212, 162, 23);
+  cursor: pointer;
+}
+
+
+
+.timer {
+  color: #e9eaec;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 30px;
+  font-weight: bolder;
+  margin-top: 30px;
+  padding: auto;
+  text-align: center;
+}

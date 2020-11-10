@@ -1,9 +1,0 @@
-.correct-answer {
-  background-color: rgb(6, 240, 15);
-  border: 3px solid rgb(6, 240, 15);
-}
-
-.wrong-answer {
-  background-color: rgb(238, 109, 109);
-  border: 3px solid rgb(255, 0, 0);
-}

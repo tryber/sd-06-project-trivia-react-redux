@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { apiToken } from '../services/request';
 import { questions, scoreReset, tokenLogin, user } from '../redux/actions';
 import configuration from '../images/configuration.png';
+import logo from '../images/logo.jpg';
 import '../style/Login.css';
 
 class Login extends Component {
@@ -49,7 +50,7 @@ class Login extends Component {
   render() {
     const { isDisable, name, email } = this.state;
     return (
-      <div className="div-login">
+      <div className="div-conf">
         <Link to="/configuration">
           <button
             className="bttn-config"
@@ -59,39 +60,43 @@ class Login extends Component {
             <img className="img-conf" src={ configuration } alt="Configurações" />
           </button>
         </Link>
-        <label htmlFor="name">
-          <input
-            className="input"
-            type="name"
-            data-testid="input-player-name"
-            name="name"
-            placeholder="Digite seu nome"
-            required
-            value={ name }
-            onChange={ (event) => this.handleChange(event) }
-          />
-        </label>
-        <label htmlFor="email">
-          <input
-            className="input"
-            type="email"
-            data-testid="input-gravatar-email"
-            name="email"
-            placeholder="Digite seu e-mail"
-            required
-            value={ email }
-            onChange={ (event) => this.handleChange(event) }
-          />
-        </label>
-        <button
-          className="bttn-play"
-          type="button"
-          data-testid="btn-play"
-          disabled={ isDisable }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
+        <div className="div-login">
+          <h1 className="nome-logo" >Show do Tio Patinhas</h1>
+          <img className="img-logo" src={ logo } alt="Tio patinhas" />
+          <label htmlFor="name">
+            <input
+              className="input"
+              type="name"
+              data-testid="input-player-name"
+              name="name"
+              placeholder="Digite seu nome"
+              required
+              value={ name }
+              onChange={ (event) => this.handleChange(event) }
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              className="input"
+              type="email"
+              data-testid="input-gravatar-email"
+              name="email"
+              placeholder="Digite seu e-mail"
+              required
+              value={ email }
+              onChange={ (event) => this.handleChange(event) }
+            />
+          </label>
+          <button
+            className="bttn-play"
+            type="button"
+            data-testid="btn-play"
+            disabled={ isDisable }
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
+        </div>
       </div>
     );
   }

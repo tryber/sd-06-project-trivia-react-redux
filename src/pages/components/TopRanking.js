@@ -7,6 +7,7 @@ class TopRanking extends React.Component {
     return (
       <li>
         <img
+          className="img"
           src={ picture }
           alt={ `${name} profile` }
         />
@@ -14,9 +15,9 @@ class TopRanking extends React.Component {
           <span data-testid={ `player-name-${index}` }>
             { name }
           </span>
-          {' '}
+          <br />
           <span data-testid={ `player-score-${index}` }>
-            { score }
+            {`Score: ${ score }`}
           </span>
         </p>
       </li>
