@@ -15,6 +15,12 @@
   margin: 5px 2px;
 }
 
+.button-icon {
+  width: 60px;
+  height: 35px;
+  font-size: 20px;
+}
+
 .text-link {
   color: inherit;
   text-decoration: inherit;

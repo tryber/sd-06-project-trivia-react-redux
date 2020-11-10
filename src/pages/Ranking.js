@@ -43,7 +43,9 @@ class Ranking extends React.Component {
 
           </tbody>
         </table>
-        <BtnHome />
+        <div className="button-home">
+          <BtnHome />
+        </div>
       </div>
     );
   }
