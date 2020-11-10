@@ -7,10 +7,21 @@ export function getQuestions(questions) {
 export function responseQuestions() {
   return async (dispatch) => {
     const token = localStorage.getItem('token');
-    const number = localStorage.getItem('number');
-    const category = localStorage.getItem('category');
-    const difficulty = localStorage.getItem('difficulty');
-    const typeAPI = localStorage.getItem('typeAPI');
+
+    const minimumQuestions = 5;
+    const number = localStorage.getItem('number')
+      ? localStorage.getItem('number') : minimumQuestions;
+    const category = localStorage.getItem('category')
+      ? localStorage.getItem('number') : '';
+    const typeAPI = localStorage.getItem('typeAPI')
+      ? localStorage.getItem('typeAPI') : '';
+    const difficulty = localStorage.getItem('dificculty')
+      ? localStorage.getItem('number') : '';
+
+    localStorage.setItem('number', number);
+    localStorage.setItem('category', category);
+    localStorage.setItem('typeAPI', typeAPI);
+    localStorage.setItem('difficulty', difficulty);
 
     const endpoint = `https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}&type=${typeAPI}&token=${token}`;
     console.log(endpoint);
