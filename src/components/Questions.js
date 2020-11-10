@@ -109,10 +109,11 @@ class Questions extends Component {
   handleInterval() {
     const ONE_SECOND = 1000;
     const { timer } = this.props;
-    this.time = setInterval(() => {
+    const time = setInterval(() => {
       const { sendTimer } = this.props;
       sendTimer(timer);
     }, ONE_SECOND);
+    this.setState({ timeInterval: time });
   }
 
   downTime() {
@@ -132,7 +133,6 @@ class Questions extends Component {
       this.setState({ checked: true });
     }, ALL_TIME);
     this.setState({
-      timeInterval: time,
       timingOut: loading,
     });
     // }
