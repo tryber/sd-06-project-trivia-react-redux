@@ -1,10 +1,191 @@
+/* general */
+
+body {
+  /* animation: gradient 20s ease infinite;
+	background: linear-gradient(-45deg, #ec6c16, #f15b68, #23a6d5, #0ed640);
+  background-size: 400% 400%; */
+  color: white;
+  font-size: 20px;
+  height: 100vh;
+}
+
+body {
+  /* background-image: url('https://miro.medium.com/max/3840/1*etDJsZIWf76sb1P_l6ZW3w.gif'); */
+  /* background-size: 110% 110%; */
+  background-color: rgb(17, 17, 17);
+}
+
+header {
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+}
+
+button {
+  /* background-color: rgba(163, 163, 163, 0.062); */
+  border: none;
+  /* border-radius: 3px; */
+  color: white;
+  font-size: 15px;
+  margin: 5px;
+  flex-grow: 1;
+  height: 40px;
+  width: 23%;
+  border-radius: 3px;
+  background: linear-gradient(145deg, #1d1d1d, #4d4d4d);
+  box-shadow:  1px 1px 4px #151515, -1px -1px 4px #555555;
+}
+
+button:hover {
+  background-color: white;
+  color: rgb(90, 90, 90);
+}
+
+input {
+  background-color: white;
+  border-radius: 3px;
+  border: none;
+  font-size: 18px;
+  height: 40px;
+  margin: 17px;
+  margin-top:0px;
+  width: 385px;
+}
+
 .App {
   text-align: center;
 }
 
+/* ______________________________________________________________________________ */
+/* LOGIN */
+
+.App-header {
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  width: 100%;
+}
+
 .App-logo {
-  height: 40vmin;
+  height: 250px;
   pointer-events: none;
+  filter: invert(0.95);
+  margin-left: 0px;
+}
+
+.card-login {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  margin-left: 160px;
+  width: 400px;
+}
+
+.login-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+.login-button {
+  border: none;
+  color: white;
+  font-size: 15px;
+  margin: 7px;
+  flex-grow: 1;
+  height: 40px;
+  width: 100%;
+  border-radius: 3px;
+  background: linear-gradient(145deg, #1d1d1d, #4d4d4d);
+  box-shadow:  1px 1px 4px #151515, -1px -1px 4px #555555;
+}
+
+.links-login {
+  width:100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#button-link {
+  width: 186px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 10px;
+}
+
+/* ______________________________________________________________________________ */
+/* GAME - TRIVIA */
+
+.game-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* ______________________________________________________________________________ */
+/* GAME - HEADER */
+
+.game-header {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-left: 0px;
+  justify-content: left;
+}
+
+.logo-game {
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 0px;
+}
+
+.player-info {
+  display: flex;
+  width: 80%;
+  height: 80px;
+  justify-content: space-around;
+}
+
+/* ______________________________________________________________________________ */
+/* GAME - QUESTION CARD */
+
+.question-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8%;
+  width: 48%;
+}
+
+.question-card {
+  margin-right: 40px;
+  margin-left: 40px;
+
+}
+
+.question-category {
+  background-color: rgba(163, 163, 163, 0.062);
+  border-radius: 3px;
+  font-size: 30px;
+  padding: 10px;
+}
+
+.question-text {
+  background-color: rgba(163, 163, 163, 0.062);
+  border-radius: 3px;
+  font-size: 22px;
+  padding: 50px;
 }
 
 .red-border {
@@ -15,28 +196,37 @@
   border: 1px solid green;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(.36,.07,.19,.97) both;
-  }
+/* ______________________________________________________________________________ */
+/* FEEDBACK */
+
+.feedback-header-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.feedback-container {
+  padding-top: 2%;
+  width: 50%;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
+.gif-feedback {
+  width: 80%;
+}
+
+
+
+
+
+
+
+/* .App-link {
   color: #61dafb;
-}
+} */
 
-@keyframes shake {
+
+/* @keyframes shake {
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }
@@ -52,21 +242,5 @@
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
-}
-.card-login {
-  position: absolute;
-  margin-top: -13%;
-  margin-left: 40%;
-  width: 20%;
-  height: 20%;
-  color: white;
-  font-weight: bolder;
-  font-family: Arial, Helvetica, sans-serif;
-}
-.card-login button {
-  border-radius: 10px;
-  font-weight: bolder;
-  color: white;
-  background-color: purple;
-  margin-top: 2%;
-}
+} */
+

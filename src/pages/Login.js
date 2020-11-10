@@ -66,47 +66,56 @@ class Login extends Component {
           </header>
           <div className="card-login">
             <label htmlFor="email">
-              Email do Gravatar:
               <input
                 id="email"
                 data-testid="input-gravatar-email"
                 name="email"
                 onChange={ this.handleChange }
+                placeholder="Email do Gravatar"
               />
             </label>
             <label htmlFor="nome">
-              Nome do Jogador:
               <input
                 id="nome"
                 data-testid="input-player-name"
                 name="nome"
                 onChange={ this.handleChange }
+                placeholder="Nome do Jogador"
               />
             </label>
-            <button
-              disabled={ disabled }
-              type="button"
-              data-testid="btn-play"
-              onClick={ this.handleLogin }
-            >
-              Jogar
-            </button>
-            <Link to="/settings">
+            <div className="login-buttons">
               <button
+                disabled={ disabled }
                 type="button"
-                data-testid="btn-settings"
+                data-testid="btn-play"
+                onClick={ this.handleLogin }
+                className="login-button"
               >
-                Settings
+                Jogar
               </button>
-            </Link>
-            <Link to="/ranking">
-              <button
-                data-testid="btn-ranking"
-                type="button"
-              >
-                Ver Ranking
-              </button>
-            </Link>
+              <div className="links-login">
+                <Link to="/settings">
+                  <button
+                    type="button"
+                    data-testid="btn-settings"
+                    className="login-button"
+                    id="button-link"
+                  >
+                    Settings
+                  </button>
+                </Link>
+                <Link to="/ranking">
+                  <button
+                    data-testid="btn-ranking"
+                    type="button"
+                    className="login-button"
+                    id="button-link"
+                  >
+                    Ver Ranking
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       );
