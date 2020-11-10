@@ -22,23 +22,6 @@ class Login extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    const minimumQuestions = 5;
-    const numberQuestions = localStorage.getItem('number')
-      ? localStorage.getItem('number') : minimumQuestions;
-    const category = localStorage.getItem('category')
-      ? localStorage.getItem('number') : '';
-    const typeAPI = localStorage.getItem('typeAPI')
-      ? localStorage.getItem('typeAPI') : '';
-    const difficulty = localStorage.getItem('dificculty')
-      ? localStorage.getItem('number') : '';
-
-    localStorage.setItem('number', numberQuestions);
-    localStorage.setItem('category', category);
-    localStorage.setItem('typeAPI', typeAPI);
-    localStorage.setItem('difficulty', difficulty);
-  }
-
   componentDidUpdate() {
     const { token } = this.props;
 
