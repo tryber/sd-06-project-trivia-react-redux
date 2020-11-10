@@ -30,7 +30,7 @@ class FeedbackHeader extends Component {
               data-testid="header-score"
               className="player-stats"
             >
-              { `Score: ${score}` }
+              { score }
             </p>
           </div>
         </div>
