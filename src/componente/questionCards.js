@@ -141,12 +141,12 @@ class QuestionCards extends Component {
     const { questionCard } = this.props;
     const { correct, incorrect, currentIndex, visibility, isDisabled, time } = this.state;
     return (
-      <div>
+      <div className="question-card-container">
         {questionCard
           ? (
-            <div>
-              <p data-testid="question-category">{questionCard[currentIndex].category}</p>
-              <p data-testid="question-text">{questionCard[currentIndex].question}</p>
+            <div className="question-card">
+              <p data-testid="question-category" className="question-category">{questionCard[currentIndex].category}</p>
+              <p data-testid="question-text" className="question-text">{questionCard[currentIndex].question}</p>
               <div>
                 <button
                   type="button"

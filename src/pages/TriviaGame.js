@@ -13,7 +13,7 @@ class TriviaGame extends Component {
 
   render() {
     return (
-      <section>
+      <section className="game-container">
         <Header />
         <QuestionCard />
       </section>
