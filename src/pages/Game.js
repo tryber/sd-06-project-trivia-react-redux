@@ -178,9 +178,9 @@ class Game extends React.Component {
   renderQuestion(questionIndex) {
     const { questions } = this.props;
     if (questions.length !== 0) {
-      const questionsArray = JSON.parse(localStorage.getItem('questions'));
+      // const questionsArray = JSON.parse(localStorage.getItem('questions'));
       // console.log('questions array: ', questionsArray);
-      const questionToRender = questionsArray[questionIndex];
+      const questionToRender = questions[questionIndex];
 
       return (
         <div id="container">
