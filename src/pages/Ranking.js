@@ -15,13 +15,13 @@ class Ranking extends Component {
               name,
               picture,
               score,
-            }, index) => <TopRanking
+            }, index) => (<TopRanking
               name={ name }
               picture={ picture }
               score={ score }
               index={ index }
               key={ index }
-            />) }
+            />)) }
         </ul>
       </div>
     );
