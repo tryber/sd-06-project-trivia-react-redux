@@ -26,7 +26,7 @@ class QuestionCard extends Component {
     if (clicked === true && indexButtonNext < indexLimit) {
       return (
         <div data-testid="btn-next">
-          <button type="button" onClick={ this.nextQuestions }>
+          <button type="button" data-testid="btn-next" onClick={ this.nextQuestions }>
             Próxima
           </button>
         </div>
@@ -34,9 +34,9 @@ class QuestionCard extends Component {
     }
     if (clicked === true && indexButtonNext === indexLimit) {
       return (
-        <div data-testid="btn-next">
+        <div>
           <Link to="/feedback">
-            <button type="button">Próxima</button>
+            <button type="button" data-testid="btn-next">Próxima</button>
           </Link>
         </div>
       );
@@ -80,13 +80,19 @@ class QuestionCard extends Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, timer } = this.props;
     const { indexButtonNext, isDisabled } = this.state;
     const { category, question } = questions[indexButtonNext];
 
     return (
       <div>
         QUESTION CARD
+        <br />
+        {' '}
+        <span>
+          Timer:
+          {timer}
+        </span>
         <div>
           <p data-testid="question-category">{category}</p>
           <p data-testid="question-text">{question}</p>
@@ -122,8 +128,8 @@ class QuestionCard extends Component {
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions.results,
-  score: state.user.score,
-  assertions: state.user.assertions,
+  score: state.game.score,
+  assertions: state.game.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { login, handleToken } from '../actions';
 
 class Login extends Component {
@@ -23,7 +24,9 @@ class Login extends Component {
     event.preventDefault();
     const { sendUser, getToken, history } = this.props;
     getToken();
-    sendUser(this.state);
+    const { name, email } = this.state;
+    const hash = md5(email).toString();
+    sendUser({ name, email, hash });
     history.push('/game');
   }
 

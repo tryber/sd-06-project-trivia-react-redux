@@ -68,7 +68,7 @@ class Game extends Component {
     const { isLoading, timer } = this.state;
     return (
       <div>
-        <Header timer={ timer } />
+        <Header />
         {isLoading ? (
           <Loading />
         ) : (

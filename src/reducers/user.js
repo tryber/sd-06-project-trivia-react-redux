@@ -1,25 +1,20 @@
-import { LOGIN, TOKEN, SCORE, ASSERTIONS } from '../actions';
+import { LOGIN, TOKEN } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
-  score: 0,
-  assertions: 0,
   token: '',
+  hash: '',
 };
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOGIN: {
-    const { name, email } = action.userData;
-    return { ...state, name, email };
+    const { name, email, hash } = action.userData;
+    return { ...state, name, email, hash };
   }
   case TOKEN:
     return { ...state, token: action.token };
-  case SCORE:
-    return { ...state, score: action.score };
-  case ASSERTIONS:
-    return { ...state, assertions: action.assertions };
   default:
     return state;
   }
