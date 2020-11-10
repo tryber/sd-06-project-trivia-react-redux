@@ -30,6 +30,7 @@ class Questions extends Component {
       answers: [],
       timeInterval: {},
       timingOut: '',
+      isCorrect: false,
     };
   }
 
@@ -80,10 +81,10 @@ class Questions extends Component {
   }
 
   countQuestionsAndRedirect() {
-    const { questionsAnswer, timingOut } = this.state;
+    const { questionsAnswer, timingOut, isCorrect } = this.state;
     const answerTime = 30;
     const lastQuestion = 4;
-    const { resetTime, history } = this.props;
+    const { resetTime, history, saveScore, questions, timer } = this.props;
     clearTimeout(timingOut);
     resetTime(answerTime);
     this.setState({
@@ -96,6 +97,10 @@ class Questions extends Component {
     }
     this.downTime();
     this.setState({ disable: false });
+    const playserScore = this.calculate(timer, questions[questionsAnswer].difficulty);
+    if (isCorrect) {
+      saveScore(playserScore);
+    }
   }
 
   randomQuestions() {
@@ -127,22 +132,13 @@ class Questions extends Component {
     const ALL_TIME = 30000;
     console.log('atualziando');
     this.handleInterval();
-    // if (timer !== 0) {
-    /*
-    const time = setInterval(() => {
-      const { sendTimer } = this.props;
-      sendTimer(timer);
-    }, ONE_SECOND);
-    */
     const loading = setTimeout(() => {
-      // clearInterval(time);
       this.disableButtons();
       this.setState({ checked: true });
     }, ALL_TIME);
     this.setState({
       timingOut: loading,
     });
-    // }
   }
 
   addClass({ target }) {
@@ -159,11 +155,17 @@ class Questions extends Component {
       newScore.player.assertions += 1;
       localStorage.setItem('state', JSON.stringify(newScore));
       handleAssertion(newScore.player.assertions);
+      this.setState({
+        isCorrect: true,
+      });
+    } else {
+      this.setState({
+        isCorrect: false,
+      });
     }
   }
 
   calculate(timer, difficulty) {
-    const { saveScore } = this.props;
     const total = 10;
     const hard = 3;
     const grade = () => {
@@ -177,7 +179,6 @@ class Questions extends Component {
       }
     };
     const totalScore = total + (timer * grade());
-    saveScore(totalScore);
     return totalScore;
   }
 
