@@ -195,10 +195,10 @@ class QuestionCard extends Component {
     const { category, question, correct_answer: correctAnswer } = questions;
 
     return (
-      <div>
-        <h2 data-testid="question-category">{category}</h2>
-        <h2 data-testid="question-text">{this.decode(question)}</h2>
-        <div>
+      <div className="question-container">
+        <h3 data-testid="question-category">{category}</h3>
+        <h4 data-testid="question-text">{this.decode(question)}</h4>
+        <div className="question-answers">
           { answersArray.map((answer, index) => {
             if (answer === correctAnswer) {
               return this.renderButtons(index, answer, 'correct-answer');
@@ -206,7 +206,7 @@ class QuestionCard extends Component {
             return this.renderButtons(index, answer, 'wrong-answer');
           }) }
         </div>
-        <p>{ countdown }</p>
+        <p className="countdown">{ countdown }</p>
       </div>
     );
   }
