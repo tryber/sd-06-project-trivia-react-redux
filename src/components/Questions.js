@@ -149,7 +149,12 @@ class Questions extends Component {
     return (
       <div>
         <p data-testid="question-category">{questions[questionsAnswer].category}</p>
-        <p data-testid="question-text">{questions[questionsAnswer].question}</p>
+        <p
+          className="perguntas"
+          data-testid="question-text"
+        >
+          {questions[questionsAnswer].question}
+        </p>
         <div className="divButton">
           {answers.map((answer, index) => {
             if (answer === questions[questionsAnswer].correct_answer) {
