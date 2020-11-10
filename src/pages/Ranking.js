@@ -59,7 +59,7 @@ class Ranking extends React.Component {
             </tr>
           </thead>
           <tbody>
-            { scorePlayers.map((ply, index) => { return (
+            { scorePlayers.map((ply, index) => (
               <tr key={ index }>
                 <td>
                   <img
@@ -74,8 +74,7 @@ class Ranking extends React.Component {
                   <h4 data-testid={ `player-score-${index}` }>{ ply.score }</h4>
                 </td>
               </tr>
-              )})
-            }
+            )) }
           </tbody>
         </table>
       </div>
