@@ -1,0 +1,15 @@
+.board {
+  background-color: grey;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.feedback-field {
+  margin: auto;
+}
+
+.feedbackText {
+  font-size: 45px;
+}

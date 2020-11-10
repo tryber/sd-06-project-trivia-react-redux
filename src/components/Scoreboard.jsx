@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Scoreboard.css';
 
 const Scoreboard = (props) => {
 
   const Welldone = () => {
     return(
       <div className="feedback-field">
-        <p data-testid="feedback-text">Mandou bem!</p>
+        <p data-testid="feedback-text" className="feedbackText">Mandou bem!</p>
       </div>
     )
   }
   const Getbetter = () => {
     return(
-      <div data-testid="feedback-field">
-        <p data-testid="feedback-text">Podia ser melhor</p>
+      <div className="feedback-field">
+        <p data-testid="feedback-text" className="feedbackText">Podia ser melhor</p>
       </div>
     )
   }
@@ -32,8 +33,8 @@ const Scoreboard = (props) => {
   }
 
   return(
-    <div>
-      Scoreboard
+    <div className="board">
+      <h4 className="header">Scoreboard</h4>
       <Feed />
     </div>
   )

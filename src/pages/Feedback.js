@@ -9,7 +9,6 @@ class Feedback extends React.Component {
   render() {
     const { gameBoard } = this.props;
     const asserts = gameBoard.assertions
-    console.log(gameBoard);
     return (
       <div data-testid="feedback-text">
         <Header />
