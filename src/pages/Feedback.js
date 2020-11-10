@@ -28,7 +28,7 @@ class Feedback extends React.Component {
           data-testid="btn-play-again"
           onClick={ () => {
             localStorage.removeItem('questions');
-            history.push('/game');
+            history.push('/');
             // window.location.reload(true);
           } }
         >
