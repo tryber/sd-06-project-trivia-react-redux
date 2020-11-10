@@ -21,7 +21,7 @@ class Ranking extends Component {
               </div>
             ))}
         </div>
-        <div className="button">
+        <div className="button-ranking">
           <Link to="/">
             <button type="button" data-testid="btn-go-home">JOGAR NOVAMENTE</button>
           </Link>

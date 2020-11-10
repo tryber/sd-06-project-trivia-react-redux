@@ -18,11 +18,11 @@ class Feedback extends Component {
 
     if (assertions < MIN_ASSERTIONS) {
       return (
-        <p data-testid="feedback-text"> Podia ser melhor...</p>
+        <p data-testid="feedback-text" className="feedback-top"> Podia ser melhor...</p>
       );
     } if (assertions >= MIN_ASSERTIONS) {
       return (
-        <p data-testid="feedback-text"> Mandou bem!</p>
+        <p data-testid="feedback-text" className="feedback-top"> Mandou bem!</p>
       );
     }
   }
@@ -33,7 +33,7 @@ class Feedback extends Component {
       <div className="container-feedback">
         <Header />
         {this.feedbackMessage()}
-        <div>
+        <div className=" feedback">
           <p>
             Você acertou
             {' '}
@@ -54,6 +54,7 @@ class Feedback extends Component {
               type="button"
               data-testid="btn-ranking"
               onClick={ reset }
+              className="button"
             >
               VER RANKING
             </button>
@@ -63,6 +64,7 @@ class Feedback extends Component {
               type="button"
               data-testid="btn-play-again"
               onClick={ reset }
+              className="button"
             >
             JOGAR NOVAMENTE
             </button>

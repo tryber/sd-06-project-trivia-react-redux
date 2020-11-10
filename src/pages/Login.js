@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { login, handleToken } from '../actions';
 import './Login.css';
+import '../trivia.png';
 
 class Login extends Component {
   constructor(props) {
