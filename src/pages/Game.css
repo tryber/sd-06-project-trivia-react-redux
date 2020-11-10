@@ -1,9 +1,14 @@
 .class-game {
-    margin: auto;
+    margin: 25% auto;
     width: 50%;
-    background-color: #1b43bd;
+    background: linear-gradient(rgb(80, 79, 79), #1b43bd);
     color: #f8f8f8;
     border-radius: 10px;
     font-family: Helvetica, sans-serif;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: 5%;
     
 }

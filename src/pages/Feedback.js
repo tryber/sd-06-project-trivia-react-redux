@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Header } from '../components';
 import { resetGame, addRanking } from '../actions';
+import './Feedback.css';
 
 class Feedback extends Component {
   componentDidMount() {
@@ -29,7 +30,7 @@ class Feedback extends Component {
   render() {
     const { score, assertions, reset } = this.props;
     return (
-      <div>
+      <div className="container-feedback">
         <Header />
         {this.feedbackMessage()}
         <div>
