@@ -10,7 +10,7 @@ class Feedback extends React.Component {
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={ assertions } score = { score } />
+        <Scoreboard asserts={ assertions } score={ score } />
       </div>
     );
   }
