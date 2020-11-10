@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
   case ADD_RESULT:
     return {
-      ...state, results: { ...state.results, ...action.results },
+      ...state, results: { ...state.results, ...action.result },
     };
   default:
     return state;

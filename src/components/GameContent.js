@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import './GameContent.css';
 import { addResult } from '../actions/game';
+import { addPlayerRank } from '../actions/ranking';
 
 class GameContent extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class GameContent extends React.Component {
       current: 0,
       answer: false,
       sort: [],
+      redirect: false,
       results: [],
       btnDisabled: false,
       score: 0,
@@ -25,10 +27,12 @@ class GameContent extends React.Component {
     this.shuffle = this.shuffle.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
     this.setResult = this.setResult.bind(this);
+    this.setPlayerRank = this.setPlayerRank.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.setNextQuestion = this.setNextQuestion.bind(this);
     this.handleScore = this.handleScore.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
+    this.handleClickNextButton = this.handleClickNextButton.bind(this);
   }
 
   componentDidMount() {
@@ -66,9 +70,19 @@ class GameContent extends React.Component {
 
   setResult(result) {
     const { results } = this.state;
-    this.setState(() => ({ answer: true }), async () => {
+    this.setState(() => ({ answer: true }), () => {
       this.setState({ results: [...results, result], btnDisabled: true });
     });
+  }
+
+  setPlayerRank(login, sum, copiedPlayers, dispatchRanking) {
+    const playerRank = {
+      name: login.user,
+      score: sum,
+      email: login.email,
+    };
+    dispatchRanking(playerRank);
+    localStorage.setItem('ranking', copiedPlayers);
   }
 
   resetTimer() {
@@ -78,10 +92,14 @@ class GameContent extends React.Component {
 
   async fetchApi() {
     const token = localStorage.getItem('token');
+    const tokenExpiredErr = 3;
     const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
     await fetch(url)
       .then((response) => response.json())
-      .then((a) => this.setState({ element: a, isLoading: false, answer: false }));
+      .then((a) => this.setState({ element: a, isLoading: false, answer: false }))
+      .catch((err) => {
+        if (err.response_code === tokenExpiredErr) this.setState({ redirect: true });
+      });
   }
 
   async handleClickAnswer(event) {
@@ -102,7 +120,14 @@ class GameContent extends React.Component {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-    return this.setState({ sort: array });
+    this.setState({ sort: array });
+  }
+
+  handleClickNextButton() {
+    const { current } = this.state;
+    const questionsIndexes = [1, 2, 2 + 1, 2 + 2];
+    this.shuffle(questionsIndexes);
+    this.setState({ btnDisabled: false, current: current + 1 });
   }
 
   handleScore(questionsDataARR, counter) {
@@ -114,9 +139,10 @@ class GameContent extends React.Component {
     if (difficulty === 'medium') { difficultyNumber = 2; }
     if (difficulty === 'hard') { difficultyNumber = 1 + 2; }
     const sum = score + (ten + (counter * difficultyNumber));
-    const attAssertions = assertions + 1;
-    this.setState({ score: sum, assertions: attAssertions });
-    this.handleLocalStorage(sum, attAssertions);
+    const incrementedAssertions = assertions + 1;
+    this.setState({ score: sum, assertions: incrementedAssertions });
+
+    this.handleLocalStorage(sum, incrementedAssertions);
   }
 
   handleLocalStorage(sum, attAssertions) {
@@ -130,12 +156,14 @@ class GameContent extends React.Component {
       },
     };
     const jsonAux = JSON.stringify(player);
-    dispatchResults(player);
     localStorage.setItem('state', jsonAux);
+    dispatchResults(player);
   }
 
   renderNextButton() {
-    const { btnDisabled, results, current } = this.state;
+    const { btnDisabled, results, score } = this.state;
+    const { login, players, dispatchRanking } = this.props;
+    const copiedPlayers = [...players];
     const maxAnswers = 5;
     if (results.length < maxAnswers) {
       return (
@@ -143,7 +171,7 @@ class GameContent extends React.Component {
           disabled={ !btnDisabled }
           className={ `${!btnDisabled ? 'btnDisplay' : null}` }
           type="button"
-          onClick={ () => this.setState({ btnDisabled: false, current: current + 1 }) }
+          onClick={ () => this.handleClickNextButton() }
           data-testid="btn-next"
         >
           Proxima pergunta
@@ -155,8 +183,11 @@ class GameContent extends React.Component {
         <button
           type="button"
           data-testid="btn-next"
+          onClick={ () => this.setPlayerRank(
+            login, score, copiedPlayers, dispatchRanking,
+          ) }
         >
-          Proxima pergunta
+          ver pontuação
         </button>
       </Link>
     );
@@ -164,10 +195,12 @@ class GameContent extends React.Component {
 
   render() {
     const { element,
-      current, isLoading, answer, sort, btnDisabled, counter } = this.state;
+      current, isLoading, answer, sort, btnDisabled, counter, redirect } = this.state;
+
     if (isLoading) {
       return <p>Carregando...</p>;
     }
+    if (redirect) return <Redirect to="/" />;
     const questionsDataARR = element.results[current];
     const correctQuestion = questionsDataARR.correct_answer;
     const questions = [...questionsDataARR.incorrect_answers, correctQuestion];
@@ -217,16 +250,19 @@ class GameContent extends React.Component {
 
 const mapStateToProps = (state) => ({
   login: state.login.player,
-  // results: state.game.results,
+  players: state.ranking.players,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchResults: (result) => dispatch(addResult(result)),
+  dispatchRanking: (playerRank) => dispatch(addPlayerRank(playerRank)),
 });
 
 GameContent.propTypes = {
   dispatchResults: PropTypes.func.isRequired,
+  dispatchRanking: PropTypes.func.isRequired,
   login: PropTypes.shape().isRequired,
+  players: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameContent);

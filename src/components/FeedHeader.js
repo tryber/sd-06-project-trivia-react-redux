@@ -12,7 +12,6 @@ class FeedHeader extends React.Component {
   render() {
     const { playerName, email, score } = this.props;
     const hash = md5(email).toString();
-    console.log(hash);
     if (score) {
       return (
         <header>
