@@ -2,26 +2,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import questionsAPI from '../services/questionAPI';
 
+
 class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       buttonBorder: false,
+      timer30: 30,
     };
     this.handleClick = this.handleClick.bind(this);
     this.questionsGet = this.questionsGet.bind(this);
+    this.countdown = this.countdown.bind(this);
   }
 
   componentDidMount() {
     this.questionsGet();
-    const timer = 30000;
-    this.questionsGet();
-    setTimeout(() => this.handleClick(), timer);
+    const miliseconds = 300;
+    let aux;
+    this.aux = setInterval(this.countdown, miliseconds);
+    console.log("o que é aux" + aux);
+    this.countdown(aux);
   }
 
   async questionsGet() {
     const tokenLocal = localStorage.getItem('token');
     await questionsAPI(tokenLocal);
+  }
+
+  countdown(aux) {
+    const { timer30 } = this.state;
+    console.log("o que é aux depois" + aux);
+     if (timer30 > 0) {
+      this.setState((localtimer) => ({
+        timer30: localtimer.timer30 - 1,
+       }));
+    } 
+     else {
+       console.log(" o tempo acabou");
+       this.handleClick();
+      clearInterval(this.aux);
+     }
   }
 
   handleClick() {
@@ -34,10 +54,14 @@ class Questions extends React.Component {
   render() {
     const { buttonBorder } = this.state;
     const { questionAtual } = this.props;
+    const { timer30 } = this.state;
     // const testeObjectQuestion = Object.assign(questionAtual);
     console.log('question atual no componente Questions:', questionAtual);
     return (
       <div>
+        <div>
+        {timer30}
+      </div>
         <div className="gamepage-questions">
           <div
             data-testid="question-category"

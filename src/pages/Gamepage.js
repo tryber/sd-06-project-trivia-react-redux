@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import Questions from '../components/Questions';
+// import CountdownTimer from '../components/CountdownTimer';
 
 class Gamepage extends React.Component {
   constructor() {
@@ -42,6 +43,9 @@ class Gamepage extends React.Component {
           >
             Placar: 0
           </span>
+          {/* <CountdownTimer /> */}
+          
+    
         </header>
         <Questions questionAtual={ questionAtual } />
         <button
