@@ -20,7 +20,6 @@ export default class Button extends Component {
 }
 
 Button.defaultProps = {
-  type: 'button',
   id: 'button',
   value: '',
 };
@@ -29,7 +28,7 @@ Button.propTypes = {
   testId: propTypes.string.isRequired,
   name: propTypes.string.isRequired,
   className: propTypes.string.isRequired,
-  type: propTypes.string.isRequired,
+  type: propTypes.string,
   id: propTypes.string,
   value: propTypes.string,
   onClick: propTypes.func.isRequired,
