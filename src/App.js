@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Game, Login, Settings } from './pages';
+import { Game, Login, Settings, Feedback, Ranking } from './pages';
 
 function App() {
   return (
@@ -8,6 +8,8 @@ function App() {
       <Route exact path="/" component={ Login } />
       <Route path="/game" component={ Game } />
       <Route path="/settings" component={ Settings } />
+      <Route path="/feedback" component={ Feedback } />
+      <Route path="/ranking" component={ Ranking } />
     </Switch>
   );
 }

@@ -6,6 +6,7 @@ export const USER_SCORE = 'USER_SCORE';
 export const USER_RANKING = 'USER_RANKING';
 export const QUESTION_LIST = 'QUESTION_LIST';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
+export const CLEAR_QUESTIONS = 'CLEAR_QUESTIONS';
 
 export const tokenRequest = (token) => ({
   type: TOKEN_REQUEST,
@@ -21,6 +22,10 @@ export const userInfo = (name, email) => ({
 export const userScore = (score) => ({
   type: USER_SCORE,
   score,
+});
+
+export const clearQuestions = () => ({
+  type: CLEAR_QUESTIONS,
 });
 
 export const userRanking = (ranking) => ({
@@ -43,6 +48,7 @@ function sendQuestionsToStore(fetchedQuestions) {
 export function fetchQuestionsFromAPI(numberOfQuestions) {
   return async (dispatch) => {
     const questions = await triviaAPI(numberOfQuestions);
-    dispatch(sendQuestionsToStore(questions));
+    console.log('questions from API:', questions);
+    dispatch(sendQuestionsToStore(questions.results));
   };
 }
