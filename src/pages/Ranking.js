@@ -3,33 +3,48 @@ import { Link } from 'react-router-dom';
 import NenhumRegistro from '../components/NenhumRegistroEncontrado';
 import Player from '../components/Player';
 
-const players = JSON.parse(localStorage.getItem('state'));
+class Ranking extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      players: JSON.parse(localStorage.ranking || '[]'),
+    };
+    this.sortingPlayers = this.sortingPlayers.bind(this);
+  }
 
-// if (players) {
-//   players = players.sort(
-//     (a, b) => (parseInt(b.score, 10) - parseInt(a.score, 10)),
-//   );
-// } else {
-//   players = undefined;
-// }
+  componentDidMount() {
+    this.sortingPlayers();
+  }
 
-const Ranking = () => (
-  <div>
-    <h1 data-testid="ranking-title">Melhores Jogadas</h1>
-    <ol>
-      {
-        players ? players.map((entry, index) => (
-          <Player key={ `${index}has` } index={ index } entry={ entry } />
-        ))
-          : <NenhumRegistro />
-      }
-    </ol>
-    <Link to="/">
-      <button data-testid="btn-go-home" type="button">
-        Home
-      </button>
-    </Link>
-  </div>
-);
+  sortingPlayers() {
+    const { players } = this.state;
+    if (players.length > 1) {
+      this.setState({ players: players.sort((a, b) => (
+        parseInt(b.score, 10) - parseInt(a.score, 10))) });
+    }
+  }
+
+  render() {
+    const { players } = this.state;
+    return (
+      <div>
+        <h1 data-testid="ranking-title">Melhores Jogadas</h1>
+        <ol>
+          {
+            players ? players.map((entry, index) => (
+              <Player key={ `${index}has` } index={ index } entry={ entry } />
+            ))
+              : <NenhumRegistro />
+          }
+        </ol>
+        <Link to="/">
+          <button data-testid="btn-go-home" type="button">
+            Home
+          </button>
+        </Link>
+      </div>
+    );
+  }
+}
 
 export default Ranking;

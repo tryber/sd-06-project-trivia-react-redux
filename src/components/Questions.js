@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import './Questions.css';
 
@@ -145,13 +146,14 @@ class Questions extends React.Component {
     const timer = this.timer();
     if (currentQuestion === question.length) {
       const state = JSON.parse(localStorage.state);
+      const email = md5(state.player.gravatarEmail);
       if (localStorage.ranking) {
         localStorage.ranking = JSON.stringify([
           ...JSON.parse(localStorage.ranking),
           {
             name: state.player.name,
             score: state.player.score,
-            picture: state.player.gravatarEmail,
+            picture: `https://www.gravatar.com/avatar/${email}`,
           },
         ]);
       } else {
@@ -159,7 +161,7 @@ class Questions extends React.Component {
           {
             name: state.player.name,
             score: state.player.score,
-            picture: state.player.gravatarEmail,
+            picture: `https://www.gravatar.com/avatar/${email}`,
           },
         ]);
       }
