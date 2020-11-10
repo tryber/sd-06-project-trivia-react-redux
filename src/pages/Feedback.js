@@ -3,23 +3,31 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { saveRanking } from '../actions';
+import { saveGameScore, saveNameEmail, saveRanking } from '../actions';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+
+    this.resetScore = this.resetScore.bind(this);
+  }
+
   componentDidMount() {
     const { name, score, hash, saveRankingtoStore } = this.props;
     const picture = `https://www.gravatar.com/avatar/${hash}`;
-    const playerAtual = {
+    const ranking = {
       name,
       picture,
       score,
     };
-    saveRankingtoStore(playerAtual);
-    const { ranking } = this.props;
-    localStorage.setItem('ranking', JSON.stringify(ranking));
+    saveRankingtoStore(ranking);
+    localStorage.setItem('ranking', JSON.stringify({ ranking }));
   }
 
-  reset() {
+  resetScore() {
+    const { resetNameEmail, resetGameScore } = this.props;
+    resetNameEmail('', '');
+    resetGameScore(0, 0);
   }
 
   render() {
@@ -44,7 +52,7 @@ class Feedback extends Component {
           <button
             data-testid="btn-play-again"
             type="button"
-            onClick={ this.reset() }
+            onClick={ this.resetScore }
           >
           Jogar Novamente
           </button>
@@ -58,8 +66,9 @@ Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   hash: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  ranking: PropTypes.arrayOf(PropTypes.object).isRequired,
   saveRankingtoStore: PropTypes.func.isRequired,
+  resetNameEmail: PropTypes.func.isRequired,
+  resetGameScore: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
 };
 
@@ -74,6 +83,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveRankingtoStore: (playerAtual) => dispatch(saveRanking(playerAtual)),
+  resetNameEmail: (name, email) => dispatch(saveNameEmail(name, email)),
+  resetGameScore: (score, assertions) => dispatch(saveGameScore(score, assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
