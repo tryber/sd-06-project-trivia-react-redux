@@ -33,7 +33,7 @@ export const scoreAction = (score) => ({
   score: score.score,
   answered: score.answered,
   timeout: score.timeout,
-  assertions: score.assertion,
+  assertions: score.assertions,
 });
 
 export const answerAction = (payload) => ({
