@@ -27,7 +27,7 @@ const Scoreboard = (props) => {
 
   const Feed = () => {
     
-    if (asserts > 3) {
+    if (asserts >= 3) {
       return (
         <Welldone />
       )
