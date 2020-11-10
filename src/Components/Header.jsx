@@ -4,33 +4,8 @@ import PropTypes from 'prop-types';
 import '../styles/Header.css';
 
 class Header extends React.Component {
-  constructor() {
-    super();
-
-    this.getScoreFromStorage = this.getScoreFromStorage.bind(this);
-
-    this.state = { score: 0 };
-  }
-
-  componentDidMount() {
-    this.getScoreFromStorage();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { score } = this.props;
-    if (prevProps.score !== score) {
-      this.getScoreFromStorage();
-    }
-  }
-
-  async getScoreFromStorage() {
-    const { player: { score } } = await JSON.parse(localStorage.getItem('state'));
-    return score;
-  }
-
   render() {
-    const { getUser: { gravatarEmail, name } } = this.props;
-    const score = this.getScoreFromStorage();
+    const { getUser: { gravatarEmail, name }, score } = this.props;
 
     return (
       <header>
@@ -41,7 +16,7 @@ class Header extends React.Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{ score }</p>
+        <p data-testid="header-score">{score}</p>
       </header>
     );
   }
@@ -54,6 +29,7 @@ const mapStateToProps = (state) => ({
 
 Header.propTypes = {
   getUser: PropTypes.arrayOf(Object).isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Header);
