@@ -143,7 +143,7 @@ class Game extends React.Component {
     const { questions } = this.props;
     const { questionNumber } = this.state;
     return (
-      <div>
+      <div className="game-question-texts">
         <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
         <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
       </div>
@@ -171,6 +171,7 @@ class Game extends React.Component {
     return (
       <div
         role="button"
+        className="answers-container"
         onClick={ handleScore }
         onKeyUp={ handleScore }
         tabIndex={ 0 }
@@ -180,7 +181,7 @@ class Game extends React.Component {
             if (answer === questions[questionNumber].correct_answer) {
               return (
                 <button
-                  className={ answered ? 'correct-answer' : null }
+                className={ answered ? 'correct-answer' : 'regular-answer' }
                   type="button"
                   onClick={ chooseAnswer }
                   data-testid="correct-answer"
@@ -194,7 +195,7 @@ class Game extends React.Component {
             }
             return (
               <button
-                className={ answered ? 'wrong-answer' : null }
+                className={ answered ? 'wrong-answer' : 'regular-answer' }
                 type="button"
                 onClick={ chooseAnswer }
                 data-testid={ `wrong-answer-${index}` }
@@ -220,6 +221,7 @@ class Game extends React.Component {
           <button
             type="button"
             data-testid="btn-next"
+            className="next-question-button"
             onClick={ chooseNextQuestion }
           >
             Próxima
@@ -242,7 +244,9 @@ class Game extends React.Component {
             { timer }
           </div>
         </div>
-        { renderQuestions() }
+        <div className="game-question-container">
+          { renderQuestions() }
+        </div>
         { renderAnswers() }
         { renderNext() }
       </div>
