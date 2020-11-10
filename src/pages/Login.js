@@ -23,16 +23,31 @@ class Login extends React.Component {
     this.validFields = this.validFields.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.setLocalStorage = this.setLocalStorage.bind(this);
+    this.setColor = this.setColor.bind(this);
 
+    const minColor = 70;
+    const maxColor = 140;
     this.state = {
       name: '',
       email: '',
       validFieldsOk: false,
+      cor1: Math.floor(Math.random() * (minColor) + maxColor),
+      cor2: Math.floor(Math.random() * (minColor) + maxColor),
+      cor3: Math.floor(Math.random() * (minColor) + maxColor),
+      incCor1: true,
+      incCor2: true,
+      incCor3: true,
     };
   }
 
   componentDidMount() {
+
     kahootTheme.play();
+    const milliseconds = 60;
+    this.interval = setInterval(() => { this.setColor(); }, milliseconds);
+    // this.interval = setInterval(
+    //   () => this.setState((prevState) => ({ timer: prevState.timer - 1 })), SECONDS,
+    // );
   }
 
   componentDidUpdate(prevProps) {
@@ -46,6 +61,55 @@ class Login extends React.Component {
   componentWillUnmount() {
     kahootTheme.stop();
     gongSound.play();
+    clearInterval(this.interval);
+  }
+
+  setColor() {
+    let { cor1, cor2, cor3, incCor1, incCor2, incCor3 } = this.state;
+
+    const maxRange = 210;
+    const minRange = 50;
+    if (incCor1) {
+      cor1 += 1;
+      if (cor1 > maxRange) {
+        incCor1 = false;
+      }
+    } else {
+      cor1 -= 1;
+      if (cor1 < minRange) {
+        incCor1 = true;
+      }
+    }
+
+    if (incCor2) {
+      cor2 += 1;
+      if (cor2 > maxRange) {
+        incCor2 = false;
+      }
+    } else {
+      cor2 -= 1;
+      if (cor2 < minRange) {
+        incCor2 = true;
+      }
+    }
+
+    if (incCor3) {
+      cor3 += 1;
+      if (cor3 > maxRange) {
+        incCor3 = false;
+      }
+    } else {
+      cor3 -= 1;
+      if (cor3 < minRange) {
+        incCor3 = true;
+      }
+    }
+
+    // console.log(cor1, cor2, cor3, incCor1, incCor2, incCor3);
+
+    this.setState({
+      cor1, cor2, cor3, incCor1, incCor2, incCor3,
+    });
   }
 
   setLocalStorage() {
@@ -87,10 +151,14 @@ class Login extends React.Component {
   }
 
   render() {
-    const { name, email, validFieldsOk } = this.state;
+    const { name, email, validFieldsOk, cor1, cor2, cor3 } = this.state;
+    // x.style.backgroundColor = 'rgb(' + cor1 + ',' + cor2 + ',' + cor3 + ')';
     return (
-      <div className="login-page">
-        <h1 classeName="login-title">Project Trivia</h1>
+      <div
+        className="login-page"
+        style={ { backgroundColor: `rgb(${cor1}, ${cor2}, ${cor3})` } }
+      >
+        <h1 className="title">Project Trivia!</h1>
         <form className="form-container">
           <input
             className="input-form-login"
@@ -120,6 +188,8 @@ class Login extends React.Component {
             Jogar
           </button>
           <BtnSettings />
+          <h6 className="footer">Create by Group 15 - Trybe Class 06</h6>
+          <h6 className="footer">Terms | Privacy</h6>
         </form>
       </div>
     );
