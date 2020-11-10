@@ -2,7 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   constructor() {
@@ -22,11 +22,11 @@ class Ranking extends React.Component {
     const { name, email, score } = this.props;
     const actualPlayer = { name, email, score };
     const actualScorePlayers = JSON.parse(localStorage.getItem('scorePlayers'));
-    const scorePlayers = actualScorePlayers ? actualScorePlayers : [];
+    const scorePlayers = actualScorePlayers && [];
 
     scorePlayers.push(actualPlayer);
     localStorage.setItem('scorePlayers', JSON.stringify(scorePlayers));
-    scorePlayers.sort(function(a, b) {
+    scorePlayers.sort((a, b) => {
       const one = 1;
       const negOne = -1;
       const zero = 0;
@@ -47,34 +47,35 @@ class Ranking extends React.Component {
     return (
       <div>
         <div>Ranking</div>
-        <Link to="/"><button data-testid="btn-go-home">Jogar novamente</button></Link>
+        <Link to="/" data-testid="btn-go-home">
+          <button type="button">Jogar novamente</button>
+        </Link>
         <table>
           <thead>
             <tr>
-              <th />
+              <th>Imagem</th>
               <th>Nome</th>
               <th>Pontuação</th>
             </tr>
           </thead>
           <tbody>
-            { scorePlayers.map((ply, index) => {
-              return (
-                <tr key={ index }>
-                  <td>
-                    <img
-                      alt="gravatar"
-                      src={ `https://www.gravatar.com/avatar/${md5(ply.email)}` }
-                    />
-                  </td>
-                  <td>
-                    <h4 data-testid={ `player-name-${index}` }>{ ply.name }</h4>
-                  </td>
-                  <td>
-                    <h4 data-testid={ `player-score-${index}` }>{ ply.score }</h4>
-                  </td>
-                </tr>
-              );
-            }) }
+            { scorePlayers.map((ply, index) => { return (
+              <tr key={ index }>
+                <td>
+                  <img
+                    alt="gravatar"
+                    src={ `https://www.gravatar.com/avatar/${md5(ply.email)}` }
+                  />
+                </td>
+                <td>
+                  <h4 data-testid={ `player-name-${index}` }>{ ply.name }</h4>
+                </td>
+                <td>
+                  <h4 data-testid={ `player-score-${index}` }>{ ply.score }</h4>
+                </td>
+              </tr>
+              )})
+            }
           </tbody>
         </table>
       </div>
@@ -92,6 +93,6 @@ Ranking.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-}
+};
 
 export default connect(mapStateToProps, null)(Ranking);
