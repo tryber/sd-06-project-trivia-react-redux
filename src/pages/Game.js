@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './components/Header';
-import '../style/ButtonsGame.css';
+import '../style/Game.css';
 import { questionScore, questionScorePlayer } from '../redux/actions';
 
 class Game extends Component {
@@ -75,7 +75,7 @@ class Game extends Component {
             key={ countoString }
             type="button"
             data-testid="correct-answer"
-            className={ green }
+            className={ `bttn-question ${green}` }
             onClick={ () => this.testQuestion(true) }
             disabled={ disableAnwsers }
           >
@@ -89,7 +89,7 @@ class Game extends Component {
           type="button"
           data-testid={ `wrong-answer-${index}` }
           key={ countoString }
-          className={ red }
+          className={ `bttn-question ${red}` }
           onClick={ () => this.testQuestion(false) }
           disabled={ disableAnwsers }
         >
@@ -153,19 +153,26 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="question-category">{arrayQuestion[index].category}</p>
-        <p data-testid="question-text">{arrayQuestion[index].question}</p>
-        {this.shufflesAnswer(arrayQuestion[index])}
-        {answered && (
-          <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ () => this.nextQuestion() }
-          >
-            Próxima
-          </button>
-        )}
-        <span>{ time }</span>
+        <div className="game">
+          <p className="text-category" data-testid="question-category">
+            {arrayQuestion[index].category}
+          </p>
+          <p className="text-question" data-testid="question-text">
+            {arrayQuestion[index].question}
+          </p>
+          {this.shufflesAnswer(arrayQuestion[index])}
+          {answered && (
+            <button
+              className="bttn-next"
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.nextQuestion() }
+            >
+              Próxima
+            </button>
+          )}
+          <span className="timer">{`${time} seg`}</span>
+        </div>
       </div>
     );
   }

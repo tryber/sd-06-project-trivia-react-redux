@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from './components/Header';
+import '../style/Feedback.css';
 
 class Feedback extends Component {
   constructor(props) {
@@ -26,27 +27,35 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="feedback-text">{this.feedbackMessage()}</p>
-        <p data-testid="feedback-total-score">{`${score}`}</p>
-        <p data-testid="feedback-total-question">
-          {`${assertions}`}
-        </p>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-          >
-            Jogar Novamente
-          </button>
-        </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ver Raking
-          </button>
-        </Link>
+        <div className="feedback">
+          <h3 className="text-title" data-testid="feedback-text">
+            {this.feedbackMessage()}
+          </h3>
+          <span className="text">Score:</span>
+          <span className="text" data-testid="feedback-total-score">{score}</span>
+          <span className="text">Total de questões acertadas:</span>
+          <span className="text" data-testid="feedback-total-question">
+            {assertions}
+          </span>
+          <Link to="/">
+            <button
+              className="bttn-login"
+              type="button"
+              data-testid="btn-play-again"
+            >
+              Jogar Novamente
+            </button>
+          </Link>
+          <Link to="/ranking">
+            <button
+              className="bttn-ranking"
+              type="button"
+              data-testid="btn-ranking"
+            >
+              Ver Raking
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -55,7 +64,6 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   count: state.user.player,
 });
-
 Feedback.propTypes = {
   count: PropTypes.shape({
     score: PropTypes.number,

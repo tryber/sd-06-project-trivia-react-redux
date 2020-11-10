@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+.feedback {
+  align-items: center;
+  align-content: center;
+  border: 5px double gray;
+  border-radius: 7%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  padding-bottom: 25px;
+  width: 500px
+}
+
+
+.text-title {
+  color: #e9eaec;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 32px;
+  font-weight: bolder;
+  margin: 15px auto;
+  text-align: center;
+}
+
+.text {
+  color: #e9eaec;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 25px;
+  font-weight: bolder;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.bttn-login {
+  background-color: rgb(117, 202, 19);
+  border: none;
+  border-radius: 5px;
+  color: #2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 20px;
+  width: 300px;
+}
+
+.bttn-login:hover {
+  background-color: rgb(103, 170, 27);
+  cursor: pointer;
+}
+
+.bttn-ranking {
+  background-color: white);
+  border: none;
+  border-radius: 5px;
+  color: #2a2e34;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 20px;
+  width: 300px;
+}
+
+.bttn-ranking:hover {
+  background-color: rgb(194, 193, 193);
+  cursor: pointer;
+}

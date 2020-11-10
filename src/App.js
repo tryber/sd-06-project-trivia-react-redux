@@ -5,6 +5,7 @@ import Game from './pages/Game';
 import Configuration from './pages/Configuration';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
+import './style/App.css';
 
 class App extends Component {
   render() {
