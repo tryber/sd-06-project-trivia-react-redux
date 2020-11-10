@@ -7,6 +7,7 @@ import CustomInput from '../components/CustomInput';
 import loginRequirements from '../services/loginRequirements';
 import { tokenFetcher } from '../actions/actionsFetchToken';
 import './Login.css';
+import trivia from '../trivia.png';
 
 class FormLogin extends React.Component {
   constructor() {
@@ -75,7 +76,8 @@ class FormLogin extends React.Component {
     return (
       <div className="full-container">
         <div className="login-form">
-          <h1 className="text-center">Trivia</h1>
+          <img src={ trivia } alt="trivia" className="text-center trivia-logo" />
+          {/* <h1 className="text-center">Trivia</h1> */}
           <form>
             {
               loginRequirements.map(({ name, type, dataTestId }) => (
