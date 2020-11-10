@@ -15,7 +15,7 @@ const TableRank = (players) => (
       {players
         .sort((a, b) => b.score - a.score)
         .map((player, index) => (
-          <tr key={ player.name }>
+          <tr key={ index }>
             <th>
               <img src={ `https://www.gravatar.com/avatar/${md5(player.gravatarEmail)}` } alt={ player.name } />
             </th>
