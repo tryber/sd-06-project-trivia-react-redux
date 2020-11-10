@@ -7,12 +7,13 @@ import md5 from 'crypto-js/md5';
 class Header extends React.Component {
   render() {
     const { email, name, score } = this.props;
+    const gravatarImage = `https://www.gravatar.com/avatar/${md5(email)}`;
     return (
       <header>
         <div>
           <img
             data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${md5(email)}` }
+            src={ gravatarImage }
             alt="avatar"
           />
         </div>

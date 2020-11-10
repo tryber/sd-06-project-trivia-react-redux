@@ -7,6 +7,7 @@ export const USER_RANKING = 'USER_RANKING';
 export const QUESTION_LIST = 'QUESTION_LIST';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 export const CLEAR_QUESTIONS = 'CLEAR_QUESTIONS';
+export const USER_CLEAR = 'USER_CLEAR';
 
 export const tokenRequest = (token) => ({
   type: TOKEN_REQUEST,
@@ -26,6 +27,10 @@ export const userScore = (score) => ({
 
 export const clearQuestions = () => ({
   type: CLEAR_QUESTIONS,
+});
+
+export const userClear = () => ({
+  type: USER_CLEAR,
 });
 
 export const userRanking = (ranking) => ({
