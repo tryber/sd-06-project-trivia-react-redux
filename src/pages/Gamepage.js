@@ -9,18 +9,45 @@ class Gamepage extends React.Component {
     super();
     this.state = {
       questionIndex: 0,
+      disableButton: false,
     };
     this.changeQuestion = this.changeQuestion.bind(this);
+    this.changePage = this.changePage.bind(this);
+  }
+
+  componentDidMount() {
+    const timingDisable = 3000;
+    setTimeout(() => {
+      this.setState({
+        disableButton: true,
+      });
+    }, timingDisable);
+  }
+
+  changePage() {
+    console.log('next page');
+    const { history } = this.props;
+    history.push('/feedback');
   }
 
   changeQuestion() {
-    console.log('change question:', 'Hello');
+    const { questions } = this.props;
+    const { questionIndex } = this.state;
+    const number = 4;
+    if (questionIndex === number) {
+      this.changePage();
+    } else {
+      this.setState((state) => (
+        { questionIndex: (state.questionIndex + 1) % questions.length }
+      ));
+    }
   }
 
   render() {
     const { email, username, questions } = this.props;
-    console.log('questions do Redux:', questions);
-    const { questionIndex } = this.state;
+    // console.log('questions do Redux:', questions);
+    const { questionIndex, disableButton } = this.state;
+    // console.log('index render:', questionIndex);
     const questionAtual = questions[questionIndex];
     const hash = md5(email);
     return (
@@ -44,12 +71,15 @@ class Gamepage extends React.Component {
           </span>
         </header>
         <Questions questionAtual={ questionAtual } />
-        <button
-          type="button"
-          onClick={ this.changeQuestion() }
-        >
-          PRÓXIMA
-        </button>
+        { disableButton && (
+          <button
+            data-testId="btn-next"
+            type="button"
+            onClick={ () => this.changeQuestion() }
+          >
+            PRÓXIMA
+          </button>
+        )}
       </div>
     );
   }
