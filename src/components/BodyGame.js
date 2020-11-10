@@ -63,7 +63,7 @@ class BodyGame extends Component {
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
     }
-    if (questions.length > 0 && prevProps.questions.length !== questions.length) {
+    if (questions.length > 0 && prevProps.questions[0] !== questions[0]) {
       this.handleShuffle(questions);
     }
   }
