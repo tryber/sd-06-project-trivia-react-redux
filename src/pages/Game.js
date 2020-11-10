@@ -181,7 +181,7 @@ class Game extends React.Component {
             if (answer === questions[questionNumber].correct_answer) {
               return (
                 <button
-                className={ answered ? 'correct-answer' : 'regular-answer' }
+                  className={ answered ? 'correct-answer' : 'regular-answer' }
                   type="button"
                   onClick={ chooseAnswer }
                   data-testid="correct-answer"
