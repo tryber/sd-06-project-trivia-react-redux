@@ -52,10 +52,10 @@ class Game extends Component {
       }));
     } else {
       this.clearInterval();
-      const wrongAnswer = document.querySelector(
+      const correctAnswer = document.querySelector(
         '[data-testid="correct-answer"]',
       );
-      wrongAnswer.disabled = true;
+      correctAnswer.disabled = true;
     }
   }
 
