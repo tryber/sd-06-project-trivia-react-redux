@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 class FeedbackMessage extends Component {
   choiceOfMessage() {
     // const { placar } = this.props;
-    const placar = 3;
+    const player = JSON.parse(localStorage.getItem('state'));
     const three = 3;
-    if (placar < three) {
+    if (player.player.assertions < three) {
       return 'Podia ser melhor...';
     }
     return 'Mandou bem!';
@@ -15,10 +15,17 @@ class FeedbackMessage extends Component {
 
   render() {
     // const { acertos, placar } = this.props;
+    const player = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
-        <h3 data-testid="feedback-total-score">Placar: </h3>
-        <h3 data-testid="feedback-total-question">Você acertou: </h3>
+        <h3>
+          Placar:
+          <span data-testid="feedback-total-score">{ player.player.score }</span>
+        </h3>
+        <h3>
+          Você acertou:
+          <span data-testid="feedback-total-question">{ player.player.assertions }</span>
+        </h3>
         <h3 data-testid="feedback-text">
           { this.choiceOfMessage() }
         </h3>
