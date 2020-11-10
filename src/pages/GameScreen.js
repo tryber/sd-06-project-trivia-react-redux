@@ -19,7 +19,7 @@ class GameScreen extends React.Component {
     return (
       <div>
         <HeaderGame />
-        <GameBody />
+        <GameBody { ...this.props } />
       </div>
     );
   }

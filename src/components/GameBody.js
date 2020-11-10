@@ -73,6 +73,9 @@ class GameBody extends React.Component {
     index += 1;
     if (questions.length > 0 && index < questions.length) {
       this.createQuestions(index);
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
     }
     this.setState({
       isCorrect: false,
@@ -208,6 +211,7 @@ GameBody.propTypes = {
   stopTime: PropTypes.func.isRequired,
   userScore: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   userName: PropTypes.string.isRequired,
   userEmail: PropTypes.string.isRequired,
 };

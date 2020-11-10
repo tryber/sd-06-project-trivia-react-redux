@@ -68,7 +68,7 @@ Nesse projeto, você será capaz de:
   - [Durante o desenvolvimento](#durante-o-desenvolvimento)
   - [Depois de terminar o desenvolvimento (opcional)](#depois-de-terminar-o-desenvolvimento-opcional)
   - [Revisando um Pull Request](#revisando-um-pull-request)
-- [Avisos finais](#avisos-finais)
+- [Avisos finais](#avisos-finais);
 
 ---
 
