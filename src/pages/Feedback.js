@@ -6,11 +6,11 @@ import Scoreboard from '../components/Scoreboard';
 
 class Feedback extends React.Component {
   render() {
-    const { assertions } = this.props;
+    const { assertions, score } = this.props;
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={ assertions } />
+        <Scoreboard asserts={ assertions } score={ score } />
       </div>
     );
   }
@@ -18,10 +18,12 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   assertions: state.game.gameBoard.assertions,
+  score: state.game.gameBoard.score,
 });
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);
