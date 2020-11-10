@@ -62,7 +62,7 @@ export function calculateScore(timer, questionDifficulty) {
 }
 
 // Ranking
-export function saveRankingLocalStorage(name, score, gravatarEmail) {
+export function saveRankingLocalStorage(name, score = 0, gravatarEmail) {
   let currentRanking = JSON.parse(localStorage.getItem('ranking'));
   const newPlayer = {
     name,

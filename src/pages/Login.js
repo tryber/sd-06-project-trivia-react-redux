@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
-import { saveToken, saveName, saveEmail } from '../actions';
+import { saveToken, saveName, saveEmail, saveScore } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -18,6 +18,11 @@ class Login extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkValidity = this.checkValidity.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatchResetScore } = this.props;
+    dispatchResetScore(0);
   }
 
   componentWillUnmount() {
@@ -118,12 +123,14 @@ Login.propTypes = {
   dispatchSaveToken: propTypes.func.isRequired,
   dispatchSaveName: propTypes.func.isRequired,
   dispatchSaveEmail: propTypes.func.isRequired,
+  dispatchResetScore: propTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveToken: (token) => dispatch(saveToken(token)),
   dispatchSaveName: (name) => dispatch(saveName(name)),
   dispatchSaveEmail: (gravatarEmail) => dispatch(saveEmail(gravatarEmail)),
+  dispatchResetScore: (reset) => dispatch(saveScore(reset)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
