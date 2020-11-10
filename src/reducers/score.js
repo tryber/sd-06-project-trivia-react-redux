@@ -1,6 +1,11 @@
 import { SCORE } from '../actions/index';
 
-const INITIAL_STATE = { userScore: '' };
+const INITIAL_STATE = {
+  userScore: {
+    score: 0,
+    assertions: 0,
+  },
+};
 
 const scoreReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
