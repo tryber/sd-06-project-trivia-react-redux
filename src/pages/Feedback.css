@@ -1,4 +1,4 @@
-.game-page {
+.feedback-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,10 +6,10 @@
   height: 100vh;
 }
 
-.game-container {
+.feedback-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: center; */
   flex-direction: column;
   width: 600px;
   height: 450px;
