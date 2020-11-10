@@ -17,6 +17,13 @@ export const getAssertion = (assertions) => ({
   assertions,
 });
 
+export const HANDLE_SCORE = 'HANDLE_SCORE';
+
+export const getScore = (score) => ({
+  type: HANDLE_SCORE,
+  score,
+});
+
 export const getQuestions = (questions) => ({
   type: HANDLE_QUESTION,
   questions,
