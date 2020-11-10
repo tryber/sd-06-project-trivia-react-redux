@@ -1,0 +1,16 @@
+.feedback-container {
+  align-items: center;
+  flex-flow: column wrap;
+  display: flex;
+}
+
+.feedback-buttons {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.feedback-buttons button {
+  width: 100%;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
+import '../styles/feedback.css'
 
 class Feedback extends React.Component {
   constructor() {
@@ -37,11 +38,13 @@ class Feedback extends React.Component {
       return (
         <div>
           <h2 >Não acertou nenhuma pergunta</h2>
-          <h2>Acertou<span data-testid="feedback-total-question">{testScore}</span>perguntas</h2>
+          <h2>Acertou <span data-testid="feedback-total-question">{testScore}</span> perguntas</h2>
         </div>
       )
+    } else if ( testScore === 1 ) {
+      return <h2>Acertou <span data-testid="feedback-total-question">{testScore}</span> pergunta</h2>
     } else {
-      return <h2>Acertou<span data-testid="feedback-total-question">{testScore}</span>perguntas</h2>
+      return <h2>Acertou <span data-testid="feedback-total-question">{testScore}</span> perguntas</h2>
     }
   }
 
@@ -54,13 +57,15 @@ class Feedback extends React.Component {
     return (
       <div data-testid="feedback-text">
         <Header />
-        <div>
+        <div className="feedback-container">
           {this.renderFeedback()}
           {this.renderTotalAnswer()}
           Pontuacao: {this.renderTotalScore()}
         </div>
-        <Link to="/"><button data-testid="btn-play-again" className="btn">Jogar novamente</button></Link>
-        <Link to="/ranking"><button data-testid="btn-ranking" className="btn">Ver Ranking</button></Link>
+        <div className="feedback-buttons">
+          <Link to="/"><button data-testid="btn-play-again" className="btn">Jogar novamente</button></Link>
+          <Link to="/ranking"><button data-testid="btn-ranking" className="btn">Ver Ranking</button></Link>
+        </div>
       </div>
     );
   }

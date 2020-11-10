@@ -38,8 +38,6 @@ class Question extends React.Component {
     } else {
       history.push('/feedback');
     }
-
-    /* history.push('/feedback'); */
   }
 
   render() {
