@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Howl } from 'howler';
+import Acertou from '../sounds/acertou.mp3';
+import Errou from '../sounds/errou.mp3';
 import { gettingQuestionsThunk, getScore } from '../redux/actions';
 import Timer from './Timer';
 import './Questions.css';
+
+const acertouSound = new Howl({
+  src: [Acertou],
+});
+
+const errouSound = new Howl({
+  src: [Errou],
+});
 
 class Questions extends Component {
   constructor() {
@@ -40,7 +51,7 @@ class Questions extends Component {
     this.setState({ level }, () => this.scoreBoard());
   }
 
-  checkAnswer() {
+  checkAnswer(correctAnswer) {
     const btnArray = document.getElementsByTagName('button');
     const btnNext = document.getElementById('next');
 
@@ -53,6 +64,12 @@ class Questions extends Component {
     }
 
     btnNext.style.display = 'block';
+
+    if (correctAnswer === true) {
+      acertouSound.play();
+    } else {
+      errouSound.play();
+    }
   }
 
   disableAllButtons() {
@@ -91,12 +108,13 @@ class Questions extends Component {
     localStorage.setItem('state', JSON.stringify(userInfo));
   }
 
-  handleOnClick(question, questionNumber) {
+  handleOnClick(question, questionNumber, correctAnswer) {
+    correctAnswer = true;
     this.gettingLevel(question, questionNumber);
-    this.checkAnswer();
+    this.checkAnswer(correctAnswer);
   }
 
-  randomizeAnswers() {
+  randomizeAnswers(correctAnswer) {
     const { questions } = this.props;
     const { questionNumber, time } = this.state;
     const answersArray = [];
@@ -108,7 +126,7 @@ class Questions extends Component {
           data-testid="correct-answer"
           key="correct-answer"
           id="correct"
-          onClick={ () => this.handleOnClick(questions, questionNumber) }
+          onClick={ () => this.handleOnClick(questions, questionNumber, correctAnswer) }
           disabled={ time }
         >
           { questions.results[Number(questionNumber)].correct_answer }
@@ -170,6 +188,7 @@ class Questions extends Component {
   render() {
     const { questions } = this.props;
     const { questionNumber } = this.state;
+    const correctAnswer = false;
     return (
       questions === undefined ? <p>Loading...</p> : (
         <div>
@@ -180,7 +199,7 @@ class Questions extends Component {
             { questions.results[Number(questionNumber)].question }
           </div>
           <div>
-            { this.randomizeAnswers() }
+            { this.randomizeAnswers(correctAnswer) }
           </div>
           <div>
             <button
