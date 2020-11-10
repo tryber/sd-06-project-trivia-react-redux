@@ -19,8 +19,8 @@ const TableRank = (players) => (
             <th>
               <img src={ `https://www.gravatar.com/avatar/${md5(player.gravatarEmail)}` } alt={ player.name } />
             </th>
-            <th data-testeid={ `player-name-${index}` }>{player.name}</th>
-            <th data-testeid={ `player-score-${index}` }>{player.score}</th>
+            <th data-testid={ `player-name-${index}` }>{player.name}</th>
+            <th data-testid={ `player-score-${index}` }>{player.score}</th>
           </tr>
         ))}
     </tbody>

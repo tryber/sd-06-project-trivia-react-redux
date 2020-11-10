@@ -20,7 +20,7 @@ class Login extends React.Component {
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
     const currentRanking = localStorage.getItem('ranking');
     if (currentRanking === null) {
       const emptyRanking = JSON.stringify([]);
