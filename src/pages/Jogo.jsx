@@ -95,7 +95,7 @@ class Jogo extends React.Component {
       score: pontosStore,
       gravatarEmail: gravatarEmailStore,
     } };
-    localStorage.setItem('player', JSON.stringify(objPlayer));
+    localStorage.setItem('state', JSON.stringify(objPlayer));
   }
 
   handleClique() {
@@ -135,11 +135,11 @@ class Jogo extends React.Component {
                   data-testid={ option === correctAnswer ? 'correct-answer'
                     : `wrong-answer${index}` }
                   disabled={ disable }
-                  className={ option === correctAnswer ? `${classe ? 'correct' : ''}`
-                  : `${classe ? 'wrong' : ''}` }
                   onClick={ (event) => {
                     this.handleClass(event)}
                   }
+                  className={ option === correctAnswer ? `${classe ? 'correct' : ''}`
+                  : `${classe ? 'wrong' : ''}` }
                 >
                   {option}
                 </button>
