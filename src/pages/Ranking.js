@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 class Ranking extends React.Component {
   constructor() {
@@ -46,6 +47,7 @@ class Ranking extends React.Component {
     return (
       <div>
         <div>Ranking</div>
+        <Link to="/"><button data-testid="btn-go-home">Jogar novamente</button></Link>
         <table>
           <thead>
             <tr>
