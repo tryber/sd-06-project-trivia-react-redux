@@ -1,7 +1,9 @@
 .correct-answer:disabled {
   border: 3px solid rgb(6, 240, 15);
+  background-color: #f8f8f8
 }
 
 .incorrect-answer:disabled{
   border: 3px solid rgb(255, 0, 0);
+  background-color: #f8f8f8;
 }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './Header.css';
 
 class Header extends Component {
   render() {
     const { name, score, hash } = this.props;
     return (
-      <div>
+      <div className="class-header">
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${hash}` }

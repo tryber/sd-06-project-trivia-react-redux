@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, QuestionCard, Loading } from '../components';
 import { getQuestions, updateScoreAndAssertions } from '../actions';
+import './Game.css'
 
 class Game extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class Game extends Component {
   render() {
     const { isLoading, timer } = this.state;
     return (
-      <div>
+      <div className="class-game">
         <Header />
         {isLoading ? (
           <Loading />
