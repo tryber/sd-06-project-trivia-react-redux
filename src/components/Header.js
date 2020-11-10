@@ -9,18 +9,30 @@ class Header extends React.Component {
     super();
     this.convertEmail = this.convertEmail.bind(this);
     this.createPlayerScore = this.createPlayerScore.bind(this);
+    this.changeScoreboard = this.changeScoreboard.bind(this);
 
     const playerScore = localStorage.getItem('state');
     const score = JSON.parse(playerScore);
 
     this.state = {
       hash: '',
-      player: score.player,
+      score: score.player.score,
     };
   }
 
   componentDidMount() {
     this.createPlayerScore();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { scoreTable } = this.props;
+    if (prevProps.scoreTable !== scoreTable) {
+      this.changeScoreboard(scoreTable);
+    }
+  }
+
+  changeScoreboard(scoreTable) {
+    this.setState({ score: scoreTable });
   }
 
   createPlayerScore() {
@@ -37,7 +49,7 @@ class Header extends React.Component {
 
   render() {
     const { name } = this.props;
-    const { hash, player } = this.state;
+    const { hash, score } = this.state;
     const urlImage = `https://www.gravatar.com/avatar/${hash}`;
     return (
       <div className="header-container">
@@ -50,7 +62,7 @@ class Header extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
         </div>
         <div className="header-score">
-          <p data-testid="header-score">{ player.score }</p>
+          <p data-testid="header-score">{ score }</p>
         </div>
       </div>
     );
@@ -60,11 +72,13 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.userReducer.name,
   email: state.userReducer.email,
+  scoreTable: state.scoreReducer.score,
 });
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  scoreTable: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

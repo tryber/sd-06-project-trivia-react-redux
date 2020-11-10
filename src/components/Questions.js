@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { gettingQuestionsThunk } from '../redux/actions';
+import { gettingQuestionsThunk, getScore } from '../redux/actions';
 import Timer from './Timer';
 import './Questions.css';
 
@@ -63,6 +63,7 @@ class Questions extends Component {
   }
 
   scoreBoard() {
+    const { getUserScore } = this.props;
     const { level } = this.state;
     const timeValue = Number(document.getElementsByClassName('counter')[0].innerHTML);
     const userInfo = JSON.parse(localStorage.getItem('state'));
@@ -85,6 +86,7 @@ class Questions extends Component {
     prevScore += score;
     assertions += 1;
     userInfo.player.score = prevScore;
+    getUserScore(prevScore);
     userInfo.player.assertions = assertions;
     localStorage.setItem('state', JSON.stringify(userInfo));
   }
@@ -202,6 +204,7 @@ Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.number])),
   timeIsOver: PropTypes.number,
   history: PropTypes.string.isRequired,
+  getUserScore: PropTypes.func.isRequired,
 };
 
 Questions.defaultProps = {
@@ -216,6 +219,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(gettingQuestionsThunk()),
+  getUserScore: (score) => dispatch(getScore(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
