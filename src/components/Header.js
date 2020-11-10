@@ -41,7 +41,8 @@ class Header extends React.Component {
 
   render() {
     const { name } = this.props;
-    const playerScore = localStorage.getItem('playerScore');
+    const playerScore = localStorage.getItem('state');
+    const score = JSON.parse(playerScore);
     const { hash } = this.state;
     const urlImage = `https://www.gravatar.com/avatar/${hash}`;
     return (
@@ -55,7 +56,7 @@ class Header extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
         </div>
         <div className="header-score">
-          <p data-testid="header-score">{ `Score : ${playerScore}` }</p>
+          <p data-testid="header-score">{ `Score: ${score.player.score}` }</p>
         </div>
       </div>
     );

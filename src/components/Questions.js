@@ -11,10 +11,14 @@ class Questions extends Component {
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.disableAllButtons = this.disableAllButtons.bind(this);
+    this.gettingLevel = this.gettingLevel.bind(this);
+    this.scoreBoard = this.scoreBoard.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
 
     this.state = {
       questionNumber: 0,
       time: false,
+      level: '',
     };
   }
 
@@ -28,6 +32,11 @@ class Questions extends Component {
     if (prevProps.timeIsOver !== timeIsOver) {
       this.disableAllButtons();
     }
+  }
+
+  gettingLevel(question, questionNumber) {
+    const level = question.results[Number(questionNumber)].difficulty;
+    this.setState({ level }, () => this.scoreBoard());
   }
 
   checkAnswer() {
@@ -49,6 +58,35 @@ class Questions extends Component {
     return this.setState({ time: true });
   }
 
+  scoreBoard() {
+    const { level } = this.state;
+    const timeValue = Number(document.getElementsByClassName('counter')[0].innerHTML);
+    const userInfo = JSON.parse(localStorage.getItem('state'));
+    let prevScore = userInfo.player.score;
+    let levelValue = 0;
+    const hardLevel = 3;
+    const mediumLevel = 2;
+    const easyLevel = 1;
+    const baseValue = 10;
+
+    if (level === 'easy') {
+      levelValue = easyLevel;
+    } else if (level === 'medium') {
+      levelValue = mediumLevel;
+    } else {
+      levelValue = hardLevel;
+    }
+    const score = baseValue + (timeValue * levelValue);
+    prevScore += score;
+    userInfo.player.score = prevScore;
+    localStorage.setItem('state', JSON.stringify(userInfo));
+  }
+
+  handleOnClick(question, questionNumber) {
+    this.gettingLevel(question, questionNumber);
+    this.checkAnswer();
+  }
+
   randomizeAnswers() {
     const { questions } = this.props;
     const { questionNumber, time } = this.state;
@@ -61,7 +99,7 @@ class Questions extends Component {
           data-testid="correct-answer"
           key="correct-answer"
           id="correct"
-          onClick={ this.checkAnswer }
+          onClick={ () => this.handleOnClick(questions, questionNumber) }
           disabled={ time }
         >
           { questions.results[Number(questionNumber)].correct_answer }
