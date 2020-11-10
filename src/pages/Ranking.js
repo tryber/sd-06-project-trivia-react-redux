@@ -9,7 +9,7 @@ class Ranking extends Component {
     const { ranking } = this.props;
     return (
       <div className="container-ranking">
-        <h1 data-testid="ranking-title">Ranking</h1>
+        <h1 data-testid="ranking-title">RANKING</h1>
         <div className="list">
           {ranking
             .sort((a, b) => b.score - a.score)
