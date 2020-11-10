@@ -23,15 +23,7 @@ export const user = (player) => ({
 });
 
 export const SCORE_PLAYER = 'SCORE_PLAYER';
-// let { assertions } = loadState('state', {
-//   player: {
-//     name: '',
-//     gravatarEmail: '',
-//     picture: '',
-//     assertions: 0,
-//     score: 0,
-//   },
-// }).player;
+
 export const questionScorePlayer = (scorePlayer) => ({
   type: SCORE_PLAYER,
   payload: {
@@ -48,7 +40,6 @@ export const SCORE_RANKING = 'SCORE_RANKING';
 export function questionScore() {
   return (dispatch, getState) => {
     const { user: { player: { name, picture, score } } } = getState();
-    console.log('user', name);
     return dispatch({
       type: SCORE_RANKING,
       payload: {

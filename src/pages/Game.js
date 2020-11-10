@@ -12,11 +12,12 @@ class Game extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.colorButton = this.colorButton.bind(this);
     this.timer = this.timer.bind(this);
+    this.testQuestion = this.testQuestion.bind(this);
     this.state = {
       index: 0,
       green: '',
       red: '',
-      respondeu: false,
+      answered: false,
       time: 30,
       timeInterval: null,
       disableAnwsers: false,
@@ -27,7 +28,7 @@ class Game extends Component {
     this.timer();
   }
 
-  colorButton(rightAnswer) {
+  testQuestion(rightAnswer) {
     if (rightAnswer) {
       const { time, index } = this.state;
       const { arrayQuestion, saveScorePlayer } = this.props;
@@ -45,27 +46,24 @@ class Game extends Component {
         difficultyNumber = 1;
         break;
       default:
-        difficultyNumber = 0;
         break;
       }
       const ten = 10;
       const score = ten + (time * difficultyNumber);
       saveScorePlayer(score);
-      // saveRanking({
-      //   score,
-      //   name: user.login.name,
-      //   picture: user.login.picture,
-      // });
     }
+    this.colorButton();
+  }
+
+  colorButton() {
     this.setState({
       green: 'correct-answer',
       red: 'wrong-answer',
-      respondeu: true,
+      answered: true,
     });
   }
 
   shufflesAnswer(question) {
-    // const { incorrect_answers, correct_answer } = question;
     const { green, red, disableAnwsers } = this.state;
     const allAnswers = question.incorrect_answers.concat(question.correct_answer);
     const sortAnswers = allAnswers.sort();
@@ -78,7 +76,7 @@ class Game extends Component {
             type="button"
             data-testid="correct-answer"
             className={ green }
-            onClick={ () => this.colorButton(true) }
+            onClick={ () => this.testQuestion(true) }
             disabled={ disableAnwsers }
           >
             {element}
@@ -92,7 +90,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           key={ countoString }
           className={ red }
-          onClick={ () => this.colorButton(false) }
+          onClick={ () => this.testQuestion(false) }
           disabled={ disableAnwsers }
         >
           {element}
@@ -113,7 +111,7 @@ class Game extends Component {
       index: state.index + 1,
       green: '',
       red: '',
-      respondeu: false,
+      answered: false,
       time: 30,
       disableAnwsers: false,
     }), () => {
@@ -131,7 +129,6 @@ class Game extends Component {
       }), () => {
         const { time } = this.state;
         if (time <= 0) {
-          console.log('para tempo encerrado');
           this.setState({
             disableAnwsers: true,
           });
@@ -147,9 +144,7 @@ class Game extends Component {
 
   render() {
     const { arrayQuestion } = this.props;
-    const { index, respondeu, time } = this.state;
-    // const { category, question } = arrayQuestion[index];
-    // console.log('arrayQuestion', arrayQuestion);
+    const { index, answered, time } = this.state;
     if (arrayQuestion.length === 0) {
       return (
         <span>Login não realizado</span>
@@ -161,7 +156,7 @@ class Game extends Component {
         <p data-testid="question-category">{arrayQuestion[index].category}</p>
         <p data-testid="question-text">{arrayQuestion[index].question}</p>
         {this.shufflesAnswer(arrayQuestion[index])}
-        {respondeu && (
+        {answered && (
           <button
             type="button"
             data-testid="btn-next"
@@ -182,7 +177,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveRanking: (ranking) => dispatch(questionScore(ranking)),
+  saveRanking: () => dispatch(questionScore()),
   saveScorePlayer: (score) => dispatch(questionScorePlayer(score)),
 });
 

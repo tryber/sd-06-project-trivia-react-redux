@@ -14,6 +14,7 @@ class TopRanking extends React.Component {
           <span data-testid={ `player-name-${index}` }>
             { name }
           </span>
+          {' '}
           <span data-testid={ `player-score-${index}` }>
             { score }
           </span>

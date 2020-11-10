@@ -7,15 +7,15 @@ import TopRanking from './components/TopRanking';
 class Ranking extends Component {
   render() {
     const { arrayRanking } = this.props;
-    const arrayOrganizado = [...arrayRanking]
+    const arrayOrganized = [...arrayRanking]
       .sort((obj1, obj2) => obj2.score - obj1.score);
     const topFive = 5;
-    const arrayOrganizado5Itens = arrayOrganizado.slice(0, topFive);
+    const arrayOrganized5Itens = arrayOrganized.slice(0, topFive);
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          { arrayOrganizado5Itens
+          { arrayOrganized5Itens
             .map(({
               name,
               picture,

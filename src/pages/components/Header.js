@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import md5 from 'crypto-js/md5';
 
 class Header extends Component {
-  // hash() {
-  //   const { picture } = this.props;
-  //   const avatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
-  //   return avatar;
-  // }
-
   render() {
     const { name, picture, score } = this.props;
     return (
@@ -42,4 +35,4 @@ Header.propTypes = {
   score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps)(Header);

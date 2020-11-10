@@ -10,7 +10,6 @@ export const loadState = (key, initialValue) => {
   }
 };
 
-// implementação baseada nesse artigo: https://rodrigo-morais.github.io/pt_BR/react-redux-local-storage/
 export const saveState = (state, nameKey) => {
   try {
     const serializedState = JSON.stringify(state);
