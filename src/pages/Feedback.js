@@ -57,10 +57,22 @@ class Feedback extends Component {
         </h2>
         {this.gameFeedback(assertions, score)}
         <div>
-          <Link className="link" to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
+          <Link
+            className="link"
+            to="/ranking"
+            data-testid="btn-ranking"
+          >
+            VER RANKING
+          </Link>
         </div>
         <div>
-          <Link className="link" to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
+          <Link
+            className="link"
+            to="/"
+            data-testid="btn-play-again"
+          >
+          JOGAR NOVAMENTE
+          </Link>
         </div>
       </main>
     );

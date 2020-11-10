@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Settings.css';
-import { FaHome } from 'react-icons/fa'
+import { FaHome } from 'react-icons/fa';
 
 export default class Settings extends React.Component {
   render() {
