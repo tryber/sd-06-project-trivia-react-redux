@@ -29,6 +29,7 @@ class Questions extends Component {
 
   componentDidUpdate(prevProps) {
     const { timeIsOver } = this.props;
+
     if (prevProps.timeIsOver !== timeIsOver) {
       this.disableAllButtons();
     }
@@ -55,14 +56,18 @@ class Questions extends Component {
   }
 
   disableAllButtons() {
-    return this.setState({ time: true });
+    const btnNext = document.getElementById('next');
+
+    this.setState({ time: true });
+    btnNext.style.display = 'block';
   }
 
   scoreBoard() {
     const { level } = this.state;
     const timeValue = Number(document.getElementsByClassName('counter')[0].innerHTML);
     const userInfo = JSON.parse(localStorage.getItem('state'));
-    let prevScore = userInfo.player.score;
+    let prevScore = Number(userInfo.player.score);
+    let assertions = Number(userInfo.player.assertions);
     let levelValue = 0;
     const hardLevel = 3;
     const mediumLevel = 2;
@@ -78,7 +83,9 @@ class Questions extends Component {
     }
     const score = baseValue + (timeValue * levelValue);
     prevScore += score;
+    assertions += 1;
     userInfo.player.score = prevScore;
+    userInfo.player.assertions = assertions;
     localStorage.setItem('state', JSON.stringify(userInfo));
   }
 
@@ -135,18 +142,27 @@ class Questions extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevState) => ({
-      questionNumber: prevState.questionNumber + 1,
-    }), () => {
-      const btnArray = document.getElementsByTagName('button');
-      const btnNext = document.getElementById('next');
+    const { questionNumber } = this.state;
+    const { history } = this.props;
+    const feedback = 4;
 
-      btnNext.style.display = 'none';
+    if (questionNumber === feedback) {
+      history.push('/feedback');
+    } else {
+      this.setState((prevState) => ({
+        questionNumber: prevState.questionNumber + 1,
+        time: false,
+      }), () => {
+        const btnArray = document.getElementsByTagName('button');
+        const btnNext = document.getElementById('next');
 
-      for (let x = 0; x < btnArray.length; x += 1) {
-        btnArray[x].className = '';
-      }
-    });
+        btnNext.style.display = 'none';
+
+        for (let x = 0; x < btnArray.length; x += 1) {
+          btnArray[x].className = '';
+        }
+      });
+    }
   }
 
   render() {
@@ -175,7 +191,7 @@ class Questions extends Component {
               Próxima
             </button>
           </div>
-          <Timer />
+          <Timer questionNumber={ questionNumber } />
         </div>
       ));
   }
@@ -185,6 +201,7 @@ Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.number])),
   timeIsOver: PropTypes.number,
+  history: PropTypes.string.isRequired,
 };
 
 Questions.defaultProps = {

@@ -8,8 +8,12 @@ import './Timer.css';
 class Timer extends Component {
   constructor() {
     super();
+
+    this.resetTimer = this.resetTimer.bind(this);
+
     this.state = {
       timer: 30,
+      actualQuestion: 0,
     };
   }
 
@@ -25,12 +29,25 @@ class Timer extends Component {
     const { timer } = this.state;
     if (timer === 0) {
       outOfTime(timer);
-      clearInterval(this.interval);
     }
+
+    this.resetTimer();
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  resetTimer() {
+    const { questionNumber } = this.props;
+    const { actualQuestion } = this.state;
+
+    if (questionNumber !== actualQuestion) {
+      this.setState({
+        timer: 30,
+        actualQuestion: questionNumber,
+      });
+    }
   }
 
   render() {
@@ -51,6 +68,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   outOfTime: PropTypes.func.isRequired,
+  questionNumber: PropTypes.number.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);
