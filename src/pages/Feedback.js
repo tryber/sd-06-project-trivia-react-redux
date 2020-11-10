@@ -27,9 +27,9 @@ class Feedback extends Component {
       <div>
         <Header />
         <p data-testid="feedback-text">{this.feedbackMessage()}</p>
-        <p data-testid="feedback-total-score">{`Score: ${score}`}</p>
+        <p data-testid="feedback-total-score">{`${score}`}</p>
         <p data-testid="feedback-total-question">
-          {`Quantidade de acertos: ${assertions}`}
+          {`${assertions}`}
         </p>
         <Link to="/">
           <button
