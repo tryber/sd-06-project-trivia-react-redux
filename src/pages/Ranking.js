@@ -23,21 +23,23 @@ class Ranking extends Component {
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         {
-          JSON.parse(localStorage.ranking).sort((a, b) => b.score - a.score).map((player, index) => (
-            <div key={ index }>
-              <img src={ this.getAvatar() } alt="avatar" />
-              <h5 data-testid={ `player-name-${index}` }>
-                { player.name }
-              </h5>
-              <h6>
-                Pontos:
-                <span data-testid={ `player-score-${index}` }>
-                  {player.score}
-                </span>
-              </h6>
+          JSON.parse(localStorage.ranking)
+            .sort((a, b) => b.score - a.score)
+            .map((player, index) => (
+              <div key={ index }>
+                <img src={ this.getAvatar() } alt="avatar" />
+                <h5 data-testid={ `player-name-${index}` }>
+                  { player.name }
+                </h5>
+                <h6>
+                  Pontos:
+                  <span data-testid={ `player-score-${index}` }>
+                    {player.score}
+                  </span>
+                </h6>
 
-            </div>
-          ))
+              </div>
+            ))
         }
         <button
           type="button"
