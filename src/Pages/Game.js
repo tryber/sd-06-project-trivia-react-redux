@@ -6,6 +6,7 @@ import { playerScore } from '../Action/actionUpdateScore';
 import Questions from '../Components/Questions';
 import Header from '../Components/Header';
 import GenericButton from '../Components/GenericButton';
+import Loading from '../Components/Loading';
 
 import '../Css/Game.css';
 
@@ -100,7 +101,7 @@ class Game extends React.Component {
     return (
       <div>
         { isLoading
-          ? <h2>Loading...</h2>
+          ? <Loading />
           : (
             <div>
               <Header />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GenericButton from '../Components/GenericButton';
-import logo from '../trivia.png';
+import logo from '../trivia_newlogo.png';
 import ButtonSettings from '../Components/ButtonSettings';
 import { responseToken } from '../Action/actionToken';
 import { playerLogin } from '../Action/actionLogin';
