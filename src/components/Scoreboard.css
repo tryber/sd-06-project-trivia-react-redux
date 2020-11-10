@@ -1,0 +1,23 @@
+.board {
+  background-color: black;
+  color: white;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Big Shoulders Stencil Text', cursive;
+}
+
+.feedback-field {
+  margin: auto;
+}
+
+.feedbackText {
+  position: absolute;
+  font-size: 45px;
+  text-align: center;
+}
+
+.baner {
+  max-width: 100%;
+}
