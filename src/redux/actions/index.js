@@ -1,5 +1,6 @@
 import { apiTokenFetch, apiQuestionsFetch } from '../apiRequest/fetchApi';
 
+export const GET_SCORE = 'GET_SCORE';
 export const SAVE_USER = 'SAVE_USER';
 export const REQUEST_FETCH_API = 'REQUEST_FETCH_API';
 export const RECEIVED_RESPONSE_API = 'RECEIVED_RESPONSE_API';
@@ -13,6 +14,11 @@ export const savePlayer = (name, email) => (
     email,
   }
 );
+
+export const getScore = (score) => ({
+  type: GET_SCORE,
+  score,
+});
 
 export const timeFinished = (state) => ({
   type: TIME_FINISHED,

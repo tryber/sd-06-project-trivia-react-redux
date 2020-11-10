@@ -40,7 +40,11 @@ class Timer extends Component {
 
   resetTimer() {
     const { questionNumber } = this.props;
-    const { actualQuestion } = this.state;
+    const { actualQuestion, timer } = this.state;
+
+    if (timer === 0) {
+      clearInterval(this.interval);
+    }
 
     if (questionNumber !== actualQuestion) {
       this.setState({
