@@ -5,7 +5,7 @@ html {
 .full-container {
   background-color: #636363;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
 }
 
 .login-form {
@@ -37,4 +37,9 @@ html {
   cursor:pointer;
   overflow: hidden;
   outline:none;
+}
+
+.trivia-logo {
+  width: 340px;
+  margin-bottom: 10px;
 }
