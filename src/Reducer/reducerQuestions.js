@@ -11,7 +11,6 @@ export default function reducerQuestions(state = initialState, action) {
       ...state,
       questions: state.questions.concat(action.questions),
     });
-
   default: return state;
   }
 }

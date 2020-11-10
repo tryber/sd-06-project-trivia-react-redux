@@ -6,6 +6,9 @@ import '../Css/PlayerScore.css';
 class PlayerScore extends Component {
   render() {
     const { correctAnswers, score } = this.props;
+
+    const numberQuestions = parseInt(localStorage.getItem('number'), 10);
+
     return (
       <section className="results">
         <p>
@@ -13,7 +16,7 @@ class PlayerScore extends Component {
           <span className="correct-answers" data-testid="feedback-total-question">
             { correctAnswers }
           </span>
-          de 5
+          { `de ${numberQuestions}` }
         </p>
         <p>
           Score:

@@ -20,6 +20,7 @@ class Game extends React.Component {
       isLoading: true,
       answered: false,
       player,
+      finalQuestion: 0,
     };
 
     this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
@@ -29,18 +30,27 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { history } = this.props;
     const { player } = this.state;
+    const responseCode = parseInt(localStorage.getItem('responseCode'), 10);
+    const redirectCode = 4;
 
-    this.getTheFetchQuestions();
-
-    localStorage.setItem('state', JSON.stringify({ player }));
+    if (responseCode === redirectCode) {
+      alert('Não há perguntas suficientes para a configuração selecionada!');
+      history.push('/settings');
+    } else {
+      this.getTheFetchQuestions();
+      localStorage.setItem('state', JSON.stringify({ player }));
+    }
   }
 
   async getTheFetchQuestions() {
     const { fetchQuestions } = this.props;
 
     await fetchQuestions();
-    this.setState({ isLoading: false });
+
+    const finalQuestion = parseInt(localStorage.getItem('number'), 10);
+    this.setState({ isLoading: false, finalQuestion });
   }
 
   handleNextQuestion() {
@@ -87,9 +97,7 @@ class Game extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { index, isLoading, answered } = this.state;
-
-    const finalQuestion = 4;
+    const { index, isLoading, answered, finalQuestion } = this.state;
 
     return (
       <div>
@@ -103,7 +111,7 @@ class Game extends React.Component {
                 answered={ answered }
                 handleAnswer={ this.handleAnswer }
               />
-              { (index < finalQuestion)
+              { (index < finalQuestion - 1)
                 ? (
                   <GenericButton
                     onClick={ this.handleNextQuestion }
