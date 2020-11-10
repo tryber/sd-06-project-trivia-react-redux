@@ -10,9 +10,14 @@ class GameTimer extends Component {
       count: 30,
     };
     this.handleTimer = this.handleTimer.bind(this);
+    this.timerInterval = this.timerInterval.bind(this);
   }
 
   componentDidMount() {
+    this.timerInterval();
+  }
+
+  timerInterval() {
     const oneSecond = 1000;
     const timer = setInterval(() => this.handleTimer(), oneSecond);
     return timer;
