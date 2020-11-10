@@ -1,13 +1,14 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Ranking extends React.Component {
   constructor() {
     super();
     this.state = {
       scorePlayers: [],
-    }
+    };
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this);
   }
 
@@ -24,9 +25,20 @@ class Ranking extends React.Component {
 
     scorePlayers.push(actualPlayer);
     localStorage.setItem('scorePlayers', JSON.stringify(scorePlayers));
-    scorePlayers.sort((a, b) => a.score < b.score ? 1 : a.score > b.score ? -1 : 0);
+    scorePlayers.sort(function(a, b) {
+      const one = 1;
+      const negOne = -1;
+      const zero = 0;
+      if (a.score < b.score) {
+        return one;
+      }
+      if (a.score > b.score) {
+        return negOne;
+      }
+      return zero;
+    });
 
-    this.setState({ scorePlayers, updated: true });
+    this.setState({ scorePlayers });
   }
 
   render() {
@@ -37,7 +49,7 @@ class Ranking extends React.Component {
         <table>
           <thead>
             <tr>
-              <th></th>
+              <th />
               <th>Nome</th>
               <th>Pontuação</th>
             </tr>
@@ -72,6 +84,12 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   email: state.player.gravatarEmail,
   score: state.game.score,
-})
+});
 
-export default connect(mapStateToProps,null)(Ranking);
+Ranking.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+}
+
+export default connect(mapStateToProps, null)(Ranking);
