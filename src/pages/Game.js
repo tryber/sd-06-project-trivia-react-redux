@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 import GameCard from '../components/GameCard';
 import Header from '../components/Header';
 
