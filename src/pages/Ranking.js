@@ -13,11 +13,11 @@ class Ranking extends React.Component {
           data-testid="btn-go-home"
           onClick={ () => {
             localStorage.removeItem('questions');
-            history.push('/game');
+            history.push('/');
             // window.location.reload(true);
           } }
         >
-          Jogar novamente
+          Voltar ao Login
         </button>
       </div>
     );
