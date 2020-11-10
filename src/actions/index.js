@@ -12,9 +12,9 @@ export const setUserInfo = (name, email) => ({
 
 export const HANDLE_ASSERTION = 'HANDLE_ASSERTION';
 
-export const getAssertion = (assertion) => ({
+export const getAssertion = (assertions) => ({
   type: HANDLE_ASSERTION,
-  assertion,
+  assertions,
 });
 
 export const getQuestions = (questions) => ({

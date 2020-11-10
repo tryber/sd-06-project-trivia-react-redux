@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import './Questions.css';
 import { reqQuestions } from '../services';
-import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
+import { getQuestions, stopTimer, getTimer, resetTimer, getAssertion } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -84,15 +84,6 @@ class Questions extends Component {
     }
     this.downTime();
     this.setState({ disable: false });
-    /*
-    const { timer } = this.props;
-    if (timer === 30) {
-      setInterval(() => {
-        const { sendTimer } = this.props;
-        sendTimer(timer);
-      }, 1000);
-    }
-    */
   }
 
   randomQuestions() {
@@ -133,7 +124,7 @@ class Questions extends Component {
 
   addClass({ target }) {
     const { timeInterval, questionsAnswer } = this.state;
-    const { questions, timer } = this.props;
+    const { questions, timer, handleAssertion } = this.props;
     clearInterval(timeInterval);
     this.setState({
       checked: true,
@@ -144,6 +135,7 @@ class Questions extends Component {
       newScore.player.score += total;
       newScore.player.assertions += 1;
       localStorage.setItem('state', JSON.stringify(newScore));
+      handleAssertion(newScore.player.assertions);
     }
   }
 
@@ -240,6 +232,7 @@ Questions.propTypes = {
   handleApi: propTypes.func.isRequired,
   sendTimer: propTypes.func.isRequired,
   resetTime: propTypes.func.isRequired,
+  handleAssertion: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => (
@@ -255,6 +248,7 @@ const mapDispatchToProps = (dispatch) => (
     sendTimer: (state) => dispatch(getTimer(state)),
     handleTimer: (state) => dispatch(stopTimer(state)),
     resetTime: () => dispatch(resetTimer()),
+    handleAssertion: (assertion) => dispatch(getAssertion(assertion)),
   }
 );
 

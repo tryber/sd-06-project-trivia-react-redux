@@ -3,7 +3,8 @@ import { HANDLE_USER, HANDLE_ASSERTION } from '../actions';
 const INITIAL_STATE = {
   name: '',
   email: '',
-  assertions: '',
+  assertions: 0,
+  score: 0,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
