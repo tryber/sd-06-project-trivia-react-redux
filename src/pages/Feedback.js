@@ -7,15 +7,27 @@ import './Feedback.css';
 import '../App.css';
 
 class Feedback extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.linkClick = this.linkClick.bind(this);
-  // }
+  constructor() {
+    super();
+    // this.linkClick = this.linkClick.bind(this);
+    this.creatingRanking = this.creatingRanking.bind(this);
+  }
 
   // linkClick() {
   //   const { history } = this.props;
   //   history.push('/ranking');
   // }
+
+  componentDidMount() {
+    this.creatingRanking();
+  }
+
+  creatingRanking() {
+    // localStorage.clear()
+    const player1 = JSON.parse(localStorage.getItem('state'));
+    const currentPlayer = JSON.parse(localStorage.getItem('players'));
+    localStorage.setItem('players', JSON.stringify([...currentPlayer, player1]));
+  }
 
   render() {
     return (

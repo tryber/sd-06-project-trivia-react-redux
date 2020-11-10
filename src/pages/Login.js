@@ -127,6 +127,8 @@ class Login extends React.Component {
     const newInfo = JSON.stringify(info);
     localStorage.setItem('token', tokenLocalStorage);
     localStorage.setItem('state', newInfo);
+    const numberOfPlayers = JSON.parse(localStorage.getItem('players'));
+    if (!numberOfPlayers) localStorage.setItem('players', JSON.stringify([]));
   }
 
   handleChange({ name, value }) {
