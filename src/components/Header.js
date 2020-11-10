@@ -11,8 +11,7 @@ class Header extends Component {
   }
 
   render() {
-    const { name } = this.props;
-    const player = JSON.parse(localStorage.getItem('state'));
+    const { name, score } = this.props;
     return (
       <div>
         <header>
@@ -22,7 +21,7 @@ class Header extends Component {
             alt="Imagem gravatar"
           />
           <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">{player.player.score}</p>
+          <p data-testid="header-score">{score}</p>
         </header>
       </div>
     );
@@ -32,11 +31,13 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
+  score: state.user.score,
 });
 
 Header.propTypes = {
   name: propTypes.string.isRequired,
   email: propTypes.string.isRequired,
+  score: propTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Header);
