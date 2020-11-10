@@ -2,13 +2,14 @@ import React from 'react';
 
 class Ranking extends React.Component {
   render() {
-    const ranking = localStorage.getItem('ranking').split(',');
+    const ranking = localStorage.getItem('state').split(',');
     ranking.sort((a, b) => {
       const scoreA = a.score;
       const scoreB = b.score;
       const minusOne = -1;
       if (scoreA > scoreB) return 1;
       if (scoreA < scoreB) return minusOne;
+      return 0;
     });
 
     return (

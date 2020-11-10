@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import Header from '../components/header';
 import Timer from '../components/timer';
 import Questions from '../components/Questions';
@@ -34,13 +35,16 @@ class Game extends Component {
 
   scoreLocalStorage() {
     const { name, email, score, assertions } = this.props;
+    const temp = localStorage.getItem('state').split(',');
+    localStorage.removeItem('state');
     const state = JSON.stringify({ player: {
       name,
       assertions,
       score,
-      gravatarEmail: email,
+      gravatarEmail: `https://www.gravatar.com/avatar/${md5(email)}`,
     } });
-    localStorage.setItem('state', state);
+    temp.push(state);
+    localStorage.setItem('state', temp);
   }
 
   handleAnswer(value) {
