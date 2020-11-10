@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../components/Button';
 import Header from '../components/header';
-// import PropTypes from 'prop-types';
 
 export default class Feedback extends Component {
   render() {
@@ -10,6 +11,14 @@ export default class Feedback extends Component {
         <header data-testid="feedback-text">
           Resultado.
         </header>
+        <Link to="/Ranking">
+          <Button
+            testId="btn-ranking"
+            id="btnRanking"
+            name="btnRanking"
+            value="Ver Ranking"
+          />
+        </Link>
       </section>
     );
   }
