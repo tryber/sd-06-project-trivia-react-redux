@@ -64,7 +64,7 @@ class Game extends React.Component {
   }
 
   decodeHTML(text) {
-    let textArea = document.createElement('textarea');
+    const textArea = document.createElement('textarea');
     textArea.innerHTML = text;
     return textArea.value;
   }
