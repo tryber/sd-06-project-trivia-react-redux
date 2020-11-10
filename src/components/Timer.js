@@ -8,8 +8,12 @@ import './Timer.css';
 class Timer extends Component {
   constructor() {
     super();
+
+    this.resetTimer = this.resetTimer.bind(this);
+
     this.state = {
       timer: 30,
+      actualQuestion: 0,
     };
   }
 
@@ -27,10 +31,26 @@ class Timer extends Component {
       outOfTime(timer);
       clearInterval(this.interval);
     }
+
+    this.resetTimer();
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  resetTimer() {
+    const { questionNumber } = this.props;
+    const { actualQuestion } = this.state;
+
+    if (questionNumber !== actualQuestion) {
+      this.setState({
+        timer: 30,
+        actualQuestion: questionNumber,
+      });
+    }
+
+    setInterval(this.interval);
   }
 
   render() {

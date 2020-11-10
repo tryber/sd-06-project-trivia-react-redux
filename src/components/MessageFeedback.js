@@ -13,7 +13,7 @@ class MessageFeedback extends React.Component {
       message = 'Podia ser melhor...';
     }
     return (
-      <div>
+      <div data-testid="feedback-text">
         <p>{ message }</p>
       </div>
     );

@@ -29,6 +29,7 @@ class Questions extends Component {
 
   componentDidUpdate(prevProps) {
     const { timeIsOver } = this.props;
+
     if (prevProps.timeIsOver !== timeIsOver) {
       this.disableAllButtons();
     }
@@ -55,7 +56,10 @@ class Questions extends Component {
   }
 
   disableAllButtons() {
-    return this.setState({ time: true });
+    const btnNext = document.getElementById('next');
+
+    this.setState({ time: true });
+    btnNext.style.display = 'block';
   }
 
   scoreBoard() {
@@ -135,18 +139,27 @@ class Questions extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevState) => ({
-      questionNumber: prevState.questionNumber + 1,
-    }), () => {
-      const btnArray = document.getElementsByTagName('button');
-      const btnNext = document.getElementById('next');
+    const { questionNumber } = this.state;
+    const { history } = this.props;
+    const feedback = 4;
 
-      btnNext.style.display = 'none';
-
-      for (let x = 0; x < btnArray.length; x += 1) {
-        btnArray[x].className = '';
-      }
-    });
+    if (questionNumber === feedback) {
+      history.push('/feedback');
+    } else {
+      this.setState((prevState) => ({
+        questionNumber: prevState.questionNumber + 1,
+        time: false,
+      }), () => {
+        const btnArray = document.getElementsByTagName('button');
+        const btnNext = document.getElementById('next');
+  
+        btnNext.style.display = 'none';
+  
+        for (let x = 0; x < btnArray.length; x += 1) {
+          btnArray[x].className = '';
+        }
+      });
+    }
   }
 
   render() {
@@ -175,7 +188,7 @@ class Questions extends Component {
               Próxima
             </button>
           </div>
-          <Timer />
+          <Timer questionNumber={ questionNumber } />
         </div>
       ));
   }
