@@ -6,6 +6,7 @@ import { playerScore } from '../Action/actionUpdateScore';
 import Questions from '../Components/Questions';
 import Header from '../Components/Header';
 import GenericButton from '../Components/GenericButton';
+import Loading from '../Components/Loading';
 
 import '../Css/Game.css';
 
@@ -37,7 +38,9 @@ class Game extends React.Component {
   }
 
   async getTheFetchQuestions() {
+    const timer = 15000;
     const { fetchQuestions } = this.props;
+    await setTimeout(() => {}, timer);
 
     await fetchQuestions();
     this.setState({ isLoading: false });
@@ -94,7 +97,7 @@ class Game extends React.Component {
     return (
       <div>
         { isLoading
-          ? <h2>Loading...</h2>
+          ? <Loading />
           : (
             <div>
               <Header />
