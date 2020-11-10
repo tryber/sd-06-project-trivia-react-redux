@@ -94,7 +94,8 @@ class Game extends Component {
         this.setState({ disableNextBtn: false });
       });
     } else {
-      this.setState({ disableNextBtn: true });
+      this.setState({ disableNextBtn: false, clicked: true });
+      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 138
       return history.push('/feedback');
     }
   }
