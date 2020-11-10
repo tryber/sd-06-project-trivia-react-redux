@@ -15,6 +15,14 @@ class Feedback extends React.Component {
         </p>
         <p data-testid="feedback-total-score">{ scoreStore }</p>
         <p data-testid="feedback-total-question">{ assertionsStore }</p>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
         <Link to="/">
           <button
             type="button"
