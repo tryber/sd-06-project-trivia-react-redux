@@ -26,8 +26,15 @@ class Ranking extends React.Component {
                 src={ info.picture }
                 alt="Avatar"
               />
-              <p data-testid={ `player-name-${index}` }>{info.name}</p>
-              <p data-testid={ `player-score-${index}` }>{info.score}</p>
+              <p data-testid={ `player-name-${index}` }>
+                Name:
+                {info.name}
+              </p>
+              <br />
+              <p data-testid={ `player-score-${index}` }>
+                Score:
+                {info.score}
+              </p>
             </div>
           ))}
         </div>
@@ -36,7 +43,7 @@ class Ranking extends React.Component {
           data-testid="btn-go-home"
           onClick={ this.handleClick }
         >
-          Início
+          HOME
         </button>
       </div>
     );

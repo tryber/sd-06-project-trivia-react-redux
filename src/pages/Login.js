@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import './Login.css';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userLogin, thunkToken, gravatar, score } from '../actions';
@@ -58,8 +59,8 @@ class Login extends React.Component {
     const { disabled } = this.state;
     return (
       <section>
-        <h1>Login - Play Trivia</h1>
         <form>
+          <h1>Play Trivia</h1>
           <label htmlFor="input-player-name">
             Name:
             <input
