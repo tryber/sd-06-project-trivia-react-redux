@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { saveRanking } from '../actions';
 import GameCard from '../components/GameCard';
 import Header from '../components/Header';
 
@@ -16,8 +17,16 @@ class Game extends React.Component {
   nextQuestion() {
     const { currentID } = this.state;
     const questionNumber = 4;
-    const { history } = this.props;
     if (currentID >= questionNumber) {
+      const { name, score, hash, saveRankingtoStore, history } = this.props;
+      const picture = `https://www.gravatar.com/avatar/${hash}`;
+      const ranking = {
+        name,
+        picture,
+        score,
+      };
+      saveRankingtoStore(ranking);
+      localStorage.setItem('ranking', JSON.stringify({ ranking }));
       history.push('/feedback');
     }
     this.setState((prevState) => ({
@@ -44,10 +53,21 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  saveRankingtoStore: PropTypes.func.isRequired,
+  hash: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionsInfo: state.requestInfo.questionsInfo,
+  score: state.player.score,
+  name: state.player.name,
+  hash: state.requestInfo.hash,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  saveRankingtoStore: (playerAtual) => dispatch(saveRanking(playerAtual)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

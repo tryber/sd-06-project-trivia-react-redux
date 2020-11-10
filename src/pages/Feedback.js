@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { saveGameScore, saveNameEmail, saveRanking } from '../actions';
+import { resetPlayerInfo, resetRequestInfo } from '../actions';
 
 class Feedback extends Component {
   constructor() {
@@ -12,22 +12,10 @@ class Feedback extends Component {
     this.resetScore = this.resetScore.bind(this);
   }
 
-  componentDidMount() {
-    const { name, score, hash, saveRankingtoStore } = this.props;
-    const picture = `https://www.gravatar.com/avatar/${hash}`;
-    const ranking = {
-      name,
-      picture,
-      score,
-    };
-    saveRankingtoStore(ranking);
-    localStorage.setItem('ranking', JSON.stringify({ ranking }));
-  }
-
   resetScore() {
-    const { resetNameEmail, resetGameScore } = this.props;
-    resetNameEmail('', '');
-    resetGameScore(0, 0);
+    const { resetPlayerStore, resetRequestStore } = this.props;
+    resetPlayerStore();
+    resetRequestStore();
   }
 
   render() {
@@ -64,27 +52,20 @@ class Feedback extends Component {
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
-  hash: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  saveRankingtoStore: PropTypes.func.isRequired,
-  resetNameEmail: PropTypes.func.isRequired,
-  resetGameScore: PropTypes.func.isRequired,
+  resetPlayerStore: PropTypes.func.isRequired,
+  resetRequestStore: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
   score: state.player.score,
-  name: state.player.name,
-  gravatarEmail: state.player.gravatarEmail,
   ranking: state.ranking,
-  hash: state.requestInfo.hash,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveRankingtoStore: (playerAtual) => dispatch(saveRanking(playerAtual)),
-  resetNameEmail: (name, email) => dispatch(saveNameEmail(name, email)),
-  resetGameScore: (score, assertions) => dispatch(saveGameScore(score, assertions)),
+  resetPlayerStore: () => dispatch(resetPlayerInfo()),
+  resetRequestStore: () => dispatch(resetRequestInfo()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

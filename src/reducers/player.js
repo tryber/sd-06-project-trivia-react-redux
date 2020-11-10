@@ -1,4 +1,4 @@
-import { SAVE_NAME_EMAIL, SAVE_GAME_SCORE } from '../actions/index';
+import { SAVE_NAME_EMAIL, SAVE_GAME_SCORE, RESET_PLAYER } from '../actions/index';
 
 const initialState = {
   name: '',
@@ -14,6 +14,8 @@ function player(state = initialState,
     return { ...state, name, gravatarEmail };
   case SAVE_GAME_SCORE:
     return { ...state, score, assertions };
+  case RESET_PLAYER:
+    return initialState;
   default:
     return state;
   }
