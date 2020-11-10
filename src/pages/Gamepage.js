@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import Questions from '../components/Questions';
@@ -44,12 +45,17 @@ class Gamepage extends React.Component {
           </span>
         </header>
         <Questions questionAtual={ questionAtual } />
-        <button
-          type="button"
-          onClick={ this.changeQuestion() }
+        <Link
+          to="/ranking"
         >
-          PRÓXIMA
-        </button>
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ this.changeQuestion() }
+          >
+            PRÓXIMA
+          </button>
+        </Link>
       </div>
     );
   }
