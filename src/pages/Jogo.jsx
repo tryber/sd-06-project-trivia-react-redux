@@ -24,7 +24,8 @@ class Jogo extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(this.setContagem, 1000);
+    const milisegundos = 1000;
+    setInterval(this.setContagem, milisegundos);
     this.salvarPontos();
   }
 
@@ -76,7 +77,7 @@ class Jogo extends React.Component {
     const hard = 3;
     const medium = 2;
     const easy = 1;
-    let ptosDificuldade= 0;
+    let ptosDificuldade = 0;
     if (dificuldade === 'easy') ptosDificuldade = easy;
     if (dificuldade === 'medium') ptosDificuldade = medium;
     if (dificuldade === 'hard') ptosDificuldade = hard;
@@ -90,6 +91,7 @@ class Jogo extends React.Component {
   salvarPontos() {
     const { nome, acertos, pontosStore, gravatarEmailStore } = this.props;
     const objPlayer = { player: {
+      index: '0',
       name: nome,
       assertions: acertos,
       score: pontosStore,
@@ -139,7 +141,7 @@ class Jogo extends React.Component {
                     this.handleClass(event)}
                   }
                   className={ option === correctAnswer ? `${classe ? 'correct' : ''}`
-                  : `${classe ? 'wrong' : ''}` }
+                    : `${classe ? 'wrong' : ''}` }
                 >
                   {option}
                 </button>
