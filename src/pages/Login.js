@@ -1,9 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Howl } from 'howler';
+import Kahoot from '../sounds/kahoot.mp3';
+import Gong from '../sounds/gong.mp3';
 import { savePlayer, gettingTokenThunk } from '../redux/actions';
 import BtnSettings from '../components/BtnSettings';
 import './Login.css';
+
+const kahootTheme = new Howl({
+  src: [Kahoot],
+});
+
+const gongSound = new Howl({
+  src: [Gong],
+});
 
 class Login extends React.Component {
   constructor() {
@@ -20,12 +31,21 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    kahootTheme.play();
+  }
+
   componentDidUpdate(prevProps) {
     const { tokenLocalStorage, history } = this.props;
     if (prevProps.tokenLocalStorage !== tokenLocalStorage) {
       this.setLocalStorage();
       history.push('/questions');
     }
+  }
+
+  componentWillUnmount() {
+    kahootTheme.stop();
+    gongSound.play();
   }
 
   setLocalStorage() {
