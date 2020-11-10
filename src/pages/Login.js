@@ -10,6 +10,7 @@ import './Login.css';
 
 const kahootTheme = new Howl({
   src: [Kahoot],
+  loop: true,
 });
 
 const gongSound = new Howl({
@@ -44,9 +45,6 @@ class Login extends React.Component {
     kahootTheme.play();
     const milliseconds = 60;
     this.interval = setInterval(() => { this.setColor(); }, milliseconds);
-    // this.interval = setInterval(
-    //   () => this.setState((prevState) => ({ timer: prevState.timer - 1 })), SECONDS,
-    // );
   }
 
   componentDidUpdate(prevProps) {
@@ -153,7 +151,6 @@ class Login extends React.Component {
 
   render() {
     const { name, email, validFieldsOk, cor1, cor2, cor3 } = this.state;
-    // x.style.backgroundColor = 'rgb(' + cor1 + ',' + cor2 + ',' + cor3 + ')';
     return (
       <div
         className="login-page"

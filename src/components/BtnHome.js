@@ -6,7 +6,7 @@ class BtnHome extends React.Component {
   render() {
     return (
       <div className="btn-home">
-        <button type="button">
+        <button type="button" className="button-icon">
           <Link data-testid="btn-go-home" to="/">
             <FcHome />
           </Link>

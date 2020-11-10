@@ -132,7 +132,6 @@ class Questions extends Component {
           { questions.results[Number(questionNumber)].correct_answer }
         </button>
       );
-
       const incorrect = (questions.results[Number(questionNumber)].incorrect_answers
         .map((answer) => (
           <button

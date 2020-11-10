@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GrUserSettings } from 'react-icons/gr';
+import { FcServices } from 'react-icons/fc';
 
 class BtnSettings extends React.Component {
   render() {
     return (
-      <div className="btn-settings">
+      <div className="button-icon">
         <button type="button">
           <Link data-testid="btn-settings" to="/settings">
-            <GrUserSettings />
+            <FcServices />
           </Link>
         </button>
       </div>

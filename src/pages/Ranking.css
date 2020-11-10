@@ -6,7 +6,7 @@ h1 {
     line-height: 30px;
     border-spacing: 0;
     border: 1px solid #7E7D7D;
-    width: 85%;
+    width: 50%;
     margin: 5px auto;
     font-size: 14px;
   }
@@ -52,4 +52,9 @@ h1 {
     font-size: 16px;
     color: red;
     margin: 20px;
+  }
+
+  .button-home {
+    display: flex;
+    justify-content: center;
   }
