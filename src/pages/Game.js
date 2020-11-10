@@ -1,37 +1,113 @@
 import React, { Component } from 'react';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
-import store from '../store';
 import Timer from '../components/timer';
-// import { getQuestions } from '../actions';
+import Questions from '../components/Questions';
+import { scoreAction, answerAction } from '../actions';
 
 class Game extends Component {
   constructor(props) {
     super(props);
 
+    const { time } = this.props;
     this.state = {
       index: 0,
+      choice: '',
       clicked: false,
+      disableNextBtn: false,
+      time,
     };
 
-    this.handleStyle = this.handleStyle.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
+    this.handleScore = this.handleScore.bind(this);
+    this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
   }
 
   componentDidMount() {
-    const { info } = this.props;
-    localStorage.setItem('token', info.token);
+    this.scoreLocalStorage();
   }
 
-  handleStyle() {
-    this.setState({ clicked: true });
+  componentDidUpdate() {
+    this.scoreLocalStorage();
+  }
+
+  scoreLocalStorage() {
+    const { name, email, score, assertions } = this.props;
+    const state = JSON.stringify({ player: {
+      name,
+      assertions,
+      score,
+      gravatarEmail: email,
+    } });
+    localStorage.setItem('state', state);
+  }
+
+  handleAnswer(value) {
+    this.setState({
+      clicked: true,
+      choice: value,
+    }, () => {
+      this.handleScore();
+    });
+  }
+
+  handleScore() {
+    const { scorePoints, APIQuestions } = this.props;
+    const { index, choice, time } = this.state;
+    const TEN = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    let difficult = 0;
+    if (APIQuestions[index].difficulty === 'easy') difficult = easy;
+    if (APIQuestions[index].difficulty === 'medium') difficult = medium;
+    if (APIQuestions[index].difficulty === 'hard') difficult = hard;
+    const points = (choice === 'correct-answer') ? (TEN + (time * difficult)) : 0;
+    const assertion = (choice === 'correct-answer') ? 1 : 0;
+    const respondida = {
+      answered: true,
+      score: points,
+      timeout: false,
+      assertions: assertion,
+    };
+    scorePoints(respondida);
+  }
+
+  handleClickButtonNext() {
+    const { index } = this.state;
+    const { history } = this.props;
+    const QUATRO = 4;
+    if (index < QUATRO) {
+      this.setState(((prevState) => ({
+        index: prevState.index + 1,
+        clicked: false,
+        choice: '',
+      })), () => {
+        const { answeredAction } = this.props;
+        const resetTime = {
+          time: 30,
+          answered: false,
+          timeout: false,
+        };
+        answeredAction(resetTime);
+        this.setState({ disableNextBtn: false });
+      });
+    } else {
+      this.setState({ disableNextBtn: false, clicked: true });
+      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 138
+      return history.push('/feedback');
+    }
   }
 
   render() {
-    const { isFetching, APIQuestions } = this.props;
-    const { index, clicked } = this.state;
-    const { timeout } = this.props;
-    const random = 0.5;
+    const { APIQuestions, timeout, time } = this.props;
+    const { index, clicked, disableNextBtn } = this.state;
+    if (APIQuestions.length === 0) {
+      return (
+        <h3>Carregando...</h3>
+      );
+    }
     return (
       <section className="game-container">
         <section className="game-header">
@@ -39,64 +115,41 @@ class Game extends Component {
         </section>
         <section className="game-question">
           <section className="game-category">
-            {isFetching
-              ? <p>Carregando...</p>
-              : (
-                <h3 data-testid="question-category">
-                  {APIQuestions[index].category}
-                </h3>
-              )}
+            <h3 data-testid="question-category">
+              {APIQuestions[index].category}
+            </h3>
           </section>
           <section className="game-text">
-            { isFetching
-              ? <p>Carregando...</p>
-              : (
-                <section data-testid="question-text">
-                  {APIQuestions[index].question}
-                </section>)}
+            <section data-testid="question-text">
+              {APIQuestions[index].question}
+            </section>
           </section>
         </section>
-        { isFetching
-          ? <p>Carregando...</p>
-          : (
-            <section className="game-answers">
-              {
-                APIQuestions[index]
-                  .incorrect_answers.concat(APIQuestions[index].correct_answer)
-                  .map((question, i) => {
-                    if (question === APIQuestions[index].correct_answer) {
-                      return (
-                        <button
-                          type="button"
-                          data-testid="correct-answer"
-                          key={ i }
-                          disabled={ timeout }
-                          className={ clicked ? 'correct-answer' : null }
-                          onClick={ this.handleStyle }
-                        >
-                          {question}
-                        </button>
-                      );
-                    }
-                    return (
-                      <button
-                        type="button"
-                        data-testid={ `wrong-answer-${i}` }
-                        key={ i }
-                        disabled={ timeout }
-                        className={ clicked ? 'wrong-answer' : null }
-                        onClick={ this.handleStyle }
-                      >
-                        {question}
-                      </button>
-                    );
-                  }).sort(() => Math.random() - random)
-              }
-            </section>)}
+        <Questions
+          APIQuestions={ APIQuestions }
+          indexDinamico={ index }
+          disabled={ timeout }
+          classCorrect={ clicked ? 'correct-answer' : null }
+          classWrong={ clicked ? 'wrong-answer' : null }
+          onClickCorrect={ () => this.handleAnswer('correct-answer') }
+          onClickWrong={ () => this.handleAnswer('wrong-answer') }
+        />
         <section>
-          <Provider store={ store }>
-            <Timer />
-          </Provider>
+          { clicked
+            ? (
+              <button
+                type="button"
+                onClick={ () => this.handleClickButtonNext() }
+                data-testid="btn-next"
+                disabled={ disableNextBtn }
+              >
+            Próxima
+              </button>
+            )
+            : (<p />)}
+        </section>
+        <section>
+          <Timer timeLeft={ time } />
         </section>
       </section>
     );
@@ -105,20 +158,36 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   info: state.token.response,
+  timeout: state.allQuestions.timeout,
+  time: state.allQuestions.time,
+  name: state.login.name,
+  email: state.login.email,
+  score: state.allQuestions.score,
+  assertions: state.allQuestions.assertions,
   APIQuestions: state.allQuestions.results,
-  isFetching: state.allQuestions.isFetching,
-  timeout: state.playerData.payload.timeout,
+  answered: state.allQuestions.answered,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  scorePoints: (score) => dispatch(scoreAction(score)),
+  answeredAction: (answerTime) => dispatch(answerAction(answerTime)),
 });
 
 Game.propTypes = {
-  info: PropTypes.shape().isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
   timeout: PropTypes.bool.isRequired,
+  time: PropTypes.number.isRequired,
+  answeredAction: PropTypes.func.isRequired,
+  scorePoints: PropTypes.func.isRequired,
   APIQuestions: PropTypes.arrayOf(
     PropTypes.shape(),
     PropTypes.array,
     PropTypes.string,
   ).isRequired,
+  history: PropTypes.shape().isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
