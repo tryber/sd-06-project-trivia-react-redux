@@ -11,17 +11,13 @@ const Scoreboard = (props) => {
   const ScoreTable = () => {
     return(
       <span className="score-table">
-        <span
-          className="score-info"
-          data-testid="feedback-total-score"
-        >
-        Your Score: { score }
+        <span className="score-info">
+        Your Score: 
+        <span data-testid="feedback-total-score"> { score } </span>
         </span>
-        <span
-          className="score-info"
-          data-testid="feedback-total-question"
-        >
-        Assertions: { asserts }
+        <span className="score-info">
+        Assertions:
+        <span data-testid="feedback-total-question"> { asserts } </span>
         </span>
       </span>
     )
