@@ -13,11 +13,9 @@ class Header extends Component {
           alt="Header profile"
         />
         <p data-testid="header-player-name">
-          Name:
           {name}
         </p>
         <span data-testid="header-score">
-          Score:
           {score}
         </span>
       </div>
