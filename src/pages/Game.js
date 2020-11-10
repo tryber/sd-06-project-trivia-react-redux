@@ -5,19 +5,17 @@ import Header from '../components/header';
 import Timer from '../components/timer';
 import Questions from '../components/Questions';
 import { scoreAction, answerAction } from '../actions';
-// import playerData from '../reducers/playerData';
 
 class Game extends Component {
   constructor(props) {
     super(props);
 
-    const { time, answered } = this.props;
+    const { time } = this.props;
     this.state = {
       index: 0,
       choice: '',
       clicked: false,
       disableNextBtn: false,
-      answered,
       time,
     };
 
@@ -180,6 +178,7 @@ Game.propTypes = {
   assertions: PropTypes.number.isRequired,
   timeout: PropTypes.bool.isRequired,
   time: PropTypes.number.isRequired,
+  answeredAction: PropTypes.func.isRequired,
   scorePoints: PropTypes.func.isRequired,
   APIQuestions: PropTypes.arrayOf(
     PropTypes.shape(),

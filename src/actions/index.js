@@ -14,7 +14,6 @@ export const PLAYER_DATA = 'PLAYER_DATA';
 export const SCORED_POINT = 'SCORED_POINT';
 export const ANSWERED = 'ANSWERED';
 
-
 const requestToken = 'https://opentdb.com/api_token.php?command=request';
 const requestQuestions = 'https://opentdb.com/api.php?amount=5&category=31&token=';
 
