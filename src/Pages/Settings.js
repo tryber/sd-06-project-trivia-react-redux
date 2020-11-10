@@ -12,6 +12,7 @@ class Settings extends Component {
 
     this.state = {
       categories: [],
+      hasError: false,
     };
   }
 
@@ -21,6 +22,12 @@ class Settings extends Component {
 
   async getCategories() {
     const categories = await getCategoriesAPI();
+    const redirectCode = 4;
+    const responseCode = parseInt(localStorage.getItem('responseCode'), 10);
+
+    if (responseCode === redirectCode) {
+      this.setState({ hasError: true });
+    }
 
     this.setState({ categories });
   }
@@ -44,7 +51,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { categories } = this.state;
+    const { categories, hasError } = this.state;
 
     return (
       <div>
@@ -169,6 +176,12 @@ class Settings extends Component {
           data-testid="save-settings"
           title="Salvar configurações"
         />
+        {hasError ? (
+          <div>
+            <h3>Não há questões suficientes para a configuração selecionada!</h3>
+            <h4>Favor selecionar uma nova configuração.</h4>
+          </div>
+        ) : null}
       </div>
     );
   }

@@ -30,24 +30,22 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const { history } = this.props;
     const { player } = this.state;
-    const responseCode = parseInt(localStorage.getItem('responseCode'), 10);
-    const redirectCode = 4;
 
-    if (responseCode === redirectCode) {
-      alert('Não há perguntas suficientes para a configuração selecionada!');
-      history.push('/settings');
-    } else {
-      this.getTheFetchQuestions();
-      localStorage.setItem('state', JSON.stringify({ player }));
-    }
+    this.getTheFetchQuestions();
+
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   async getTheFetchQuestions() {
-    const { fetchQuestions } = this.props;
+    const { fetchQuestions, history } = this.props;
+    const redirectCode = 4;
 
     await fetchQuestions();
+    const responseCode = await parseInt(localStorage.getItem('responseCode'), 10);
+    if (responseCode === redirectCode) {
+      history.push('/settings');
+    }
 
     const finalQuestion = parseInt(localStorage.getItem('number'), 10);
     this.setState({ isLoading: false, finalQuestion });
