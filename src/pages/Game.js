@@ -16,6 +16,7 @@ class Game extends React.Component {
       disableQuestions: false,
       disableAnswers: true,
       questionIndex: 0,
+      NUMBER_OF_QUESTIONS: 5,
     };
 
     this.handleDisabled = this.handleDisabled.bind(this);
@@ -30,8 +31,8 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { state } = this.props;
+    const { NUMBER_OF_QUESTIONS } = this.state;
     localStorage.setItem('state', JSON.stringify(state));
-    const NUMBER_OF_QUESTIONS = 5;
     const MAGIC_NUMBER = 1000;
     const { fetchQuestionsAction } = this.props;
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
@@ -40,14 +41,15 @@ class Game extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { state, questions } = this.props;
-    const { questionIndex } = this.state;
+    const { questionIndex, NUMBER_OF_QUESTIONS } = this.state;
     if (JSON.stringify(prevProps.state) !== JSON.stringify(state)) {
       localStorage.setItem('state', JSON.stringify(state));
     }
     if (JSON.stringify(prevProps.questions) !== JSON.stringify(questions)) {
       localStorage.setItem('questions', JSON.stringify(questions));
     }
-    if (prevState.questionIndex !== questionIndex) {
+    if (prevState.questionIndex !== questionIndex
+      && questionIndex < NUMBER_OF_QUESTIONS) {
       const aSec = 1000;
       setTimeout(this.startTimer, aSec);
     }
@@ -176,11 +178,11 @@ class Game extends React.Component {
   }
 
   renderQuestion(questionIndex) {
-    const { questions } = this.props;
-    if (questions.length !== 0) {
-      // const questionsArray = JSON.parse(localStorage.getItem('questions'));
-      // console.log('questions array: ', questionsArray);
-      const questionToRender = questions[questionIndex];
+    const { questions, history } = this.props;
+    const { NUMBER_OF_QUESTIONS } = this.state;
+    if (questions[questionIndex]) {
+      const questionsArray = JSON.parse(localStorage.getItem('questions'));
+      const questionToRender = questionsArray[questionIndex];
 
       return (
         <div id="container">
@@ -196,6 +198,10 @@ class Game extends React.Component {
           </div>
           {this.randomArray(questionToRender)}
         </div>
+      );
+    } if (questionIndex >= NUMBER_OF_QUESTIONS) {
+      return (
+        history.push('/feedback')
       );
     }
   }
