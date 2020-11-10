@@ -33,8 +33,13 @@ class Feedback extends React.Component {
 
   renderTotalAnswer() {
     const { testScore } = this.state;
-    if( testScore === 0) {
-      return <h2 data-testid="feedback-total-question">Não acertou nenhuma pergunta</h2>
+    if (testScore === 0) {
+      return (
+        <div>
+          <h2 >Não acertou nenhuma pergunta</h2>
+          <h2>Acertou<span data-testid="feedback-total-question">{testScore}</span>perguntas</h2>
+        </div>
+      )
     } else {
       return <h2>Acertou<span data-testid="feedback-total-question">{testScore}</span>perguntas</h2>
     }
