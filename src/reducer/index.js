@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import user from './user';
-import game from './game';
+import questions from './questions';
+import timer from './timer';
 
 const rootReducer = combineReducers({
   user,
-  game,
+  questions,
+  timer,
 });
 
 export default rootReducer;
