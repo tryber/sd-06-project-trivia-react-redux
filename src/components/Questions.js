@@ -1,20 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import questionsAPI from '../services/questionAPI';
 
 class Questions extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       buttonBorder: false,
-      questions: [{
-        category: '',
-        question: '',
-        incorrect_answers: [],
-        correct_answer: '',
-      }],
-
     };
     this.handleClick = this.handleClick.bind(this);
     this.questionsGet = this.questionsGet.bind(this);
@@ -26,10 +20,7 @@ class Questions extends React.Component {
 
   async questionsGet() {
     const tokenLocal = localStorage.getItem('token');
-    const questionsReturn = await questionsAPI(tokenLocal);
-    this.setState({
-      questions: questionsReturn,
-    });
+    await questionsAPI(tokenLocal);
   }
 
   handleClick() {
@@ -40,7 +31,9 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { buttonBorder, questions } = this.state;
+    const { buttonBorder } = this.state;
+    const { questions } = this.props;
+    console.log(questions);
     return (
       <div>
         <div className="gamepage-questions">
@@ -49,9 +42,12 @@ class Questions extends React.Component {
             className="question-category"
           >
             Categoria:
-            <p>
-              {questions && questions[0] && questions[0].category}
-            </p>
+            {/* {questions && questions.map((result) => ( */}
+            {/* <div>
+                  // {questions[0].category}
+                </div> */}
+            {/* ))} */}
+            {questions && questions[0] && questions[0].category}
             <br />
           </div>
           <div
@@ -60,9 +56,7 @@ class Questions extends React.Component {
           >
             Pergunta:
             <br />
-            <div>
-              {questions && questions[0] && questions[0].question}
-            </div>
+            {questions && questions[0] && questions[0].question}
           </div>
         </div>
         <div className="gamepage-answer">
@@ -101,5 +95,11 @@ class Questions extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  questions: state.question.questions,
+});
+export default connect(mapStateToProps)(Questions);
 
-export default Questions;
+Questions.propTypes = {
+  questions: PropTypes.arrayOf(Object).isRequired,
+};
