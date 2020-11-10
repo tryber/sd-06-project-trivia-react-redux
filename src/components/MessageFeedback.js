@@ -6,19 +6,18 @@ class MessageFeedback extends React.Component {
     const { assertions, score } = correctAnswers.player;
     const greatNumber = 3;
     let message = '';
-    let messageAssertions = '';
     if (assertions >= greatNumber) {
       message = 'Mandou bem!';
-      messageAssertions = 'Não acertou nenhuma pergunta';
     } else {
       message = 'Podia ser melhor...';
-      messageAssertions = `Acertou ${assertions} perguntas`;
     }
     return (
       <div>
         <h2 data-testid="feedback-text">{ message }</h2>
-        <h4 data-testid="feedback-total-score">{ messageAssertions }</h4>
-        <h4 data-testid="feedback-total-question">{ `Total ${score} pontos`}</h4>
+        <h4>
+          Acertou <span data-testid="feedback-total-question">{ assertions }</span> pergunta(s)
+        </h4>
+        <h4>Total <span data-testid="feedback-total-score">{score}</span></h4>
       </div>
     );
   }
