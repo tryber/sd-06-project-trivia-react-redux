@@ -45,9 +45,17 @@ export const scoreReset = () => ({
 });
 
 export const SCORE_RANKING = 'SCORE_RANKING';
-export const questionScore = (ranking) => ({
-  type: SCORE_RANKING,
-  payload: {
-    ranking,
-  },
-});
+export function questionScore() {
+  return (dispatch, getState) => {
+    const { user: { player: { name, picture, score } } } = getState();
+    console.log('user', name);
+    return dispatch({
+      type: SCORE_RANKING,
+      payload: {
+        name,
+        picture,
+        score,
+      },
+    });
+  };
+}

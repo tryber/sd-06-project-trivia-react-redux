@@ -105,7 +105,8 @@ class Game extends Component {
     const { index } = this.state;
     const four = 4;
     if (index === four) {
-      const { history } = this.props;
+      const { history, saveRanking } = this.props;
+      saveRanking();
       history.push('feedback');
     }
     this.setState((state) => ({
@@ -183,6 +184,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveRanking: (ranking) => dispatch(questionScore(ranking)),
   saveScorePlayer: (score) => dispatch(questionScorePlayer(score)),
+  saveRanking: () => dispatch(questionScore()),
 });
 
 Game.propTypes = {
