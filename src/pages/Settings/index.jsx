@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiSettings, FiSave, FiArrowLeft } from 'react-icons/fi';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { updateSettings } from '../../redux/actions';
 
@@ -175,5 +176,20 @@ function mapStateToProps(state) {
     config: state.trivia.config,
   };
 }
+
+Settings.propTypes = {
+  updateConfig: PropTypes.func.isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
+  config: PropTypes.shape({
+    amount: PropTypes.string,
+    type: PropTypes.string,
+    category: PropTypes.string,
+    difficulty: PropTypes.string,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
