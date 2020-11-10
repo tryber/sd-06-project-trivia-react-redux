@@ -29,6 +29,8 @@ class GameTimer extends Component {
     if (count > 0) {
       this.setState({
         count: count - 1,
+      }, () => {
+        dispatchGameTime(count);
       });
     } else {
       dispatchGameTime(count);

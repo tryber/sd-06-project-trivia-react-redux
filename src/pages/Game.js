@@ -122,10 +122,11 @@ class Game extends Component {
         </section>
         <section className="game-board-container">
           <div className="game-answers">
-            {currentAnswers.map((answer) => (
+            {currentAnswers.map((answer, index) => (
               answer.isCorrect
                 ? <button
                   type="button"
+                  key={ index }
                   id="correct-answer"
                   data-testid="correct-answer"
                   className={ answerColor ? 'correct-answer' : null }
@@ -136,6 +137,7 @@ class Game extends Component {
                 </button>
                 : <button
                   type="button"
+                  key={ index }
                   id="wrong-answer"
                   data-testid={ `wrong-answer-${answer.index}` }
                   className={ answerColor ? 'wrong-answer' : null }
@@ -172,7 +174,9 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  history: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   time: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
