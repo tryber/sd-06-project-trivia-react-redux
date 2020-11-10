@@ -13,6 +13,7 @@ class ButtonSettings extends Component {
     localStorage.removeItem('category');
     localStorage.removeItem('typeAPI');
     localStorage.removeItem('difficulty');
+    localStorage.removeItem('responseCode');
   }
 
   render() {
