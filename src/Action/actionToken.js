@@ -1,4 +1,4 @@
-import fetchTokenAPI from '../service/fetchAPI';
+import { fetchTokenAPI } from '../service/fetchAPI';
 
 export const GET_TOKEN = 'GET_TOKEN';
 

@@ -21,6 +21,7 @@ class Game extends React.Component {
       isLoading: true,
       answered: false,
       player,
+      finalQuestion: 0,
     };
 
     this.getTheFetchQuestions = this.getTheFetchQuestions.bind(this);
@@ -38,12 +39,17 @@ class Game extends React.Component {
   }
 
   async getTheFetchQuestions() {
-    const timer = 15000;
-    const { fetchQuestions } = this.props;
-    await setTimeout(() => {}, timer);
+    const { fetchQuestions, history } = this.props;
+    const redirectCode = 4;
 
     await fetchQuestions();
-    this.setState({ isLoading: false });
+    const responseCode = await parseInt(localStorage.getItem('responseCode'), 10);
+    if (responseCode === redirectCode) {
+      history.push('/settings');
+    }
+
+    const finalQuestion = parseInt(localStorage.getItem('number'), 10);
+    this.setState({ isLoading: false, finalQuestion });
   }
 
   handleNextQuestion() {
@@ -90,9 +96,7 @@ class Game extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { index, isLoading, answered } = this.state;
-
-    const finalQuestion = 4;
+    const { index, isLoading, answered, finalQuestion } = this.state;
 
     return (
       <div>
@@ -106,7 +110,7 @@ class Game extends React.Component {
                 answered={ answered }
                 handleAnswer={ this.handleAnswer }
               />
-              { (index < finalQuestion)
+              { (index < finalQuestion - 1)
                 ? (
                   <GenericButton
                     onClick={ this.handleNextQuestion }
