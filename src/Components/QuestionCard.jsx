@@ -23,6 +23,7 @@ class QuestionCard extends Component {
       countdown: 30,
       disabled: false,
       isCorrect: false,
+      assertions: 0,
     };
   }
 
@@ -77,7 +78,7 @@ class QuestionCard extends Component {
       const player = {
         name,
         score: 0,
-        assertions: '',
+        assertions: this.state.assertions,
         gravatarEmail,
       };
       localStorage.setItem('state', JSON.stringify({ player }));
@@ -126,8 +127,12 @@ class QuestionCard extends Component {
     }
 
     if (target.id === 'correct-answer') {
-      this.setState({ isCorrect: true });
-      this.saveScore();
+      const point = this.state.assertions + 1;
+      this.setState({ 
+        isCorrect: true,
+        assertions: point,
+       },() => this.saveScore());
+     // this.saveScore();
     }
 
     this.changeDisabled(true);
@@ -145,7 +150,7 @@ class QuestionCard extends Component {
       const newScore = prevScore + points;
       const player = {
         name,
-        assertions: '',
+        assertions: this.state.assertions,
         score: newScore,
         gravatarEmail,
       };
@@ -155,7 +160,7 @@ class QuestionCard extends Component {
       localStorage.setItem('state', JSON.stringify({
         player: {
           name,
-          assertions: '',
+          assertions: this.state.assertions,
           score: 0,
           gravatarEmail,
         },

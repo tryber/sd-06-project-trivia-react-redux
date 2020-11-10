@@ -35,6 +35,8 @@ class Question extends React.Component {
         ...previous,
         answerIndex: previous.answerIndex + 1,
       }));
+    } else {
+      history.push('/feedback');
     }
 
     /* history.push('/feedback'); */
