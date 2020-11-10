@@ -3,8 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FeedHeader from '../components/FeedHeader';
+import { addResult } from '../actions/game';
 
 class FeedBack extends React.Component {
+  constructor(props) {
+    super(props);
+    this.clearResult = this.clearResult.bind(this);
+  }
+
+  clearResult() {
+    const { dispatchResult } = this.props;
+    dispatchResult({ player: { score: 0, assertions: 0, name: '', gravatarEmail: '' } });
+  }
+
   render() {
     const { score } = this.props;
     if (score) {
@@ -22,10 +33,22 @@ class FeedBack extends React.Component {
             {score.assertions}
           </div>
           <Link to="/ranking">
-            <button type="button" data-testid="btn-ranking">VER RANKING</button>
+            <button
+              type="button"
+              data-testid="btn-ranking"
+              onClick={ () => this.clearResult() }
+            >
+VER RANKING
+            </button>
           </Link>
           <Link to="/">
-            <button type="button" data-testid="btn-play-again">JOGAR NOVAMENTE</button>
+            <button
+              type="button"
+              data-testid="btn-play-again"
+              onClick={ () => this.clearResult() }
+            >
+JOGAR NOVAMENTE
+            </button>
           </Link>
 
         </div>
@@ -50,13 +73,16 @@ class FeedBack extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.login.player.user,
-  email: state.login.player.email,
   score: state.game.results.player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchResult: (result) => dispatch(addResult(result)),
 });
 
 FeedBack.propTypes = {
   score: PropTypes.shape().isRequired,
+  dispatchResult: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(FeedBack);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedBack);

@@ -12,7 +12,6 @@ class FeedHeader extends React.Component {
   render() {
     const { playerName, email, score } = this.props;
     const hash = md5(email).toString();
-    console.log(hash);
     if (score) {
       return (
         <header>
@@ -51,7 +50,7 @@ const mapStateToProps = (state) => ({
 FeedHeader.propTypes = {
   playerName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  score: PropTypes.shape().isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(FeedHeader);
