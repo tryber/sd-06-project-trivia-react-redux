@@ -64,38 +64,39 @@ class Game extends Component {
     if (APIQuestions[index].difficulty === 'medium') difficult = medium;
     if (APIQuestions[index].difficulty === 'hard') difficult = hard;
     const points = (choice === 'correct-answer') ? (TEN + (time * difficult)) : 0;
+    const assertion = (choice === 'correct-answer') ? 1 : 0;
     const respondida = {
       answered: true,
       score: points,
       timeout: false,
+      assertions: assertion,
     };
     scorePoints(respondida);
   }
 
   handleClickButtonNext() {
-    this.setState(((prevState) => ({
-      index: prevState.index + 1,
-      clicked: false,
-      choice: '',
-    })), () => {
-      const { answeredAction } = this.props;
-      const resetTime = {
-        time: 30,
-        answered: false,
-        timeout: false,
-      };
-      answeredAction(resetTime);
-      const { index } = this.state;
-      // const { history } = this.props;
-      const QUATRO = 4;
-
-      if (index === QUATRO) {
-        this.setState({ disableNextBtn: true });
-        // history.push('/feedback');
-      } else {
+    const { index } = this.state;
+    const { history } = this.props;
+    const QUATRO = 4;
+    if (index < QUATRO) {
+      this.setState(((prevState) => ({
+        index: prevState.index + 1,
+        clicked: false,
+        choice: '',
+      })), () => {
+        const { answeredAction } = this.props;
+        const resetTime = {
+          time: 30,
+          answered: false,
+          timeout: false,
+        };
+        answeredAction(resetTime);
         this.setState({ disableNextBtn: false });
-      }
-    });
+      });
+    } else {
+      this.setState({ disableNextBtn: true });
+      return history.push('/feedback');
+    }
   }
 
   render() {
@@ -185,6 +186,7 @@ Game.propTypes = {
     PropTypes.array,
     PropTypes.string,
   ).isRequired,
+  history: PropTypes.shape().isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
