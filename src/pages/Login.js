@@ -48,7 +48,7 @@ class Login extends Component {
   render() {
     const { name, email, isDisabled } = this.state;
     return (
-      <div>
+      <div className="container">
         FORM
         <form onSubmit={ this.handleSignUp }>
           <input

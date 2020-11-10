@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Feedback, Game, Login, Ranking, Settings } from './pages';
+import './App.css';
 
 export default function App() {
   return (
