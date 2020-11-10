@@ -21,6 +21,7 @@ class Questions extends Component {
       questionsAnswer: 0,
       answers: [],
       timeInterval: {},
+      timingOut: '',
     };
   }
 
@@ -67,22 +68,31 @@ class Questions extends Component {
   }
 
   countQuestionsAndRedirect() {
-    const { questionsAnswer } = this.state;
-    const lastQuestion = 4;
+    const { questionsAnswer, timingOut } = this.state;
     const answerTime = 30;
-    const { history, resetTime } = this.props;
+    const lastQuestion = 4;
+    const { resetTime, history } = this.props;
+    clearTimeout(timingOut);
     resetTime(answerTime);
     this.setState({
       checked: false,
     });
 
     if (questionsAnswer === lastQuestion) history.push('/feedback');
-
     if (questionsAnswer < lastQuestion) {
       this.setState({ questionsAnswer: questionsAnswer + 1 });
     }
     this.downTime();
     this.setState({ disable: false });
+    /*
+    const { timer } = this.props;
+    if (timer === 30) {
+      setInterval(() => {
+        const { sendTimer } = this.props;
+        sendTimer(timer);
+      }, 1000);
+    }
+    */
   }
 
   randomQuestions() {
@@ -109,13 +119,14 @@ class Questions extends Component {
         const { sendTimer } = this.props;
         sendTimer(timer);
       }, ONE_SECOND);
-      setTimeout(() => {
-        clearInterval(time);
+      const loading = setTimeout(() => {
+        // clearInterval(time);
         this.disableButtons();
         this.setState({ checked: true });
       }, ALL_TIME);
       this.setState({
         timeInterval: time,
+        timingOut: loading,
       });
     }
   }
@@ -129,8 +140,18 @@ class Questions extends Component {
   }
 
   render() {
-    const { loading, checked, disable, questionsAnswer, answers } = this.state;
+    const {
+      loading,
+      checked,
+      disable,
+      questionsAnswer,
+      answers,
+      timeInterval } = this.state;
     const { questions, timer } = this.props;
+    console.log(timer);
+    if (timer === 0) {
+      clearInterval(timeInterval);
+    }
     const nextButton = (
       <button
         type="button"
