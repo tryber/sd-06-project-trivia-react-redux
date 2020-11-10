@@ -65,7 +65,7 @@ class Login extends Component {
     const { email, name } = this.state;
     return (
       <div className="container">
-        <div className="container-div"></div>
+        <div className="container-div" />
         <div className="container-email">
           <label htmlFor="email-input">
             Digite seu e-mail do Gravatar:
