@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import './Questions.css';
 import { reqQuestions } from '../services';
-import { getQuestions, stopTimer, getTimer, resetTimer, getAssertion } from '../actions';
+import {
+  getQuestions,
+  stopTimer,
+  getTimer,
+  resetTimer,
+  getAssertion,
+  getScore,
+} from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -156,6 +163,7 @@ class Questions extends Component {
   }
 
   calculate(timer, difficulty) {
+    const { saveScore } = this.props;
     const total = 10;
     const hard = 3;
     const grade = () => {
@@ -168,7 +176,9 @@ class Questions extends Component {
         return hard;
       }
     };
-    return total + (timer * grade());
+    const totalScore = total + (timer * grade());
+    saveScore(totalScore);
+    return totalScore;
   }
 
   render() {
@@ -221,7 +231,7 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
-              id="wrond-aswer"
+              id="wrong-answer"
               onClick={ this.addClass }
               disabled={ disable }
               className={ checked ? 'incorrectAnswer' : null }
@@ -249,6 +259,7 @@ Questions.propTypes = {
   sendTimer: propTypes.func.isRequired,
   resetTime: propTypes.func.isRequired,
   handleAssertion: propTypes.func.isRequired,
+  saveScore: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => (
@@ -265,6 +276,7 @@ const mapDispatchToProps = (dispatch) => (
     handleTimer: (state) => dispatch(stopTimer(state)),
     resetTime: () => dispatch(resetTimer()),
     handleAssertion: (assertion) => dispatch(getAssertion(assertion)),
+    saveScore: (score) => dispatch(getScore(score)),
   }
 );
 

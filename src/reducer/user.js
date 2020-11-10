@@ -1,4 +1,4 @@
-import { HANDLE_USER, HANDLE_ASSERTION } from '../actions';
+import { HANDLE_USER, HANDLE_ASSERTION, HANDLE_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -19,6 +19,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: action.assertions,
+    };
+  case HANDLE_SCORE:
+    return {
+      ...state,
+      score: action.score,
     };
   default:
     return state;
