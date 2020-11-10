@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
@@ -43,14 +44,17 @@ class FeedbackComponent extends React.Component {
           alt="gravatar-profile-pic"
         />
         <h3 data-testid="header-player-name">{name}</h3>
+        <p data-testid="header-score">{score}</p>
         <p data-testid="feedback-total-score">{score}</p>
         <p data-testid="feedback-total-question">{correctAnswers}</p>
-        <button
-          data-testid="btn-play"
-          type="button"
-        >
-          Play
-        </button>
+        <Link to="/">
+          <button
+            data-testid="btn-play-again"
+            type="button"
+          >
+            Play Again
+          </button>
+        </Link>
         {this.handleFeedback()}
       </div>
     );
