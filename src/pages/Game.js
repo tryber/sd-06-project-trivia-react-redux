@@ -2,7 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { updateLocalStorageAction, resetTimer, renderTime } from '../actions';
+import {
+  updateLocalStorageAction,
+  resetTimer,
+  renderTime,
+  resetScoreAction,
+} from '../actions';
 import '../css/Game.css';
 
 class Game extends React.Component {
@@ -29,17 +34,20 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { createInterval, handleLocalStorage } = this;
+    const { resetScore } = this.props;
     const startTime = 5000;
     handleLocalStorage();
+    resetScore();
     setTimeout(createInterval(), startTime);
   }
 
   componentDidUpdate() {
+    const { clearIntervalTimer, chooseAnswer } = this;
+    const { interval, answered } = this.state;
     const { timer } = this.props;
-    const { interval } = this.state;
-    const { clearIntervalTimer } = this;
-    if (timer === 0) {
+    if (timer === 0 && !answered) {
       clearIntervalTimer(interval);
+      chooseAnswer();
     }
   }
 
@@ -57,9 +65,6 @@ class Game extends React.Component {
   handleScore({ target: { innerText } }) {
     const {
       difficulty,
-      name,
-      gravatarEmail,
-      assertions,
       timer,
       questions,
       updateLocalStorage,
@@ -86,7 +91,7 @@ class Game extends React.Component {
 
     if (innerText === questions[questionNumber].correct_answer) {
       const addScore = baseScore + (timer * difficultyMultiplier);
-      updateLocalStorage(addScore, name, assertions, gravatarEmail);
+      updateLocalStorage(addScore);
     }
 
     clearIntervalTimer();
@@ -122,12 +127,12 @@ class Game extends React.Component {
   }
 
   handleLocalStorage() {
-    const { name, assertions, score, gravatarEmail } = this.props;
+    const { name, gravatarEmail } = this.props;
     const newPlayerStorage = {
       player: {
         name,
-        assertions,
-        score,
+        assertions: 0,
+        score: 0,
         gravatarEmail,
       },
     };
@@ -246,17 +251,18 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  gravatarEmail: state.player.gravatarEmail,
+  name: state.player.name,
   questions: state.game.questions,
   difficulty: state.game.difficulty,
   timer: state.game.timer,
-  score: state.game.score,
-  assertions: state.game.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   updateLocalStorage: (score) => dispatch(updateLocalStorageAction(score)),
   toResetTimer: () => dispatch(resetTimer()),
   timeController: () => dispatch(renderTime()),
+  resetScore: () => dispatch(resetScoreAction()),
 });
 
 Game.propTypes = {
@@ -264,12 +270,11 @@ Game.propTypes = {
   updateLocalStorage: PropTypes.func.isRequired,
   toResetTimer: PropTypes.func.isRequired,
   timeController: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
   timer: PropTypes.number.isRequired,
-  score: PropTypes.number.isRequired,
-  assertions: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
