@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { gameTime } from '../actions';
+// teste
 
 class GameTimer extends Component {
   constructor() {
