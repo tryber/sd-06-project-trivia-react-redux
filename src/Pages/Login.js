@@ -22,6 +22,15 @@ class Login extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+    const minimumQuestions = 5;
+
+    localStorage.setItem('number', minimumQuestions);
+    localStorage.setItem('category', '');
+    localStorage.setItem('typeAPI', '');
+    localStorage.setItem('difficulty', '');
+  }
+
   componentDidUpdate() {
     const { token } = this.props;
 
