@@ -7,18 +7,20 @@ import Scoreboard from '../components/Scoreboard';
 class Feedback extends React.Component {
 
   render() {
-
+    const { gameBoard } = this.props;
+    const asserts = gameBoard.assertions
+    console.log(gameBoard);
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={3}/>
+        <Scoreboard asserts={asserts}/>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  results: state.game.results,
+  gameBoard: state.game.gameBoard,
 });
 
 export default connect(mapStateToProps, null)(Feedback);

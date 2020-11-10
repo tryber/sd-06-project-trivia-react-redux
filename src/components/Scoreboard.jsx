@@ -20,7 +20,7 @@ const Scoreboard = (props) => {
 
   const Feed = (props) => {
     const { asserts } = props;
-    if (asserts >= 3) {
+    if (asserts >= 4) {
       return (
         <Welldone />
       )
