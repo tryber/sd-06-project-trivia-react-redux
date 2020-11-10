@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
+  sortfunction(a, b) {
+    return (b.score - a.score);
+  }
+
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.sort(this.sortfunction);
     return (
       <div>
         <h2 data-testid="ranking-title">Ranking</h2>

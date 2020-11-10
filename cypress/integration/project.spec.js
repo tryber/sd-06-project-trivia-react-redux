@@ -540,7 +540,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
 
 // ranking
 
-describe.only('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
+describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

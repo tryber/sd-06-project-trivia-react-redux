@@ -63,7 +63,7 @@ class BodyGame extends Component {
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
     }
-    if (questions.length > 0 && prevProps.questions.length !== questions.length) {
+    if (questions.length > 0 && prevProps.questions[0] !== questions[0]) {
       this.handleShuffle(questions);
     }
   }
@@ -72,6 +72,7 @@ class BodyGame extends Component {
     const { counter } = this.state;
     const rightAnswer = document.querySelector('#right-answer');
     rightAnswer.className = 'right-question';
+    console.log(rightAnswer);
     const wrongAnswers = document.querySelectorAll('#wrong-answer');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.className = 'wrong-question';
@@ -198,22 +199,25 @@ class BodyGame extends Component {
 
   handleShuffle() {
     const { questions } = this.props;
-    const { answers } = this.state;
+    const shuffledAnswers = [];
     questions.forEach((question, index) => {
-      answers[index] = [question.correct_answer, ...question.incorrect_answers];
+      shuffledAnswers[index] = [question.correct_answer, ...question.incorrect_answers];
     });
-    for (let i = 0; i < answers.length - 1; i += 1) {
-      let currentIndex = answers[i].length;
+    for (let i = 0; i < shuffledAnswers.length - 1; i += 1) {
+      let currentIndex = shuffledAnswers[i].length;
       let temporaryValue;
       let randomIndex;
       while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = answers[i][currentIndex];
-        answers[i][currentIndex] = answers[i][randomIndex];
-        answers[i][randomIndex] = temporaryValue;
+        temporaryValue = shuffledAnswers[i][currentIndex];
+        shuffledAnswers[i][currentIndex] = shuffledAnswers[i][randomIndex];
+        shuffledAnswers[i][randomIndex] = temporaryValue;
       }
     }
+    this.setState({
+      answers: shuffledAnswers,
+    });
   }
 
   render() {
