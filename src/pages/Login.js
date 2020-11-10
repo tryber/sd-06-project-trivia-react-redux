@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getLogin, getToken, fetchQuestions } from '../actions';
+import '../css/Login.css';
 
 class Login extends Component {
   constructor() {
@@ -63,39 +64,47 @@ class Login extends Component {
     const { handleChange, handleDisableButton, handleClick } = this;
     const { email, name } = this.state;
     return (
-      <div>
-        <label htmlFor="email-input">
-          Digite seu e-mail do Gravatar:
-          <input
-            type="text"
-            name="email"
-            id="email-input"
-            value={ email }
-            onChange={ handleChange }
-            data-testid="input-gravatar-email"
-          />
-        </label>
-        <label htmlFor="name-input">
-          Digite seu nome:
-          <input
-            type="text"
-            name="name"
-            id="name-input"
-            value={ name }
-            onChange={ handleChange }
-            data-testid="input-player-name"
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ handleDisableButton() }
-          onClick={ handleClick }
-        >
-          Jogar
-        </button>
-        <div>
-          <Link data-testid="btn-settings" to="/settings">
+      <div className="container">
+        <div className="container-div"></div>
+        <div className="container-email">
+          <label htmlFor="email-input">
+            Digite seu e-mail do Gravatar:
+            <input
+              type="text"
+              name="email"
+              id="email-input"
+              value={ email }
+              onChange={ handleChange }
+              data-testid="input-gravatar-email"
+            />
+          </label>
+        </div>
+        <div className="container-name">
+          <label htmlFor="name-input">
+            Digite seu nome:
+            <input
+              type="text"
+              name="name"
+              id="name-input"
+              value={ name }
+              onChange={ handleChange }
+              data-testid="input-player-name"
+            />
+          </label>
+        </div>
+        <div className="container-play">
+          <button
+            type="button"
+            data-testid="btn-play"
+            id="btn-play"
+            disabled={ handleDisableButton() }
+            onClick={ handleClick }
+          >
+            Jogar
+          </button>
+        </div>
+        <div className="container-link">
+          <Link id="link-id" data-testid="btn-settings" to="/settings">
             Configurações
           </Link>
         </div>

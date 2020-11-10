@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+  background-image: url(https://s3-alpha-sig.figma.com/img/a950/2d5f/4fed7d2915c034feb0f76fbcf3baa5d1?Expires=1606089600&Signature=J5cxaYS-VwxvJJRPCVRmMkGTPbpEBMCbgNz6NzfmLqHgTlf-1obXiTP4JjG-o0Kz4ojOUBVfmazd~Q2j~eSiPK5ADp99Xni7kb8ie6IO~HTrfg4~z1x6IJTOXr38nJUShGsJXq4MArMzMy9lvYZBnql-uVnJvRvpaifwQFQjVRdtWgbytA-1dLyYL0W0wz7Sb4CLS3pNvhYg2Ijo3Img3yejjoAr197slaGjJUlCd-khT4BvAMMB-NW4PJoGXdudHX0xVIABUa4GPxCuhrcdB~jXIrxrPA8KN6W-ZJlFxp6oxOQaQx6YwuXmbOFzh7ZzHJxdg6Oz47dOi~LNCDRwaA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA);
+  width: 1526px;
+  height: 1051px;
+  left: 0px;
+  top: -189px;
+}
+
+.container, .container-name, .container-input, .container-play {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  flex-direction: column;
+  padding: 40px;
+  font-size: 25px;
+  font-weight: 500;
+  color: white;
+}
+
+.container-div {
+  height: 280px;
+}
+
+.container-play {
+  height: 50px;
+}
+
+#email-input, #name-input {
+  width: 340px;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  
+  border: 4px solid #FFFFFF;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 30px 5px #FFFFFF;
+  border-radius: 6px;
+  background: transparent;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+
+  color: #000;
+}
+
+.container-link {
+  border: 4px solid #0CA5FC;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 30px 5px #0CA5FC;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background: transparent;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 33px;
+  padding: 10px 70px;
+  color: white;
+}
+
+#link-id {
+  color: white;
+  text-decoration: none;
+}
+
+#btn-play {
+  width: 319px;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  
+  border: 4px solid #0CA5FC;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 30px 5px #0CA5FC;
+  border-radius: 6px;
+  background: transparent;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 33px;
+
+  color: #FFFFFF;
+}
