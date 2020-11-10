@@ -1,4 +1,10 @@
-import { TOKEN_SUCCESS, SAVE_PLAYER_DATA, TOKEN_REQUEST, PLAYER_SCORE } from '../actions';
+import {
+  TOKEN_SUCCESS,
+  SAVE_PLAYER_DATA,
+  TOKEN_REQUEST,
+  PLAYER_SCORE,
+  PLAY_AGAIN,
+} from '../actions';
 
 const initialState = {
   tokenResponse: '',
@@ -32,6 +38,8 @@ function user(state = initialState, action) {
       ...state,
       score: state.score + action.score,
     };
+  case PLAY_AGAIN:
+    return initialState;
   default:
     return state;
   }

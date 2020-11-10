@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
+import { resetToPlayAgain } from '../redux/actions';
 
 class Ranking extends React.Component {
   constructor() {
@@ -19,7 +20,6 @@ class Ranking extends React.Component {
 
   getLocalStorageRanking() {
     const storageRanking = JSON.parse(localStorage.getItem('ranking'));
-    console.log(storageRanking);
     storageRanking.sort((a, b) => b.score - a.score);
     this.setState({
       ranking: [...storageRanking],
@@ -35,14 +35,14 @@ class Ranking extends React.Component {
       const saveRanking = [...storageRanking, newPlayer];
       localStorage.setItem('ranking', JSON.stringify(saveRanking));
     }
-    if (!storageRanking) {
+    if (!storageRanking && name !== '') {
       localStorage.setItem('ranking', JSON.stringify([newPlayer]));
     }
   }
 
   render() {
     const { ranking } = this.state;
-    console.log(ranking);
+    const { playAgain } = this.props;
     return (
       <div>
         <h2 data-testid="ranking-title">Ranking</h2>
@@ -53,20 +53,17 @@ class Ranking extends React.Component {
                 key={ `name${index}` }
                 data-testid={ `player-name-${index}` }
               >
-                Nome:
                 { player.name }
               </span>
               <span
                 key={ `score${index}` }
                 data-testid={ `player-score-${index}` }
               >
-                Score:
                 { player.score }
               </span>
               <span
                 key={ `answer${index}` }
               >
-                Respostas:
                 {player.correctAnswers}
               </span>
               <img src={ player.img } alt="Palyer Avatar" />
@@ -76,6 +73,7 @@ class Ranking extends React.Component {
           <button
             type="button"
             data-testid="btn-go-home"
+            onClick={ playAgain }
           >
             Play Again
           </button>
@@ -85,6 +83,10 @@ class Ranking extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  playAgain: () => dispatch(resetToPlayAgain()),
+});
+
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
@@ -92,11 +94,12 @@ const mapStateToProps = (state) => ({
   correctAnswers: state.game.correctAnswers,
 });
 
-export default connect(mapStateToProps)(Ranking);
+export default connect(mapStateToProps, mapDispatchToProps)(Ranking);
 
 Ranking.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   correctAnswers: PropTypes.number.isRequired,
+  playAgain: PropTypes.func.isRequired,
 };

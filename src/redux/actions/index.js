@@ -8,6 +8,7 @@ export const TIMER_START = 'TIMER_START';
 export const TIMER_LOST = 'TIMER_LOST';
 export const PLAYER_SCORE = 'PLAYER_SCORE';
 export const CORRECT_ANSWER = 'CORRECT_ANSWER';
+export const PLAY_AGAIN = 'PLAY_AGAIN';
 
 export const receiveTokenSuccess = (data) => ({
   type: TOKEN_SUCCESS,
@@ -77,4 +78,8 @@ export const getPlayerScore = (score) => ({
 export const correctAnswerCounter = () => ({
   type: CORRECT_ANSWER,
   amount: 1,
+});
+
+export const resetToPlayAgain = () => ({
+  type: PLAY_AGAIN,
 });

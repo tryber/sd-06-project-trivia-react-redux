@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { resetToPlayAgain } from '../redux/actions';
 
 class FeedbackComponent extends React.Component {
   constructor() {
@@ -33,7 +34,7 @@ class FeedbackComponent extends React.Component {
   }
 
   render() {
-    const { name, email, score, correctAnswers } = this.props;
+    const { name, email, score, correctAnswers, playAgain } = this.props;
 
     return (
       <div>
@@ -51,6 +52,7 @@ class FeedbackComponent extends React.Component {
           <button
             data-testid="btn-play-again"
             type="button"
+            onClick={ playAgain }
           >
             Play Again
           </button>
@@ -69,6 +71,10 @@ class FeedbackComponent extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  playAgain: () => dispatch(resetToPlayAgain()),
+});
+
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
@@ -76,11 +82,12 @@ const mapStateToProps = (state) => ({
   correctAnswers: state.game.correctAnswers,
 });
 
-export default connect(mapStateToProps)(FeedbackComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackComponent);
 
 FeedbackComponent.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   correctAnswers: PropTypes.number.isRequired,
+  playAgain: PropTypes.func.isRequired,
 };
