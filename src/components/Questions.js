@@ -32,11 +32,12 @@ class Questions extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { questionsAnswer } = this.state;
     const { questions, history } = this.props;
+    const five = 5;
     if (prevState.questionsAnswer !== questionsAnswer
       || prevProps.questions.length !== questions.length) {
       this.callRandomQuestions();
     }
-    if (questionsAnswer > 5) history.push('/feedback');
+    if (questionsAnswer > five) history.push('/feedback');
   }
 
   async fetchAPIQuestions() {
@@ -70,7 +71,6 @@ class Questions extends Component {
     const lastQuestion = 4;
     const answerTime = 30;
     const { history, resetTime } = this.props;
-
     resetTime(answerTime);
     this.setState({
       checked: false,
@@ -82,6 +82,7 @@ class Questions extends Component {
       this.setState({ questionsAnswer: questionsAnswer + 1 });
     }
     this.downTime();
+    this.setState({ disable: false });
   }
 
   randomQuestions() {
@@ -110,6 +111,8 @@ class Questions extends Component {
       }, ONE_SECOND);
       setTimeout(() => {
         clearInterval(time);
+        this.disableButtons();
+        this.setState({ checked: true });
       }, ALL_TIME);
       this.setState({
         timeInterval: time,
