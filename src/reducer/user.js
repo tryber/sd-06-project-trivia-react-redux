@@ -23,7 +23,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
   case HANDLE_SCORE:
     return {
       ...state,
-      score: action.score,
+      score: state.score + action.score,
     };
   default:
     return state;
