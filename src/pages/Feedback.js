@@ -33,7 +33,7 @@ class Feedback extends Component {
         <Header />
         {this.feedbackMessage()}
         <div>
-          <p data-testid="feedback-total-question">
+          <p>
             Você acertou
             {' '}
             <span data-testid="feedback-total-question">{assertions}</span>

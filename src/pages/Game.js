@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, QuestionCard, Loading } from '../components';
-import { getQuestions } from '../actions';
+import { getQuestions, updateScoreAndAssertions } from '../actions';
 
 class Game extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class Game extends Component {
   }
 
   async componentDidMount() {
-    const { token, dispatchQuestions } = this.props;
+    const { token, dispatchQuestions, sendScore } = this.props;
+    sendScore(0, 0);
     await dispatchQuestions(token);
     this.updateState();
     this.startingInterval();
@@ -89,6 +90,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchQuestions: (token) => dispatch(getQuestions(token)),
+  sendScore: (score, assertions) => dispatch(updateScoreAndAssertions(score, assertions)),
 });
 
 Game.propTypes = {
