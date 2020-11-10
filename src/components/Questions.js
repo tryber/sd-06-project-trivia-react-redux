@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import './Questions.css';
+import '../css/Questions.css';
 import { reqQuestions } from '../services';
 import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
 

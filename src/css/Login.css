@@ -1,0 +1,29 @@
+body {
+  background-color: rgb(247, 250, 47);
+}
+
+h1 {
+  font-size: 100px;
+  color: rgb(25, 25, 224);
+  text-shadow: 5px 15px 20px rgb(14, 13, 13);
+  text-align: center;
+}
+
+.inputLogin {
+  border: 3px solid rgb(0, 162, 255);
+  margin: 3px
+}
+
+.buttonPlay {
+  background-color: rgb(86, 148, 184);
+  font-size: 20px;
+  border-radius: 10%;
+  /* color: black; */
+  /* border: 3px solid rgb(0, 162, 255); */
+}
+
+.buttonSettings {
+  margin-left: 90%;
+  background-color: rgb(94, 161, 201);
+  border-radius: 10%;
+}
