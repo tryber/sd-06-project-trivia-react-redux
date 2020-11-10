@@ -58,7 +58,7 @@ class Login extends React.Component {
   render() {
     const { disabled, user, email, redirect } = this.state;
     const { infoSave } = this.props;
-    if (redirect === true) {
+    if (redirect) {
       this.handleRedirect();
     }
     return (

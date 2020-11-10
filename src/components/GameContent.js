@@ -24,48 +24,46 @@ class GameContent extends React.Component {
       counter: 30,
     };
 
-    this.shuffle = this.shuffle.bind(this);
+    this.shuffleQuestions = this.shuffleQuestions.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
     this.setResult = this.setResult.bind(this);
     this.setPlayerRank = this.setPlayerRank.bind(this);
+    this.setTimer = this.setTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.setNextQuestion = this.setNextQuestion.bind(this);
-    this.handleScore = this.handleScore.bind(this);
-    this.handleLocalStorage = this.handleLocalStorage.bind(this);
+    this.setPlayerScore = this.setPlayerScore.bind(this);
+    this.updatePlayerData = this.updatePlayerData.bind(this);
     this.handleClickNextButton = this.handleClickNextButton.bind(this);
+    this.renderCorrectOption = this.renderCorrectOption.bind(this);
+    this.renderWrongOption = this.renderWrongOption.bind(this);
+    this.renderOptions = this.renderOptions.bind(this);
   }
 
   componentDidMount() {
     this.fetchApi();
-
-    this.shuffle([1, 2, 1 + 2, 2 + 2]);
+    this.shuffleQuestions([1, 2, 1 + 2, 2 + 2]);
     this.setTimer();
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    const resetedTimer = 30;
-    const { counter, current } = this.state;
-
-    if (counter === resetedTimer && current !== prevState.current) {
-      this.setTimer();
-    }
-
-    if (counter <= 0) {
-      this.resetTimer();
-      this.setResult(false);
-    }
+    this.setTimer(prevState);
+    this.resetTimer();
   }
 
   setNextQuestion() {
     this.setState((prevState) => ({ current: prevState.current + 1 }));
   }
 
-  setTimer() {
-    const second = 1000;
-    this.setState({ answer: false });
-    this.counterId = setInterval(
-      () => this.setState((prevState) => ({ counter: prevState.counter - 1 })), second,
-    );
+  setTimer(previousState = {}) {
+    const { counter, current } = this.state;
+    const resetedTimer = 30;
+
+    if (counter === resetedTimer && current !== previousState.current) {
+      const second = 1000;
+      this.counterId = setInterval(
+        () => this.setState((prevState) => ({ counter: prevState.counter - 1 })), second,
+      );
+    }
   }
 
   setResult(result) {
@@ -82,12 +80,48 @@ class GameContent extends React.Component {
       email: login.email,
     };
     dispatchRanking(playerRank);
-    localStorage.setItem('ranking', copiedPlayers);
+    localStorage.setItem('ranking', JSON.stringify(copiedPlayers));
+  }
+
+  setPlayerScore(questionsDataARR, counter) {
+    const { score, assertions } = this.state;
+    const { difficulty } = questionsDataARR;
+    const ten = 10;
+    const difficultyOptions = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+
+    const sum = score + (ten + (counter * difficultyOptions[difficulty]));
+    const incrementedAssertions = assertions + 1;
+
+    this.updatePlayerData(sum, incrementedAssertions);
+  }
+
+  updatePlayerData(sum, incrementedAssertions) {
+    const { login, dispatchPlayerResult } = this.props;
+
+    const player = {
+      player: {
+        name: login.user,
+        assertions: incrementedAssertions,
+        score: sum,
+        gravatarEmail: login.email,
+      },
+    };
+    this.setState({ score: sum, assertions: incrementedAssertions });
+    localStorage.setItem('state', JSON.stringify(player));
+    dispatchPlayerResult(player);
   }
 
   resetTimer() {
-    clearInterval(this.counterId);
-    this.setState({ counter: 30 });
+    const { counter } = this.state;
+    if (counter <= 0) {
+      clearInterval(this.counterId);
+      this.setState({ counter: 30 });
+      this.setResult(false);
+    }
   }
 
   async fetchApi() {
@@ -109,16 +143,14 @@ class GameContent extends React.Component {
     this.resetTimer();
   }
 
-  shuffle(array) {
+  shuffleQuestions(array) {
     let currentIndex = array.length;
-    let temporaryValue = 0;
     let randomIndex = 0;
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex],
+        array[currentIndex]];
     }
     this.setState({ sort: array });
   }
@@ -126,38 +158,58 @@ class GameContent extends React.Component {
   handleClickNextButton() {
     const { current } = this.state;
     const questionsIndexes = [1, 2, 2 + 1, 2 + 2];
-    this.shuffle(questionsIndexes);
-    this.setState({ btnDisabled: false, current: current + 1 });
+    this.shuffleQuestions(questionsIndexes);
+    this.setState({ btnDisabled: false, current: current + 1, answer: false });
   }
 
-  handleScore(questionsDataARR, counter) {
-    const { score, assertions } = this.state;
-    const { difficulty } = questionsDataARR;
-    let difficultyNumber = 0;
-    const ten = 10;
-    if (difficulty === 'easy') { difficultyNumber = 1; }
-    if (difficulty === 'medium') { difficultyNumber = 2; }
-    if (difficulty === 'hard') { difficultyNumber = 1 + 2; }
-    const sum = score + (ten + (counter * difficultyNumber));
-    const incrementedAssertions = assertions + 1;
-    this.setState({ score: sum, assertions: incrementedAssertions });
+  renderCorrectOption(item, index) {
+    const { element, current, btnDisabled, sort, answer, counter } = this.state;
+    const questionsDataARR = element.results[current];
 
-    this.handleLocalStorage(sum, incrementedAssertions);
+    return (
+      <button
+        disabled={ btnDisabled }
+        key={ `btn${index}` }
+        id={ `order-${sort[index]}` }
+        type="button"
+        className={ `${answer ? 'correct' : null}` }
+        onClick={ (event) => this.handleClickAnswer(event)
+          && this.setPlayerScore(questionsDataARR, counter) }
+        data-testid="correct-answer"
+      >
+        {item}
+      </button>
+    );
   }
 
-  handleLocalStorage(sum, attAssertions) {
-    const { login, dispatchResults } = this.props;
-    const player = {
-      player: {
-        name: login.user,
-        assertions: attAssertions,
-        score: sum,
-        gravatarEmail: login.email,
-      },
-    };
-    const jsonAux = JSON.stringify(player);
-    localStorage.setItem('state', jsonAux);
-    dispatchResults(player);
+  renderWrongOption(item, index) {
+    const { btnDisabled, sort, answer } = this.state;
+
+    return (
+      <button
+        disabled={ btnDisabled }
+        key={ `btn${index}` }
+        id={ `order-${sort[index]}` }
+        type="button"
+        className={ ` ${answer ? 'incorrect' : null}` }
+        onClick={ (event) => this.handleClickAnswer(event) }
+        data-testid={ `wrong-answer-${index}` }
+      >
+        {item}
+      </button>);
+  }
+
+  renderOptions() {
+    const { element, current } = this.state;
+    const questionsDataARR = element.results[current];
+    const correctOption = questionsDataARR.correct_answer;
+    const questions = [...questionsDataARR.incorrect_answers, correctOption];
+
+    return (questions.map((question, index) => (
+      question === correctOption
+        ? this.renderCorrectOption(question, index)
+        : this.renderWrongOption(question, index)
+    )));
   }
 
   renderNextButton() {
@@ -195,50 +247,19 @@ class GameContent extends React.Component {
 
   render() {
     const { element,
-      current, isLoading, answer, sort, btnDisabled, counter, redirect } = this.state;
+      current, isLoading, btnDisabled, counter, redirect } = this.state;
 
     if (isLoading) {
       return <p>Carregando...</p>;
     }
     if (redirect) return <Redirect to="/" />;
     const questionsDataARR = element.results[current];
-    const correctQuestion = questionsDataARR.correct_answer;
-    const questions = [...questionsDataARR.incorrect_answers, correctQuestion];
-    const correctAnswer = (item, index) => (
-      <button
-        disabled={ btnDisabled }
-        key={ `btn${index}` }
-        id={ `order-${sort[index]}` }
-        type="button"
-        className={ `${answer ? 'correct' : null}` }
-        onClick={ (event) => this.handleClickAnswer(event)
-          && this.handleScore(questionsDataARR, counter) }
-        data-testid="correct-answer"
-      >
-        {item}
-      </button>
-    );
-    const wrongAnswer = (item, index) => (
-      <button
-        disabled={ btnDisabled }
-        key={ `btn${index}` }
-        id={ `order-${sort[index]}` }
-        type="button"
-        className={ ` ${answer ? 'incorrect' : null}` }
-        onClick={ (event) => this.handleClickAnswer(event) }
-        data-testid={ `wrong-answer-${index}` }
-      >
-        {item}
-      </button>);
+
     return (
       <div className="father">
         <p data-testid="question-category">{questionsDataARR.category}</p>
         <p data-testid="question-text">{questionsDataARR.question}</p>
-        {questions.map((item, index) => (
-          item === questionsDataARR.correct_answer
-            ? correctAnswer(item, index)
-            : wrongAnswer(item, index)
-        ))}
+        {this.renderOptions()}
         <div className="counter">
           {!btnDisabled && <span>{counter}</span>}
         </div>
@@ -254,12 +275,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchResults: (result) => dispatch(addResult(result)),
+  dispatchPlayerResult: (result) => dispatch(addResult(result)),
   dispatchRanking: (playerRank) => dispatch(addPlayerRank(playerRank)),
 });
 
 GameContent.propTypes = {
-  dispatchResults: PropTypes.func.isRequired,
+  dispatchPlayerResult: PropTypes.func.isRequired,
   dispatchRanking: PropTypes.func.isRequired,
   login: PropTypes.shape().isRequired,
   players: PropTypes.arrayOf(PropTypes.any).isRequired,
