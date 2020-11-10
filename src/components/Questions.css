@@ -1,6 +1,6 @@
 .btn-sm {
   background: darkcyan;
-  border: solid .25rem #000b7e;
+  border: solid .25rem #003e80;
   font-size: 3rem;
   white-space: normal;
   word-wrap: break-word;
@@ -18,4 +18,8 @@
 .option {
   margin-top: 3%;
   width: 60%;
+}
+
+.question {
+  font-size: 18px;
 }

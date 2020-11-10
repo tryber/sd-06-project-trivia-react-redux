@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import './Feedback.css';
 
 class Feedback extends Component {
   constructor() {
@@ -14,7 +15,7 @@ class Feedback extends Component {
 
   ggMessage() {
     return (
-      <h1>
+      <h1 className="h1">
         Mandou bem!
       </h1>
     );
@@ -22,7 +23,7 @@ class Feedback extends Component {
 
   bgMessage() {
     return (
-      <h1>
+      <h1 className="h1">
         Podia ser melhor...
       </h1>
     );
@@ -30,16 +31,16 @@ class Feedback extends Component {
 
   gameFeedback(answers, score) {
     return (
-      <section>
+      <section className="section">
         <p>
-          Você acertou
+          <span>Você acertou </span>
           <span data-testid="feedback-total-question">{ answers }</span>
-          questões!
+          <span> questões!</span>
         </p>
         <p>
-          Um total de
+          <span>Um total de </span>
           <span data-testid="feedback-total-score">{ score }</span>
-          pontos
+          <span> pontos</span>
         </p>
       </section>
     );
@@ -49,17 +50,17 @@ class Feedback extends Component {
     const { assertions, score } = this.state;
     const numberOfAnswers = 3;
     return (
-      <main>
+      <main className="section">
         <Header />
         <h2 data-testid="feedback-text">
           {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
         </h2>
         {this.gameFeedback(assertions, score)}
         <div>
-          <Link to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
+          <Link className="link" to="/ranking" data-testid="btn-ranking">VER RANKING</Link>
         </div>
         <div>
-          <Link to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
+          <Link className="link" to="/" data-testid="btn-play-again">JOGAR NOVAMENTE</Link>
         </div>
       </main>
     );

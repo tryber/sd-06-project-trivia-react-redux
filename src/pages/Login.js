@@ -97,7 +97,7 @@ class FormLogin extends React.Component {
               disabled={ Disabled }
               onClick={ this.setLocalStorage }
               id="play-button"
-              className="btn btn-primary btn-block"
+              className="btn btn-info btn-block"
             >
               Jogar!!
             </button>

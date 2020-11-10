@@ -120,6 +120,25 @@ class Questions extends React.Component {
     );
   }
 
+  // decode(text) {
+  //   let map = {
+  //     '&amp;': '&',
+  //     '&#038;': '&',
+  //     '&lt;': '<',
+  //     '&gt;': '>',
+  //     '&quot;': '"',
+  //     '&#039;': "'",
+  //     '&#8217;': '’',
+  //     '&#8216;': '‘',
+  //     '&#8211;': '–',
+  //     '&#8212;': '—',
+  //     '&#8230;': '…',
+  //     '&#8221;': '”',
+  //   };
+
+  //   return text.replace(/\&[\w\d\#]{2,5}\;/g, (m) => { return map[m]; });
+  // }
+
   render() {
     const { currentQuestion, disable } = this.state;
     const { question } = this.props;
@@ -149,17 +168,17 @@ class Questions extends React.Component {
     return (
       <div>
         {timer }
-        <h3 data-testid="question-category">
-          Categoria:
+        <h4 data-testid="question-category">
+          <span>Categoria: </span>
           { question[currentQuestion].category }
-        </h3>
+        </h4>
 
-        <p data-testid="question-text">
-          Pergunta:
+        <p data-testid="question-text" className="question">
+          <span>Pergunta: </span>
           { question[currentQuestion].question }
         </p>
 
-        <p>Alternativas:  </p>
+        <p className="question">Alternativas:  </p>
         {question[currentQuestion].respostas.map((resposta, index) => (
           <div key={ index } className="text-center">
             <button
