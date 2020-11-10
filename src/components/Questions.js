@@ -179,7 +179,6 @@ class Questions extends React.Component {
       }
       return <Redirect to="/feedback" />;
     }
-    console.log(question[currentQuestion].difficulty)
     return (
       <div>
         <div className="div-questions">

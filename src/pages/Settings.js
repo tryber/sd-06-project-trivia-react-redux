@@ -55,7 +55,7 @@ export default class Settings extends React.Component {
                 name="amount"
                 id="trivia_amount"
                 className="form-control"
-                onChange={this.stateUpdater}
+                onChange={ this.stateUpdater }
                 min="1"
                 max="50"
                 value={ amount }
@@ -64,7 +64,12 @@ export default class Settings extends React.Component {
 
             <label htmlFor="category">
               Select Category:
-              <select onChange={this.stateUpdater} name="category" value={ category } className="form-control">
+              <select
+                onChange={ this.stateUpdater }
+                name="category"
+                value={ category }
+                className="form-control"
+              >
                 <option value="any">Any Category</option>
                 <option value="9">General Knowledge</option>
                 <option value="10">Entertainment: Books</option>
@@ -95,7 +100,12 @@ export default class Settings extends React.Component {
 
             <label htmlFor="difficult">
               Select Difficulty:
-              <select onChange={this.stateUpdater} name="difficult" value={ difficult } className="form-control">
+              <select
+                onChange={ this.stateUpdater }
+                name="difficult"
+                value={ difficult }
+                className="form-control"
+              >
                 <option value="any">Any Difficulty</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
