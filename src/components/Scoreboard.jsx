@@ -6,7 +6,6 @@ import gameover from './gameover.png'
 
 const Scoreboard = (props) => {
   const { asserts, score } = props;
-  console.log('feed', asserts);
 
   const ScoreTable = () => {
     return(
