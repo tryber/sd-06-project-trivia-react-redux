@@ -1,0 +1,33 @@
+@import '../../visual_identity/general_styles/color.scss';
+@import '../../visual_identity/general_styles/flex_boxes.scss';
+@import '../../visual_identity/general_styles/buttons.scss';
+@import '../../visual_identity/general_styles/inputs.scss';
+
+.login-page {
+  @include flexCenter(column);
+  background: $lightGreen;
+  height: 100vh;
+
+  .inputs-container, header {
+    @include flexCenter(column);
+
+    h1 {
+      color: $darkBlue;
+    }
+
+    input {
+      text-align: center;
+      margin-bottom: 5vh;
+      @include inputSubtleDarkBlue();
+    }
+  }
+
+  .buttons-container {
+    @include flexCenter(row);
+    width: 50vw;
+
+    button {
+      @include btnDarkBlue;
+    }
+  }
+}

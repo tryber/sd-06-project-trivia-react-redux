@@ -1,0 +1,26 @@
+@import './color.scss';
+
+@mixin inputSubtleDarkBlue {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px $darkBlue solid;
+  color: $darkBlue;
+
+  &:hover {
+    border-bottom: 3.5px $darkBlue solid;
+    font-weight: bold;
+
+    &::placeholder {
+      font-weight: bold;
+    }
+
+    &:-webkit-autofill  {
+      // should do
+      color: white;
+    }
+  }
+
+  &::placeholder {
+    color: $darkBlue;
+  }
+}

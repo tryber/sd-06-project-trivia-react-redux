@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchGameQuestions from '../services/fetchGameQuestions';
-import './style_sheets/Game.css';
+import './style_sheets/Game.scss';
 import { GameHeader, GameTimer } from '../components';
 import {
   randomizeAnswers,
@@ -40,7 +40,7 @@ class Game extends Component {
     const QUESTIONS = API_RESPONSE.results;
 
     await this.saveQuestionsToState(QUESTIONS);
-    this.setCurrentQuestion();
+    await this.setCurrentQuestion();
   }
 
   componentWillUnmount() {
@@ -111,63 +111,68 @@ class Game extends Component {
     const { time } = this.props;
 
     return (
-      <main className="game-board">
-        <section className="game-board-container">
-          <div className="question-category" data-testid="question-category">
-            {currentQuestion.category}
-          </div>
-          <div className="question-text" data-testid="question-text">
-            {currentQuestion.question}
-          </div>
-        </section>
-        <section className="game-board-container">
-          <div className="game-answers">
-            {currentAnswers.map((answer, index) => (
-              answer.isCorrect
-                ? <button
-                  type="button"
-                  key={ index }
-                  id="correct-answer"
-                  data-testid="correct-answer"
-                  className={ answerColor ? 'correct-answer' : null }
-                  onClick={ this.handleClick }
-                  disabled={ (time === 0 || isAnswered) ? true : null }
-                >
-                  {answer.correctAnswer}
-                </button>
-                : <button
-                  type="button"
-                  key={ index }
-                  id="wrong-answer"
-                  data-testid={ `wrong-answer-${answer.index}` }
-                  className={ answerColor ? 'wrong-answer' : null }
-                  onClick={ this.handleClick }
-                  disabled={ (time === 0 || isAnswered) ? true : null }
-                >
-                  {answer.answer}
-                </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ this.nextButton }
-            className={ nextButtonClass }
-          >
+      <section>
+        <h2 className="question-category" data-testid="question-category">
+          {currentQuestion.category}
+        </h2>
+        <main className="game-board">
+          <section className="game-board-inner-container-top">
+            <div className="question-text" data-testid="question-text">
+              {currentQuestion.question}
+            </div>
+          </section>
+          <section className="game-board-inner-container-bottom">
+            <div className="game-answers">
+              {currentAnswers.map((answer, index) => (
+                answer.isCorrect
+                  ? <button
+                    type="button"
+                    key={ index }
+                    id="correct-answer"
+                    data-testid="correct-answer"
+                    className={ answerColor ? 'correct-answer' : null }
+                    onClick={ this.handleClick }
+                    disabled={ (time === 0 || isAnswered) ? true : null }
+                  >
+                    {answer.correctAnswer}
+                  </button>
+                  : <button
+                    type="button"
+                    key={ index }
+                    id="wrong-answer"
+                    data-testid={ `wrong-answer-${answer.index}` }
+                    className={ answerColor ? 'wrong-answer' : null }
+                    onClick={ this.handleClick }
+                    disabled={ (time === 0 || isAnswered) ? true : null }
+                  >
+                    {answer.answer}
+                  </button>
+              ))}
+
+            </div>
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.nextButton }
+              className={ nextButtonClass }
+            >
             Próxima
-          </button>
-        </section>
-      </main>
+            </button>
+          </section>
+        </main>
+      </section>
     );
   }
 
   render() {
     const { isLoading } = this.state;
     return (
-      <div>
+      <div className="game-page">
         <GameHeader />
-        {isLoading ? <p>Loading</p> : this.renderGameBoard()}
-        <GameTimer />
+        <div className="game-board-container">
+          {isLoading ? <p>Loading</p> : this.renderGameBoard()}
+          <GameTimer />
+        </div>
       </div>
     );
   }

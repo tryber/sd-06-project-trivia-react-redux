@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
 import { saveToken, saveName, saveEmail, saveScore } from '../actions';
+import './style_sheets/Login.scss';
+import triviaLogo from '../visual_identity/logo/trivia_logo_noBg.png';
 
 class Login extends React.Component {
   constructor() {
@@ -57,22 +59,27 @@ class Login extends React.Component {
     const API_RESPONSE = await fetchToken();
     const TOKEN = API_RESPONSE.token;
 
-    localStorage.setItem('token', TOKEN);
+    await localStorage.setItem('token', TOKEN);
 
     const { dispatchSaveToken, dispatchSaveName, dispatchSaveEmail } = this.props;
     const { userName, email } = this.state;
 
-    dispatchSaveToken(TOKEN);
-    dispatchSaveName(userName);
-    dispatchSaveEmail(email);
+    await dispatchSaveToken(TOKEN);
+    await dispatchSaveName(userName);
+    await dispatchSaveEmail(email);
   }
 
   render() {
     const { userName, email, isDisabled } = this.state;
 
     return (
-      <div>
-        <label htmlFor="email">
+      <main className="login-page">
+        <header>
+          <img src={ triviaLogo } width="140px" alt="trivia-logo" />
+          <h1>Trivia Game:</h1>
+        </header>
+
+        <div className="inputs-container">
           <input
             id="email"
             name="email"
@@ -81,9 +88,6 @@ class Login extends React.Component {
             data-testid="input-gravatar-email"
             onChange={ this.handleInputChange }
           />
-        </label>
-
-        <label htmlFor="userName">
           <input
             id="userName"
             name="userName"
@@ -92,29 +96,30 @@ class Login extends React.Component {
             data-testid="input-player-name"
             onChange={ this.handleInputChange }
           />
-        </label>
+        </div>
 
-        <Link to="/game">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isDisabled }
-            onClick={ this.handleButtonClick }
-          >
+        <div className="buttons-container">
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ isDisabled }
+              onClick={ this.handleButtonClick }
+            >
             Jogar
-          </button>
-        </Link>
+            </button>
+          </Link>
 
-        <Link to="/settings">
-          <button
-            type="button"
-            data-testid="btn-settings"
-          >
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
             Configurações
-          </button>
-        </Link>
-
-      </div>
+            </button>
+          </Link>
+        </div>
+      </main>
     );
   }
 }
