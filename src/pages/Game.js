@@ -75,7 +75,7 @@ class Game extends Component {
             key={ countoString }
             type="button"
             data-testid="correct-answer"
-            className={`bttn-question ${green}` } 
+            className={ `bttn-question ${green}` }
             onClick={ () => this.testQuestion(true) }
             disabled={ disableAnwsers }
           >
@@ -89,7 +89,7 @@ class Game extends Component {
           type="button"
           data-testid={ `wrong-answer-${index}` }
           key={ countoString }
-          className={`bttn-question ${ red }`}
+          className={ `bttn-question ${red}` }
           onClick={ () => this.testQuestion(false) }
           disabled={ disableAnwsers }
         >
@@ -171,7 +171,7 @@ class Game extends Component {
               Próxima
             </button>
           )}
-          <span className="timer">{`${ time } seg`}</span>
+          <span className="timer">{`${time} seg`}</span>
         </div>
       </div>
     );

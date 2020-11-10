@@ -61,7 +61,7 @@ class Login extends Component {
           </button>
         </Link>
         <div className="div-login">
-          <h1 className="nome-logo" >Show do Tio Patinhas</h1>
+          <h1 className="nome-logo">Show do Tio Patinhas</h1>
           <img className="img-logo" src={ logo } alt="Tio patinhas" />
           <label htmlFor="name">
             <input

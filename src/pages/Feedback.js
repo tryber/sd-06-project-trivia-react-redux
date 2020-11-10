@@ -28,11 +28,13 @@ class Feedback extends Component {
       <div>
         <Header />
         <div className="feedback">
-          <h3 className="text-title" data-testid="feedback-text">{this.feedbackMessage()}</h3>
+          <h3 className="text-title" data-testid="feedback-text">
+            {this.feedbackMessage()}
+          </h3>
           <span className="text">Score:</span>
           <span className="text" data-testid="feedback-total-score">{score}</span>
           <span className="text">Total de questões acertadas:</span>
-          <span className="text"data-testid="feedback-total-question">
+          <span className="text" data-testid="feedback-total-question">
             {assertions}
           </span>
           <Link to="/">
