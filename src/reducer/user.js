@@ -1,9 +1,10 @@
-import { HANDLE_USER, HANDLE_AVATAR } from '../actions';
+import { HANDLE_USER, SAVE_ASSERTION, SAVE_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
-  avatar: '',
+  assertions: 0,
+  score: 0,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -14,10 +15,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
       name: action.name,
       email: action.email,
     };
-  case HANDLE_AVATAR:
+  case SAVE_ASSERTION:
     return {
       ...state,
-      avatar: action.avatar,
+      assertions: action.assertions,
+    };
+  case SAVE_SCORE:
+    return {
+      ...state,
+      score: action.score,
     };
   default:
     return state;
