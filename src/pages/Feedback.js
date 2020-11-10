@@ -8,11 +8,11 @@ class Feedback extends React.Component {
 
   render() {
     const { gameBoard } = this.props;
-    const asserts = gameBoard.assertions
+    const asserts = gameBoard.assertions;
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={asserts}/>
+        <Scoreboard asserts={ asserts }/>
       </div>
     );
   }
@@ -22,5 +22,8 @@ const mapStateToProps = (state) => ({
   gameBoard: state.game.gameBoard,
 });
 
-export default connect(mapStateToProps, null)(Feedback);
+Feedback.propTypes = {
+  gameBoard: PropTypes.shape({}).isRequired,
+};
 
+export default connect(mapStateToProps, null)(Feedback);
