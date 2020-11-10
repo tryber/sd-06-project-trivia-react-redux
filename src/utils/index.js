@@ -28,11 +28,16 @@ export function randomizeAnswers(correctAnswer, wrongAnswers) {
 
 // Local Storage management
 
-export function createLocalStore(name = 'nome', score, gravatarEmail = 'nome@nome.com') {
+export function createLocalStore(
+  name = 'nome',
+  score,
+  gravatarEmail = 'nome@nome.com',
+  assertions = 0,
+) {
   const createdObject = {
     player: {
       name,
-      assertions: 0,
+      assertions,
       score,
       gravatarEmail,
     },
@@ -54,4 +59,18 @@ export function calculateScore(timer, questionDifficulty) {
   const questionScore = baseScore + (timer * questionMultiplier);
 
   return questionScore;
+}
+
+// Ranking
+export function saveRankingLocalStorage(name, score = 0, gravatarEmail) {
+  let currentRanking = JSON.parse(localStorage.getItem('ranking'));
+  const newPlayer = {
+    name,
+    score,
+    gravatarEmail,
+  };
+
+  currentRanking = [...currentRanking, newPlayer];
+  const strigifyRanking = JSON.stringify(currentRanking);
+  localStorage.setItem('ranking', strigifyRanking);
 }

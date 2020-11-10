@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import fetchToken from '../services/fetchToken';
-import { saveToken, saveName, saveEmail } from '../actions';
+import { saveToken, saveName, saveEmail, saveScore } from '../actions';
 import './style_sheets/Login.scss';
 import triviaLogo from '../visual_identity/logo/trivia_logo_noBg.png';
 
@@ -20,6 +20,19 @@ class Login extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkValidity = this.checkValidity.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatchResetScore } = this.props;
+    dispatchResetScore(0);
+  }
+
+  componentWillUnmount() {
+    const currentRanking = localStorage.getItem('ranking');
+    if (currentRanking === null) {
+      const emptyRanking = JSON.stringify([]);
+      localStorage.setItem('ranking', emptyRanking);
+    }
   }
 
   checkValidity() {
@@ -115,12 +128,14 @@ Login.propTypes = {
   dispatchSaveToken: propTypes.func.isRequired,
   dispatchSaveName: propTypes.func.isRequired,
   dispatchSaveEmail: propTypes.func.isRequired,
+  dispatchResetScore: propTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSaveToken: (token) => dispatch(saveToken(token)),
   dispatchSaveName: (name) => dispatch(saveName(name)),
   dispatchSaveEmail: (gravatarEmail) => dispatch(saveEmail(gravatarEmail)),
+  dispatchResetScore: (reset) => dispatch(saveScore(reset)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

@@ -3,6 +3,7 @@ import {
   SAVE_NAME,
   SAVE_EMAIL,
   SAVE_SCORE,
+  SAVE_CORRECT_ANSWERS,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
     name: '',
     assertions: '',
     score: 0,
+    correctAnswers: 0,
     gravatarEmail: '',
     gravatarImage: '',
   },
@@ -49,6 +51,14 @@ export default function player(state = INITIAL_STATE, action) {
       player: {
         ...state.player,
         score: action.score,
+      },
+    };
+
+  case SAVE_CORRECT_ANSWERS:
+    return {
+      player: {
+        ...state.player,
+        correctAnswers: action.correctAnswers,
       },
     };
 
