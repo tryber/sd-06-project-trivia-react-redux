@@ -14,15 +14,17 @@ class Feedback extends React.Component {
 
   componentDidMount() {
     const { userName, userScore, userGravatar } = this.props;
-    const userInfo = [
-      {
-        name: userName,
-        score: userScore,
-        picture: userGravatar,
-      },
-    ];
-    const userInfoJSON = JSON.stringify(userInfo);
-    localStorage.setItem('ranking', ...userInfoJSON);
+    const userInfo = {
+      name: userName,
+      score: userScore,
+      picture: userGravatar,
+    };
+
+    let value = [];
+    value = JSON.parse(localStorage.getItem('ranking')) || [];
+    value.push(userInfo);
+    value.sort((a, b) => b.score - a.score);
+    localStorage.setItem('ranking', JSON.stringify(value));
   }
 
   handleClick() {
