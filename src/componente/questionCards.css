@@ -1,0 +1,12 @@
+.buttonTrue {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.buttonFalse {
+  border: 3px solid rgb(255, 0, 0);
+}
+
+.button-visibility {
+  visibility: hidden;
+  
+}
