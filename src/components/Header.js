@@ -12,6 +12,7 @@ class Header extends Component {
 
   render() {
     const { name } = this.props;
+    const player = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
         <header>
@@ -21,7 +22,7 @@ class Header extends Component {
             alt="Imagem gravatar"
           />
           <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">{player.player.score}</p>
         </header>
       </div>
     );

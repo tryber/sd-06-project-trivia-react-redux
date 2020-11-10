@@ -131,12 +131,36 @@ class Questions extends Component {
     }
   }
 
-  addClass() {
-    const { timeInterval } = this.state;
+  addClass({ target }) {
+    const { timeInterval, questionsAnswer } = this.state;
+    const { questions, timer } = this.props;
     clearInterval(timeInterval);
     this.setState({
       checked: true,
     });
+    if (target.id === 'correct-answer') {
+      const total = this.calculate(timer, questions[questionsAnswer].difficulty);
+      const newScore = JSON.parse(localStorage.getItem('state'));
+      newScore.player.score += total;
+      newScore.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(newScore));
+    }
+  }
+
+  calculate(timer, difficulty) {
+    const total = 10;
+    const hard = 3;
+    const grade = () => {
+      switch (difficulty) {
+      case 'easy':
+        return 1;
+      case 'medium':
+        return 2;
+      default:
+        return hard;
+      }
+    };
+    return total + (timer * grade());
   }
 
   render() {
@@ -148,7 +172,6 @@ class Questions extends Component {
       answers,
       timeInterval } = this.state;
     const { questions, timer } = this.props;
-    console.log(timer);
     if (timer === 0) {
       clearInterval(timeInterval);
     }
@@ -177,6 +200,7 @@ class Questions extends Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ answer }
+                id="correct-answer"
                 onClick={ this.addClass }
                 disabled={ disable }
                 className={ checked ? 'correctAnswer' : null }
@@ -189,6 +213,7 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
+              id="wrond-aswer"
               onClick={ this.addClass }
               disabled={ disable }
               className={ checked ? 'incorrectAnswer' : null }
