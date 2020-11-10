@@ -122,7 +122,7 @@ class Questions extends React.Component {
   }
 
   decode(text) {
-    let map = {
+    const map = {
       '&amp;': '&',
       '&#038;': '&',
       '&lt;': '<',
