@@ -13,6 +13,7 @@ class Questions extends Component {
     this.addClass = this.addClass.bind(this);
     this.countQuestionsAndRedirect = this.countQuestionsAndRedirect.bind(this);
     this.downTime = this.downTime.bind(this);
+    this.handleInterval = this.handleInterval.bind(this);
 
     this.state = {
       loading: true,
@@ -39,6 +40,10 @@ class Questions extends Component {
       this.callRandomQuestions();
     }
     if (questionsAnswer > five) history.push('/feedback');
+  }
+
+  componentWillUnmount() {
+    this.downTime();
   }
 
   async fetchAPIQuestions() {
@@ -101,25 +106,36 @@ class Questions extends Component {
     });
   }
 
-  downTime() {
+  handleInterval() {
     const ONE_SECOND = 1000;
-    const ALL_TIME = 30000;
     const { timer } = this.props;
-    if (timer !== 0) {
-      const time = setInterval(() => {
-        const { sendTimer } = this.props;
-        sendTimer(timer);
-      }, ONE_SECOND);
-      const loading = setTimeout(() => {
-        // clearInterval(time);
-        this.disableButtons();
-        this.setState({ checked: true });
-      }, ALL_TIME);
-      this.setState({
-        timeInterval: time,
-        timingOut: loading,
-      });
-    }
+    const time = setInterval(() => {
+      const { sendTimer } = this.props;
+      sendTimer(timer);
+    }, ONE_SECOND);
+    this.setState({ timeInterval: time });
+  }
+
+  downTime() {
+    const ALL_TIME = 30000;
+    console.log('atualziando');
+    this.handleInterval();
+    // if (timer !== 0) {
+    /*
+    const time = setInterval(() => {
+      const { sendTimer } = this.props;
+      sendTimer(timer);
+    }, ONE_SECOND);
+    */
+    const loading = setTimeout(() => {
+      // clearInterval(time);
+      this.disableButtons();
+      this.setState({ checked: true });
+    }, ALL_TIME);
+    this.setState({
+      timingOut: loading,
+    });
+    // }
   }
 
   addClass({ target }) {
