@@ -1,4 +1,5 @@
 import React from 'react';
+import './GameScreen.css';
 import GameBody from '../components/GameBody';
 import HeaderGame from '../components/HeaderGame';
 

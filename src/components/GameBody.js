@@ -146,6 +146,7 @@ class GameBody extends React.Component {
       <div>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
+        <br />
         {answers.map((answer, index) => {
           if (answer === correctAnswer) {
             return (
@@ -179,6 +180,7 @@ class GameBody extends React.Component {
         <br />
         <br />
         <button
+          className="uppercase"
           type="button"
           disabled={ disabled }
           data-testid={ disabled ? '' : 'btn-next' }
