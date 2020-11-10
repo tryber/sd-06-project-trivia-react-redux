@@ -31,7 +31,7 @@ class FormLogin extends React.Component {
       <div className="float-right">
         <Link to="settings">
           <button type="button" data-testid="btn-settings" className="btn-set">
-            <FaCog /> 
+            <FaCog />
           </button>
         </Link>
       </div>
