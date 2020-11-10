@@ -231,7 +231,7 @@ class Questions extends Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
-              id="wrond-aswer"
+              id="wrong-answer"
               onClick={ this.addClass }
               disabled={ disable }
               className={ checked ? 'incorrectAnswer' : null }
