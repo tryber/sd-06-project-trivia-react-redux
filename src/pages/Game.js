@@ -30,6 +30,7 @@ class Game extends React.Component {
     this.clearIntervalTimer = this.clearIntervalTimer.bind(this);
     this.stopCreatingCorrectAnswer = this.stopCreatingCorrectAnswer.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
+    this.decodeHTML = this.decodeHTML.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +61,12 @@ class Game extends React.Component {
   clearIntervalTimer() {
     const { interval } = this.state;
     clearInterval(interval);
+  }
+
+  decodeHTML(text) {
+    var textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
   }
 
   handleScore({ target: { innerText } }) {
@@ -140,12 +147,21 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
+    const { decodeHTML } = this;
     const { questions } = this.props;
     const { questionNumber } = this.state;
     return (
       <div className="game-question-texts">
-        <h4 data-testid="question-category">{ questions[questionNumber].category }</h4>
-        <h4 data-testid="question-text">{ questions[questionNumber].question }</h4>
+        <h4
+          data-testid="question-category"
+        >
+          { decodeHTML(questions[questionNumber].category) }
+        </h4>
+        <h4
+          data-testid="question-text"
+        >
+          { decodeHTML(questions[questionNumber].question) }
+        </h4>
       </div>
     );
   }
@@ -156,6 +172,7 @@ class Game extends React.Component {
       chooseAnswer,
       stopCreatingCorrectAnswer,
       handleScore,
+      decodeHTML,
     } = this;
     const { questions, timer } = this.props;
     const correctAnswerPosition = Math
@@ -189,7 +206,7 @@ class Game extends React.Component {
                   key={ index }
                   disabled={ (timer === 0 || answered) }
                 >
-                  { answer }
+                  { decodeHTML(answer) }
                 </button>
               );
             }
@@ -203,7 +220,7 @@ class Game extends React.Component {
                 key={ index }
                 disabled={ (timer === 0 || answered) }
               >
-                { answer }
+                { decodeHTML(answer) }
               </button>
             );
           })
