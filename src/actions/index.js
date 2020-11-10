@@ -43,6 +43,7 @@ function sendQuestionsToStore(fetchedQuestions) {
 export function fetchQuestionsFromAPI(numberOfQuestions) {
   return async (dispatch) => {
     const questions = await triviaAPI(numberOfQuestions);
-    dispatch(sendQuestionsToStore(questions));
+    console.log('questions from API:', questions);
+    dispatch(sendQuestionsToStore(questions.results));
   };
 }
