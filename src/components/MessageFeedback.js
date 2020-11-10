@@ -15,9 +15,18 @@ class MessageFeedback extends React.Component {
       <div>
         <h2 data-testid="feedback-text">{ message }</h2>
         <h4>
-          Acertou <span data-testid="feedback-total-question">{ assertions }</span> pergunta(s)
+          Acertou
+          <span data-testid="feedback-total-question">
+            { assertions }
+          </span>
+          pergunta(s)
         </h4>
-        <h4>Total <span data-testid="feedback-total-score">{score}</span></h4>
+        <h4>
+          Total
+          <span data-testid="feedback-total-score">
+            {score}
+          </span>
+        </h4>
       </div>
     );
   }
