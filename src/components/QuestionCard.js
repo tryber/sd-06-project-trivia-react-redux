@@ -1,64 +1,44 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { updateScoreAndAssertions } from '../actions';
 import './QuestionCard.css';
 
 class QuestionCard extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
+      answered: false,
       isDisabled: false,
-      clicked: false,
-      indexButtonNext: 0,
+      indexQuestion: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.nextButton = this.nextButton.bind(this);
+    this.question = this.question.bind(this);
     this.nextQuestions = this.nextQuestions.bind(this);
     this.calculatesScore = this.calculatesScore.bind(this);
   }
 
-  nextButton() {
-    const { clicked, indexButtonNext } = this.state;
-    const indexLimit = 4;
-    if (clicked === true && indexButtonNext < indexLimit) {
-      return (
-        <div data-testid="btn-next">
-          <button type="button" data-testid="btn-next" onClick={ this.nextQuestions }>
-            Próxima
-          </button>
-        </div>
-      );
-    }
-    if (clicked === true && indexButtonNext === indexLimit) {
-      return (
-        <div>
-          <Link to="/feedback">
-            <button type="button" data-testid="btn-next">Próxima</button>
-          </Link>
-        </div>
-      );
-    }
-  }
-
   nextQuestions() {
-    const { indexButtonNext } = this.state;
+    const { answered, indexQuestion } = this.state;
     const { startingInterval, clearIntervalToProps } = this.props;
-    this.setState({
-      isDisabled: false,
-      clicked: false,
-      indexButtonNext: indexButtonNext + 1,
-    });
+    if (answered === true) {
+      this.setState({
+        isDisabled: false,
+        answered: false,
+        indexQuestion: indexQuestion + 1,
+      });
+    }
     clearIntervalToProps();
     startingInterval();
   }
 
   calculatesScore() {
-    const { indexButtonNext } = this.state;
+    const { indexQuestion } = this.state;
     const { questions, timer, score, assertions, sendScore } = this.props;
-    const levelName = questions[indexButtonNext].difficulty;
+    const levelName = questions[indexQuestion].difficulty;
     const three = 3;
     const ten = 10;
     let levelPoint = 1;
@@ -73,30 +53,21 @@ class QuestionCard extends Component {
 
   handleClick({ target }) {
     this.setState({
+      answered: true,
       isDisabled: true,
-      clicked: true,
     });
     if (target.className === 'correct-answer') this.calculatesScore();
   }
 
-  render() {
+  question() {
     const { questions, timer } = this.props;
-    const { indexButtonNext, isDisabled } = this.state;
-    const { category, question } = questions[indexButtonNext];
-
+    const { indexQuestion, isDisabled } = this.state;
+    const { category, question } = questions[indexQuestion];
     return (
       <div>
-        QUESTION CARD
-        <br />
-        {' '}
-        <span>
-          Timer:
-          {timer}
-        </span>
-        <div>
-          <p data-testid="question-category">{category}</p>
-          <p data-testid="question-text">{question}</p>
-        </div>
+        <span>{timer}</span>
+        <p data-testid="question-category">{category}</p>
+        <p data-testid="question-text">{question}</p>
         <div className="answers">
           <button
             data-testid="correct-answer"
@@ -105,9 +76,9 @@ class QuestionCard extends Component {
             disabled={ isDisabled }
             className="correct-answer"
           >
-            {questions[indexButtonNext].correct_answer}
+            {questions[indexQuestion].correct_answer}
           </button>
-          {questions[indexButtonNext].incorrect_answers.map((answer, index) => (
+          {questions[indexQuestion].incorrect_answers.map((answer, index) => (
             <button
               data-testid={ `wrong-answer-${index}` }
               type="button"
@@ -120,7 +91,27 @@ class QuestionCard extends Component {
             </button>
           ))}
         </div>
-        {this.nextButton()}
+      </div>
+    );
+  }
+
+  render() {
+    const QUESTIONS_ANSWERED = 5;
+    const { answered, indexQuestion } = this.state;
+    return (
+      <div>
+        QUESTION CARD
+        {(indexQuestion >= QUESTIONS_ANSWERED)
+          ? <Redirect to="/feedback" /> : this.question()}
+        <button
+          disabled={ !answered }
+          hidden={ !answered }
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.nextQuestions }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
