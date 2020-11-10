@@ -49,17 +49,17 @@ class Questions extends React.Component {
     let dif;
 
     switch (question[currentQuestion].difficulty) {
-    case 'easy':
-      dif = 1;
-      break;
-    case 'medium':
-      dif = 2;
-      break;
-    case 'hard':
-      dif = tres;
-      break;
-    default:
-      break;
+      case 'easy':
+        dif = 1;
+        break;
+      case 'medium':
+        dif = 2;
+        break;
+      case 'hard':
+        dif = tres;
+        break;
+      default:
+        break;
     }
 
     let soma = state.player.score;
@@ -106,6 +106,14 @@ class Questions extends React.Component {
         this.setState({
           resposta: 'WrongAnswer',
           disable: true,
+        });
+        const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
+        const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
+        buttonsCorrect.forEach((button) => {
+          button.style.border = '';
+        });
+        buttonsWrong.forEach((button) => {
+          button.style.border = '';
         });
       }
     }, sec);

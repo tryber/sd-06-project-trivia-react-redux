@@ -49,10 +49,11 @@ class FormLogin extends React.Component {
       },
     };
 
-    document.getElementById('play-button').addEventListener(
-      'click',
-      localStorage.setItem('state', JSON.stringify(stateInicial)),
-    );
+    // document.getElementById('play-button').addEventListener(
+    //   'click',
+    //   localStorage.setItem('state', JSON.stringify(stateInicial)),
+    // );
+    localStorage.setItem('state', JSON.stringify(stateInicial));
   }
 
   disableCheck() {
@@ -90,7 +91,7 @@ class FormLogin extends React.Component {
               ))
             }
           </form>
-          <Link to="gamepage">
+          <Link className="link-play" to="gamepage">
             <button
               type="button"
               data-testid="btn-play"
