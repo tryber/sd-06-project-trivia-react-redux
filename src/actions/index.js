@@ -4,14 +4,16 @@ export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const RENDER_TIME = 'RENDER_TIME';
 export const RESET_TIME = 'RESET_TIME';
+export const RESET_SCORE = 'RESET_SCORE';
 
 export function getLogin(name, email) {
-  localStorage.setItem('state', { player: { name, gravatarEmail: email } });
-  return {
+  const playerInfo = { player: { name, gravatarEmail: email } };
+  localStorage.setItem('state', JSON.stringify(playerInfo));
+  return ({
     type: LOGIN,
     name,
     email,
-  };
+  });
 }
 
 export const updatePlayerToken = (token) => ({
@@ -24,24 +26,22 @@ export const addQuestions = (questions) => ({
   questions,
 });
 
+export const resetScoreAction = () => ({
+  type: RESET_SCORE,
+});
+
 const updateScore = (score) => ({
   type: UPDATE_SCORE,
   score,
 });
 
-export const updateLocalStorageAction = (
-  newScore,
-  currentName,
-  currentAssertions,
-  currentGravatarEmail,
-) => async (dispatch) => {
+export const updateLocalStorageAction = (newScore) => async (dispatch) => {
   await dispatch(updateScore(newScore));
   const currentLocalStorage = JSON.parse(localStorage.getItem('state'));
-  currentLocalStorage.player.name = currentName;
-  currentLocalStorage.player.assertions = currentAssertions;
+  const previousAssertions = currentLocalStorage.player.assertions;
+  currentLocalStorage.player.assertions = previousAssertions + 1;
   const previousScore = currentLocalStorage.player.score;
   currentLocalStorage.player.score = previousScore + newScore;
-  currentLocalStorage.player.gravatarEmail = currentGravatarEmail;
   localStorage.setItem('state', JSON.stringify(currentLocalStorage));
 };
 

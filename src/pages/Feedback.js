@@ -12,40 +12,34 @@ class Feedback extends Component {
   }
 
   renderAssertionsText(assertions) {
-    if (assertions > 1) {
-      return (
-        <h1 data-testid="feedback-total-question">
-          { `Acertou ${assertions} perguntas` }
-        </h1>
-      );
-    }
-
-    if (assertions === 1) {
-      return (
-        <h1 data-testid="feedback-total-question">
-          { `Acertou ${assertions} pergunta` }
-        </h1>
-      );
-    }
-
     return (
-      <h1 data-testid="feedback-total-question">
-        Não acertou nenhuma pergunta
-      </h1>
+      <p>
+        Você acertou
+        <span data-testid="feedback-total-question">
+          { assertions }
+        </span>
+        perguntas!
+      </p>
     );
   }
 
   render() {
     const { renderAssertionsText } = this;
-    const { score, assertions } = this.props;
+    const { assertions, score } = this.props;
     const three = 3;
     return (
       <div>
         <Header />
         <section data-testid="feedback-text">
-        <h1 data-testid="feedback-total-score">{ `Placar final: ${score}` }</h1>
-        { renderAssertionsText(assertions) }
-          { assertions < three ? <h3>Podia ser melhor...</h3> : <h3>Mandou bem!</h3> }
+          { renderAssertionsText(assertions) }
+          { assertions < three ? <h1>Podia ser melhor...</h1> : <h1>Mandou bem!</h1> }
+          <h1>
+            Você conseguiu
+            <span data-testid="feedback-total-score">
+              { score }
+            </span>
+            pontos!!!
+          </h1>
         </section>
         <Link to="/" data-testid="btn-play-again">
           Jogar novamente
@@ -56,13 +50,13 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  score: state.game.score,
   assertions: state.game.assertions,
+  score: state.game.score,
 });
 
 Feedback.propTypes = {
-  score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
-}
+  score: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps, null)(Feedback);
