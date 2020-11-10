@@ -15,6 +15,7 @@ class QuestionCard extends Component {
     this.saveScore = this.saveScore.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.resetCountdown = this.resetCountdown.bind(this);
 
     this.state = {
       answersArray,
@@ -26,6 +27,7 @@ class QuestionCard extends Component {
   }
 
   componentDidMount() {
+    this.saveToStorage();
     const timerInterval = setInterval(this.setCountdown, 1000);
     this.storeTimerInSate(timerInterval);
   }
@@ -34,13 +36,15 @@ class QuestionCard extends Component {
     const { answerIndex } = this.props;
     if (prevProps.answerIndex !== answerIndex) {
       this.updateAnswerIndex();
+      this.resetCountdown();
     }
   }
 
   setCountdown() {
-    const { countdown, timerInterval } = this.state;
-
-    this.checkCountdown();
+    const { countdown, timerInterval, isCorrect } = this.state;
+    if (isCorrect) {
+      clearInterval(timerInterval);
+    }
 
     if (countdown > 0) {
       return this.setState((previous) => ({
@@ -56,12 +60,27 @@ class QuestionCard extends Component {
     this.changeDisabled(true);
   }
 
-  checkCountdown() {
-    const { timerInterval, countdown, isCorrect } = this.state;
+  resetCountdown() {
+    this.setState({
+      countdown: 30,
+      timerInterval: {},
+      isCorrect: false,
+    });
 
-    if (isCorrect) {
-      clearInterval(timerInterval);
-      this.saveScore(countdown);
+    const timerInterval = setInterval(this.setCountdown, 1000);
+    this.storeTimerInSate(timerInterval);
+  }
+
+  saveToStorage() {
+    const { getLogin: { name, gravatarEmail } } = this.props;
+    if (!localStorage.state) {
+      const player = {
+        name,
+        score: 0,
+        assertions: '',
+        gravatarEmail,
+      };
+      localStorage.setItem('state', JSON.stringify({ player }));
     }
   }
 
@@ -80,6 +99,7 @@ class QuestionCard extends Component {
 
     this.setState({
       answersArray: tempArray,
+      disabled: false,
     });
   }
 
@@ -102,11 +122,12 @@ class QuestionCard extends Component {
 
     const nextButton = document.querySelector('.invisible');
     if (nextButton) {
-      nextButton.className = 'btn';
+      nextButton.classList.replace('invisible', 'btn');
     }
 
     if (target.id === 'correct-answer') {
       this.setState({ isCorrect: true });
+      this.saveScore();
     }
 
     this.changeDisabled(true);
@@ -119,15 +140,27 @@ class QuestionCard extends Component {
     const difficultyPoints = { hard: 3, medium: 2, easy: 1 };
     const points = 10 + (difficultyPoints[difficulty] * countdown);
 
-    const player = {
-      name,
-      assertions: '',
-      score: points,
-      gravatarEmail,
-    };
-
-    localStorage.setItem('state', JSON.stringify({ player }));
-    setScore(player);
+    if (localStorage.state) {
+      const { player: { score: prevScore } } = JSON.parse(localStorage.getItem('state'));
+      const newScore = prevScore + points;
+      const player = {
+        name,
+        assertions: '',
+        score: newScore,
+        gravatarEmail,
+      };
+      localStorage.setItem('state', JSON.stringify({ player }));
+      setScore(player);
+    } else {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name,
+          assertions: '',
+          score: 0,
+          gravatarEmail,
+        },
+      }));
+    }
   }
 
   renderButtons(index, question, className) {
@@ -184,9 +217,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 QuestionCard.propTypes = {
-  disabled: PropTypes.bool.isRequired,
+  answerIndex: PropTypes.number.isRequired,
   questions: PropTypes.arrayOf(Object).isRequired,
-  checkAnswer: PropTypes.func.isRequired,
   getLogin: PropTypes.arrayOf(Object).isRequired,
   setScore: PropTypes.func.isRequired,
 };

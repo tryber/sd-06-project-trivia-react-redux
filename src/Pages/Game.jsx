@@ -1,13 +1,12 @@
 import React from 'react';
 import Question from '../Components/Question';
-import Header from '../Components/Header';
 
 class Game extends React.Component {
   render() {
+    const { history } = this.props;
     return (
       <div>
-        <Header />
-        <Question />
+        <Question history={ history } />
       </div>
     );
   }

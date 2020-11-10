@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import QuestionCard from './QuestionCard';
+import Header from './Header';
 import '../styles/Question.css';
 
 class Question extends React.Component {
@@ -18,11 +19,16 @@ class Question extends React.Component {
   nextIndex() {
     const { answerIndex } = this.state;
     const { history } = this.props;
-    const button = document.querySelectorAll('.btn');
 
+    const button = document.querySelectorAll('.btn');
     Object.values(button).forEach((item) => (
       item.classList.remove('correct', 'incorrect')
     ));
+
+    const nextButton = document.querySelector('.next');
+    if (nextButton) {
+      nextButton.classList.replace('btn', 'invisible');
+    }
 
     if (answerIndex < 4) {
       return this.setState((previous) => ({
@@ -41,6 +47,7 @@ class Question extends React.Component {
 
     return (
       <div>
+        <Header />
         <QuestionCard
           answerIndex={ answerIndex }
           questions={ questions }
@@ -48,7 +55,7 @@ class Question extends React.Component {
         <button
           type="button"
           data-testid="btn-next"
-          className="invisible"
+          className="invisible next"
           onClick={ this.nextIndex }
         >
           Próxima
@@ -64,6 +71,7 @@ const mapStateToProps = (state) => ({
 
 Question.propTypes = {
   getAnswers: PropTypes.arrayOf(Object).isRequired,
+  history: PropTypes.arrayOf(Object).isRequired,
 };
 
 export default connect(mapStateToProps, null)(Question);
