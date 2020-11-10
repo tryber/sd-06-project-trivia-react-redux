@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import questionsAPI from '../services/questionAPI';
 
-
 class Questions extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +19,6 @@ class Questions extends React.Component {
     const miliseconds = 1000;
     let aux;
     this.aux = setInterval(this.countdown, miliseconds);
-    console.log("o que é aux" + aux);
     this.countdown(aux);
   }
 
@@ -29,19 +27,16 @@ class Questions extends React.Component {
     await questionsAPI(tokenLocal);
   }
 
-  countdown(aux) {
+  countdown() {
     const { timer30 } = this.state;
-    console.log("o que é aux depois" + aux);
-     if (timer30 > 0) {
+    if (timer30 > 0) {
       this.setState((localtimer) => ({
         timer30: localtimer.timer30 - 1,
-       }));
-    } 
-     else {
-       console.log(" o tempo acabou");
-       this.handleClick();
+      }));
+    } else {
+      this.handleClick();
       clearInterval(this.aux);
-     }
+    }
   }
 
   handleClick() {
@@ -60,8 +55,8 @@ class Questions extends React.Component {
     return (
       <div>
         <div>
-        {timer30}
-      </div>
+          {timer30}
+        </div>
         <div className="gamepage-questions">
           <div
             data-testid="question-category"

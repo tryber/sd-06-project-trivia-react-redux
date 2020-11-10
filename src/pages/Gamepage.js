@@ -43,9 +43,6 @@ class Gamepage extends React.Component {
           >
             Placar: 0
           </span>
-          {/* <CountdownTimer /> */}
-          
-    
         </header>
         <Questions questionAtual={ questionAtual } />
         <button
