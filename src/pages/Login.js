@@ -41,7 +41,6 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-
     kahootTheme.play();
     const milliseconds = 60;
     this.interval = setInterval(() => { this.setColor(); }, milliseconds);
