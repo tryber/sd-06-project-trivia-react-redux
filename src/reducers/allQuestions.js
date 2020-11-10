@@ -18,7 +18,7 @@ export default function (state = INITIAL_STATE, action) {
     return {
       ...state,
       score: state.score + action.score,
-      assertions: state.assertions + 1,
+      assertions: state.assertions + action.assertions,
       answered: action.answered,
     };
   case PLAYER_DATA:

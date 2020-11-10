@@ -64,10 +64,12 @@ class Game extends Component {
     if (APIQuestions[index].difficulty === 'medium') difficult = medium;
     if (APIQuestions[index].difficulty === 'hard') difficult = hard;
     const points = (choice === 'correct-answer') ? (TEN + (time * difficult)) : 0;
+    const assertion = (choice === 'correct-answer') ? 1 : 0;
     const respondida = {
       answered: true,
       score: points,
       timeout: false,
+      assertions: assertion,
     };
     scorePoints(respondida);
   }
