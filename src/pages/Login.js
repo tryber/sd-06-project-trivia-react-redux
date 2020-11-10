@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getLogin, getToken, fetchQuestions } from '../actions';
 import '../css/Login.css';
+import logo_grande from '../images/logo-grande.png';
 
 class Login extends Component {
   constructor() {
@@ -65,6 +66,7 @@ class Login extends Component {
     const { email, name } = this.state;
     return (
       <div className="container">
+        <img src={ logo_grande } alt="logo" />
         <div className="container-div" />
         <div className="container-email">
           <label htmlFor="email-input">
