@@ -21,6 +21,7 @@ export default class Button extends Component {
 
 Button.defaultProps = {
   id: 'button',
+  type: 'button',
   value: '',
 };
 
