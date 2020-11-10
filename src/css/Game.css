@@ -8,6 +8,7 @@
 }
 
 .correct-answer, .regular-answer, .wrong-answer, .next-question-button {
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 6px;
   box-sizing: border-box;
   color: #FFFFFF;
