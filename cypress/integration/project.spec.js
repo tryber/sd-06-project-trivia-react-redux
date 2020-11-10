@@ -111,7 +111,7 @@ describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações d
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
-    cy.get(INPUT_PLAYER_NAME_SELECTOR).type(name);
+    cy.get(INPUT_PLAYER_NAME_SELECTOR).type('Nome da pessoa');
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).type(email);
     cy.get(BUTTON_PLAY_SELECTOR).click();
     cy.get(HEADER_NAME_SELECTOR);
