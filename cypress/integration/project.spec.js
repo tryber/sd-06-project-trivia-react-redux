@@ -513,7 +513,7 @@ describe('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jo
   });
 });
 
-describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder visualizar a tela de _ranking_', () => {
+describe.only('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder visualizar a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
