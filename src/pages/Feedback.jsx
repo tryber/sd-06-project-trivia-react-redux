@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 class Feedback extends React.Component {
   render() {
-    const { assertionsStore } = this.props;
+    const { assertionsStore, scoreStore } = this.props;
     const resultado = 3;
     return (
       <div>
@@ -13,6 +13,8 @@ class Feedback extends React.Component {
         <p data-testid="feedback-text">
           { assertionsStore < resultado ? 'Podia ser melhor...' : 'Mandou bem!' }
         </p>
+        <p data-testid="feedback-total-score">{ scoreStore }</p>
+        <p data-testid="feedback-total-question">{ assertionsStore }</p>
         <Link to="/">
           <button
             type="button"
@@ -28,6 +30,7 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   assertionsStore: state.user.assertions,
+  scoreStore: state.user.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
