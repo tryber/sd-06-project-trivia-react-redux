@@ -24,11 +24,19 @@ class Login extends Component {
 
   componentDidMount() {
     const minimumQuestions = 5;
+    const numberQuestions = localStorage.getItem('number')
+      ? localStorage.getItem('number') : minimumQuestions;
+    const category = localStorage.getItem('category')
+      ? localStorage.getItem('number') : '';
+    const typeAPI = localStorage.getItem('typeAPI')
+      ? localStorage.getItem('typeAPI') : '';
+    const difficulty = localStorage.getItem('dificculty')
+      ? localStorage.getItem('number') : '';
 
-    localStorage.setItem('number', minimumQuestions);
-    localStorage.setItem('category', '');
-    localStorage.setItem('typeAPI', '');
-    localStorage.setItem('difficulty', '');
+    localStorage.setItem('number', numberQuestions);
+    localStorage.setItem('category', category);
+    localStorage.setItem('typeAPI', typeAPI);
+    localStorage.setItem('difficulty', difficulty);
   }
 
   componentDidUpdate() {
