@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import TopRanking from './components/TopRanking';
 
 class Ranking extends Component {
   render() {
     const { arrayRanking } = this.props;
-    const arrayOrganizado = [...arrayRanking].sort((obj1, obj2) => obj2.score - obj1.score);
-    const arrayOrganizado5Itens = arrayOrganizado.slice(0, 5);
+    const arrayOrganizado = [...arrayRanking]
+      .sort((obj1, obj2) => obj2.score - obj1.score);
+    const topFive = 5;
+    const arrayOrganizado5Itens = arrayOrganizado.slice(0, topFive);
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
@@ -42,14 +45,12 @@ const mapStateToProps = (state) => ({
   arrayRanking: state.questionsInformation.ranking,
 });
 
+Ranking.propTypes = {
+  arrayRanking: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+  }).isRequired).isRequired,
+};
+
 export default connect(mapStateToProps)(Ranking);
-
-
-
-
-
-// array.sort(function(5, 6){
-
-//   return a > b;
-
-// });

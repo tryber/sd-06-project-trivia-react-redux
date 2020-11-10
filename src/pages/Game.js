@@ -184,12 +184,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveRanking: (ranking) => dispatch(questionScore(ranking)),
   saveScorePlayer: (score) => dispatch(questionScorePlayer(score)),
-  saveRanking: () => dispatch(questionScore()),
 });
 
 Game.propTypes = {
   arrayQuestion: PropTypes.arrayOf(PropTypes.object).isRequired,
-  saveScorePlayer: PropTypes.number.isRequired,
+  saveScorePlayer: PropTypes.func.isRequired,
+  saveRanking: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

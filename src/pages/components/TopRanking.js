@@ -25,8 +25,9 @@ class TopRanking extends React.Component {
 
 TopRanking.propTypes = {
   name: PropTypes.string.isRequired,
-  pictures: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default TopRanking;
