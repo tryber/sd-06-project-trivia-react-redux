@@ -63,6 +63,9 @@ class Feedback extends React.Component {
 
 Feedback.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  userScore: PropTypes.func.isRequired,
+  userGravatar: PropTypes.func.isRequired,
+  userName: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

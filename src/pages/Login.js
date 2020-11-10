@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userLogin, thunkToken, gravatar } from '../actions';
+import { userLogin, thunkToken, gravatar, score } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -43,10 +43,15 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { fetchToken, saveLogin } = this.props;
+    const { fetchToken, saveLogin, scoreReset } = this.props;
     await fetchToken();
     saveLogin(this.state);
     this.gravatarTransform();
+    const userScore = {
+      score: 0,
+      assertions: 0,
+    };
+    scoreReset(userScore);
   }
 
   render() {
@@ -103,12 +108,14 @@ const mapDispatchToProps = (dispatch) => ({
   gravatarData: (hash) => dispatch(gravatar(hash)),
   fetchToken: () => dispatch(thunkToken()),
   saveLogin: (info) => dispatch(userLogin(info)),
+  scoreReset: (scoreReset) => dispatch(score(scoreReset)),
 });
 
 Login.propTypes = {
   fetchToken: PropTypes.func.isRequired,
   saveLogin: PropTypes.func.isRequired,
   gravatarData: PropTypes.func.isRequired,
+  scoreReset: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
