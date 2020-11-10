@@ -22,7 +22,8 @@ export default function (state = INITIAL_STATE, action) {
       answered: action.answered,
     };
   case PLAYER_DATA:
-    return { ...state, ...action.payload };
+    return {
+      ...state, ...action.payload };
   case ANSWERED:
     return {
       ...state,

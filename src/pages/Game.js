@@ -13,18 +13,16 @@ class Game extends Component {
 
     const { time, answered } = this.props;
     this.state = {
-      answered,
       index: 0,
-      clicked: false,
-      time,
       choice: '',
+      clicked: false,
       disableNextBtn: false,
+      answered,
+      time,
     };
 
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
-    this.setTimeUpdate = this.setTimeUpdate.bind(this);
-    this.handleButton = this.handleButton.bind(this);
     this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
   }
 
@@ -32,14 +30,8 @@ class Game extends Component {
     this.scoreLocalStorage();
   }
 
-  componentDidUpdate(prev, prevState) {
-    // const { time } = this.props;
-    // if (prev.time !== prevState.time) this.setTimeUpdate(time);
+  componentDidUpdate() {
     this.scoreLocalStorage();
-  }
-
-  setTimeUpdate(time) {
-    this.setState({ time });
   }
 
   scoreLocalStorage() {
@@ -57,13 +49,14 @@ class Game extends Component {
     this.setState({
       clicked: true,
       choice: value,
+    }, () => {
+      this.handleScore();
     });
-    this.handleScore();
   }
 
   handleScore() {
     const { scorePoints, APIQuestions } = this.props;
-    const { time, index, choice } = this.state;
+    const { index, choice, time } = this.state;
     const TEN = 10;
     const hard = 3;
     const medium = 2;
@@ -72,7 +65,7 @@ class Game extends Component {
     if (APIQuestions[index].difficulty === 'easy') difficult = easy;
     if (APIQuestions[index].difficulty === 'medium') difficult = medium;
     if (APIQuestions[index].difficulty === 'hard') difficult = hard;
-    const points = choice === 'correct-answer' ? (TEN + (time * difficult)) : 0;
+    const points = (choice === 'correct-answer') ? (TEN + (time * difficult)) : 0;
     const respondida = {
       answered: true,
       score: points,
@@ -81,30 +74,19 @@ class Game extends Component {
     scorePoints(respondida);
   }
 
-  handleButton() {
-    const { clicked, disableNextBtn } = this.state;
-
-    if (clicked) {
-      return (
-        <button
-          type="button"
-          onClick={ () => this.handleClickButtonNext() }
-          data-testid="btn-next"
-          disabled={ disableNextBtn }
-        >
-          Próxima
-        </button>
-      );
-    }
-  }
-
   handleClickButtonNext() {
-
     this.setState(((prevState) => ({
       index: prevState.index + 1,
       clicked: false,
       choice: '',
     })), () => {
+      const { answeredAction } = this.props;
+      const resetTime = {
+        time: 30,
+        answered: false,
+        timeout: false,
+      };
+      answeredAction(resetTime);
       const { index } = this.state;
       // const { history } = this.props;
       const QUATRO = 4;
@@ -116,18 +98,11 @@ class Game extends Component {
         this.setState({ disableNextBtn: false });
       }
     });
-    const { answeredAction } = this.props;
-    const resetTime = {
-      time: 30,
-      answered: false,
-      timeout: false,
-    };
-    answeredAction(resetTime);
   }
 
   render() {
-    const { APIQuestions, timeout } = this.props;
-    const { index, clicked } = this.state;
+    const { APIQuestions, timeout, time } = this.props;
+    const { index, clicked, disableNextBtn } = this.state;
     if (APIQuestions.length === 0) {
       return (
         <h3>Carregando...</h3>
@@ -160,10 +135,21 @@ class Game extends Component {
           onClickWrong={ () => this.handleAnswer('wrong-answer') }
         />
         <section>
-          { this.handleButton() }
+          { clicked
+            ? (
+              <button
+                type="button"
+                onClick={ () => this.handleClickButtonNext() }
+                data-testid="btn-next"
+                disabled={ disableNextBtn }
+              >
+            Próxima
+              </button>
+            )
+            : (<p />)}
         </section>
         <section>
-          <Timer />
+          <Timer timeLeft={ time } />
         </section>
       </section>
     );
@@ -184,7 +170,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   scorePoints: (score) => dispatch(scoreAction(score)),
-  // playerDataReset: (time) => dispatch(playerData(time)),
   answeredAction: (answerTime) => dispatch(answerAction(answerTime)),
 });
 

@@ -8,19 +8,16 @@ class Timer extends React.Component {
     super(props);
 
     this.decreaseTime = this.decreaseTime.bind(this);
-    this.setTimeUpdate = this.setTimeUpdate.bind(this);
-    const { time } = this.props;
 
+    const { time } = this.props;
     this.state = {
       timeLeft: time,
     };
   }
 
   componentDidMount() {
-    const { time } = this.props;
     const oneSecond = 1000;
     setTimeout(this.decreaseTime, oneSecond);
-    this.setTimeUpdate(time);
   }
 
   componentDidUpdate() {
@@ -29,20 +26,9 @@ class Timer extends React.Component {
     const action = {
       timeout: true,
     };
-    const timer = {
-      timeout: false,
-      time: timeLeft,
-      answered: true,
-    };
     const oneSecond = 1000;
-    const trinta = 30;
     if (answered === false) setTimeout(this.decreaseTime, oneSecond);
-    if (timeLeft > 0 && timeLeft <= trinta && answered === true) answeredAction(timer);
     if (timeLeft < 1) answeredAction(action);
-  }
-
-  setTimeUpdate(time) {
-    this.setState({ timeLeft: time });
   }
 
   decreaseTime() {
