@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
+  constructor() {
+    super();
+    this.handlePath = this.handlePath.bind(this);
+  }
+
+  handlePath() {
+    window.location.replace('http://localhost:3000/');
+  }
+
   render() {
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-go-home"
-          >
-            Jogar novamente
-          </button>
-        </Link>
+        <button
+          type="button"
+          data-testid="btn-go-home"
+          onClick={ this.handlePath }
+        >
+          Jogar novamente
+        </button>
       </div>
     );
   }
