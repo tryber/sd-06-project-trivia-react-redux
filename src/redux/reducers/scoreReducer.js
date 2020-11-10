@@ -1,7 +1,7 @@
 import { GET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
-  score:  0,
+  score: 0,
 };
 
 const scoreReducer = (state = INITIAL_STATE, action) => {
