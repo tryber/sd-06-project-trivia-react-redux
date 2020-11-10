@@ -121,24 +121,24 @@ class Questions extends React.Component {
     );
   }
 
-  // decode(text) {
-  //   let map = {
-  //     '&amp;': '&',
-  //     '&#038;': '&',
-  //     '&lt;': '<',
-  //     '&gt;': '>',
-  //     '&quot;': '"',
-  //     '&#039;': "'",
-  //     '&#8217;': '’',
-  //     '&#8216;': '‘',
-  //     '&#8211;': '–',
-  //     '&#8212;': '—',
-  //     '&#8230;': '…',
-  //     '&#8221;': '”',
-  //   };
+  decode(text) {
+    let map = {
+      '&amp;': '&',
+      '&#038;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#039;': '\'',
+      '&#8217;': '’',
+      '&#8216;': '‘',
+      '&#8211;': '–',
+      '&#8212;': '—',
+      '&#8230;': '…',
+      '&#8221;': '”',
+    };
 
-  //   return text.replace(/\&[\w\d\#]{2,5}\;/g, (m) => { return map[m]; });
-  // }
+    return text.replace(/&[\w\d#]{2,5};/g, (m) => map[m]);
+  }
 
   render() {
     const { currentQuestion, disable } = this.state;
@@ -177,7 +177,7 @@ class Questions extends React.Component {
 
         <p data-testid="question-text" className="question">
           <span>Pergunta: </span>
-          { question[currentQuestion].question }
+          { this.decode(question[currentQuestion].question) }
         </p>
 
         <p className="question">Alternativas:  </p>
@@ -192,7 +192,7 @@ class Questions extends React.Component {
               disabled={ disable }
               onClick={ (event) => this.choosed(event) }
             >
-              { resposta.resposta }
+              { this.decode(resposta.resposta) }
             </button>
           </div>
         )) }
