@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import './Questions.css';
 
@@ -128,24 +129,24 @@ class Questions extends React.Component {
     );
   }
 
-  // decode(text) {
-  //   let map = {
-  //     '&amp;': '&',
-  //     '&#038;': '&',
-  //     '&lt;': '<',
-  //     '&gt;': '>',
-  //     '&quot;': '"',
-  //     '&#039;': "'",
-  //     '&#8217;': '’',
-  //     '&#8216;': '‘',
-  //     '&#8211;': '–',
-  //     '&#8212;': '—',
-  //     '&#8230;': '…',
-  //     '&#8221;': '”',
-  //   };
+  decode(text) {
+    const map = {
+      '&amp;': '&',
+      '&#038;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#039;': '\'',
+      '&#8217;': '’',
+      '&#8216;': '‘',
+      '&#8211;': '–',
+      '&#8212;': '—',
+      '&#8230;': '…',
+      '&#8221;': '”',
+    };
 
-  //   return text.replace(/\&[\w\d\#]{2,5}\;/g, (m) => { return map[m]; });
-  // }
+    return text.replace(/&[\w\d#]{2,5};/g, (m) => map[m]);
+  }
 
   render() {
     const { currentQuestion, disable } = this.state;
@@ -153,13 +154,14 @@ class Questions extends React.Component {
     const timer = this.timer();
     if (currentQuestion === question.length) {
       const state = JSON.parse(localStorage.state);
+      const email = md5(state.player.gravatarEmail);
       if (localStorage.ranking) {
         localStorage.ranking = JSON.stringify([
           ...JSON.parse(localStorage.ranking),
           {
             name: state.player.name,
             score: state.player.score,
-            picture: state.player.gravatarEmail,
+            picture: `https://www.gravatar.com/avatar/${email}`,
           },
         ]);
       } else {
@@ -167,7 +169,7 @@ class Questions extends React.Component {
           {
             name: state.player.name,
             score: state.player.score,
-            picture: state.player.gravatarEmail,
+            picture: `https://www.gravatar.com/avatar/${email}`,
           },
         ]);
       }
@@ -183,7 +185,7 @@ class Questions extends React.Component {
 
         <p data-testid="question-text" className="question">
           <span>Pergunta: </span>
-          { question[currentQuestion].question }
+          { this.decode(question[currentQuestion].question) }
         </p>
 
         <p className="question">Alternativas:  </p>
@@ -198,7 +200,7 @@ class Questions extends React.Component {
               disabled={ disable }
               onClick={ (event) => this.choosed(event) }
             >
-              { resposta.resposta }
+              { this.decode(resposta.resposta) }
             </button>
           </div>
         )) }
