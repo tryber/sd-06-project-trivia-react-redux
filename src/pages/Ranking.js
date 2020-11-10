@@ -20,26 +20,6 @@ class Ranking extends React.Component {
         >
           Ranking!
         </h1>
-        {/* LÓGICA ABAIXO PRECISA SER REFEITA! */}
-        <button
-          type="button"
-          data-testid="correct-answer"
-        >
-          test 1
-        </button>
-        <button
-          type="button"
-          data-testid="btn-next"
-        >
-          test 2
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-        >
-          test 3
-        </button>
-        {/* LÓGICA ACIMA PRECISA SER REFEITA! */}
       </div>
     );
   }
