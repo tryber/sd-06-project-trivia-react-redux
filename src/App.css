@@ -1,5 +1,11 @@
+html {
+  margin: 0;
+  padding: 0;
+  background-color: black ;
+}
+
 .container {
   font-family: Helvetica, sans-serif;
-  margin: auto;
-  width: 50%;
- }
+  margin: 25% auto;
+  width: 40%;
+}

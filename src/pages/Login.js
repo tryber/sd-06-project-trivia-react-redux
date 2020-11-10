@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { login, handleToken } from '../actions';
+import './Login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -49,31 +50,46 @@ class Login extends Component {
     const { name, email, isDisabled } = this.state;
     return (
       <div className="container">
-        FORM
-        <form onSubmit={ this.handleSignUp }>
-          <input
-            value={ name }
-            name="name"
-            placeholder="Your name"
-            onChange={ this.handleChange }
-            data-testid="input-player-name"
-          />
-          <input
-            value={ email }
-            name="email"
-            placeholder="Your email"
-            onChange={ this.handleChange }
-            data-testid="input-gravatar-email"
-          />
-          <button disabled={ isDisabled } type="submit" data-testid="btn-play">
-            Jogar
-          </button>
-          <Link to="/settings">
-            <button type="button" data-testid="btn-settings">
-              Settings
-            </button>
-          </Link>
-        </form>
+        <div className="container-login">
+          <img src="../trivia.png" width="100%" alt="" />
+
+          <form onSubmit={ this.handleSignUp }>
+            <div className="forms">
+              <div className="inputs-login">
+                <input
+                  value={ name }
+                  name="name"
+                  placeholder="Your name"
+                  onChange={ this.handleChange }
+                  data-testid="input-player-name"
+                />
+                <input
+                  value={ email }
+                  name="email"
+                  placeholder="Your email"
+                  onChange={ this.handleChange }
+                  data-testid="input-gravatar-email"
+                />
+              </div>
+              <div className="button-forms">
+                <button
+                  disabled={ isDisabled }
+                  type="submit"
+                  data-testid="btn-play"
+                  className="button"
+                >
+                   Jogar
+                </button>
+                <Link to="/settings">
+                  <button type="button" data-testid="btn-settings" className="button">
+                     Settings
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </form>
+
+        </div>
       </div>
     );
   }
