@@ -1,0 +1,55 @@
+h1 {
+  text-align: center;
+}
+
+.table-container {
+    line-height: 30px;
+    border-spacing: 0;
+    border: 1px solid #7E7D7D;
+    width: 85%;
+    margin: 5px auto;
+    font-size: 14px;
+  }
+  .table-head {
+    background: black;
+    color: rgb(241, 241, 241);
+    border: none;
+  }
+  th:first-child, td:first-child {
+    padding: 0 10px 0 15px;
+  }
+  th {
+    font-weight: 500;
+  }
+  thead tr:last-child th {
+    border-bottom: 3px solid rgb(138, 138, 138);
+  }
+  tbody tr:hover {
+    background-color: #C7C5C5;
+    cursor: default;
+  }
+  tbody tr:last-child td {
+    border: none;
+  }
+  tbody td {
+    border-bottom: 1px solid #ddd;
+  }
+  td:last-child {
+    text-align: center;
+    padding: 0 20px;
+  }
+  .table-button {
+    background-color: rgb(204, 204, 204);
+    cursor: pointer;
+    vertical-align: middle;
+    margin: -5px 5px 0;
+    border: 0.6px solid rgb(77, 77, 77);
+  }
+  .table-button:hover {
+    background-color: rgb(114, 113, 113);
+  }
+  .no-expense {
+    font-size: 16px;
+    color: red;
+    margin: 20px;
+  }
