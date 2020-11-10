@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import './Questions.css';
+import '../css/Questions.css';
 import { reqQuestions } from '../services';
 import {
   getQuestions,
@@ -199,6 +199,7 @@ class Questions extends Component {
         type="button"
         data-testid="btn-next"
         onClick={ this.countQuestionsAndRedirect }
+        className="nextButton"
       >
         Próxima
       </button>);
@@ -211,38 +212,44 @@ class Questions extends Component {
     return (
       <div>
         <p data-testid="question-category">{questions[questionsAnswer].category}</p>
-        <p data-testid="question-text">{questions[questionsAnswer].question}</p>
-        {answers.map((answer, index) => {
-          if (answer === questions[questionsAnswer].correct_answer) {
+        <p
+          className="perguntas"
+          data-testid="question-text"
+        >
+          {questions[questionsAnswer].question}
+        </p>
+        <div className="divButton">
+          {answers.map((answer, index) => {
+            if (answer === questions[questionsAnswer].correct_answer) {
+              return (
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                  key={ answer }
+                  onClick={ this.addClass }
+                  disabled={ disable }
+                  className={ checked ? 'correctAnswer' : null }
+                >
+                  {answer}
+                </button>);
+            }
             return (
               <button
                 type="button"
-                data-testid="correct-answer"
+                data-testid={ `wrong-answer-${index}` }
                 key={ answer }
-                id="correct-answer"
+                id="wrong-answer"
                 onClick={ this.addClass }
                 disabled={ disable }
-                className={ checked ? 'correctAnswer' : null }
+                className={ checked ? 'incorrectAnswer' : null }
               >
                 {answer}
               </button>);
-          }
-          return (
-            <button
-              type="button"
-              data-testid={ `wrong-answer-${index}` }
-              key={ answer }
-              id="wrong-answer"
-              onClick={ this.addClass }
-              disabled={ disable }
-              className={ checked ? 'incorrectAnswer' : null }
-            >
-              {answer}
-            </button>);
-        })}
+          })}
+        </div>
         <div>
-        Tempo restante:
-          { timer }
+          Tempo restante:
+          {timer}
         </div>
         <div>
           {renderNextButton}

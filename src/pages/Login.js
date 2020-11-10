@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUserInfo } from '../actions';
 import { reqToken } from '../services';
+import '../css/Login.css';
 
 class Login extends Component {
   constructor() {
@@ -52,8 +53,20 @@ class Login extends Component {
     const { name, email, isDisable } = this.state;
     return (
       <div>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+            className="buttonSettings"
+          >
+          Configurações
+          </button>
+        </Link>
+        <br />
+        <h1>SHOW DO PIPOCÃO</h1>
         <form onSubmit={ this.handleSubmit }>
           <input
+            className="inputLogin"
             type="text"
             value={ name }
             name="name"
@@ -62,7 +75,9 @@ class Login extends Component {
             required
             data-testid="input-player-name"
           />
+          <br />
           <input
+            className="inputLogin"
             type="email"
             value={ email }
             name="email"
@@ -71,19 +86,16 @@ class Login extends Component {
             required
             data-testid="input-gravatar-email"
           />
+          <br />
           <button
             type="submit"
             disabled={ isDisable }
             data-testid="btn-play"
+            className="buttonPlay"
           >
             Jogar
           </button>
         </form>
-        <Link to="/settings">
-          <button type="button" data-testid="btn-settings">
-            TELA DE CONFIGURAÇÃO
-          </button>
-        </Link>
       </div>
     );
   }

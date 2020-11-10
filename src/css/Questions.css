@@ -1,0 +1,30 @@
+.correctAnswer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrectAnswer {
+  border: 3px solid rgb(255, 0, 0);
+}
+
+button {
+  margin: 3px;
+  font-size: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 15px;
+}
+
+.divButton {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.nextButton {
+  background-color:  rgb(251, 236, 13);
+  font-size: 20px;
+  border-radius: 10%;
+}
+
+.perguntas {
+  font-family: monospace;
+}

@@ -1,0 +1,18 @@
+.header {
+  background-color: rgb(41, 32, 165);
+}
+
+p {
+  font-size: 20px;
+}
+
+img {
+  margin-top: 7px;
+  border-radius: 10%;
+}
+
+.name {
+  font-size: 30px;
+  color: rgb(221, 245, 245);
+  font-weight: bold;
+}
