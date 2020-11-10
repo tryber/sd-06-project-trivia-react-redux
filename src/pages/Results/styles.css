@@ -1,6 +1,6 @@
 .results-page {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -13,6 +13,7 @@
   flex: 1;
 
   color: white;
+  padding: 0 20px 40px;
 }
 
 .results-body h2 {
@@ -31,7 +32,7 @@
 
 .results-body h3 span,
 .results-body h4 span {
-  margin-left: 12px;
+  margin: 0 12px;
 }
 
 .results-body .navigation-links {
@@ -44,6 +45,9 @@
   border: none;
   background-color: rgb(54, 193, 212);
   border-radius: 5px;
+  width: 150px;
+  display: inline-block;
+  text-align: center;
 
   transition: background-color 0.2s;
 }
@@ -54,4 +58,22 @@
 
 .results-body .navigation-links a + a {
   margin-left: 20px;
+}
+
+@media (max-width: 600px) {
+
+  .results-body .navigation-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .results-body .navigation-links a + a {
+    margin: 20px 0 0;
+  }
+
+  .results-body h2 {
+    text-align: center;
+  }
+
 }

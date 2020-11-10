@@ -116,7 +116,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 SignIn.propTypes = {
   logIn: PropTypes.func.isRequired,
   loadQuestions: PropTypes.func.isRequired,
+
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  config: PropTypes.shape({
+    amount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    type: PropTypes.string,
+    category: PropTypes.string,
+    difficulty: PropTypes.string,
   }).isRequired,
 };

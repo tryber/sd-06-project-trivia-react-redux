@@ -91,7 +91,7 @@ class Trivia extends React.Component {
     const { questions } = this.props;
     const { currentQuestion, answered, timer } = this.state;
 
-    console.log('render!');
+    const tenSeconds = 10;
 
     if (!questions[currentQuestion]) {
       return (
@@ -114,7 +114,7 @@ class Trivia extends React.Component {
 
         <div className="trivia-container">
           <div className="trivia">
-            <p className={ `${timer < 10 ? 'timeup' : ''}` }>
+            <p className={ `${timer < tenSeconds ? 'timeup' : ''}` }>
               { timer }
             </p>
 

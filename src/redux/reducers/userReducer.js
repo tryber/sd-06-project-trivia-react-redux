@@ -4,7 +4,7 @@ import userInitialState from '../states/userState';
 function handleLoginStateChange(state, action) {
   const { email, name, avatar } = action.payload;
 
-  return { ...state, email, name, avatar };
+  return { ...state, email, name, avatar, score: 0 };
 }
 
 function handleScoreChange(state, action) {

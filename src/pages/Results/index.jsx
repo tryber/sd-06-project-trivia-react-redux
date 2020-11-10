@@ -59,6 +59,7 @@ class Results extends React.Component {
             <span data-testid="feedback-total-score">
               { score }
             </span>
+            pts
           </h3>
           <h4>
             Você acertou:

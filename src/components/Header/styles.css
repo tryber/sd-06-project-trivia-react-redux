@@ -32,3 +32,18 @@
 .app-header .header-content span {
   margin-left: 12px;
 }
+
+.app-header .player-score span:last-child {
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+
+  .app-header .player-score {
+    font-size: 24px;
+  }
+
+  .app-header .header-content .player-name {
+    display: none;
+  }
+}

@@ -87,11 +87,37 @@
 }
 
 .user-rank svg.podium-2 {
-  color: gray;
+  color: lightgrey;
   font-size: 32px;
 }
 
 .user-rank svg.podium-3 {
-  color: brown;
+  color: rgb(205, 127, 50);
   font-size: 28px;
+}
+
+@media (max-width: 600px) {
+
+  .user-rank {
+    font-size: 80%;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .user-rank svg.podium-1 {
+    font-size: 36px;
+  }
+  
+  .user-rank svg.podium-2 {
+    font-size: 30px;
+  }
+  
+  .user-rank svg.podium-3 {
+    font-size: 26px;
+  }
+
+  .user-rank img {
+    height: 8vh;
+  }
+
 }

@@ -11,10 +11,11 @@ class Header extends Component {
     const { avatar, name, score } = this.props;
     return (
       <header className="app-header">
-        <img src={ Logo } alt="app-logo"/>
+        <img src={ Logo } alt="app-logo" />
         <span className="player-score">
           <span>Score: </span>
           <span data-testid="header-score">{ score }</span>
+          pts
         </span>
         <div className="header-content">
           <img src={ avatar } alt="user-avatar" data-testid="header-profile-picture" />
