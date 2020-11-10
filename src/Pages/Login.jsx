@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { user, questionsAction } from '../actions';
 import getToken from '../service/API';
 import '../styles/Login.css';
@@ -41,10 +42,10 @@ class Login extends React.Component {
     const { history, setQuestions } = this.props;
     if (questions.response_code === 3) {
       localStorage.removeItem('token');
-      window.alert('Erro');
+      window.alert('Error');
       history.push('/');
     } else {
-        setQuestions(questions.results);
+      setQuestions(questions.results);
     }
   }
 
@@ -115,13 +116,19 @@ class Login extends React.Component {
           </button>
         </div>
       </div>
-    )
-  };
+    );
+  }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: (email, name) => dispatch(user(email, name)),
   setQuestions: (questionsArray) => dispatch(questionsAction(questionsArray)),
 });
+
+Login.propTypes = {
+  history: PropTypes.arrayOf(Object).isRequired,
+  setUser: PropTypes.func.isRequired,
+  setQuestions: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
