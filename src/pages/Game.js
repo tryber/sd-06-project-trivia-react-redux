@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { fetchQuestionsFromAPI, userScore } from '../actions';
+import { fetchQuestionsFromAPI, userScore, clearQuestions } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -15,31 +15,43 @@ class Game extends React.Component {
       secondsRemaining: 30,
       disableQuestions: false,
       disableAnswers: true,
+      questionIndex: 0,
+      NUMBER_OF_QUESTIONS: 5,
     };
 
-    this.handleQuestions = this.handleQuestions.bind(this);
     this.handleDisabled = this.handleDisabled.bind(this);
     this.randomArray = this.randomArray.bind(this);
     // Timer
     this.startTimer = this.startTimer.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.renderQuestion = this.renderQuestion.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
   }
 
   componentDidMount() {
     const { state } = this.props;
+    const { NUMBER_OF_QUESTIONS } = this.state;
     localStorage.setItem('state', JSON.stringify(state));
-    const NUMBER_OF_QUESTIONS = 1;
-    const MAGIC_NUMBER = 5000;
-    const { fetchQuestionsAction } = this.props;
+    const MAGIC_NUMBER = 1000;
+    const { fetchQuestionsAction, handleClearQuestions } = this.props;
+    handleClearQuestions();
     fetchQuestionsAction(NUMBER_OF_QUESTIONS);
     setTimeout(this.startTimer, MAGIC_NUMBER);
   }
 
-  componentDidUpdate(prevProps) {
-    const { state } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { state, questions } = this.props;
+    const { questionIndex } = this.state;
     if (JSON.stringify(prevProps.state) !== JSON.stringify(state)) {
       localStorage.setItem('state', JSON.stringify(state));
+    }
+    if (JSON.stringify(prevProps.questions) !== JSON.stringify(questions)) {
+      localStorage.setItem('questions', JSON.stringify(questions));
+    }
+    if (prevState.questionIndex !== questionIndex) {
+      const aSec = 1000;
+      setTimeout(this.startTimer, aSec);
     }
   }
 
@@ -78,8 +90,16 @@ class Game extends React.Component {
     }
   }
 
-  async handleQuestions() {
-    //   const { questions } = this.props;
+  handleNextClick() {
+    const { questionIndex } = this.state;
+    this.setState({
+      questionIndex: questionIndex + 1,
+      secondsRemaining: 30,
+      classRightAnswer: '',
+      classWrongAnswer: '',
+      disableQuestions: false,
+      isHidden: true,
+    });
   }
 
   handleDisabled({ target }) {
@@ -157,36 +177,47 @@ class Game extends React.Component {
     );
   }
 
+  renderQuestion(questionIndex) {
+    const { questions, history } = this.props;
+    const { NUMBER_OF_QUESTIONS } = this.state;
+    if (questions[questionIndex]) {
+      const questionToRender = questions[questionIndex];
+      return (
+        <div id="container">
+          <div id="questions">
+            <div data-testid="question-category">
+            CATEGORIA:
+              <p>{questionToRender.category}</p>
+            </div>
+            <div data-testid="question-text">
+            PERGUNTA:
+              <p>{questionToRender.question}</p>
+            </div>
+          </div>
+          {this.randomArray(questionToRender)}
+        </div>
+      );
+    } if (questionIndex >= NUMBER_OF_QUESTIONS) {
+      return (
+        history.push('/feedback')
+      );
+    }
+  }
+
   render() {
-    const { isHidden } = this.state;
-    const { questions } = this.props;
+    const { isHidden, questionIndex } = this.state;
     return (
       <div onChange={ this.handleDisabled }>
         <Header />
-        {questions.map((element, index) => (
-          element.results.map((e) => (
-            <div key={ index } id="container">
-              <div id="questions">
-                <div data-testid="question-category">
-                CATEGORIA:
-                  <p>{e.category}</p>
-                </div>
-                <div data-testid="question-text">
-                PERGUNTA:
-                  <p>{e.question}</p>
-                </div>
-              </div>
-              {this.randomArray(e)}
-              <button
-                data-testid="btn-next"
-                type="button"
-                hidden={ isHidden }
-                onClick={ this.handleDisabled }
-              >
-                PRÓXIMA
-              </button>
-            </div>
-          ))))}
+        {this.renderQuestion(questionIndex)}
+        <button
+          data-testid="btn-next"
+          type="button"
+          hidden={ isHidden }
+          onClick={ this.handleNextClick }
+        >
+          PRÓXIMA
+        </button>
       </div>
     );
   }
@@ -199,18 +230,23 @@ const mapDispatchToProps = (dispatch) => ({
   handleAnswerAction: (score) => (
     dispatch(userScore(score))
   ),
+  handleClearQuestions: () => (
+    dispatch(clearQuestions())
+  ),
 });
 
 const mapStateToProps = (state) => ({
-  questions: state.questions.questions,
+  questions: state.questions,
   state: state.state,
 });
 
 Game.propTypes = {
   fetchQuestionsAction: PropTypes.func.isRequired,
-  questions: PropTypes.shape().isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   state: PropTypes.shape().isRequired,
+  history: PropTypes.shape().isRequired,
   handleAnswerAction: PropTypes.func.isRequired,
+  handleClearQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
