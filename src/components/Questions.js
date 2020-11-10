@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import Timer from './Timer';
 import './Questions.css';
-import NextButton from './NextButton';
 import { reqQuestions } from '../services';
-import { getQuestions } from '../actions';
-// import { fetchAPIQuestions } from '../services';
+import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -14,18 +11,33 @@ class Questions extends Component {
     this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
     this.disableButtons = this.disableButtons.bind(this);
     this.addClass = this.addClass.bind(this);
+    this.countQuestionsAndRedirect = this.countQuestionsAndRedirect.bind(this);
+    this.downTime = this.downTime.bind(this);
 
     this.state = {
       loading: true,
       checked: false,
       disable: false,
+      questionsAnswer: 0,
+      answers: [],
+      timeInterval: {},
     };
   }
 
   componentDidMount() {
-    const TIMES = 30000;
     this.fetchAPIQuestions();
-    setTimeout(() => this.disableButtons(), TIMES);
+    this.downTime();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { questionsAnswer } = this.state;
+    const { questions, history } = this.props;
+    const five = 5;
+    if (prevState.questionsAnswer !== questionsAnswer
+      || prevProps.questions.length !== questions.length) {
+      this.callRandomQuestions();
+    }
+    if (questionsAnswer > five) history.push('/feedback');
   }
 
   async fetchAPIQuestions() {
@@ -37,7 +49,7 @@ class Questions extends Component {
     const questionsAPI = apiQuestions.results.map((el) => (
       {
         ...el, answers: [...el.incorrect_answers, el.correct_answer],
-      })); // colocando um array no fim de cada 'question' para randomizar as respostas
+      }));
     if (apiQuestions.response_code === limite) {
       localStorage.removeItem('token');
       const { history } = this.props;
@@ -54,17 +66,79 @@ class Questions extends Component {
     this.setState({ disable: true });
   }
 
+  countQuestionsAndRedirect() {
+    const { questionsAnswer } = this.state;
+    const lastQuestion = 4;
+    const answerTime = 30;
+    const { history, resetTime } = this.props;
+    resetTime(answerTime);
+    this.setState({
+      checked: false,
+    });
+
+    if (questionsAnswer === lastQuestion) history.push('/feedback');
+
+    if (questionsAnswer < lastQuestion) {
+      this.setState({ questionsAnswer: questionsAnswer + 1 });
+    }
+    this.downTime();
+    this.setState({ disable: false });
+  }
+
+  randomQuestions() {
+    const { questionsAnswer } = this.state;
+    const randomNumber = 0.5;
+    const { questions } = this.props;
+    const answerAPI = questions[questionsAnswer].answers
+      .sort(() => Math.random() - randomNumber);
+    return answerAPI;
+  }
+
+  callRandomQuestions() {
+    this.setState({
+      answers: this.randomQuestions(),
+    });
+  }
+
+  downTime() {
+    const ONE_SECOND = 1000;
+    const ALL_TIME = 30000;
+    const { timer } = this.props;
+    if (timer !== 0) {
+      const time = setInterval(() => {
+        const { sendTimer } = this.props;
+        sendTimer(timer);
+      }, ONE_SECOND);
+      setTimeout(() => {
+        clearInterval(time);
+        this.disableButtons();
+        this.setState({ checked: true });
+      }, ALL_TIME);
+      this.setState({
+        timeInterval: time,
+      });
+    }
+  }
+
   addClass() {
+    const { timeInterval } = this.state;
+    clearInterval(timeInterval);
     this.setState({
       checked: true,
     });
   }
 
   render() {
-    const { loading, checked, disable } = this.state;
-    const { questions } = this.props;
-    const randomNumber = 0.5;
-    const nextButton = <NextButton />;
+    const { loading, checked, disable, questionsAnswer, answers } = this.state;
+    const { questions, timer } = this.props;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.countQuestionsAndRedirect }
+      >
+        Próxima
+      </button>);
     const renderNextButton = checked ? nextButton : null;
 
     if (loading) {
@@ -73,10 +147,10 @@ class Questions extends Component {
 
     return (
       <div>
-        <p data-testid="question-category">{questions[0].category}</p>
-        <p data-testid="question-text">{questions[0].question}</p>
-        {questions[0].answers.map((answer, index) => {
-          if (answer === questions[0].correct_answer) {
+        <p data-testid="question-category">{questions[questionsAnswer].category}</p>
+        <p data-testid="question-text">{questions[questionsAnswer].question}</p>
+        {answers.map((answer, index) => {
+          if (answer === questions[questionsAnswer].correct_answer) {
             return (
               <button
                 type="button"
@@ -100,8 +174,11 @@ class Questions extends Component {
             >
               {answer}
             </button>);
-        }).sort(() => Math.random() - randomNumber)}
-        <Timer />
+        })}
+        <div>
+        Tempo restante:
+          { timer }
+        </div>
         <div>
           {renderNextButton}
         </div>
@@ -113,20 +190,25 @@ class Questions extends Component {
 Questions.propTypes = {
   history: propTypes.shape({ push: propTypes.func }).isRequired,
   questions: propTypes.arrayOf(propTypes.object).isRequired,
+  timer: propTypes.number.isRequired,
   handleApi: propTypes.func.isRequired,
-  // timer: propTypes.number.isRequired,
+  sendTimer: propTypes.func.isRequired,
+  resetTime: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => (
   {
-    questions: state.game.questions,
-    timer: state.game.timer, //  - usar este timer na hora do calculo do score
+    questions: state.questions,
+    timer: state.timer,
   }
 );
 
 const mapDispatchToProps = (dispatch) => (
   {
     handleApi: (state) => dispatch(getQuestions(state)),
+    sendTimer: (state) => dispatch(getTimer(state)),
+    handleTimer: (state) => dispatch(stopTimer(state)),
+    resetTime: () => dispatch(resetTimer()),
   }
 );
 
