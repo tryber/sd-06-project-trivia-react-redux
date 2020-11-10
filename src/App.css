@@ -1,3 +1,41 @@
 .link-play:hover {
   text-decoration: none;
 }
+
+button:disabled {
+  color: black;
+}
+
+.score {
+  margin-right: 5px;
+}
+
+.div-time {
+  position: relative;
+}
+
+.stop-watch {
+  margin-top: 2px;
+}
+
+.div-questions {
+  background-color: rgb(179, 179, 179)
+}
+
+.time {
+  text-align: center;
+  background-color: rgb(179, 179, 179);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  color: black;
+  position: absolute;
+  font-size: 25px;
+  left: 5.7px;
+  top: 14px;
+}
+
+.flex-labels {
+  display: flex;
+  flex-direction: column;
+}

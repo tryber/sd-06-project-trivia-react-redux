@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { ImStopwatch } from 'react-icons/im';
 import { Redirect } from 'react-router-dom';
 import './Questions.css';
 
@@ -50,17 +51,17 @@ class Questions extends React.Component {
     let dif;
 
     switch (question[currentQuestion].difficulty) {
-      case 'easy':
-        dif = 1;
-        break;
-      case 'medium':
-        dif = 2;
-        break;
-      case 'hard':
-        dif = tres;
-        break;
-      default:
-        break;
+    case 'easy':
+      dif = 1;
+      break;
+    case 'medium':
+      dif = 2;
+      break;
+    case 'hard':
+      dif = tres;
+      break;
+    default:
+      break;
     }
 
     let soma = state.player.score;
@@ -111,10 +112,10 @@ class Questions extends React.Component {
         const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
         const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
         buttonsCorrect.forEach((button) => {
-          button.style.border = '';
+          button.style.border = '3px solid rgb(6, 240, 15)';
         });
         buttonsWrong.forEach((button) => {
-          button.style.border = '';
+          button.style.border = '3px solid rgb(255, 0, 0)';
         });
       }
     }, sec);
@@ -123,8 +124,11 @@ class Questions extends React.Component {
   timer() {
     const { tempo } = this.state;
     return (
-      <div>
-        {tempo }
+      <div className="div-time">
+        <ImStopwatch className="stop-watch" size="50" />
+        <span className="time">
+          { tempo }
+        </span>
       </div>
     );
   }
@@ -175,20 +179,19 @@ class Questions extends React.Component {
       }
       return <Redirect to="/feedback" />;
     }
+    console.log(question[currentQuestion].difficulty)
     return (
       <div>
-        {timer }
-        <h4 data-testid="question-category">
-          <span>Categoria: </span>
-          { question[currentQuestion].category }
-        </h4>
+        <div className="div-questions">
+          {timer }
+          <h4 data-testid="question-category">
+            { question[currentQuestion].category }
+          </h4>
 
-        <p data-testid="question-text" className="question">
-          <span>Pergunta: </span>
-          { this.decode(question[currentQuestion].question) }
-        </p>
-
-        <p className="question">Alternativas:  </p>
+          <p data-testid="question-text" className="question">
+            { this.decode(question[currentQuestion].question) }
+          </p>
+        </div>
         {question[currentQuestion].respostas.map((resposta, index) => (
           <div key={ index } className="text-center">
             <button

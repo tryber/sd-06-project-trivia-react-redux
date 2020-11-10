@@ -8,7 +8,8 @@ import Header from '../components/Header';
 class Game extends React.Component {
   componentDidMount() {
     const { fetchQuestion, token } = this.props;
-    fetchQuestion(token);
+    const settings = JSON.parse(localStorage.settings);
+    fetchQuestion(token, settings);
   }
 
   shuffle(array) {
@@ -105,7 +106,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchQuestion: (token) => dispatch(fetchQuestions(token)),
+  fetchQuestion: (token, settings) => dispatch(fetchQuestions(token, settings)),
 });
 
 Game.propTypes = {

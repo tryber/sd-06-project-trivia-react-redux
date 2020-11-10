@@ -31,7 +31,7 @@ class FormLogin extends React.Component {
       <div className="float-right">
         <Link to="settings">
           <button type="button" data-testid="btn-settings" className="btn-set">
-            <FaCog />
+            <FaCog size="25" />
           </button>
         </Link>
       </div>
@@ -49,10 +49,6 @@ class FormLogin extends React.Component {
       },
     };
 
-    // document.getElementById('play-button').addEventListener(
-    //   'click',
-    //   localStorage.setItem('state', JSON.stringify(stateInicial)),
-    // );
     localStorage.setItem('state', JSON.stringify(stateInicial));
   }
 
@@ -65,10 +61,9 @@ class FormLogin extends React.Component {
     }
   }
 
-  async stateUpdater({ target }) {
+  stateUpdater({ target }) {
     const { name, value } = target;
-    await this.setState(() => ({ [name]: value }));
-    this.disableCheck();
+    this.setState(() => ({ [name]: value }), () => this.disableCheck());
   }
 
   render() {
@@ -91,7 +86,7 @@ class FormLogin extends React.Component {
               ))
             }
           </form>
-          <Link className="link-play" to="gamepage">
+          <Link className="link-play" to="/gamepage">
             <button
               type="button"
               data-testid="btn-play"
