@@ -9,7 +9,7 @@ const timerReducer = (state = INITIAL_STATE, action) => {
   case HANDLE_STOP_TIMER:
     return state;
   case HANDLE_RESET_TIMER:
-    return action.timer;
+    return 30;
   default:
     return state;
   }

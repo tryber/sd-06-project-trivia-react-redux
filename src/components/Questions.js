@@ -69,9 +69,9 @@ class Questions extends Component {
   countQuestionsAndRedirect() {
     const { questionsAnswer } = this.state;
     const magic = 5;
-    const { history, resetTime } = this.props;
+    const { history } = this.props;
 
-    resetTime(30); // dispatch para resetar ao trocar de pergunta
+    this.props.resetTime(); // dispatch para resetar ao trocar de pergunta
     this.setState({
       checked: false,
     });
@@ -122,7 +122,7 @@ class Questions extends Component {
     this.setState({
       checked: true,
     });
-    // handleTimer(timer);
+    handleTimer(timer);
   }
 
   render() {
@@ -204,7 +204,7 @@ const mapDispatchToProps = (dispatch) => (
     handleApi: (state) => dispatch(getQuestions(state)),
     sendTimer: (state) => dispatch(getTimer(state)),
     handleTimer: (state) => dispatch(stopTimer(state)),
-    resetTime: (state) => dispatch(resetTimer(state)),
+    resetTime: () => dispatch(resetTimer()),
   }
 );
 
