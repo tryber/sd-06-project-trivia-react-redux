@@ -14,11 +14,8 @@ class Header extends Component {
           alt="gravatar"
           src={ `https://www.gravatar.com/avatar/${hash}` }
         />
-        <p data-testid="header-player-name">{ name }</p>
-        <p>
-          Placar:
-          <span data-testid="header-score">{ score }</span>
-        </p>
+        <p data-testid="header-player-name">{name}</p>
+        <span data-testid="header-score">{score}</span>
       </div>
     );
   }
