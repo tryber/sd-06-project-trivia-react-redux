@@ -1,4 +1,4 @@
-import { CORRECT_ANSWER, QUESTIONS_SUCCESS } from '../actions';
+import { CORRECT_ANSWER, QUESTIONS_SUCCESS, PLAY_AGAIN } from '../actions';
 
 const initialState = {
   questions: '',
@@ -17,6 +17,8 @@ function game(state = initialState, action) {
       ...state,
       correctAnswers: state.correctAnswers + action.amount,
     };
+  case PLAY_AGAIN:
+    return initialState;
   default:
     return state;
   }
