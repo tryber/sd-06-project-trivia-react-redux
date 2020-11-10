@@ -5,14 +5,36 @@ import youwin from './youwin.gif'
 import gameover from './gameover.png'
 
 const Scoreboard = (props) => {
-  const { asserts } = props;
+  const { asserts, score } = props;
   console.log('feed', asserts);
+
+  const ScoreTable = () => {
+    return(
+      <span className="score-table">
+        <span
+          className="score-info"
+          data-testid="feedback-total-score"
+        >
+        Your Score: { score }
+        </span>
+        <span
+          className="score-info"
+          data-testid="feedback-total-question"
+        >
+        Assertions: { asserts }
+        </span>
+      </span>
+    )
+  }
 
   const Welldone = () => {
     return(
       <div className="feedback-field">
         <p data-testid="feedback-text" className="feedbackText">Mandou bem!</p>
-        <img className="baner" src={youwin}/>
+        <div>
+          <ScoreTable />
+          <img className="baner" src={youwin}/>
+        </div>
       </div>
     )
   }
@@ -20,7 +42,10 @@ const Scoreboard = (props) => {
     return(
       <div className="feedback-field">
         <p data-testid="feedback-text" className="feedbackText">Podia ser melhor...</p>
-        <img className="baner" src={gameover}/>
+        <div className="score-field">
+          <ScoreTable />
+          <img className="baner" src={gameover}/>
+        </div>
       </div>
     )
   }
@@ -47,6 +72,7 @@ const Scoreboard = (props) => {
 
 Scoreboard.propTypes = {
   asserts: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 }
 
 export default Scoreboard;

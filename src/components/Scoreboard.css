@@ -9,15 +9,26 @@
 }
 
 .feedback-field {
-  margin: auto;
 }
 
 .feedbackText {
-  position: absolute;
   font-size: 45px;
   text-align: center;
 }
 
 .baner {
   max-width: 100%;
+}
+
+.score-field {
+}
+
+.score-table {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  font-size: 40px;
+  line-height: 50px;
+  align-items: center;
+  width: 100%;
 }
