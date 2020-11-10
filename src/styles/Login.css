@@ -54,4 +54,42 @@ body{
   font-size: 18px;
   cursor: pointer;
   margin: 12px 0;
+  outline: none;
+}
+.btn:hover:enabled {
+  background-color: #4caf50;
+  color: black;
+}
+
+.trivia-neon {
+  font-family: 'Syne Mono', monospace;
+  position: relative;
+  font-size: 6em;
+  letter-spacing: 15px;
+  color: #0e3742;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  -webkit-box-reflect: below 1px linear-gradient(transparent,#000008);
+  line-height: 0.70em;
+  outline: nome;
+  animation: animate 5s linear infinite;
+}
+
+@keyframes animate
+{
+  0%, 18%, 20%, 50.1%, 60%, 65.1%, 80%, 90.1%, 92%
+  {
+    color:  #4caf50;
+    box-shadow: nome;
+  }
+  18.1%, 26.1%,30%,50%,60.1%,65%,80.1%,90%,92.1%,100%
+  {
+    color: #ffffff;
+    box-shadow: 0 0 10px  #58b15b,
+    0 0 20px  #58b15b,
+    0 0 40px  #58b15b,
+    0 0 80px #58b15b,
+    0 0 160px #58b15b,
+  }
 }

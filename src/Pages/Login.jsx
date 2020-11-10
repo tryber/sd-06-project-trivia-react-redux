@@ -69,46 +69,49 @@ class Login extends React.Component {
     const { history } = this.props;
     const { buttonDisable } = this.state;
     return (
-      <div className="login-box">
-        {/* <audio src={ music } autoPlay loop></audio> */}
-        <h1>Login</h1>
-        <div className="textbox">
-          <i class="fas fa-user"></i>
-          <input
-            id="name-input"
-            type="text"
-            data-testid="input-player-name"
-            onChange={ this.checkButton }
-            placeholder="Name"
-          />
+      <div>
+        <h2 className="trivia-neon" contenteditable="true">Trivia Group 4</h2>
+        <div className="login-box">
+          {/* <audio src={ music } autoPlay loop></audio> */}
+          <h1>Login</h1>
+          <div className="textbox">
+            <i class="fas fa-user"></i>
+            <input
+              id="name-input"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ this.checkButton }
+              placeholder="Name"
+            />
+          </div>
+          <div className="textbox">
+            <i class="fas fa-user"></i>
+            <input
+              id="email-input"
+              type="text"
+              data-testid="input-gravatar-email"
+              onChange={ this.checkButton }
+              placeholder="Email"
+            />
+          </div>
+          <button
+            type="submit"
+            data-testid="btn-play"
+            disabled={ buttonDisable }
+            onClick={ this.onClick }
+            className="btn"
+          >
+            Jogar
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/settings') }
+            className="btn"
+          >
+            Configurações
+          </button>
         </div>
-        <div className="textbox">
-          <i class="fas fa-user"></i>
-          <input
-            id="email-input"
-            type="text"
-            data-testid="input-gravatar-email"
-            onChange={ this.checkButton }
-            placeholder="Email"
-          />
-        </div>
-        <button
-          type="submit"
-          data-testid="btn-play"
-          disabled={ buttonDisable }
-          onClick={ this.onClick }
-          className="btn"
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => history.push('/settings') }
-          className="btn"
-        >
-          Configurações
-        </button>
       </div>
     )
   };
