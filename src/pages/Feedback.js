@@ -3,61 +3,69 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Header } from '../components';
+import { resetGame, addRanking } from '../actions';
 
 class Feedback extends Component {
-  constructor() {
-    super();
-    this.feedbackMessage = this.feedbackMessage.bind(this);
+  componentDidMount() {
+    const { sendRanking, name, hash } = this.props;
+    sendRanking(name, hash);
   }
 
   feedbackMessage() {
-    const { user } = this.props;
-    const { assertions } = user;
+    const { assertions } = this.props;
+    const MIN_ASSERTIONS = 3;
 
-    const numberLimit = 3;
-
-    if (assertions < numberLimit) {
+    if (assertions < MIN_ASSERTIONS) {
       return (
-        <div>
-          <p> Podia ser melhor...</p>
-        </div>
+        <p data-testid="feedback-text"> Podia ser melhor...</p>
       );
-    } if (assertions >= numberLimit) {
+    } if (assertions >= MIN_ASSERTIONS) {
       return (
-        <div>
-          <p> Mandou bem!</p>
-        </div>
+        <p data-testid="feedback-text"> Mandou bem!</p>
       );
     }
   }
 
   render() {
-    const { user } = this.props;
-    const { score, assertions } = user;
-
+    const { score, assertions, reset } = this.props;
     return (
       <div>
         <Header />
-        <div data-testid="feedback-text">
-          {this.feedbackMessage()}
-        </div>
+        {this.feedbackMessage()}
         <div>
           <p data-testid="feedback-total-question">
-          Você acertou
-            {assertions}
-          questões!
-          </p>
-          <p data-testid="feedback-total-score">
+            Você acertou
+            {' '}
+            <span data-testid="feedback-total-question">{assertions}</span>
+            {' '}
+            questões!
+            <br />
             Um total de
-            {score}
-            pontos.
+            {' '}
+            <span data-testid="feedback-total-score">{score}</span>
+            {' '}
+            pontos
           </p>
         </div>
         <div>
-          <button type="button" data-test-id="btn-ranking">
-            <Link to="/ranking">Ver Ranking</Link>
-          </button>
-          <button type="button"><Link to="/game">JOGAR NOVAMENTE</Link></button>
+          <Link to="/ranking">
+            <button
+              type="button"
+              data-testid="btn-ranking"
+              onClick={ reset }
+            >
+              VER RANKING
+            </button>
+          </Link>
+          <Link to="/">
+            <button
+              type="button"
+              data-testid="btn-play-again"
+              onClick={ reset }
+            >
+            JOGAR NOVAMENTE
+            </button>
+          </Link>
         </div>
       </div>
     );
@@ -65,11 +73,18 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  assertions: state.game.assertions,
+  score: state.game.score,
+  name: state.user.name,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetGame()),
+  sendRanking: (name, hash) => dispatch(addRanking(name, hash)),
 });
 
 Feedback.propTypes = {
   user: PropTypes.object,
 }.isRequired;
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

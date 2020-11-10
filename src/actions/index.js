@@ -15,6 +15,12 @@ export const sendScore = (score) => ({ type: SCORE, score });
 export const ASSERTIONS = 'ASSERTIONS';
 export const sendAssertions = (assertions) => ({ type: ASSERTIONS, assertions });
 
+export const ADD_RANKING = 'ADD_RANKING';
+export const addRanking = (name, hash) => ({ type: ADD_RANKING, name, hash });
+
+export const RESET_GAME = 'RESET_GAME';
+export const resetGame = () => ({ type: RESET_GAME });
+
 export function handleToken() {
   return async (dispatch) => {
     const tokenObjResponse = await fetchAPITrivia();
