@@ -41,7 +41,6 @@ class FormLogin extends Component {
 
   render() {
     const { isDisabled } = this.state;
-    // const { saveToken } = this.props;
     return (
       <div>
         <form>
