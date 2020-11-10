@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { saveGameScore, saveNameEmail } from '../actions';
+import { resetPlayerInfo, resetRequestInfo } from '../actions';
 
 class Ranking extends Component {
   constructor() {
@@ -12,9 +12,9 @@ class Ranking extends Component {
   }
 
   resetScore() {
-    const { resetNameEmail, resetGameScore } = this.props;
-    resetNameEmail('', '');
-    resetGameScore(0, 0);
+    const { resetPlayerStore, resetRequestStore } = this.props;
+    resetPlayerStore();
+    resetRequestStore();
   }
 
   render() {
@@ -44,6 +44,9 @@ class Ranking extends Component {
         <Link to="/" onClick={ this.resetScore }>
           <button data-testid="btn-go-home" type="button">Início</button>
         </Link>
+        <Link to="/feedback">
+          <button type="button">Voltar</button>
+        </Link>
       </div>
     );
   }
@@ -53,8 +56,8 @@ Ranking.propTypes = {
   ranking: PropTypes.shape({
     sort: PropTypes.func.isRequired,
   }).isRequired,
-  resetNameEmail: PropTypes.func.isRequired,
-  resetGameScore: PropTypes.func.isRequired,
+  resetPlayerStore: PropTypes.func.isRequired,
+  resetRequestStore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -62,8 +65,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetNameEmail: (name, email) => dispatch(saveNameEmail(name, email)),
-  resetGameScore: (score, assertions) => dispatch(saveGameScore(score, assertions)),
+  resetPlayerStore: () => dispatch(resetPlayerInfo()),
+  resetRequestStore: () => dispatch(resetRequestInfo()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ranking);
