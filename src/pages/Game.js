@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
+import '../css/game.css';
 
 class Game extends Component {
   render() {
@@ -10,6 +11,9 @@ class Game extends Component {
       <div>
         <Header />
         <Questions history={ history } />
+        <div className="divImage">
+          <img src="https://i.imgur.com/Ud8xgso.gif" alt="pipoca" />
+        </div>
       </div>
     );
   }

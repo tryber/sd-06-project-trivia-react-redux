@@ -136,6 +136,7 @@ class Questions extends Component {
         type="button"
         data-testid="btn-next"
         onClick={ this.countQuestionsAndRedirect }
+        className="nextButton"
       >
         Próxima
       </button>);
@@ -149,35 +150,37 @@ class Questions extends Component {
       <div>
         <p data-testid="question-category">{questions[questionsAnswer].category}</p>
         <p data-testid="question-text">{questions[questionsAnswer].question}</p>
-        {answers.map((answer, index) => {
-          if (answer === questions[questionsAnswer].correct_answer) {
+        <div className="divButton">
+          {answers.map((answer, index) => {
+            if (answer === questions[questionsAnswer].correct_answer) {
+              return (
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                  key={ answer }
+                  onClick={ this.addClass }
+                  disabled={ disable }
+                  className={ checked ? 'correctAnswer' : null }
+                >
+                  {answer}
+                </button>);
+            }
             return (
               <button
                 type="button"
-                data-testid="correct-answer"
+                data-testid={ `wrong-answer-${index}` }
                 key={ answer }
                 onClick={ this.addClass }
                 disabled={ disable }
-                className={ checked ? 'correctAnswer' : null }
+                className={ checked ? 'incorrectAnswer' : null }
               >
                 {answer}
               </button>);
-          }
-          return (
-            <button
-              type="button"
-              data-testid={ `wrong-answer-${index}` }
-              key={ answer }
-              onClick={ this.addClass }
-              disabled={ disable }
-              className={ checked ? 'incorrectAnswer' : null }
-            >
-              {answer}
-            </button>);
-        })}
+          })}
+        </div>
         <div>
-        Tempo restante:
-          { timer }
+          Tempo restante:
+          {timer}
         </div>
         <div>
           {renderNextButton}

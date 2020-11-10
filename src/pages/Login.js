@@ -57,7 +57,7 @@ class Login extends Component {
             data-testid="btn-settings"
             className="buttonSettings"
           >
-            Configurações
+          Configurações
           </button>
         </Link>
         <br />
