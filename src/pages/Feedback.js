@@ -14,7 +14,6 @@ export default class Feedback extends Component {
         <Link to="/Ranking">
           <Button
             testId="btn-ranking"
-            type="button"
             id="btnRanking"
             name="btnRanking"
             value="Ver Ranking"
