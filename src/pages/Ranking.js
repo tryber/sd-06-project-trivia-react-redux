@@ -21,8 +21,11 @@ class Ranking extends React.Component {
   loadFromLocalStorage() {
     const { name, email, score } = this.props;
     const actualPlayer = { name, email, score };
+    if (!localStorage.getItem('scorePlayers')) {
+      localStorage.setItem('scorePlayers', JSON.stringify([]));
+    }
     const actualScorePlayers = JSON.parse(localStorage.getItem('scorePlayers'));
-    const scorePlayers = actualScorePlayers && [];
+    const scorePlayers = actualScorePlayers;
 
     scorePlayers.push(actualPlayer);
     localStorage.setItem('scorePlayers', JSON.stringify(scorePlayers));
@@ -46,7 +49,7 @@ class Ranking extends React.Component {
     const { scorePlayers } = this.state;
     return (
       <div>
-        <div>Ranking</div>
+        <div data-testid="ranking-title">Ranking</div>
         <Link to="/" data-testid="btn-go-home">
           <button type="button">Novo Jogo</button>
         </Link>
