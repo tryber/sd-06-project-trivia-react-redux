@@ -415,7 +415,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
   });
 });
 
-describe.only('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
+describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -540,7 +540,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
 
 // ranking
 
-describe.skip('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
+describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -639,7 +639,7 @@ describe.skip('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe.skip('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
   it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
