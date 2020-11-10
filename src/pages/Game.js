@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
 import './Game.css';
@@ -17,5 +18,9 @@ class Game extends React.Component {
     );
   }
 }
+
+Game.propTypes = {
+  history: PropTypes.string.isRequired,
+};
 
 export default Game;

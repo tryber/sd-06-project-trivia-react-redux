@@ -32,7 +32,7 @@ class Login extends React.Component {
     const info = {
       player: {
         name: '',
-        assertions: '',
+        assertions: 0,
         score: 0,
         gravatarEmail: '',
       },

@@ -29,7 +29,6 @@ class Timer extends Component {
     const { timer } = this.state;
     if (timer === 0) {
       outOfTime(timer);
-      clearInterval(this.interval);
     }
 
     this.resetTimer();
@@ -49,8 +48,6 @@ class Timer extends Component {
         actualQuestion: questionNumber,
       });
     }
-
-    setInterval(this.interval);
   }
 
   render() {
@@ -71,6 +68,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   outOfTime: PropTypes.func.isRequired,
+  questionNumber: PropTypes.number.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);

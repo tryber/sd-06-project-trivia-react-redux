@@ -10,8 +10,12 @@ class Header extends React.Component {
     this.convertEmail = this.convertEmail.bind(this);
     this.createPlayerScore = this.createPlayerScore.bind(this);
 
+    const playerScore = localStorage.getItem('state');
+    const score = JSON.parse(playerScore);
+
     this.state = {
       hash: '',
+      player: score.player,
     };
   }
 
@@ -19,14 +23,7 @@ class Header extends React.Component {
     this.createPlayerScore();
   }
 
-  // componentDidUpdate(prevProps) {
-  // const { email } = this.props;
-  // if (prevProps.email !== email) this.convertEmail(email);
-  // }
-
   createPlayerScore() {
-    localStorage.setItem('playerScore', 0);
-
     const { email } = this.props;
     if (email !== '') this.convertEmail(email);
   }
@@ -34,16 +31,13 @@ class Header extends React.Component {
   convertEmail(email) {
     if (email !== '') {
       const hash = md5(email).toString();
-      console.log(hash);
       this.setState({ hash });
     }
   }
 
   render() {
     const { name } = this.props;
-    const playerScore = localStorage.getItem('state');
-    const score = JSON.parse(playerScore);
-    const { hash } = this.state;
+    const { hash, player } = this.state;
     const urlImage = `https://www.gravatar.com/avatar/${hash}`;
     return (
       <div className="header-container">
@@ -56,7 +50,7 @@ class Header extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
         </div>
         <div className="header-score">
-          <p data-testid="header-score">{ `Score: ${score.player.score}` }</p>
+          <p data-testid="header-score">{ `${player.score}` }</p>
         </div>
       </div>
     );

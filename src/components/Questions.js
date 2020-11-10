@@ -66,7 +66,8 @@ class Questions extends Component {
     const { level } = this.state;
     const timeValue = Number(document.getElementsByClassName('counter')[0].innerHTML);
     const userInfo = JSON.parse(localStorage.getItem('state'));
-    let prevScore = userInfo.player.score;
+    let prevScore = Number(userInfo.player.score);
+    let assertions = Number(userInfo.player.assertions);
     let levelValue = 0;
     const hardLevel = 3;
     const mediumLevel = 2;
@@ -82,7 +83,9 @@ class Questions extends Component {
     }
     const score = baseValue + (timeValue * levelValue);
     prevScore += score;
+    assertions += 1;
     userInfo.player.score = prevScore;
+    userInfo.player.assertions = assertions;
     localStorage.setItem('state', JSON.stringify(userInfo));
   }
 
@@ -152,9 +155,9 @@ class Questions extends Component {
       }), () => {
         const btnArray = document.getElementsByTagName('button');
         const btnNext = document.getElementById('next');
-  
+
         btnNext.style.display = 'none';
-  
+
         for (let x = 0; x < btnArray.length; x += 1) {
           btnArray[x].className = '';
         }
@@ -198,6 +201,7 @@ Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.number])),
   timeIsOver: PropTypes.number,
+  history: PropTypes.string.isRequired,
 };
 
 Questions.defaultProps = {
