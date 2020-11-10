@@ -50,7 +50,7 @@ const mapStateToProps = (state) => ({
 FeedHeader.propTypes = {
   playerName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  score: PropTypes.shape().isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(FeedHeader);

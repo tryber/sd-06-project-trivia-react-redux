@@ -37,7 +37,7 @@ class Ranking extends React.Component {
         <Link to="/">
           <button
             type="button"
-            data-testid="btn-next"
+            data-testid="btn-go-home"
           >
           Inicio
           </button>
