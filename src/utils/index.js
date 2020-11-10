@@ -60,3 +60,17 @@ export function calculateScore(timer, questionDifficulty) {
 
   return questionScore;
 }
+
+// Ranking
+export function saveRankingLocalStorage(name, score = 0, gravatarEmail) {
+  let currentRanking = JSON.parse(localStorage.getItem('ranking'));
+  const newPlayer = {
+    name,
+    score,
+    gravatarEmail,
+  };
+
+  currentRanking = [...currentRanking, newPlayer];
+  const strigifyRanking = JSON.stringify(currentRanking);
+  localStorage.setItem('ranking', strigifyRanking);
+}
