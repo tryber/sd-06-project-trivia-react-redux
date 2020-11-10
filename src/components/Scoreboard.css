@@ -17,9 +17,6 @@
   max-width: 100%;
 }
 
-.score-field {
-}
-
 .score-table {
   display: flex;
   flex-direction: column;
