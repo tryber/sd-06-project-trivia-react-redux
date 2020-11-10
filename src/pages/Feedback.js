@@ -6,22 +6,22 @@ import Scoreboard from '../components/Scoreboard';
 
 class Feedback extends React.Component {
   render() {
-    const { gameBoard } = this.props;
+    const { assertions } = this.props;
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={ gameBoard.assertions }/>
+        <Scoreboard asserts={ assertions } />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  gameBoard: state.game.gameBoard,
+  assertions: state.game.gameBoard.assertions,
 });
 
 Feedback.propTypes = {
-  gameBoard: PropTypes.shape({}).isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);

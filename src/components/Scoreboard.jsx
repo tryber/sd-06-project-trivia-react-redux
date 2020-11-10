@@ -5,6 +5,8 @@ import youwin from './youwin.gif'
 import gameover from './gameover.png'
 
 const Scoreboard = (props) => {
+  const { asserts } = props;
+  console.log('feed', asserts);
 
   const Welldone = () => {
     return(
@@ -23,9 +25,9 @@ const Scoreboard = (props) => {
     )
   }
 
-  const Feed = (props) => {
-    const { asserts } = props;
-    if (asserts >= 4) {
+  const Feed = () => {
+    
+    if (asserts > 3) {
       return (
         <Welldone />
       )
