@@ -14,6 +14,8 @@ class Ranking extends React.Component {
   }
 
   render() {
+    const players = JSON.parse(localStorage.getItem('ranking'));
+    console.log(players);
     return (
       <div>
         <h1 data-testid="ranking-title">RANKING</h1>

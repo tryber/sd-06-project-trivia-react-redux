@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import HeaderGame from '../components/HeaderGame';
 import ScoreFeedback from '../components/ScoreFeedback';
@@ -9,6 +10,19 @@ class Feedback extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.rankingRedirect = this.rankingRedirect.bind(this);
+  }
+
+  componentDidMount() {
+    const { userName, userScore, userGravatar } = this.props;
+    const userInfo = [
+      {
+        name: userName,
+        score: userScore,
+        picture: userGravatar,
+      },
+    ];
+    const userInfoJSON = JSON.stringify(userInfo);
+    localStorage.setItem('ranking', ...userInfoJSON);
   }
 
   handleClick() {
@@ -49,4 +63,10 @@ Feedback.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  userName: state.loginReducer.name,
+  userScore: state.scoreReducer.userScore.score,
+  userGravatar: state.gravatarReducer.gravatar,
+});
+
+export default connect(mapStateToProps)(Feedback);
