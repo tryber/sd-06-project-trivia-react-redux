@@ -10,5 +10,15 @@
     justify-content: center;
     flex-wrap: wrap;
     border-radius: 5%;
-    
 }
+
+button {
+    margin-left: 2%;
+    background-color: #4267b2;
+    border: 1px solid #29487d;
+    border-radius: 5px;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 3px 8px;
+    color: white;
+  }
