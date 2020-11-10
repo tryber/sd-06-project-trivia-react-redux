@@ -12,7 +12,6 @@ class Game extends React.Component {
     if (localStorage.settings) {
       settings = JSON.parse(localStorage.settings);
     }
-    console.log(settings)
     fetchQuestion(token, settings);
   }
 
