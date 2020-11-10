@@ -1,4 +1,4 @@
-import { USER_INFO, USER_SCORE } from '../actions';
+import { USER_INFO, USER_SCORE, USER_CLEAR } from '../actions';
 
 const INITIAL_STATE = {
   player: {
@@ -29,6 +29,8 @@ export default function (state = INITIAL_STATE, action) {
         assertions: state.player.assertions + 1,
       },
     };
+  case USER_CLEAR:
+    return INITIAL_STATE;
   default:
     return state;
   }
