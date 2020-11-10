@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './visual_identity/general_styles/defaultPage.scss';
 import { Route, Switch } from 'react-router-dom';
 
 import { Login,

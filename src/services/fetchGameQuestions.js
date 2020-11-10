@@ -1,6 +1,6 @@
 import fetchToken from './fetchToken';
 
-export default async function fetchGameQuestions() {
+export default async function fetchGameQuestions(difficulty, category, type) {
   let token = localStorage.getItem('token');
 
   if (token === null) {
@@ -13,7 +13,8 @@ export default async function fetchGameQuestions() {
   const ENDPOINT = 'https://opentdb.com/api.php?';
   const AMOUNT_OPTION = 'amount=5';
   const TOKEN_OPTION = `&token=${token}`;
-  const FETCH_URL = `${ENDPOINT}${AMOUNT_OPTION}${TOKEN_OPTION}`;
+  const FETCH_URL = `${ENDPOINT}${AMOUNT_OPTION}${TOKEN_OPTION}
+  ${difficulty}${category}${type}`;
 
   return fetch(FETCH_URL)
     .then((response) => response.json())

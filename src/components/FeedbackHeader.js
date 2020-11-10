@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import triviaLogo from '../visual_identity/logo/trivia_logo_noBg2.png';
 
 class FeedbackHeader extends Component {
   render() {
@@ -9,20 +10,30 @@ class FeedbackHeader extends Component {
     return (
       <header>
         <img
-          data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${md5(gravatarEmail)}` }
-          alt="Avatar user from gravatar"
+          src={ triviaLogo }
+          width="80px"
+          alt="Trivia Logo"
         />
-        <span
+        <div
           data-testid="header-player-name"
+          className="player-stats-container"
         >
-          { name }
-        </span>
-        <span
-          data-testid="header-score"
-        >
-          { score }
-        </span>
+          <img
+            data-testid="header-profile-picture"
+            src={ `https://www.gravatar.com/avatar/${md5(gravatarEmail)}` }
+            alt="Avatar user from gravatar"
+            width="40px"
+          />
+          <div className="player-stats">
+            <h3>{ name }</h3>
+            <p
+              data-testid="header-score"
+              className="player-stats"
+            >
+              { score }
+            </p>
+          </div>
+        </div>
       </header>
     );
   }

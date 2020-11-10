@@ -36,7 +36,8 @@ class Game extends Component {
   }
 
   async componentDidMount() {
-    const API_RESPONSE = await fetchGameQuestions();
+    const { difficulty, category, type } = this.props;
+    const API_RESPONSE = await fetchGameQuestions(difficulty, category, type);
     const QUESTIONS = API_RESPONSE.results;
 
     await this.saveQuestionsToState(QUESTIONS);
@@ -188,6 +189,9 @@ Game.propTypes = {
   score: PropTypes.number.isRequired,
   dispatchSaveScore: PropTypes.func.isRequired,
   dispatchCorrectAnswers: PropTypes.func.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -195,6 +199,9 @@ const mapStateToProps = (state) => ({
   name: state.player.player.name,
   email: state.player.player.gravatarEmail,
   score: state.player.player.score,
+  category: state.settings.category,
+  type: state.settings.type,
+  difficulty: state.settings.difficulty,
 });
 
 const mapDispatchToProps = (dispatch) => ({

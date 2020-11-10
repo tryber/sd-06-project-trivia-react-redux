@@ -1,0 +1,25 @@
+@import '../../visual_identity//general_styles/color.scss';
+
+.settings-container {
+  height: 100%;
+
+  & .feedback-message {
+    background-color: $darkBlue;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    padding: 2%;
+    
+    & a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.6);
+
+      }
+    }
+
+  }
+}
