@@ -25,15 +25,45 @@ class Game extends Component {
     this.startingInterval();
   }
 
+  shuffle(array) {
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  randowChields() {
+    const containerAnswers = document.querySelector('.answers');
+    if (containerAnswers !== null) {
+      const answersAlternatives = [...containerAnswers.children];
+      this.shuffle(answersAlternatives);
+      answersAlternatives.map((element) => containerAnswers.appendChild(element));
+    }
+  }
+
   startingInterval() {
     this.setState(
       {
-        timer: 30,
+        timer: 5,
       },
       () => {
         const mil = 1000;
         const interval = setInterval(() => this.counting(), mil);
         this.setState({ interval });
+        this.randowChields();
       },
     );
   }
@@ -56,6 +86,9 @@ class Game extends Component {
         '[data-testid="correct-answer"]',
       );
       correctAnswer.disabled = true;
+      document.querySelector(
+        '[data-testid="wrong-answer-0"]',
+      ).click();
     }
   }
 

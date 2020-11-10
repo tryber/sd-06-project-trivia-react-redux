@@ -101,8 +101,11 @@ class QuestionCard extends Component {
     return (
       <div>
         QUESTION CARD
-        {(indexQuestion >= QUESTIONS_ANSWERED)
-          ? <Redirect to="/feedback" /> : this.question()}
+        {indexQuestion >= QUESTIONS_ANSWERED ? (
+          <Redirect to="/feedback" />
+        ) : (
+          this.question()
+        )}
         <button
           disabled={ !answered }
           hidden={ !answered }
