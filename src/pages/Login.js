@@ -50,9 +50,9 @@ class Login extends Component {
   render() {
     const { name, email, isDisabled } = this.state;
     return (
-      <div className="container">
-        <div className="container-login">
-          <img src="../trivia.png" width="100%" alt="" />
+      <div className="class-game">
+        <div className="container-login App-header">
+          <img src="https://raw.githubusercontent.com/tryber/sd-06-project-trivia-react-redux/master/src/trivia.png" className="App-logo" width="70%" alt="" />
 
           <form onSubmit={ this.handleSignUp }>
             <div className="forms">

@@ -65,8 +65,13 @@ class QuestionCard extends Component {
     const { category, question } = questions[indexQuestion];
     return (
       <div>
-        <span>{timer}</span>
-        <p data-testid="question-category">{category}</p>
+        <p>
+          {' '}
+Timer:
+          {timer}
+        </p>
+          Category:
+        <span data-testid="question-category">{category}</span>
         <p data-testid="question-text">{question}</p>
         <div className="answers">
           <button
@@ -100,7 +105,6 @@ class QuestionCard extends Component {
     const { answered, indexQuestion } = this.state;
     return (
       <div>
-        QUESTION CARD
         {indexQuestion >= QUESTIONS_ANSWERED ? (
           <Redirect to="/feedback" />
         ) : (

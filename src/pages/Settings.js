@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveSettings, getCategories } from '../actions';
+import './Game.css';
 
 class Settings extends Component {
   constructor(props) {
@@ -37,11 +38,12 @@ class Settings extends Component {
     const { options } = this.props;
     const { category, difficulty, type } = this.state;
     return (
-      <div>
+      <div className="class-game">
         <h1 data-testid="settings-title">CONFIGURAÇÕES</h1>
         <form onSubmit={ this.handleSubmit }>
           <label htmlFor="categories">
             Category:
+            <br />
             <select id="category" onChange={ this.handleChange } value={ category }>
               {options.categories.map((item) => (
                 <option key={ item.id } value={ item.id }>
@@ -50,8 +52,10 @@ class Settings extends Component {
             </select>
           </label>
           <br />
+          <br />
           <label htmlFor="difficulty">
             Difficulty:
+            <br />
             <select id="difficulty" onChange={ this.handleChange } value={ difficulty }>
               {options.difficulty.map((item) => (
                 <option key={ item.id } value={ item.id }>
@@ -60,8 +64,10 @@ class Settings extends Component {
             </select>
           </label>
           <br />
+          <br />
           <label htmlFor="type">
             Type:
+            <br />
             <select id="type" onChange={ this.handleChange } value={ type }>
               {options.type.map((item) => (
                 <option key={ item.id } value={ item.id }>
@@ -69,6 +75,7 @@ class Settings extends Component {
                 </option>))}
             </select>
           </label>
+          <br />
           <br />
           <button type="submit">Salvar</button>
         </form>
