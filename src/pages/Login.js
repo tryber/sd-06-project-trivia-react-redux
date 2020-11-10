@@ -43,7 +43,9 @@ class Login extends Component {
     const { name, email } = this.state;
     setName(name, email);
     const token = await reqToken().then((data) => data.token);
+    const player = { name, assertions: 0, score: 0, gravatarEmail: email };
     window.localStorage.setItem('token', JSON.stringify(token));
+    window.localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
     history.push('/game');
   }
 

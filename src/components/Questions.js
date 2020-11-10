@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import '../css/Questions.css';
 import { reqQuestions } from '../services';
-import { getQuestions, stopTimer, getTimer, resetTimer } from '../actions';
+import {
+  getQuestions,
+  stopTimer,
+  getTimer,
+  resetTimer,
+  getAssertion,
+  getScore,
+} from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -13,6 +20,7 @@ class Questions extends Component {
     this.addClass = this.addClass.bind(this);
     this.countQuestionsAndRedirect = this.countQuestionsAndRedirect.bind(this);
     this.downTime = this.downTime.bind(this);
+    this.handleInterval = this.handleInterval.bind(this);
 
     this.state = {
       loading: true,
@@ -21,6 +29,8 @@ class Questions extends Component {
       questionsAnswer: 0,
       answers: [],
       timeInterval: {},
+      timingOut: '',
+      isCorrect: false,
     };
   }
 
@@ -38,6 +48,10 @@ class Questions extends Component {
       this.callRandomQuestions();
     }
     if (questionsAnswer > five) history.push('/feedback');
+  }
+
+  componentWillUnmount() {
+    this.downTime();
   }
 
   async fetchAPIQuestions() {
@@ -67,22 +81,26 @@ class Questions extends Component {
   }
 
   countQuestionsAndRedirect() {
-    const { questionsAnswer } = this.state;
-    const lastQuestion = 4;
+    const { questionsAnswer, timingOut, isCorrect } = this.state;
     const answerTime = 30;
-    const { history, resetTime } = this.props;
+    const lastQuestion = 4;
+    const { resetTime, history, saveScore, questions, timer } = this.props;
+    clearTimeout(timingOut);
     resetTime(answerTime);
     this.setState({
       checked: false,
     });
 
     if (questionsAnswer === lastQuestion) history.push('/feedback');
-
     if (questionsAnswer < lastQuestion) {
       this.setState({ questionsAnswer: questionsAnswer + 1 });
     }
     this.downTime();
     this.setState({ disable: false });
+    const playserScore = this.calculate(timer, questions[questionsAnswer].difficulty);
+    if (isCorrect) {
+      saveScore(playserScore);
+    }
   }
 
   randomQuestions() {
@@ -100,37 +118,82 @@ class Questions extends Component {
     });
   }
 
-  downTime() {
+  handleInterval() {
     const ONE_SECOND = 1000;
-    const ALL_TIME = 30000;
     const { timer } = this.props;
-    if (timer !== 0) {
-      const time = setInterval(() => {
-        const { sendTimer } = this.props;
-        sendTimer(timer);
-      }, ONE_SECOND);
-      setTimeout(() => {
-        clearInterval(time);
-        this.disableButtons();
-        this.setState({ checked: true });
-      }, ALL_TIME);
-      this.setState({
-        timeInterval: time,
-      });
-    }
+    const time = setInterval(() => {
+      const { sendTimer } = this.props;
+      sendTimer(timer);
+    }, ONE_SECOND);
+    this.setState({ timeInterval: time });
   }
 
-  addClass() {
-    const { timeInterval } = this.state;
+  downTime() {
+    const ALL_TIME = 30000;
+    console.log('atualziando');
+    this.handleInterval();
+    const loading = setTimeout(() => {
+      this.disableButtons();
+      this.setState({ checked: true });
+    }, ALL_TIME);
+    this.setState({
+      timingOut: loading,
+    });
+  }
+
+  addClass({ target }) {
+    const { timeInterval, questionsAnswer } = this.state;
+    const { questions, timer, handleAssertion } = this.props;
     clearInterval(timeInterval);
     this.setState({
       checked: true,
     });
+    if (target.id === 'correct-answer') {
+      const total = this.calculate(timer, questions[questionsAnswer].difficulty);
+      const newScore = JSON.parse(localStorage.getItem('state'));
+      newScore.player.score += total;
+      newScore.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(newScore));
+      handleAssertion(newScore.player.assertions);
+      this.setState({
+        isCorrect: true,
+      });
+    } else {
+      this.setState({
+        isCorrect: false,
+      });
+    }
+  }
+
+  calculate(timer, difficulty) {
+    const total = 10;
+    const hard = 3;
+    const grade = () => {
+      switch (difficulty) {
+      case 'easy':
+        return 1;
+      case 'medium':
+        return 2;
+      default:
+        return hard;
+      }
+    };
+    const totalScore = total + (timer * grade());
+    return totalScore;
   }
 
   render() {
-    const { loading, checked, disable, questionsAnswer, answers } = this.state;
+    const {
+      loading,
+      checked,
+      disable,
+      questionsAnswer,
+      answers,
+      timeInterval } = this.state;
     const { questions, timer } = this.props;
+    if (timer === 0) {
+      clearInterval(timeInterval);
+    }
     const nextButton = (
       <button
         type="button"
@@ -175,6 +238,7 @@ class Questions extends Component {
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
                 key={ answer }
+                id="wrong-answer"
                 onClick={ this.addClass }
                 disabled={ disable }
                 className={ checked ? 'incorrectAnswer' : null }
@@ -202,6 +266,8 @@ Questions.propTypes = {
   handleApi: propTypes.func.isRequired,
   sendTimer: propTypes.func.isRequired,
   resetTime: propTypes.func.isRequired,
+  handleAssertion: propTypes.func.isRequired,
+  saveScore: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => (
@@ -217,6 +283,8 @@ const mapDispatchToProps = (dispatch) => (
     sendTimer: (state) => dispatch(getTimer(state)),
     handleTimer: (state) => dispatch(stopTimer(state)),
     resetTime: () => dispatch(resetTimer()),
+    handleAssertion: (assertion) => dispatch(getAssertion(assertion)),
+    saveScore: (score) => dispatch(getScore(score)),
   }
 );
 

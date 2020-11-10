@@ -10,11 +10,18 @@ export const setUserInfo = (name, email) => ({
   email,
 });
 
-export const HANDLE_AVATAR = 'HANDLE_AVATAR';
+export const HANDLE_ASSERTION = 'HANDLE_ASSERTION';
 
-export const getAvatar = (avatar) => ({
-  type: HANDLE_AVATAR,
-  avatar,
+export const getAssertion = (assertions) => ({
+  type: HANDLE_ASSERTION,
+  assertions,
+});
+
+export const HANDLE_SCORE = 'HANDLE_SCORE';
+
+export const getScore = (score) => ({
+  type: HANDLE_SCORE,
+  score,
 });
 
 export const getQuestions = (questions) => ({
