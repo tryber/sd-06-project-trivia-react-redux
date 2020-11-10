@@ -1,5 +1,18 @@
-.btn {
+.question-container {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
   width: 100%;
+}
+
+.question-answers {
+  width: 70%;
+  margin-left: 30%;
+}
+
+.btn {
+  width: 60%;
   background: none;
   border: 2px solid #4caf50;
   color: white;

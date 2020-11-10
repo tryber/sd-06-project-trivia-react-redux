@@ -91,10 +91,12 @@ class Question extends React.Component {
     const { getQuestions } = this.props;
 
     return (
-      <div>
-        <h2 data-testid="question-category">{getQuestions[0].category}</h2>
-        <h1 data-testid="question-text">{getQuestions[0].question}</h1>
-        <div>{ this.randomQuestions().map((answer) => answer) }</div>
+      <div className="question-container">
+        <h4 data-testid="question-category">{getQuestions[0].category}</h4>
+        <h4 data-testid="question-text">{getQuestions[0].question}</h4>
+        <div className="question-answers">
+          { this.randomQuestions().map((answer) => answer) }
+        </div>
         <Timer changeDisabled={ this.changeDisabled } disabled={ disabled } />
         <button data-testid="btn-next" className="invisible">Vamo ver se vai</button>
       </div>

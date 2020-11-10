@@ -69,8 +69,10 @@ class Login extends React.Component {
     const { history } = this.props;
     const { buttonDisable } = this.state;
     return (
-      <div>
-        <h2 className="trivia-neon" contenteditable="true">Trivia Group 4</h2>
+      <div className="container">
+        <div className="name-login">
+          <h2 className="trivia-neon" contenteditable="true">Trivia Group</h2>
+        </div>
         <div className="login-box">
           {/* <audio src={ music } autoPlay loop></audio> */}
           <h1>Login</h1>
