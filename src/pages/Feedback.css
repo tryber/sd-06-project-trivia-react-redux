@@ -1,0 +1,36 @@
+.container-feedback {
+  margin: 25% auto;
+  width: 50%;
+  background: linear-gradient(rgb(80, 79, 79), #1b43bd);
+  color: #f8f8f8;
+  border-radius: 10px;
+  font-family: Helvetica, sans-serif;
+  height: 400px;
+  justify-content: center;
+  border-radius: 5%;
+  flex-direction: column;
+}
+
+.button {
+  margin-left: 20%;
+  background-color: #4267b2;
+  border: 1px solid #29487d;
+  border-radius: 5px;
+  font-weight: bold;
+  line-height: 30px;
+  padding: 3px 8px;
+  color: white;
+}
+
+.feedback-top{
+  margin: 5%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px
+}
+
+.feedback {
+  margin: 2% 10% 10% 10% ;
+  text-align: center;
+  line-height: 175%;
+}
