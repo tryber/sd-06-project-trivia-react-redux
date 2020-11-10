@@ -4,6 +4,12 @@ export const DATA_QUESTIONS = 'DATA_QUESTIONS';
 export const FAILURE = 'FAILURE';
 export const RECEIVE_HASH = 'RECEIVE_HASH';
 export const PLAYER_NAME = 'PLAYER_NAME';
+
+export const PLAYERDADOS = 'PLAYERDADOS';
+export const GIVE_ANSWER = 'GIVE_ANSWER';
+export const GIVE_SCORE = 'GIVE-SCORE';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
+
 const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 export function request() {
@@ -47,6 +53,25 @@ export function playerName(name, email) {
     email,
   };
 }
+
+export const dadosJogador = (name, email) => ({
+  type: PLAYERDADOS,
+  name,
+  email,
+});
+
+export const answerQuestions = () => ({
+  type: GIVE_ANSWER,
+});
+
+export const nextQuestion = () => ({
+  type: NEXT_QUESTION,
+});
+
+export const giveScore = (value) => ({
+  type: GIVE_SCORE,
+  value,
+});
 
 export function fetchApiQuestions(token) {
   const endpoint = `https://opentdb.com/api.php?amount=${1}&token=${token}`;

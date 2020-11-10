@@ -4,6 +4,7 @@ import propType from 'prop-types';
 import { fetchApiQuestions, requestQuestionsSuccess } from '../actions';
 import FeedbackHeader from './FeedbackHeader';
 import '../App.css';
+import AnswerQuestions from './AnswerQuestions';
 
 class ScreenGame extends React.Component {
   constructor() {
@@ -14,10 +15,12 @@ class ScreenGame extends React.Component {
       limitTime: 8,
       isDisable: false,
       countDown: null,
+      index: 0,
+      timer: 30,
+      counter: 1,
     };
     this.changeColor = this.changeColor.bind(this);
     this.timer = this.timer.bind(this);
-    // this.regressTimer = this.regressTimer.bind(this);
     this.updateCoutdownState = this.updateCoutdownState.bind(this);
     this.handleDisable = this.handleDisable.bind(this);
   }
@@ -50,7 +53,7 @@ class ScreenGame extends React.Component {
   }
 
   handleDisable(truex) {
-    this.setState({ isDisable: truex });
+    this.setState({ isDisable: truex, btnNext: false });
   }
 
   changeColor() {
@@ -62,7 +65,8 @@ class ScreenGame extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { answered, btnNext, limitTime, isDisable } = this.state;
+    const { btnNext, limitTime, index, timer } = this.state;
+    console.log(questions);
     return (
       <div className="game-container">
         <div className="header">
@@ -89,7 +93,13 @@ class ScreenGame extends React.Component {
             </p>
           ))}
         </div>
-        <div className="correctAnswer">
+        <AnswerQuestions
+          difficulty={ questions[index].difficulty }
+          timer={ timer }
+          incorrect={ questions[index].incorrect_answers }
+          correct={ questions[index].correct_answer }
+        />
+        {/* <div className="correctAnswer">
           { questions && questions.results && questions.results.map((item) => (
             <button
               type="button"
@@ -120,7 +130,7 @@ class ScreenGame extends React.Component {
                 {item}
               </button>
             ))}
-        </div>
+        </div> */}
         <div className="btnNext">
           <button
             type="button"
@@ -138,6 +148,7 @@ class ScreenGame extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.tokenReducer.questions,
   token: state.tokenReducer.token,
+  respondido: state.userReducer.respondido,
 });
 
 const mapDispatchToProps = (dispatch) => ({
