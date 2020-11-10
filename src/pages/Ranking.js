@@ -12,10 +12,10 @@ class Ranking extends Component {
     return (
       <div>
         <h2 data-testid="ranking-title">Ranking</h2>
-        {ranking.map((player, index) => (
-          <div key={ index }>
-            <h2 data-testid={ `player-name-${index}` }>{player.name}</h2>
-            <h2 data-testid={ `player-score-${index}` }>{player.score}</h2>
+        {ranking.map((player, i) => (
+          <div key={ i }>
+            <h2 data-testid={ `player-name-${i}` }>{player.name}</h2>
+            <h2 data-testid={ `player-score-${i}` }>{player.score}</h2>
           </div>
         ))}
         <Link to="/" data-testid="btn-go-home">
