@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { fetchQuestions, sendScore, sendAssertions } from '../actions';
 import Timer from './Timer';
 import '../App.css';
@@ -17,6 +18,7 @@ class BodyGame extends Component {
     this.handleAssertions = this.handleAssertions.bind(this);
     this.handleShuffle = this.handleShuffle.bind(this);
     this.handleAnswerBorderColor = this.handleAnswerBorderColor.bind(this);
+    this.handleRanking = this.handleRanking.bind(this);
 
     this.state = {
       isDisabled: false,
@@ -40,6 +42,14 @@ class BodyGame extends Component {
         gravatarEmail: email,
       },
     };
+
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+
+    if (ranking === null) {
+      const localStorageRanking = [];
+      localStorage.setItem('ranking', JSON.stringify(localStorageRanking));
+    }
+
     localStorage.setItem('state', JSON.stringify(localStoragePlayerInfo));
     const { questionsFunction, getToken } = this.props;
 
@@ -53,7 +63,7 @@ class BodyGame extends Component {
     if (getToken !== prevProps.getToken && getToken !== '') {
       await questionsFunction();
     }
-    if (questions.length > 0 && prevProps.questions.length !== questions.length) {
+    if (questions.length > 0 && prevProps.questions[0] !== questions[0]) {
       this.handleShuffle(questions);
     }
   }
@@ -62,6 +72,7 @@ class BodyGame extends Component {
     const { counter } = this.state;
     const rightAnswer = document.querySelector('#right-answer');
     rightAnswer.className = 'right-question';
+    console.log(rightAnswer);
     const wrongAnswers = document.querySelectorAll('#wrong-answer');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.className = 'wrong-question';
@@ -147,10 +158,24 @@ class BodyGame extends Component {
     });
   }
 
+  handleRanking() {
+    const { name, email } = this.props;
+    const { score } = this.state;
+    const picture = `https://www.gravatar.com/avatar/${md5(email)}`;
+    const localStorageRanking = {
+      name,
+      score,
+      picture,
+    };
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    localStorage.setItem('ranking', JSON.stringify([...ranking, localStorageRanking]));
+  }
+
   handleQuestionIndex() {
     const { questionIndex } = this.state;
     const lastQuestion = 4;
     if (questionIndex === lastQuestion) {
+      this.handleRanking();
       this.setState({ redirect: true });
     }
     this.setState({
@@ -174,22 +199,25 @@ class BodyGame extends Component {
 
   handleShuffle() {
     const { questions } = this.props;
-    const { answers } = this.state;
+    const shuffledAnswers = [];
     questions.forEach((question, index) => {
-      answers[index] = [question.correct_answer, ...question.incorrect_answers];
+      shuffledAnswers[index] = [question.correct_answer, ...question.incorrect_answers];
     });
-    for (let i = 0; i < answers.length - 1; i += 1) {
-      let currentIndex = answers[i].length;
+    for (let i = 0; i < shuffledAnswers.length - 1; i += 1) {
+      let currentIndex = shuffledAnswers[i].length;
       let temporaryValue;
       let randomIndex;
       while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = answers[i][currentIndex];
-        answers[i][currentIndex] = answers[i][randomIndex];
-        answers[i][randomIndex] = temporaryValue;
+        temporaryValue = shuffledAnswers[i][currentIndex];
+        shuffledAnswers[i][currentIndex] = shuffledAnswers[i][randomIndex];
+        shuffledAnswers[i][randomIndex] = temporaryValue;
       }
     }
+    this.setState({
+      answers: shuffledAnswers,
+    });
   }
 
   render() {
