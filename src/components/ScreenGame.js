@@ -11,8 +11,46 @@ class ScreenGame extends React.Component {
     this.state = {
       answered: false,
       btnNext: true,
+      limitTime: 8,
+      isDisable: false,
+      countDown: null,
     };
     this.changeColor = this.changeColor.bind(this);
+    this.timer = this.timer.bind(this);
+    // this.regressTimer = this.regressTimer.bind(this);
+    this.updateCoutdownState = this.updateCoutdownState.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
+  }
+
+  componentDidMount() {
+    const callInterval = 1000;
+    const countDown = setInterval(this.timer, callInterval);
+    this.updateCoutdownState(countDown);
+  }
+
+  updateCoutdownState() {
+    const { countDown } = this.state;
+    return this.setState({
+      countDown,
+    });
+  }
+
+  timer() {
+    const { limitTime, countDown } = this.state;
+
+    if (limitTime > 0) {
+      return this.setState((previous) => ({
+        ...previous,
+        limitTime: previous.limitTime - 1,
+      }));
+    }
+
+    clearInterval(countDown);
+    this.handleDisable(true);
+  }
+
+  handleDisable(truex) {
+    this.setState({ isDisable: truex });
   }
 
   changeColor() {
@@ -24,13 +62,14 @@ class ScreenGame extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { answered, btnNext } = this.state;
+    const { answered, btnNext, limitTime, isDisable } = this.state;
     return (
       <div className="game-container">
         <div className="header">
           <FeedbackHeader />
         </div>
         <div className="category">
+          <span>{ limitTime }</span>
           { questions && questions.results && questions.results.map((item) => (
             <p
               data-testid="question-category"
@@ -57,6 +96,7 @@ class ScreenGame extends React.Component {
               data-testid="correct-answer"
               key={ item.category }
               id="correct"
+              disabled={ isDisable }
               onClick={ this.changeColor }
               className={ answered ? 'green-border' : null }
             >
@@ -73,6 +113,7 @@ class ScreenGame extends React.Component {
                 key={ item.question }
                 data-testid={ `wrong-answer-${index}` }
                 id="incorrect"
+                disabled={ isDisable }
                 onClick={ this.changeColor }
                 className={ answered ? 'red-border' : null }
               >
