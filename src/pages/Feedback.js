@@ -5,14 +5,12 @@ import Header from './Header';
 import Scoreboard from '../components/Scoreboard';
 
 class Feedback extends React.Component {
-
   render() {
     const { gameBoard } = this.props;
-    const asserts = gameBoard.assertions;
     return (
       <div data-testid="feedback-text">
         <Header />
-        <Scoreboard asserts={ asserts }/>
+        <Scoreboard asserts={ gameBoard.assertions }/>
       </div>
     );
   }
