@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/header';
+import Mensagem from '../components/Mensagem';
 // import PropTypes from 'prop-types';
 
 export default class Feedback extends Component {
@@ -7,9 +8,9 @@ export default class Feedback extends Component {
     return (
       <section className="feedback-container">
         <Header />
-        <header data-testid="feedback-text">
-          Resultado.
-        </header>
+        <section>
+          <Mensagem />
+        </section>
       </section>
     );
   }
