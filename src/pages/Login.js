@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FaCog } from 'react-icons/fa';
 import CustomInput from '../components/CustomInput';
 import loginRequirements from '../services/loginRequirements';
 import { tokenFetcher } from '../actions/actionsFetchToken';
+import './Login.css';
+import trivia from '../trivia.png';
 
 class FormLogin extends React.Component {
   constructor() {
@@ -26,9 +29,11 @@ class FormLogin extends React.Component {
 
   settingsButton() {
     return (
-      <div>
+      <div className="float-right">
         <Link to="settings">
-          <button type="button" data-testid="btn-settings">Configurações</button>
+          <button type="button" data-testid="btn-settings" className="btn-set">
+            <FaCog size="25" />
+          </button>
         </Link>
       </div>
     );
@@ -45,10 +50,7 @@ class FormLogin extends React.Component {
       },
     };
 
-    document.getElementById('play-button').addEventListener(
-      'click',
-      localStorage.setItem('state', JSON.stringify(stateInicial)),
-    );
+    localStorage.setItem('state', JSON.stringify(stateInicial));
   }
 
   disableCheck() {
@@ -60,43 +62,46 @@ class FormLogin extends React.Component {
     }
   }
 
-  async stateUpdater({ target }) {
+  stateUpdater({ target }) {
     const { name, value } = target;
-    await this.setState(() => ({ [name]: value }));
-    this.disableCheck();
+    this.setState(() => ({ [name]: value }), () => this.disableCheck());
   }
 
   render() {
     const { Disabled, Nome, Email } = this.state;
     return (
-      <div>
-        <h1>Faça login para jogar</h1>
-        <form>
-          {
-            loginRequirements.map(({ name, type, dataTestId }) => (
-              <CustomInput
-                key={ name }
-                name={ name }
-                value={ name === 'Nome' ? Nome : Email }
-                type={ type }
-                dataTestId={ dataTestId }
-                onChange={ this.stateUpdater }
-              />
-            ))
-          }
-        </form>
-        <Link to="gamepage">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ Disabled }
-            onClick={ this.setLocalStorage }
-            id="play-button"
-          >
-            Jogar!!
-          </button>
-        </Link>
-        {this.settingsButton() }
+      <div className="full-container">
+        <div className="login-form">
+          <img src={ trivia } alt="trivia" className="text-center trivia-logo" />
+          {/* <h1 className="text-center">Trivia</h1> */}
+          <form>
+            {
+              loginRequirements.map(({ name, type, dataTestId }) => (
+                <CustomInput
+                  key={ name }
+                  name={ name }
+                  value={ name === 'Nome' ? Nome : Email }
+                  type={ type }
+                  dataTestId={ dataTestId }
+                  onChange={ this.stateUpdater }
+                />
+              ))
+            }
+          </form>
+          <Link className="link-play" to="/gamepage">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ Disabled }
+              onClick={ this.setLocalStorage }
+              id="play-button"
+              className="btn btn-info btn-block"
+            >
+              Jogar!!
+            </button>
+          </Link>
+          {this.settingsButton() }
+        </div>
       </div>
     );
   }

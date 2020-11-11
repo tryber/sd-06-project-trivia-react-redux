@@ -4,11 +4,16 @@ import PropTypes from 'prop-types';
 import fetchQuestions from '../actions/actionsQuestions';
 import Questions from '../components/Questions';
 import Header from '../components/Header';
+import './Game.css';
 
 class Game extends React.Component {
   componentDidMount() {
     const { fetchQuestion, token } = this.props;
-    fetchQuestion(token);
+    let settings = '';
+    if (localStorage.settings) {
+      settings = JSON.parse(localStorage.settings);
+    }
+    fetchQuestion(token, settings);
   }
 
   shuffle(array) {
@@ -89,7 +94,7 @@ class Game extends React.Component {
     }
 
     return (
-      <div>
+      <div className="game-container">
         <Header />
         {questions.length > 0
           ? <Questions question={ newQuestions } />
@@ -105,7 +110,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchQuestion: (token) => dispatch(fetchQuestions(token)),
+  fetchQuestion: (token, settings) => dispatch(fetchQuestions(token, settings)),
 });
 
 Game.propTypes = {

@@ -1,0 +1,14 @@
+.header {
+  background-color: darkcyan;
+  height: 80px;
+}
+
+.score {
+  text-align: right;
+  font-size: 20px;
+}
+
+.avatar {
+  max-height: 80px;
+  max-width: 80px;
+}

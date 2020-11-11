@@ -6,6 +6,7 @@ class CustomInput extends React.Component {
     const { name, dataTestId, value, type, onChange } = this.props;
     return (
       <input
+        className="form-control"
         type={ type }
         required="required"
         name={ name }

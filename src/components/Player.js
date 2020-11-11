@@ -14,10 +14,8 @@ const Player = ({ entry, index }) => {
     </li>
   );
 };
-
 Player.propTypes = {
   entry: PropTypes.instanceOf(Object).isRequired,
   index: PropTypes.number.isRequired,
 };
-
 export default Player;

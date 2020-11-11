@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
 import NenhumRegistro from '../components/NenhumRegistroEncontrado';
 import Player from '../components/Player';
 
@@ -19,15 +20,22 @@ class Ranking extends React.Component {
   sortingPlayers() {
     const { players } = this.state;
     if (players.length > 1) {
-      this.setState({ players: players.sort((a, b) => (
-        parseInt(b.score, 10) - parseInt(a.score, 10))) });
+      this.setState({
+        players: players.sort((a, b) => (
+          parseInt(b.score, 10) - parseInt(a.score, 10))),
+      });
     }
   }
 
   render() {
     const { players } = this.state;
     return (
-      <div>
+      <div className="full-container">
+        <Link to="/">
+          <button data-testid="btn-go-home" className="btn btn-info home" type="button">
+            <FaHome />
+          </button>
+        </Link>
         <h1 data-testid="ranking-title">Melhores Jogadas</h1>
         <ol>
           {
@@ -37,11 +45,6 @@ class Ranking extends React.Component {
               : <NenhumRegistro />
           }
         </ol>
-        <Link to="/">
-          <button data-testid="btn-go-home" type="button">
-            Home
-          </button>
-        </Link>
       </div>
     );
   }

@@ -5,8 +5,14 @@ const requestSuccess = (questions) => ({
   questions,
 });
 
-const fetchQuestions = (token) => async (dispatch) => {
-  const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+const fetchQuestions = (token, settings) => async (dispatch) => {
+  let response = {};
+  if (settings !== '') {
+    const { amount, category, difficult, type } = settings;
+    response = await fetch(`https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficult}&type=${type}&token=${token}`);
+  } else {
+    response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+  }
   const data = await response.json();
   dispatch(requestSuccess(data));
 };

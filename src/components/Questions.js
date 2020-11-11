@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { ImStopwatch } from 'react-icons/im';
 import { Redirect } from 'react-router-dom';
+import './Questions.css';
 
 class Questions extends React.Component {
   constructor() {
@@ -107,6 +109,14 @@ class Questions extends React.Component {
           resposta: 'WrongAnswer',
           disable: true,
         });
+        const buttonsWrong = document.querySelectorAll('[value=WrongAnswer]');
+        const buttonsCorrect = document.querySelectorAll('[value=CorrectAnswer]');
+        buttonsCorrect.forEach((button) => {
+          button.style.border = '3px solid rgb(6, 240, 15)';
+        });
+        buttonsWrong.forEach((button) => {
+          button.style.border = '3px solid rgb(255, 0, 0)';
+        });
       }
     }, sec);
   }
@@ -114,10 +124,32 @@ class Questions extends React.Component {
   timer() {
     const { tempo } = this.state;
     return (
-      <div>
-        {tempo }
+      <div className="div-time">
+        <ImStopwatch className="stop-watch" size="50" />
+        <span className="time">
+          { tempo }
+        </span>
       </div>
     );
+  }
+
+  decode(text) {
+    const map = {
+      '&amp;': '&',
+      '&#038;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#039;': '\'',
+      '&#8217;': '’',
+      '&#8216;': '‘',
+      '&#8211;': '–',
+      '&#8212;': '—',
+      '&#8230;': '…',
+      '&#8221;': '”',
+    };
+
+    return text.replace(/&[\w\d#]{2,5};/g, (m) => map[m]);
   }
 
   render() {
@@ -149,40 +181,45 @@ class Questions extends React.Component {
     }
     return (
       <div>
-        {timer }
-        <h3 data-testid="question-category">
-          Categoria:
-          { question[currentQuestion].category }
-        </h3>
+        <div className="div-questions">
+          {timer }
+          <h4 data-testid="question-category">
+            { question[currentQuestion].category }
+          </h4>
 
-        <p data-testid="question-text">
-          Pergunta:
-          { question[currentQuestion].question }
-        </p>
-
-        <p>Alternativas:  </p>
+          <p data-testid="question-text" className="question">
+            { this.decode(question[currentQuestion].question) }
+          </p>
+        </div>
         {question[currentQuestion].respostas.map((resposta, index) => (
-          <button
-            key={ index }
-            type="button"
-            value={ resposta.value }
-            data-testid={ resposta.dataTestid }
-            disabled={ disable }
-            onClick={ (event) => this.choosed(event) }
-          >
-            { resposta.resposta }
-          </button>
+          <div key={ index } className="text-center">
+            <button
+              className="col-md-6 option btn-sm"
+              key={ index }
+              type="button"
+              value={ resposta.value }
+              data-testid={ resposta.dataTestid }
+              disabled={ disable }
+              onClick={ (event) => this.choosed(event) }
+            >
+              { this.decode(resposta.resposta) }
+            </button>
+          </div>
         )) }
         {
           (disable
             && (
-              <button
-                data-testid="btn-next"
-                onClick={ this.nextQuestion }
-                type="button"
-              >
-                Próxima
-              </button>))
+              <div className="text-center">
+                <button
+                  className="btn-next btn btn-primary"
+                  data-testid="btn-next"
+                  onClick={ this.nextQuestion }
+                  type="button"
+                >
+                  Próxima
+                </button>
+              </div>
+            ))
         }
       </div>
     );
