@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
 import Timer from '../components/timer';
-import PlayAgain from '../components/PlayAgain';
 import Questions from '../components/Questions';
 import { scoreAction, answerAction } from '../actions';
 
@@ -151,7 +150,6 @@ class Game extends Component {
         </section>
         <section>
           <Timer />
-          <PlayAgain />
         </section>
       </section>
     );
