@@ -41,6 +41,16 @@ class Login extends Component {
     const tokenObj = await tokenAPI();
     createToken(tokenObj);
     localStorage.setItem('token', tokenObj.token);
+
+    const gameState = { 
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail,
+      }
+    }
+    localStorage.setItem('state', JSON.stringify(gameState))
   }
 
   render() {

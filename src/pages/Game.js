@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { questionsAPI } from '../servicesAPI';
 import Header from './Header';
 import './Game.css';
@@ -20,28 +21,25 @@ class Game extends Component {
     this.saveQuestions = this.saveQuestions.bind(this);
     this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
     this.count = this.count.bind(this);
+    this.handleScore = this.handleScore.bind(this);
   }
 
   async componentDidMount() {
     // const token = localStorage.getItem('token');
     const questionsQuantity = 5;
-    const token = '04fc0115ffe9fd9c561471c56e1281437e707a1bd76d9c87c4a22927cec42adc';
+    const token = '5b27ff1eca29d6898a998a1c4e77ac6355f56056e06f83b30348e64e3f31a9d2';
     const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
-  }
-
-  handleColor() {
-    const otherAnswers = document.querySelectorAll('article > div > button');
-
-    otherAnswers.forEach((answer) => {
-      const attributes = answer.attributes[0].value;
-
-      if (attributes.includes('correct-answer')) {
-        answer.classList.add('correct-answer');
-      } else {
-        answer.classList.add('incorrect-answer');
+    const { name, gravatarEmail } = this.props;
+    const gameState = { 
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail,
       }
-    });
+    }
+    localStorage.setItem('state', JSON.stringify(gameState))
   }
 
   saveQuestions(questions) {
@@ -65,17 +63,20 @@ class Game extends Component {
     return allAnswersRandom.map((answer, index) => {
       const { ans, type } = answer;
       const testId = (type === 'correct')
-        ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
+        ? 'correct-answer'
+        : `wrong-answer-${indexOfIncorrectAnswers}`;
       indexOfIncorrectAnswers = (type === 'incorrect')
-        ? indexOfIncorrectAnswers + 1 : indexOfIncorrectAnswers;
+        ? indexOfIncorrectAnswers + 1
+        : indexOfIncorrectAnswers;
       const { answersDisabled, selectedAnswer } = this.state;
+
       return (
         <button
           key={ index }
           type="button"
           data-testid={ testId }
           className={ (selectedAnswer === '') ? '' : `${type}-answer` }
-          onClick={ () => this.handleUniqueAnswer(type) }
+          onClick={ (event) => this.handleUniqueAnswer(type, event) }
           disabled={ answersDisabled }
         >
           { ans }
@@ -86,17 +87,41 @@ class Game extends Component {
 
   handleQuestions(questions) {
     const interval = 30000;
-    const { repeatCount } = this.state;
+    const { repeatCount, actualQuestion } = this.state;
+
     if (repeatCount) this.count(interval);
-    return questions.map((questionObj, index) => (
-      <article key={ index }>
-        <p data-testid="question-category">{ questionObj.category }</p>
-        <p data-testid="question-text">{ questionObj.question }</p>
-        <div>
-          { this.handleAnswers(questionObj) }
-        </div>
-      </article>
-    ));
+
+    
+    const level = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    }
+    // const difficulty = questions[actualQuestion].difficulty;
+    const currentQuestion = questions[actualQuestion];
+    const difficultyMultiplier = level[currentQuestion.difficulty];
+    this.handleScore(difficultyMultiplier);
+    // this.handleScore(difficulty, multiplier);
+
+    // console.log(level[questions[0].difficulty])
+    // console.log(questions[0].difficulty)
+    // console.log(level[questions[0].difficulty])
+
+    // console.log(currentQuestion)
+
+    // return questions.map((questionObj, index) => {
+      // this.setState({ currentQuestionDifficulty: questionObj.difficulty })
+      // console.log(questionObj.difficulty)
+      return (
+        <article>
+          <p data-testid="question-category">{ currentQuestion.category }</p>
+          <p data-testid="question-text">{ currentQuestion.question }</p>
+          <div>
+            { this.handleAnswers(currentQuestion) }
+          </div>
+        </article>
+      );
+    // });
   }
 
   count(interval) {
@@ -105,7 +130,7 @@ class Game extends Component {
     let id = '';
     const frame = () => {
       if (timer === 0) {
-        this.handleUniqueAnswer('incorrect');
+        this.handleUniqueAnswer('incorrect', null);
         clearInterval(id);
       } else {
         document.getElementById('timer').innerHTML = timer;
@@ -115,14 +140,58 @@ class Game extends Component {
     id = setInterval(frame, thousand);
   }
 
-  handleUniqueAnswer(type) {
+  handleScore(difficultyMultiplier) {
+    const timer = document.getElementById('timer').innerHTML;
+    const { selectedAnswer, assertions } = this.state;
+    const { name, gravatarEmail } = this.props;
+    // console.log(name, gravatarEmail)
+
+    if (selectedAnswer === 'correct') {
+      const score = 10 + (timer * difficultyMultiplier)
+
+      // console.log('is it?', selectedAnswer)
+      // console.log(score)
+      
+      const gameState = { 
+        player: {
+          name,
+          assertions,
+          score,
+          gravatarEmail,
+        }
+      }
+      console.log(gameState)
+
+      localStorage.setItem('state', JSON.stringify(gameState))
+      console.log(localStorage.getItem('state'))
+    }
+
+  }
+
+  handleUniqueAnswer(type, event) {
     const point = (type === 'correct') ? 1 : 0;
-    this.setState((actualState) => ({
+    const { name, gravatarEmail } = this.props
+    const gameState = { 
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail,
+      }
+    }
+    localStorage.setItem('state', JSON.stringify(gameState))
+    this.setState((previousState) => ({
       selectedAnswer: type,
-      assertions: actualState.assertions + point,
+      assertions: previousState.assertions + point,
       repeatCount: false,
       answersDisabled: true,
     }));
+    
+    // const isItCorrect = event.target.attributes[1].nodeValue;
+    // console.log(isItCorrect)
+    // if (isItCorrect) {
+    //   this.handleScore()
+    // }
   }
 
   render() {
@@ -132,10 +201,15 @@ class Game extends Component {
         <p id="timer" />
         <Header />
         { questions.length > 0
-          ? this.handleQuestions(questions)[actualQuestion] : 'Sem Questões' }
+          ? this.handleQuestions(questions) : 'Sem Questões' }
       </div>
     );
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  gravatarEmail: state.player.gravatarEmail,
+  name: state.player.name,
+});
+
+export default connect(mapStateToProps)(Game);
