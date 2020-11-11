@@ -102,7 +102,7 @@ class Game extends Component {
   }
 
   render() {
-    const { APIQuestions, timeout, time } = this.props;
+    const { APIQuestions, timeout } = this.props;
     const { index, clicked, disableNextBtn } = this.state;
     if (APIQuestions.length === 0) {
       return (
