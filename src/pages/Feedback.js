@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import Header from '../components/header';
+import PlayAgain from '../components/PlayAgain';
 import Mensagem from '../components/Mensagem';
 
 export default class Feedback extends Component {
@@ -19,6 +20,9 @@ export default class Feedback extends Component {
         </Link>
         <section>
           <Mensagem />
+        </section>
+        <section>
+          <PlayAgain />
         </section>
       </section>
     );
