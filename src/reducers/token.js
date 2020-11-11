@@ -1,7 +1,11 @@
 import { TOKEN } from '../actions';
 
 const INITIAL_STATE = {
-  response: {},
+  response: {
+    response_code: 0,
+    response_message: true,
+    token: '',
+  },
 };
 
 const tokenReduce = (state = INITIAL_STATE, action) => {
@@ -9,7 +13,7 @@ const tokenReduce = (state = INITIAL_STATE, action) => {
   case TOKEN:
     return {
       ...state,
-      response: action.payload,
+      response: { token: action.token },
     };
   default:
     return state;
