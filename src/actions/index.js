@@ -11,6 +11,7 @@ export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const PLAYER_DATA = 'PLAYER_DATA';
+export const RANKING = 'RANKING';
 export const SCORED_POINT = 'SCORED_POINT';
 export const ANSWERED = 'ANSWERED';
 
@@ -49,6 +50,14 @@ export const playerData = (payload) => ({
   score: payload.score,
   timeout: payload.timeout,
   time: payload.time,
+});
+
+export const rankingAction = (payload) => ({
+  type: RANKING,
+  name: payload.name,
+  score: payload.score,
+  avatar: payload.avatar,
+  assertions: payload.assertions,
 });
 
 export const getQuestionsAction = (payload) => ({

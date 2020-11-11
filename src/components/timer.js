@@ -41,7 +41,8 @@ class Timer extends React.Component {
     const { timeLeft } = this.state;
     return (
       <h4>
-Tempo:
+        Tempo:
+        {' '}
         { timeLeft }
       </h4>
     );
