@@ -48,10 +48,7 @@ class Ranking extends React.Component {
                 <img alt="alt-text" src={ player.avatar } height="30" width="30" />
                 {'  '}
                 <p data-testid={ testIdName }>
-                  Jogador:
-                  {' '}
                   {player.name}
-                  {'  '}
                 </p>
                 <p data-testid={ testIdScore }>
                   Score:

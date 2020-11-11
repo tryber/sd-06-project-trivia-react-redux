@@ -1,4 +1,9 @@
-import { GET_QUESTIONS, SCORED_POINT, ANSWERED, PLAYER_DATA } from '../actions';
+import { GET_QUESTIONS,
+  SCORED_POINT,
+  ANSWERED,
+  PLAYER_DATA,
+  RESET_SCORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   results: [],
@@ -30,6 +35,13 @@ export default function (state = INITIAL_STATE, action) {
       answered: action.answered,
       time: action.time,
       timeout: action.timeout,
+    };
+  case RESET_SCORE:
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
+      answered: false,
     };
   default:
     return state;
