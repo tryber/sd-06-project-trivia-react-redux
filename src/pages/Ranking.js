@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Button from '../components/Button';
 
 class Ranking extends React.Component {
   render() {
@@ -21,32 +23,42 @@ class Ranking extends React.Component {
       ranking.push(temp);
     });
 
+    console.log(ranking);
+
     ranking.sort((a, b) => {
       const scoreA = a.score;
       const scoreB = b.score;
       const minusOne = -1;
-      if (scoreA > scoreB) return 1;
-      if (scoreA < scoreB) return minusOne;
+      if (scoreA > scoreB) return minusOne;
+      if (scoreA < scoreB) return 1;
       return 0;
     });
 
+    console.log(ranking);
+
     return (
       <section>
+        <p data-testid="ranking-title">Ranking:</p>
         <ol>
           {ranking.map((player, index) => {
-            const testId = `player-name-${index}`;
+            const testIdName = `player-name-${index}`;
+            const testIdScore = `player-score-${index}`;
             return (
-              <li data-testid={ testId } key={ index }>
+              <li key={ index }>
                 <img alt="alt-text" src={ player.avatar } height="30" width="30" />
                 {'  '}
-                Jogador:
-                {' '}
-                {player.name}
-                {'  '}
-                Score:
-                {' '}
-                {player.score}
-                {'  '}
+                <p data-testid={ testIdName }>
+                  Jogador:
+                  {' '}
+                  {player.name}
+                  {'  '}
+                </p>
+                <p data-testid={ testIdScore }>
+                  Score:
+                  {' '}
+                  {player.score}
+                  {'  '}
+                </p>
                 Acertos:
                 {' '}
                 {player.assertions}
@@ -54,6 +66,9 @@ class Ranking extends React.Component {
             );
           })}
         </ol>
+        <Link to="/">
+          <Button testId="btn-go-home" value="Voltar ao Início" />
+        </Link>
       </section>
     );
   }
