@@ -1,7 +1,176 @@
-.wrong-answer {
+.loading-trivia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  width: 100vw;
+}
+
+/* loading... */
+
+div.loading-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loading-container > div {
+	width: 2vw;
+	height: 2vw;
+	border-radius: 100%;
+	margin: 2vw;
+	background-image: linear-gradient(145deg, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 100%);
+	animation: bounce 1.5s 0.5s linear infinite;
+}
+
+.ocean-blue {
+	background-color: rgb(54, 193, 212);
+}
+
+.continent-blue {
+	background-color: rgb(57, 109, 130);
+	animation-delay: 0.1s;
+}
+
+/* https://codepen.io/prathameshkoshti/pen/bGNbMWr */
+
+@keyframes bounce {
+	0%, 50%, 100% {
+		transform: scale(1);
+		filter: blur(0px);
+  }
+
+	25% {
+		transform: scale(0.6);
+		filter: blur(3px);
+  }
+
+	75% {
+		filter: blur(3px);
+		transform: scale(1.4);
+	}
+}
+
+/* actual-game */
+
+.trivia-game {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.trivia-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.trivia {
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 4px;
+  padding: 40px 40px 20px 40px;
+  border-radius: 5px;
+
+  max-width: 900px;
+}
+
+.trivia > p {
+  background-color: grey;
+  border-radius: 100%;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trivia > p.timeup {
+  background-color: red;
+}
+
+.trivia > h2 {
+  margin: 40px 0 10px;
+}
+
+.trivia .trivia-category {
+  margin-bottom: 20px;
+}
+
+.trivia .trivia-category span {
+  margin-left: 10px;
+}
+
+.trivia .trivia-questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 15px;
+  column-gap: 100px;
+}
+
+.trivia .trivia-questions button {
+  background-color: rgb(57, 109, 130);
+  color: white;
+  padding: 10px;
+  width: 150px;
+
+  border-radius: 5px;
+  border: 3px solid rgb(57, 109, 130);
+
+  transition: background-color border-color 0.2s;
+}
+
+.trivia-questions button:hover {
+  background-color: rgb(54, 193, 212);
+  border-color: rgb(54, 193, 212);
+}
+
+.trivia > button {
+  margin-top: 40px;
+  width: 100px;
+
+  animation: appear-btn 1s;
+}
+
+@keyframes appear-btn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.trivia > button:hover {
+  background-color: rgb(86, 185, 225);
+}
+
+.trivia .trivia-questions button.wrong-answer {
   border: 3px solid rgb(255, 0, 0);
 }
 
-.correct-answer {
+.trivia .trivia-questions button.correct-answer {
   border: 3px solid rgb(6, 240, 15);
+}
+
+@media (max-width:600px) {
+
+  .trivia {
+    box-shadow: 0 0 0;
+  }
+
+  .trivia .trivia-questions {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+    column-gap: 0;
+    margin-top: 30px;
+  }
+
 }

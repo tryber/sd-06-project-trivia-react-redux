@@ -1,0 +1,123 @@
+.ranking-page {
+  min-height: 100vh;
+  width: 100vw;
+  padding: 50px 0;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ranking-page a {
+  color: white;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.ranking-page a:hover {
+  opacity: 0.75;
+}
+
+.ranking-page a svg {
+  margin-right: 10px;
+}
+
+.ranking-page h1 {
+  margin-bottom: 30px;
+  font-size: 54px;
+
+  display: flex;
+  align-items: center;
+}
+
+.ranking-page h1 svg {
+  margin-right: 25px;
+}
+
+.ranking-page .ranking-list {
+  max-width: 700px;
+}
+
+.user-rank {
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 20px;
+  font-size: 26px;
+  position: relative;
+  
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+
+.user-rank img {
+  border-radius: 100%;
+  height: 10vh;
+  margin: 0 15px;
+}
+
+.user-rank span:last-child {
+  margin-left: 70px;
+  justify-self: end;
+}
+
+.user-rank .medal-container {
+  position: absolute;
+  left: -10%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.user-rank svg.podium-1 {
+  color: gold;
+  font-size: 40px;
+}
+
+.user-rank svg.podium-2 {
+  color: lightgrey;
+  font-size: 32px;
+}
+
+.user-rank svg.podium-3 {
+  color: rgb(205, 127, 50);
+  font-size: 28px;
+}
+
+@media (max-width: 600px) {
+
+  .user-rank {
+    font-size: 80%;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .user-rank svg.podium-1 {
+    font-size: 36px;
+  }
+  
+  .user-rank svg.podium-2 {
+    font-size: 30px;
+  }
+  
+  .user-rank svg.podium-3 {
+    font-size: 26px;
+  }
+
+  .user-rank img {
+    height: 8vh;
+  }
+
+}

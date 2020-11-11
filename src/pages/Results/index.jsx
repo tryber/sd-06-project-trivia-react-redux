@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 import Header from '../../components/Header';
+
+import './styles.css';
 
 class Results extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Results extends React.Component {
 
     this.state = {
       assertions: userScore.assertions,
+      score: userScore.score,
       breakpoint: 3,
       userScore,
     };
@@ -40,36 +42,41 @@ class Results extends React.Component {
   }
 
   render() {
-    const { assertions, breakpoint } = this.state;
-    const { score } = this.props;
+    const { assertions, breakpoint, score } = this.state;
 
     return (
       <div className="results-page">
         <Header />
+
         <div className="results-body">
-          <p data-testid="feedback-text">
+          <h2 data-testid="feedback-text">
             { (assertions < breakpoint)
               ? ('Podia ser melhor... ')
               : ('Mandou bem!')}
-          </p>
-          <p>
+          </h2>
+          <h3>
             Seu Score:
             <span data-testid="feedback-total-score">
               { score }
             </span>
-          </p>
-          <p>
+            pts
+          </h3>
+          <h4>
             Você acertou:
             <span data-testid="feedback-total-question">
               { assertions }
             </span>
-          </p>
-          <Link to="/" data-testid="btn-play-again">
-              Jogar novamente
-          </Link>
-          <Link to="/ranking" data-testid="btn-ranking">
-              Ver Ranking
-          </Link>
+          </h4>
+
+          <div className="navigation-links">
+            <Link to="/" data-testid="btn-play-again">
+                Jogar novamente
+            </Link>
+            <Link to="/ranking" data-testid="btn-ranking">
+                Ver Ranking
+            </Link>
+          </div>
+
         </div>
       </div>
     );
@@ -81,9 +88,5 @@ function mapStateToProps(state) {
     score: state.user.score,
   };
 }
-
-Results.propTypes = {
-  score: PropTypes.number.isRequired,
-};
 
 export default connect(mapStateToProps, null)(Results);

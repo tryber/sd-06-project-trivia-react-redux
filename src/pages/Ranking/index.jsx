@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiHome } from 'react-icons/fi';
+import { FaTrophy, FaMedal } from 'react-icons/fa';
+
+import './styles.css';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -14,23 +18,42 @@ class Ranking extends React.Component {
 
   render() {
     const { ranking } = this.state;
+
+    const podiumLimit = 3;
+
     return (
-      <div>
+      <div className="ranking-page">
+        <Link data-testid="btn-go-home" to="/">
+          <FiHome size={ 20 } />
+          Início
+        </Link>
+
         <h1 data-testid="ranking-title">
-        Ranking
+          <FaTrophy />
+Ranking
+
         </h1>
-        <ol>
+
+        <div className="ranking-list">
           { ranking.map((user, index) => (
-            <li key={ `${user.picture}-${index}` }>
-              <div>
+            <div key={ `${user.picture}-${index}` }>
+              <div className="user-rank">
+                {index < podiumLimit && (
+                  <div className="medal-container">
+                    <FaMedal className={ `podium-${index + 1}` } />
+                  </div>
+                )}
+                <span>{`${index + 1}.`}</span>
                 <img src={ user.picture } alt={ `${user.name}` } />
                 <span data-testid={ ` player-name-${index}` }>{ user.name }</span>
-                <span data-testid={ `player-score-${index}` }>{ user.score }</span>
+                <span data-testid={ `player-score-${index} ` }>
+                  { `${user.score} pts` }
+                </span>
               </div>
-            </li>
+            </div>
           ))}
-        </ol>
-        <Link data-testid="btn-go-home" to="/"> Início </Link>
+        </div>
+
       </div>
     );
   }

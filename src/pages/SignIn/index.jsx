@@ -2,7 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { FiSettings, FiUser, FiMail } from 'react-icons/fi';
+
 import { fetchQuestions, loginActionCreator } from '../../redux/actions';
+
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+
+import Logo from '../../assets/logo.png';
+
+import './styles.css';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -29,11 +38,11 @@ class SignIn extends React.Component {
   handleLogin(submitEvent) {
     submitEvent.preventDefault();
     const { email, name, token } = this.state;
-    const { logIn, history, loadQuestions } = this.props;
+    const { logIn, history, loadQuestions, config } = this.props;
 
     logIn({ name, email });
 
-    loadQuestions(token);
+    loadQuestions(token, config);
 
     history.push('/trivia');
   }
@@ -42,39 +51,48 @@ class SignIn extends React.Component {
     const { name, email } = this.state;
 
     return (
-      <div className="login-in">
-        <form onSubmit={ this.handleLogin }>
-          <div className="input-container">
-            <label htmlFor="name">Nome:</label>
-            <input
+      <div className="login-page">
+        <div className="login-in-content">
+          <img src={ Logo } alt="trivia-logo" />
+
+          <form onSubmit={ this.handleLogin }>
+            <h1>Faça seu login</h1>
+            <Input
               id="name"
               name="name"
               type="text"
               data-testid="input-player-name"
+              autoComplete="off"
+              placeholder="Nome"
               value={ name }
               onChange={ ({ target }) => this.handleInputChange(target) }
+              icon={ FiUser }
             />
-          </div>
-          <div className="input-container">
-            <label htmlFor="email">Email:</label>
-            <input
+            <Input
               id="email"
               name="email"
               type="text"
               data-testid="input-gravatar-email"
+              placeholder="Email"
+              autoComplete="off"
               value={ email }
               onChange={ ({ target }) => this.handleInputChange(target) }
+              icon={ FiMail }
             />
-          </div>
-          <button
-            type="submit"
-            disabled={ !name || !email }
-            data-testid="btn-play"
-          >
-            Jogar
-          </button>
-        </form>
-        <Link to="/settings" data-testid="btn-settings">Configurações</Link>
+            <Button
+              type="submit"
+              disabled={ !name || !email }
+              data-testid="btn-play"
+            >
+              Jogar
+            </Button>
+          </form>
+          <Link to="/settings" data-testid="btn-settings">
+            <FiSettings size={ 20 } />
+            Configurações
+          </Link>
+        </div>
+        <div className="login-bg" />
       </div>
     );
   }
@@ -83,16 +101,33 @@ class SignIn extends React.Component {
 function mapDispatchToProps(dispatch) {
   return {
     logIn: ({ name, email }) => dispatch(loginActionCreator({ name, email })),
-    loadQuestions: (token) => dispatch(fetchQuestions(token)),
+    loadQuestions: (token, config) => dispatch(fetchQuestions(token, config)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(SignIn);
+function mapStateToProps(state) {
+  return {
+    config: state.trivia.config,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 SignIn.propTypes = {
   logIn: PropTypes.func.isRequired,
   loadQuestions: PropTypes.func.isRequired,
+
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  config: PropTypes.shape({
+    amount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    type: PropTypes.string,
+    category: PropTypes.string,
+    difficulty: PropTypes.string,
   }).isRequired,
 };

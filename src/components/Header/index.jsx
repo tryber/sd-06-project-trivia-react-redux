@@ -2,17 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import Logo from '../../assets/logo.png';
+
+import './styles.css';
+
 class Header extends Component {
   render() {
     const { avatar, name, score } = this.props;
     return (
-      <div>
-        <img src={ avatar } alt="user-avatar" data-testid="header-profile-picture" />
-        <span data-testid="header-player-name">{ name }</span>
-        {' '}
-        <br />
-        <span data-testid="header-score">{ score }</span>
-      </div>
+      <header className="app-header">
+        <img src={ Logo } alt="app-logo" />
+        <span className="player-score">
+          <span>Score: </span>
+          <span data-testid="header-score">{ score }</span>
+          pts
+        </span>
+        <div className="header-content">
+          <img src={ avatar } alt="user-avatar" data-testid="header-profile-picture" />
+          <span className="player-name" data-testid="header-player-name">{ name }</span>
+        </div>
+      </header>
     );
   }
 }
