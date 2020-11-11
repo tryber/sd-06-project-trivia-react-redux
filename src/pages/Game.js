@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import fetchQuestions from '../actions/actionsQuestions';
 import Questions from '../components/Questions';
 import Header from '../components/Header';
+import './Game.css';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -93,7 +94,7 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="full-container">
+      <div className="game-container">
         <Header />
         {questions.length > 0
           ? <Questions question={ newQuestions } />

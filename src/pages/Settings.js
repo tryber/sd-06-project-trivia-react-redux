@@ -36,7 +36,7 @@ export default class Settings extends React.Component {
     }
 
     return (
-      <div>
+      <div className="settings-container">
         <h1 data-testid="settings-title" className="h1">Settings</h1>
 
         <Link to="/">
@@ -46,7 +46,7 @@ export default class Settings extends React.Component {
         </Link>
 
         <form className="form-api">
-          <h2 className="form-signin-heading">Settings Game</h2>
+          {/* <h2 className="form-signin-heading">Settings Game</h2> */}
           <div className="flex-labels">
             <label htmlFor="amount">
               Number of Questions:

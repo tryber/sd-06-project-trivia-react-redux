@@ -50,31 +50,33 @@ class Feedback extends Component {
     const { assertions, score } = this.state;
     const numberOfAnswers = 3;
     return (
-      <main className="section">
-        <Header />
-        <h2 data-testid="feedback-text">
-          {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
-        </h2>
-        {this.gameFeedback(assertions, score)}
-        <div>
-          <Link
-            className="link"
-            to="/ranking"
-            data-testid="btn-ranking"
-          >
-            VER RANKING
-          </Link>
-        </div>
-        <div>
-          <Link
-            className="link"
-            to="/"
-            data-testid="btn-play-again"
-          >
-          JOGAR NOVAMENTE
-          </Link>
-        </div>
-      </main>
+      <div className="feedback-container">
+        <main className="section">
+          <Header />
+          <h2 data-testid="feedback-text">
+            {(assertions >= numberOfAnswers) ? this.ggMessage() : this.bgMessage()}
+          </h2>
+          {this.gameFeedback(assertions, score)}
+          <div>
+            <Link
+              className="link"
+              to="/ranking"
+              data-testid="btn-ranking"
+            >
+              VER RANKING
+            </Link>
+          </div>
+          <div>
+            <Link
+              className="link"
+              to="/"
+              data-testid="btn-play-again"
+            >
+            JOGAR NOVAMENTE
+            </Link>
+          </div>
+        </main>
+      </div>
     );
   }
 }
