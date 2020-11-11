@@ -105,6 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   actionToken: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
 };
 
