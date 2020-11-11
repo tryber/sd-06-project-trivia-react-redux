@@ -11,8 +11,10 @@ export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const PLAYER_DATA = 'PLAYER_DATA';
+export const RANKING = 'RANKING';
 export const SCORED_POINT = 'SCORED_POINT';
 export const ANSWERED = 'ANSWERED';
+export const RESET_SCORE = 'RESET_SCORE';
 
 const requestToken = 'https://opentdb.com/api_token.php?command=request';
 const requestQuestions = 'https://opentdb.com/api.php?amount=5&category=31&token=';
@@ -49,6 +51,18 @@ export const playerData = (payload) => ({
   score: payload.score,
   timeout: payload.timeout,
   time: payload.time,
+});
+
+export const rankingAction = (payload) => ({
+  type: RANKING,
+  name: payload.name,
+  score: payload.score,
+  avatar: payload.avatar,
+  assertions: payload.assertions,
+});
+
+export const resetScoreAction = () => ({
+  type: RESET_SCORE,
 });
 
 export const getQuestionsAction = (payload) => ({

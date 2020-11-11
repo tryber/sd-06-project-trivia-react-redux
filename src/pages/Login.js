@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Input from '../components/Input';
-import { actionLogin, fetchToken } from '../actions';
+import { actionLogin, fetchToken, resetScoreAction } from '../actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -28,8 +28,9 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { history, actionToken } = this.props;
+    const { history, actionToken, resetScore } = this.props;
     actionToken();
+    resetScore();
     return history.push('/game');
   }
 
@@ -98,11 +99,13 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   login: (state) => dispatch(actionLogin(state)),
   actionToken: () => dispatch(fetchToken()),
+  resetScore: () => dispatch(resetScoreAction()),
 });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   actionToken: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
 };
 

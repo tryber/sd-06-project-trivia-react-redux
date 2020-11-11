@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import Header from '../components/header';
 import Timer from '../components/timer';
 import Questions from '../components/Questions';
-import { scoreAction, answerAction } from '../actions';
+import { scoreAction, answerAction, rankingAction } from '../actions';
 
 class Game extends Component {
   constructor(props) {
@@ -41,6 +42,17 @@ class Game extends Component {
       gravatarEmail: email,
     } });
     localStorage.setItem('state', state);
+  }
+
+  scoreStore() {
+    const { name, email, score, assertions, scoreRanking } = this.props;
+    const state = {
+      name,
+      score,
+      avatar: `https://www.gravatar.com/avatar/${md5(email)}`,
+      assertions,
+    };
+    scoreRanking(state);
   }
 
   handleAnswer(value) {
@@ -95,6 +107,7 @@ class Game extends Component {
       });
     } else {
       this.setState({ disableNextBtn: false, clicked: true });
+      this.scoreStore();
       // precisa setar clicked pq é a condição para o btn renderizar aqui - line 138
       return history.push('/feedback');
     }
@@ -171,6 +184,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   scorePoints: (score) => dispatch(scoreAction(score)),
   answeredAction: (answerTime) => dispatch(answerAction(answerTime)),
+  scoreRanking: (ranking) => dispatch(rankingAction(ranking)),
 });
 
 Game.propTypes = {
@@ -182,6 +196,7 @@ Game.propTypes = {
   time: PropTypes.number.isRequired,
   answeredAction: PropTypes.func.isRequired,
   scorePoints: PropTypes.func.isRequired,
+  scoreRanking: PropTypes.func.isRequired,
   APIQuestions: PropTypes.arrayOf(
     PropTypes.shape(),
     PropTypes.array,
