@@ -22,6 +22,13 @@ class Questions extends React.Component {
     this.countdown(aux);
   }
 
+  // COMPONENTE PARA RESETAR O ESTADO DA PRÓXIMA PERGUNTA (EM CONSTRUÇÃO)
+  componentShouldUpdate() {
+    this.setState({
+      buttonBorder: false,
+    });
+  }
+
   async questionsGet() {
     const tokenLocal = localStorage.getItem('token');
     await questionsAPI(tokenLocal);
