@@ -30,7 +30,7 @@ class Questions extends Component {
                     className={ classCorrect }
                     onClick={ onClickCorrect }
                   >
-                    {question}
+                    {atob(question)}
                   </button>
                 );
               }
@@ -44,7 +44,7 @@ class Questions extends Component {
                   className={ classWrong }
                   onClick={ onClickWrong }
                 >
-                  {question}
+                  {atob(question)}
                 </button>
               );
             }).sort(() => Math.random() - random)

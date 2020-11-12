@@ -5,12 +5,22 @@ import propTypes from 'prop-types';
 class Header extends React.Component {
   render() {
     const { avatar, name, score } = this.props;
-    // console.log(avatar);
     return (
-      <header>
-        <img alt="Player Initials" data-testid="header-profile-picture" src={ avatar } />
-        <h3 data-testid="header-player-name">{ name }</h3>
-        <h4 data-testid="header-score">{ score }</h4>
+      <header className="header-container">
+        <section className="header-info">
+          <img
+            className="header-image"
+            alt="Player Initials"
+            data-testid="header-profile-picture"
+            src={ avatar }
+          />
+          <h3 className="header-name" data-testid="header-player-name">{ name }</h3>
+        </section>
+        <section>
+          <h4>Pontos:
+            <p className="header-score" data-testid="header-score">{ score }</p>
+          </h4>
+        </section>
       </header>
     );
   }

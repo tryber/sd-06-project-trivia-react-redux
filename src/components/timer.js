@@ -8,6 +8,7 @@ class Timer extends React.Component {
     super(props);
 
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.restei = this.restei.bind(this);
 
     const { time } = this.props;
     this.state = {
@@ -22,19 +23,45 @@ class Timer extends React.Component {
 
   componentDidUpdate() {
     const { timeLeft } = this.state;
-    const { answered, answeredAction } = this.props;
-    const action = {
-      timeout: true,
-    };
+    const { answered, testeReset } = this.props;
     const oneSecond = 1000;
-    if (answered === false) setTimeout(this.decreaseTime, oneSecond);
-    if (timeLeft < 1) answeredAction(action);
+    if (timeLeft > 0 && answered === false) setTimeout(this.decreaseTime, oneSecond);
+    if (testeReset === true) this.restei();
+  }
+
+  componentWillUnmount() {
+    const { timeLeft } = this.state;
+    if (timeLeft < 1) this.setState({ timeLeft: 30 });
   }
 
   decreaseTime() {
     const { timeLeft } = this.state;
-    const trinta = 30;
-    if (timeLeft > 0 && timeLeft <= trinta) this.setState({ timeLeft: timeLeft - 1 });
+    const { testeReset, answeredAction, answered } = this.props;
+    if (timeLeft > 0) this.setState(({ timeLeft: timeLeft - 1 }), () => {
+      const { timeLeft } = this.state;
+      const action = {
+        time: 30,
+        answered: true,
+        timeout: true,
+        testeReset: true,
+      };
+      if (timeLeft < 1) answeredAction(action);
+    });
+    // console.log('executou', testeReset);
+    if (testeReset === true || answered === true) this.restei(); // responsável por resetar o timer
+  }
+
+  restei() {
+    this.setState(({ timeLeft: 30 }), () => {
+      const { testeReset, answeredAction } = this.props;
+      const action = {
+        time: 30,
+        answered: true,
+        timeout: true,
+        testeReset: false,
+      };
+      if (testeReset === true) answeredAction(action);
+    });
   }
 
   render() {
@@ -48,6 +75,11 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.defaultProps = {
+  answered: false,
+  time: 30,
+};
 
 Timer.propTypes = {
   answered: propTypes.bool.isRequired,
@@ -65,6 +97,7 @@ function mapStateToProps(state) {
     score: state.allQuestions.score,
     answered: state.allQuestions.answered,
     time: state.allQuestions.time,
+    testeReset: state.allQuestions.testeReset,
   };
 }
 

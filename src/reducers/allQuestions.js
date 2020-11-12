@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   timeout: false,
   time: 30,
   answered: false,
+  testeReset: false,
 };
 
 export default function (state = INITIAL_STATE, action) {
@@ -25,17 +26,19 @@ export default function (state = INITIAL_STATE, action) {
       score: state.score + action.score,
       assertions: state.assertions + action.assertions,
       answered: action.answered,
+      timeout: action.timeout,
     };
-  case PLAYER_DATA:
-    return {
-      ...state, ...action.payload };
   case ANSWERED:
     return {
       ...state,
       answered: action.answered,
       time: action.time,
       timeout: action.timeout,
+      testeReset: action.testeReset,
     };
+  case PLAYER_DATA:
+    return {
+      ...state, ...action.payload };
   case RESET_SCORE:
     return {
       ...state,

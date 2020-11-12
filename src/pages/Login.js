@@ -48,12 +48,12 @@ class Login extends Component {
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <section>
+          <section className="login-container">
             <Input
               id="name"
               testId="input-player-name"
               name="name"
-              className="input-player-name"
+              className="input-name"
               type="text"
               place="Digite seu Nome"
               onChange={ (e) => this.setState({ name: e.target.value }) }
@@ -62,29 +62,31 @@ class Login extends Component {
               id="email"
               testId="input-gravatar-email"
               name="email"
-              className="input-gravatar-email"
+              className="input-email"
               type="email"
               place="Digite seu Email"
               onChange={ (e) => this.setState({ email: e.target.value }) }
             />
-            <button
-              onClick={ () => this.handleClick() }
-              disabled={ !disabled }
-              className="btn-play"
-              type="button"
-              data-testid="btn-play"
-            >
-            Jogar
-            </button>
-            <Link to="/settings">
+            <section className="btn-container">
               <button
-                className="btn-settings"
+                onClick={ () => this.handleClick() }
+                disabled={ !disabled }
+                className="btn-play"
                 type="button"
-                data-testid="btn-settings"
+                data-testid="btn-play"
               >
-            Configurações
+              Jogar
               </button>
-            </Link>
+              <Link to="/settings">
+                <button
+                  className="btn-settings"
+                  type="button"
+                  data-testid="btn-settings"
+                >
+              Configurações
+                </button>
+              </Link>
+            </section>
           </section>
         </header>
       </div>
