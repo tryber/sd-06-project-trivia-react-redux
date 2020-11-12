@@ -16,7 +16,7 @@ class Questions extends React.Component {
     this.questionsGet();
     const timer = 30000;
     this.questionsGet();
-    setTimeout(() => this.handleClick(), timer);
+    setTimeout(() => { console.log('hello'); }, timer);
   }
 
   async questionsGet() {
