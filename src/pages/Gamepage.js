@@ -9,28 +9,35 @@ class Gamepage extends React.Component {
     super();
     this.state = {
       questionIndex: 0,
-      disableButton: false,
       buttonBorder: false,
       timer30: 30,
     };
+
     this.changeQuestion = this.changeQuestion.bind(this);
     this.changePage = this.changePage.bind(this);
-    // _________________________________________
+    this.timer = this.timer.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.questionsGet = this.questionsGet.bind(this);
     this.countdown = this.countdown.bind(this);
   }
 
-  componentDidMount() {
-    this.questionsGet();
-    const miliseconds = 1000;
-    this.aux = setInterval(this.countdown, miliseconds);
-    this.countdown(this.aux);
-    console.log('test');
+  async componentDidMount() {
+    const tokenLocal = localStorage.getItem('token');
+    await this.questionsGet(tokenLocal);
+    this.timer();
   }
 
   componentWillUnmount() {
     clearInterval(this.aux);
+  }
+
+  async questionsGet(tokenLocal) {
+    await questionsAPI(tokenLocal);
+  }
+
+  timer() {
+    const miliseconds = 1000;
+    this.aux = setInterval(this.countdown, miliseconds);
   }
 
   changePage() {
@@ -45,42 +52,28 @@ class Gamepage extends React.Component {
     const number = 4;
     if (questionIndex === number) {
       this.changePage();
-      this.setState((state) => (
-        {
-          questionIndex: (state.questionIndex + 1) % questions.length,
-          disableButton: false,
-          buttonBorder: false,
-          timer30: 30,
-        }
-      ));
     }
-    const miliseconds = 1000;
-    this.aux = setInterval(this.countdown, miliseconds);
-    this.countdown(this.aux);
-  }
-
-  // _________________________________________________
-
-  async questionsGet() {
-    const tokenLocal = localStorage.getItem('token');
-    await questionsAPI(tokenLocal);
+    this.setState((state) => ({
+      questionIndex: (state.questionIndex + 1) % questions.length,
+      buttonBorder: false,
+      timer30: 30,
+    }));
+    this.timer();
   }
 
   countdown() {
     const { timer30 } = this.state;
-    // if (timer30 >= 0) {
-    // clearInterval(this.aux);
+    const { buttonBorder } = this.state;
     this.setState({
       timer30: timer30 - 1,
     });
-    // } else {
-    //   this.handleClick();
-    // }
     if (timer30 <= 0) {
       clearInterval(this.aux);
-      this.handleClick()
+      this.setState({
+        buttonBorder: !buttonBorder,
+        timer30,
+      });
     }
-    
   }
 
   handleClick() {
@@ -88,20 +81,17 @@ class Gamepage extends React.Component {
     this.setState({
       buttonBorder: !buttonBorder,
     });
+    clearInterval(this.aux);
   }
 
   render() {
     const { email, username, questions } = this.props;
-    // console.log('questions do Redux:', questions);
-    const { questionIndex, disableButton } = this.state;
-    // console.log('index render:', questionIndex);
+    const { questionIndex } = this.state;
     const questionAtual = questions[questionIndex];
     const hash = md5(email);
-    // ______________________________________________
     const { buttonBorder } = this.state;
-    // const { questionAtual } = this.props;
     const { timer30 } = this.state;
-    return (
+    return questions && questions.length && (
       <div className="gamepage-container">
         <header className="gamepage-header">
           <div>
@@ -167,7 +157,6 @@ class Gamepage extends React.Component {
           >
             {questionAtual && questionAtual.correct_answer}
           </button>
-          {/* { disableButton && ( */}
           <button
             data-testid="btn-next"
             type="button"
@@ -175,7 +164,6 @@ class Gamepage extends React.Component {
           >
             PRÓXIMA
           </button>
-          {/* )} */}
         </div>
       </div>
     );
