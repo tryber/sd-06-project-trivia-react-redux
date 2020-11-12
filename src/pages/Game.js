@@ -27,19 +27,19 @@ class Game extends Component {
   async componentDidMount() {
     // const token = localStorage.getItem('token');
     const questionsQuantity = 5;
-    const token = '5b27ff1eca29d6898a998a1c4e77ac6355f56056e06f83b30348e64e3f31a9d2';
+    const token = '038c97ad9dbe937d05079abdbdb39844a5066b72d9dca537f777ec1803e3ed46';
     const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
-    const { name, gravatarEmail } = this.props;
-    const gameState = { 
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail,
-      }
-    }
-    localStorage.setItem('state', JSON.stringify(gameState))
+    // const { name, gravatarEmail } = this.props;
+    // const gameState = { 
+    //   player: {
+    //     name,
+    //     assertions: 0,
+    //     score: 0,
+    //     gravatarEmail,
+    //   }
+    // }
+    // localStorage.setItem('state', JSON.stringify(gameState))
   }
 
   saveQuestions(questions) {
@@ -160,10 +160,10 @@ class Game extends Component {
           gravatarEmail,
         }
       }
-      console.log(gameState)
+      // console.log(gameState)
 
       localStorage.setItem('state', JSON.stringify(gameState))
-      console.log(localStorage.getItem('state'))
+      // console.log(localStorage.getItem('state'))
     }
 
   }

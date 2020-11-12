@@ -20,6 +20,26 @@ class Login extends Component {
     this.clickButton = this.clickButton.bind(this);
   }
 
+  // componentDidMount() {
+  //     const { login, createToken } = this.props;
+  //     const { name, gravatarEmail } = this.state;
+  //     // login({ name, gravatarEmail });
+  //     // const tokenObj = await tokenAPI();
+  //     // createToken(tokenObj);
+  //     // localStorage.setItem('token', tokenObj.token);
+  
+  //     const gameState = { 
+  //       player: {
+  //         name,
+  //         assertions: 0,
+  //         score: 0,
+  //         gravatarEmail,
+  //       }
+  //     }
+  //     localStorage.setItem('state', JSON.stringify(gameState))
+  //   // }
+  // }
+
   handleChange({ target }) {
     const { name, value } = target;
 
