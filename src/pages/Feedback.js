@@ -1,15 +1,36 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      score: 0,
+    };
+    this.feedbackMessage = this.feedbackMessage.bind(this);
+  }
+
+  feedbackMessage() {
+    const { score } = this.state;
+    const badPerformance = <h1 data-testid="feedback-text">Podia ser melhor...</h1>;
+    const goodPerformance = <h1 data-testid="feedback-text">Mandou bem!</h1>;
+    const expectHits = 3;
+    if (score > expectHits) {
+      return goodPerformance;
+    }
+    return badPerformance;
+  }
+
   render() {
-    const { email, username } = this.props;
+    const { score } = this.state;
+    const { email, username, feedbackMessage } = this.props;
     const hash = md5(email);
     return (
       <div>
-        <header className="gamepage-header">
+        <header>
           <img
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
@@ -25,12 +46,13 @@ class Feedback extends React.Component {
             data-testid="header-score"
           >
             Placar: 0
+            {score}
           </span>
         </header>
         <p
           data-testid="feedback-text"
         >
-          Feedback!
+          {feedbackMessage}
         </p>
         <Link to="/ranking">
           <button
@@ -53,9 +75,14 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  email: state.login.email,
+  username: state.login.username,
+});
 
 Feedback.propTypes = {
-  username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-};
+  username: PropTypes.string.isRequired,
+}.isRequired;
+
+export default connect(mapStateToProps)(Feedback);

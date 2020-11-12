@@ -42,7 +42,6 @@ class Gamepage extends React.Component {
   }
 
   changePage() {
-    console.log('next page');
     const { history } = this.props;
     history.push('/feedback');
   }
@@ -128,7 +127,7 @@ class Gamepage extends React.Component {
             {timer30}
           </div>
           <span
-            data-testid="header-score"
+            data-testId="header-score"
           >
             Placar: 0
           </span>
