@@ -35,6 +35,7 @@ class Feedback extends React.Component {
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
             data-testid="header-profile-picture"
+            className="img-logo"
           />
           <p
             data-testid="header-player-name"
@@ -44,6 +45,7 @@ class Feedback extends React.Component {
           <span
             data-testid="header-score"
           >
+            Placar: 0
             {score}
           </span>
         </header>
