@@ -20,13 +20,18 @@ class Game extends React.Component {
     if (currentID >= questionNumber) {
       const { name, score, hash, saveRankingtoStore, history } = this.props;
       const picture = `https://www.gravatar.com/avatar/${hash}`;
-      const ranking = {
+      const player = {
         name,
         picture,
         score,
       };
-      saveRankingtoStore(ranking);
-      localStorage.setItem('ranking', JSON.stringify({ ranking }));
+      saveRankingtoStore(player);
+      if (localStorage.getItem('ranking') === null) {
+        const ranking = [];
+        localStorage.setItem('ranking', JSON.stringify(ranking));
+      }
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      localStorage.setItem('ranking', JSON.stringify(ranking.concat(player)));
       history.push('/feedback');
     }
     this.setState((prevState) => ({
@@ -38,6 +43,7 @@ class Game extends React.Component {
     const { currentID } = this.state;
     const { questionsInfo } = this.props;
     const currentCard = questionsInfo[currentID];
+    console.log(currentCard);
     if (!currentCard) return <div>Loading...</div>;
     return (
       <div>

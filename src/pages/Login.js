@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import CryptoJs from 'crypto-js';
 import { connect } from 'react-redux';
 import { fetchToken, fetchQuestions } from '../services/api';
-import { saveNameEmail, saveRequestInfo } from '../actions';
+import { loadRanking, saveNameEmail, saveRequestInfo } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -23,6 +23,10 @@ class Login extends React.Component {
     const ranking = [];
     if (localStorage.getItem('ranking') === null) {
       localStorage.setItem('ranking', JSON.stringify(ranking));
+    } else {
+      const { loadLocalRanking } = this.props;
+      const rankingFromLocal = JSON.parse(localStorage.getItem('ranking'));
+      loadLocalRanking(rankingFromLocal);
     }
   }
 
@@ -100,12 +104,14 @@ class Login extends React.Component {
 Login.propTypes = {
   storeNameEmail: PropTypes.func.isRequired,
   storeRequestInfo: PropTypes.func.isRequired,
+  loadLocalRanking: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   storeNameEmail: (name, gravatarEmail) => dispatch(saveNameEmail(name, gravatarEmail)),
   storeRequestInfo:
     (hash, questionsInfo) => dispatch(saveRequestInfo(hash, questionsInfo)),
+  loadLocalRanking: (ranking) => dispatch(loadRanking(ranking)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

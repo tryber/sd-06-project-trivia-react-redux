@@ -4,6 +4,7 @@ export const SAVE_REQUEST_INFO = 'SAVE_REQUEST_INFO';
 export const SAVE_RANKING = 'SAVE_RANKING';
 export const RESET_PLAYER = 'RESET_PLAYER';
 export const RESET_REQUEST = 'RESET_REQUEST';
+export const LOAD_RANKING = 'LOAD_RANKING';
 
 export const saveNameEmail = (name, gravatarEmail) => ({
   type: SAVE_NAME_EMAIL,
@@ -26,6 +27,11 @@ export const saveRequestInfo = (hash, questionsInfo) => ({
 export const saveRanking = (playerAtual) => ({
   type: SAVE_RANKING,
   playerAtual,
+});
+
+export const loadRanking = (localStoreRanking) => ({
+  type: LOAD_RANKING,
+  localStoreRanking,
 });
 
 export const resetPlayerInfo = () => ({

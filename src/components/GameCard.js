@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 import { saveGameScore } from '../actions';
 
 class GameCard extends Component {
@@ -100,7 +99,6 @@ class GameCard extends Component {
     const { question } = this.props;
     const correctAnswer = question.correct_answer;
     const options = [...question.incorrect_answers, correctAnswer].sort();
-    console.log(question);
     return (
       <div>
         <h3 data-testid="question-category">{`Categoria: ${question.category}`}</h3>
