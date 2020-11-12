@@ -24,7 +24,7 @@
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "test-coverage": "react-scripts test --coverage --watchAll=false",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc ."
   },
   "eslintConfig": {
     "extends": "react-app"
