@@ -7,6 +7,7 @@ import Ranking from './pages/Ranking';
 import Feedback from './pages/Feedback';
 import './App.css';
 import './styles/Game.css';
+import './styles/Login.css';
 
 export default function App() {
   return (

@@ -3,8 +3,27 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '../components/Button';
+import { scoreAction } from '../actions';
 
 class Ranking extends React.Component {
+  constructor() {
+    super();
+
+    this.resetRank = this.resetRank.bind(this);
+
+  }
+
+  resetRank() {
+    const { scoreRank } = this.props;
+    const ranked = {
+      name: '',
+      score: 0,
+      avatar: '',
+      assertions: 0,
+    }
+    scoreRank(ranked);
+  }
+
   render() {
     const { name, score, avatar, assertions } = this.props;
     const ranking = [];
@@ -22,8 +41,6 @@ class Ranking extends React.Component {
       temp.assertions = assertions[index];
       ranking.push(temp);
     });
-
-    console.log(ranking);
 
     ranking.sort((a, b) => {
       const scoreA = a.score;
@@ -64,7 +81,11 @@ class Ranking extends React.Component {
           })}
         </ol>
         <Link to="/">
-          <Button testId="btn-go-home" value="Voltar ao Início" />
+          <Button
+            testId="btn-go-home"
+            value="Voltar ao Início"
+            onClick={ () => this.resetRank() }
+          />
         </Link>
       </section>
     );
@@ -72,10 +93,10 @@ class Ranking extends React.Component {
 }
 
 Ranking.propTypes = {
-  name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-  avatar: PropTypes.string.isRequired,
-  assertions: PropTypes.number.isRequired,
+  name: PropTypes.arrayOf(PropTypes.string).isRequired,
+  score: PropTypes.arrayOf(PropTypes.number).isRequired,
+  avatar: PropTypes.arrayOf(PropTypes.string).isRequired,
+  assertions: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 function mapStateToProps(state) {
@@ -87,4 +108,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Ranking);
+const mapDispatchToProps = (dispatch) => ({
+  scoreRank: (score) => dispatch(scoreAction(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Ranking);

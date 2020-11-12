@@ -23,6 +23,7 @@ class Game extends Component {
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
     this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
+    this.scoreStore = this.scoreStore.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,10 @@ class Game extends Component {
   }
 
   componentDidUpdate() {
+    this.scoreLocalStorage();
+  }
+
+  componentWillUnmount() {
     this.scoreLocalStorage();
   }
 
@@ -72,18 +77,19 @@ class Game extends Component {
     const medium = 2;
     const easy = 1;
     let difficult = 0;
-    if (APIQuestions[index].difficulty === 'easy') difficult = easy;
-    if (APIQuestions[index].difficulty === 'medium') difficult = medium;
-    if (APIQuestions[index].difficulty === 'hard') difficult = hard;
+    if (atob(APIQuestions[index].difficulty) === 'easy') difficult = easy;
+    if (atob(APIQuestions[index].difficulty) === 'medium') difficult = medium;
+    if (atob(APIQuestions[index].difficulty) === 'hard') difficult = hard;
     const points = (choice === 'correct-answer') ? (TEN + (time * difficult)) : 0;
     const assertion = (choice === 'correct-answer') ? 1 : 0;
     const respondida = {
       answered: true,
       score: points,
-      timeout: false,
+      timeout: true,
       assertions: assertion,
     };
     scorePoints(respondida);
+    this.setState({ timeout: true });
   }
 
   handleClickButtonNext() {
@@ -101,14 +107,16 @@ class Game extends Component {
           time: 30,
           answered: false,
           timeout: false,
+          testeReset: false,
         };
-        answeredAction(resetTime);
         this.setState({ disableNextBtn: false });
+        // console.log('action aconteceu', answeredAction(resetTime))
+        return answeredAction(resetTime);
       });
     } else {
       this.setState({ disableNextBtn: false, clicked: true });
       this.scoreStore();
-      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 138
+      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 152
       return history.push('/feedback');
     }
   }
@@ -123,18 +131,16 @@ class Game extends Component {
     }
     return (
       <section className="game-container">
-        <section className="game-header">
-          <Header />
-        </section>
+        <Header />
         <section className="game-question">
           <section className="game-category">
             <h3 data-testid="question-category">
-              {APIQuestions[index].category}
+              {atob(APIQuestions[index].category)}
             </h3>
           </section>
           <section className="game-text">
             <section data-testid="question-text">
-              {APIQuestions[index].question}
+              {atob(APIQuestions[index].question)}
             </section>
           </section>
         </section>
@@ -142,13 +148,13 @@ class Game extends Component {
           APIQuestions={ APIQuestions }
           indexDinamico={ index }
           disabled={ timeout }
-          classCorrect={ clicked ? 'correct-answer' : null }
-          classWrong={ clicked ? 'wrong-answer' : null }
+          classCorrect={ clicked ? 'correct-answer' : 'btn-question' }
+          classWrong={ clicked ? 'wrong-answer' : 'btn-question' }
           onClickCorrect={ () => this.handleAnswer('correct-answer') }
           onClickWrong={ () => this.handleAnswer('wrong-answer') }
         />
         <section>
-          { clicked
+          { clicked || timeout === true
             ? (
               <button
                 type="button"
@@ -187,13 +193,17 @@ const mapDispatchToProps = (dispatch) => ({
   scoreRanking: (ranking) => dispatch(rankingAction(ranking)),
 });
 
+Game.defaultProps = {
+  time: 30,
+};
+
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
   timeout: PropTypes.bool.isRequired,
-  time: PropTypes.number.isRequired,
+  time: PropTypes.number,
   answeredAction: PropTypes.func.isRequired,
   scorePoints: PropTypes.func.isRequired,
   scoreRanking: PropTypes.func.isRequired,

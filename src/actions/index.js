@@ -18,6 +18,11 @@ export const RESET_SCORE = 'RESET_SCORE';
 
 const requestToken = 'https://opentdb.com/api_token.php?command=request';
 const requestQuestions = 'https://opentdb.com/api.php?amount=5&category=31&token=';
+const myInit = {
+  method: 'GET',
+  mode: 'cors',
+  cache: 'default',
+};
 
 export const actionLogin = ({ email, name }) => ({
   type: LOGIN,
@@ -43,6 +48,7 @@ export const answerAction = (payload) => ({
   time: payload.time,
   answered: payload.answered,
   timeout: payload.timeout,
+  testeReset: payload.testeReset,
 });
 
 export const playerData = (payload) => ({
@@ -71,13 +77,13 @@ export const getQuestionsAction = (payload) => ({
 });
 
 export const getQuestions = (token) => async (dispatch) => {
-  const apiQuestions = await fetch(`${requestQuestions}${token}`);
+  const apiQuestions = await fetch(`${requestQuestions}${token}&encode=base64`);
   const results = await apiQuestions.json();
   return dispatch(getQuestionsAction(results));
 };
 
 export const fetchToken = () => async (dispatch) => {
-  const apiAnswer = await fetch(requestToken);
+  const apiAnswer = await fetch(requestToken, myInit);
   const token = await apiAnswer.json();
   localStorage.setItem('token', token.token);
   await dispatch(tokenAction(token.token));
