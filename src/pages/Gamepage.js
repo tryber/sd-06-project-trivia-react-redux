@@ -26,7 +26,6 @@ class Gamepage extends React.Component {
   }
 
   changePage() {
-    console.log('next page');
     const { history } = this.props;
     history.push('/feedback');
   }
@@ -46,9 +45,7 @@ class Gamepage extends React.Component {
 
   render() {
     const { email, username, questions } = this.props;
-    // console.log('questions do Redux:', questions);
     const { questionIndex, disableButton } = this.state;
-    // console.log('index render:', questionIndex);
     const questionAtual = questions[questionIndex];
     const hash = md5(email);
     return (
@@ -66,7 +63,7 @@ class Gamepage extends React.Component {
             {username}
           </p>
           <span
-            data-testid="header-score"
+            data-testId="header-score"
           >
             Placar: 0
           </span>

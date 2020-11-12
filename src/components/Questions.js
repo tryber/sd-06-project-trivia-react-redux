@@ -16,6 +16,9 @@ class Questions extends React.Component {
 
   componentDidMount() {
     this.questionsGet();
+    const timer = 30000;
+    this.questionsGet();
+    setTimeout(() => { console.log('hello'); }, timer);
     const miliseconds = 1000;
     let aux;
     this.aux = setInterval(this.countdown, miliseconds);
