@@ -19,6 +19,7 @@ class Gamepage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.questionsGet = this.questionsGet.bind(this);
     this.countdown = this.countdown.bind(this);
+    this.showNextButton = this.showNextButton.bind(this);
   }
 
   async componentDidMount() {
@@ -84,6 +85,21 @@ class Gamepage extends React.Component {
     clearInterval(this.aux);
   }
 
+  showNextButton() {
+    const { buttonBorder } = this.state;
+    if (buttonBorder) {
+      return (
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ () => this.changeQuestion() }
+        >
+          PRÓXIMA
+        </button>
+      );
+    }
+  }
+
   render() {
     const { email, username, questions } = this.props;
     const { questionIndex } = this.state;
@@ -94,9 +110,6 @@ class Gamepage extends React.Component {
     return questions && questions.length && (
       <div className="gamepage-container">
         <header className="gamepage-header">
-          <div>
-            {timer30}
-          </div>
           <img
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
@@ -108,12 +121,17 @@ class Gamepage extends React.Component {
           >
             {username}
           </p>
+          <div className="timer">
+            <span>
+              Timer:
+            </span>
+            {timer30}
+          </div>
           <span
             data-testid="header-score"
           >
             Placar: 0
           </span>
-          <br />
         </header>
         <div className="gamepage-questions">
           <div
@@ -157,13 +175,7 @@ class Gamepage extends React.Component {
           >
             {questionAtual && questionAtual.correct_answer}
           </button>
-          <button
-            data-testid="btn-next"
-            type="button"
-            onClick={ () => this.changeQuestion() }
-          >
-            PRÓXIMA
-          </button>
+          {this.showNextButton()}
         </div>
       </div>
     );
