@@ -48,10 +48,10 @@ class Gamepage extends React.Component {
     history.push('/feedback');
   }
 
-  //testing score
+  // testing score
   scorePoint() {
     const { questionIndex } = this.state;
-    const { score } = localStorage;
+    let { score } = localStorage;
     const { questions, timer30 } = this.props;
     const difficultyLevel = questions[questionIndex].difficulty;
     console.log(difficultyLevel);
@@ -63,15 +63,15 @@ class Gamepage extends React.Component {
     if (difficultyLevel === 'medium') levelPoint = 2;
     if (difficultyLevel === 'hard') levelPoint = three;
     /*
-    A fórmula para cálculo dos pontos por pergunta é: 
-    10 + (timer * dificuldade), onde timer é o tempo 
+    A fórmula para cálculo dos pontos por pergunta é:
+    10 + (timer * dificuldade), onde timer é o tempo
     restante no contador de tempo e dificuldade é hard:
-     3, medium: 2, easy: 1, dependendo da pergunta. 
-     Exemplo: Se no momento da resposta correta o 
+     3, medium: 2, easy: 1, dependendo da pergunta.
+     Exemplo: Se no momento da resposta correta o
      timer estiver contando 17 segundos, e a dificuldade
-      da pergunta é 2 (média), a pontuação deve ser: 
+      da pergunta é 2 (média), a pontuação deve ser:
       10 + (17 * 2) = 44 */
-      const result = 0;
+    let result = 0;
     result = score + (ten + (timer30 * levelPoint));
     score = result;
   }
@@ -83,7 +83,7 @@ class Gamepage extends React.Component {
     const { questionIndex } = this.state;
     const number = 4;
     const levelName = questions[questionIndex].difficulty;
-    console.log(" o que é o question", levelName);
+    console.log('o que é o question', levelName);
     if (questionIndex === number) {
       this.changePage();
     }
@@ -184,7 +184,7 @@ class Gamepage extends React.Component {
             Pergunta:
             <br />
             {questionAtual && questionAtual.question}
-            {/* {questionAtual && questionAtual.difficulty} !!*/}
+            {/* {questionAtual && questionAtual.difficulty} !! */}
           </div>
         </div>
         <div className="gamepage-answer">
