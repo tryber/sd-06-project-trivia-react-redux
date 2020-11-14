@@ -11,7 +11,12 @@ class Gamepage extends React.Component {
       questionIndex: 0,
       buttonBorder: false,
       timer30: 30,
-      score: 0,
+      player: {
+        name: '',
+        assertions: 0,
+        score: 10,
+        gravatarEmail: '',
+      },
     };
 
     this.changeQuestion = this.changeQuestion.bind(this);
@@ -22,12 +27,14 @@ class Gamepage extends React.Component {
     this.countdown = this.countdown.bind(this);
     this.showNextButton = this.showNextButton.bind(this);
     this.scorePoint = this.scorePoint.bind(this);
+    this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
   }
 
   async componentDidMount() {
     const tokenLocal = localStorage.getItem('token');
     await this.questionsGet(tokenLocal);
     this.timer();
+    const { name, gravatarEmail } = this.props;
   }
 
   componentWillUnmount() {
@@ -50,9 +57,9 @@ class Gamepage extends React.Component {
 
   // testing score
   scorePoint() {
-    const { questionIndex } = this.state;
-    let { score } = localStorage;
-    const { questions, timer30 } = this.props;
+    console.log('função placar');
+    const { questionIndex, timer30 } = this.state;
+    const { questions } = this.props;
     const difficultyLevel = questions[questionIndex].difficulty;
     console.log(difficultyLevel);
     const three = 3;
@@ -62,28 +69,41 @@ class Gamepage extends React.Component {
     if (difficultyLevel === 'easy') levelPoint = 1;
     if (difficultyLevel === 'medium') levelPoint = 2;
     if (difficultyLevel === 'hard') levelPoint = three;
-    /*
-    A fórmula para cálculo dos pontos por pergunta é:
-    10 + (timer * dificuldade), onde timer é o tempo
-    restante no contador de tempo e dificuldade é hard:
-     3, medium: 2, easy: 1, dependendo da pergunta.
-     Exemplo: Se no momento da resposta correta o
-     timer estiver contando 17 segundos, e a dificuldade
-      da pergunta é 2 (média), a pontuação deve ser:
-      10 + (17 * 2) = 44 */
-    let result = 0;
-    result = score + (ten + (timer30 * levelPoint));
-    score = result;
+
+    let result;
+    console.log('o que é level point', levelPoint);
+    console.log('o que é timer', timer30);
+    result = (ten + (timer30 * levelPoint));
+    console.log(result);
+    return result;
   }
 
   // testing score
+  handleUniqueAnswer(event) {
+    const valueTextButton = event.target.innerHTML;
+    const { questionIndex, player } = this.state;
+    console.log('o que é player', player);
+    const { score } = player;
+    console.log('o que é score', score);
+    const { questions } = this.props;
+    const correctAnswer = questions[questionIndex].correct_answer;
+    console.log('o que é class name', valueTextButton);
+    console.log('qual resposta é a certa', correctAnswer);
+    const atualPoints = (valueTextButton === correctAnswer) ? this.scorePoint() : 0;
+    console.log('soma atual de pontos', atualPoints);
+
+    // localStorage.setItem('state', JSON.stringify(player));
+    console.log('estado score antes', score);
+    this.setState((state) => ({
+      score: state.score + atualPoints,
+    }));
+    console.log('score depois', score);
+  }
 
   changeQuestion() {
     const { questions } = this.props;
-    const { questionIndex } = this.state;
+    const { questionIndex, player } = this.state;
     const number = 4;
-    const levelName = questions[questionIndex].difficulty;
-    console.log('o que é o question', levelName);
     if (questionIndex === number) {
       this.changePage();
     }
@@ -93,6 +113,7 @@ class Gamepage extends React.Component {
       timer30: 30,
     }));
     this.timer();
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   countdown() {
@@ -110,7 +131,8 @@ class Gamepage extends React.Component {
     }
   }
 
-  handleClick() {
+  handleClick(event) {
+    this.handleUniqueAnswer(event);
     const { buttonBorder } = this.state;
     this.setState({
       buttonBorder: !buttonBorder,
@@ -153,20 +175,20 @@ class Gamepage extends React.Component {
           <p
             data-testid="header-player-name"
           >
-            {username}
+            { username }
           </p>
           <div className="timer">
             <span>
               Timer:
             </span>
-            {timer30}
+            { timer30 }
           </div>
           <span
             data-testId="header-score"
           >
             Placar:
           </span>
-          {score}
+          { score }
         </header>
         <div className="gamepage-questions">
           <div
@@ -183,12 +205,12 @@ class Gamepage extends React.Component {
           >
             Pergunta:
             <br />
-            {questionAtual && questionAtual.question}
-            {/* {questionAtual && questionAtual.difficulty} !! */}
+            { questionAtual && questionAtual.question }
+            { /* {questionAtual && questionAtual.difficulty} !! */ }
           </div>
         </div>
         <div className="gamepage-answer">
-          {questionAtual && questionAtual.incorrect_answers
+          { questionAtual && questionAtual.incorrect_answers
             .map((result, i) => (
               <div key={ result }>
                 <button
@@ -207,11 +229,12 @@ class Gamepage extends React.Component {
             onClick={ this.handleClick }
             data-testid="correct-answer"
             type="button"
+            id="correct"
             disabled={ buttonBorder }
           >
-            {questionAtual && questionAtual.correct_answer}
+            { questionAtual && questionAtual.correct_answer }
           </button>
-          {this.showNextButton()}
+          { this.showNextButton() }
         </div>
       </div>
     );
