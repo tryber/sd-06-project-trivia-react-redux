@@ -23,9 +23,9 @@ class Login extends React.Component {
     infoUser(name, email);
   }
 
-  handleClick() {
+  async handleClick() {
     const { getToken } = this.props;
-    getToken();
+    await getToken();
     this.handleUserInfo();
     this.setState({
       redirect: true,
@@ -76,6 +76,10 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  token: state.tokenReducer.token,
+});
+
 const mapsDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchApiToken()),
   getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
@@ -85,6 +89,8 @@ const mapsDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   getToken: propType.func.isRequired,
   infoUser: propType.func.isRequired,
+  token: propType.string.isRequired,
+  getTriviaQuestions: propType.func.isRequired,
 };
 
-export default connect(null, mapsDispatchToProps)(Login);
+export default connect(mapStateToProps, mapsDispatchToProps)(Login);
