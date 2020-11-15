@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+// import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
+
+import Header from '../components/Header';
+import './Feedback.css';
 
 class Feedback extends React.Component {
   constructor() {
     super();
-    this.state = {
-      score: 0,
-    };
     this.feedbackMessage = this.feedbackMessage.bind(this);
   }
 
   feedbackMessage() {
-    const { score } = this.state;
+    const { score } = this.props;
     const badPerformance = <h1 data-testid="feedback-text">Podia ser melhor...</h1>;
     const goodPerformance = <h1 data-testid="feedback-text">Mandou bem!</h1>;
     const expectHits = 3;
@@ -25,34 +25,27 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { score } = this.state;
-    const { email, username, feedbackMessage } = this.props;
-    const hash = md5(email);
+    // const { email, username, score, feedbackMessage } = this.props;
+    // const hash = md5(email);
     return (
-      <div>
-        <header>
+      <div className="feedback-container">
+        <Header />
+        {/* <header>
           <img
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
             data-testid="header-profile-picture"
             className="img-logo"
           />
-          <p
-            data-testid="header-player-name"
-          >
+          <p data-testid="header-player-name">
             {username}
           </p>
-          <span
-            data-testid="header-score"
-          >
-            Placar: 0
-            {score}
+          <span data-testid="header-score">
+            {`Placar:${score}`}
           </span>
-        </header>
-        <p
-          data-testid="feedback-text"
-        >
-          {feedbackMessage}
+        </header> */}
+        <p data-testid="feedback-text">
+          {this.feedbackMessage()}
         </p>
         <Link to="/ranking">
           <button
@@ -78,11 +71,13 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.login.email,
   username: state.login.username,
+  score: state.score.score,
 });
 
 Feedback.propTypes = {
   email: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 }.isRequired;
 
 export default connect(mapStateToProps)(Feedback);

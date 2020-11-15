@@ -12,12 +12,3 @@ export default function (state = INITIAL_STATE, action) {
     return state;
   }
 }
-
-// category: action.category, question: action.question, incorrect_answers: action.incorrect_answers, correct_answer: action.correct_answer,
-
-// action.category, action.question, action.incorrect_answers, action.correct_answer,
-
-// expenses: [
-//   ...state.expenses,
-//   action.expense,
-// ],
