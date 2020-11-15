@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+
 import questionsAPI from '../services/questionAPI';
+import { updateScore } from '../actions';
+import Header from '../components/Header';
 
 class Gamepage extends React.Component {
   constructor() {
@@ -20,12 +22,17 @@ class Gamepage extends React.Component {
     this.questionsGet = this.questionsGet.bind(this);
     this.countdown = this.countdown.bind(this);
     this.showNextButton = this.showNextButton.bind(this);
+    this.scorePoint = this.scorePoint.bind(this);
+    this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
   }
 
   async componentDidMount() {
+    const { scoreAction } = this.props;
     const tokenLocal = localStorage.getItem('token');
     await this.questionsGet(tokenLocal);
     this.timer();
+    scoreAction(0);
+    // const { name, gravatarEmail } = this.props;
   }
 
   componentWillUnmount() {
@@ -44,6 +51,40 @@ class Gamepage extends React.Component {
   changePage() {
     const { history } = this.props;
     history.push('/feedback');
+  }
+
+  // testing score
+  scorePoint() {
+    console.log('função placar');
+    const { questionIndex, timer30 } = this.state;
+    const { questions } = this.props;
+    const difficultyLevel = questions[questionIndex].difficulty;
+    console.log(difficultyLevel);
+    const three = 3;
+    const ten = 10;
+    let levelPoint = 1;
+    if (difficultyLevel === 'easy') levelPoint = 1;
+    if (difficultyLevel === 'medium') levelPoint = 2;
+    if (difficultyLevel === 'hard') levelPoint = three;
+    console.log('o que é level point', levelPoint);
+    console.log('o que é timer', timer30);
+    const answerPoint = (ten + (timer30 * levelPoint));
+    console.log(answerPoint);
+    return answerPoint;
+  }
+
+  // testing score
+  handleUniqueAnswer(event) {
+    const valueTextButton = event.target.innerHTML;
+    const { questionIndex } = this.state;
+    const { questions, scoreAction, score } = this.props;
+    const correctAnswer = questions[questionIndex].correct_answer;
+    console.log('o que é class name', valueTextButton);
+    console.log('qual resposta é a certa', correctAnswer);
+    const atualPoints = (valueTextButton === correctAnswer) ? this.scorePoint() : 0;
+    console.log('soma atual de pontos', atualPoints);
+    const currentScore = score + atualPoints;
+    scoreAction(currentScore);
   }
 
   changeQuestion() {
@@ -76,7 +117,8 @@ class Gamepage extends React.Component {
     }
   }
 
-  handleClick() {
+  handleClick(event) {
+    this.handleUniqueAnswer(event);
     const { buttonBorder } = this.state;
     this.setState({
       buttonBorder: !buttonBorder,
@@ -100,38 +142,19 @@ class Gamepage extends React.Component {
   }
 
   render() {
-    const { email, username, questions } = this.props;
-    const { questionIndex } = this.state;
+    const { questions } = this.props;
+    const { questionIndex, buttonBorder, timer30 } = this.state;
     const questionAtual = questions[questionIndex];
-    const hash = md5(email);
-    const { buttonBorder } = this.state;
-    const { timer30 } = this.state;
+
     return questions && questions.length && (
       <div className="gamepage-container">
-        <header className="gamepage-header">
-          <img
-            src={ `https://www.gravatar.com/avatar/${hash}` }
-            alt="gravatar"
-            data-testid="header-profile-picture"
-            className="img-logo"
-          />
-          <p
-            data-testid="header-player-name"
-          >
-            {username}
-          </p>
-          <div className="timer">
-            <span>
-              Timer:
-            </span>
-            {timer30}
-          </div>
-          <span
-            data-testId="header-score"
-          >
-            Placar: 0
+        <Header />
+        <div className="timer">
+          <span>
+            Timer:
           </span>
-        </header>
+          { timer30 }
+        </div>
         <div className="gamepage-questions">
           <div
             data-testid="question-category"
@@ -147,11 +170,11 @@ class Gamepage extends React.Component {
           >
             Pergunta:
             <br />
-            {questionAtual && questionAtual.question}
+            { questionAtual && questionAtual.question }
           </div>
         </div>
         <div className="gamepage-answer">
-          {questionAtual && questionAtual.incorrect_answers
+          { questionAtual && questionAtual.incorrect_answers
             .map((result, i) => (
               <div key={ result }>
                 <button
@@ -170,11 +193,12 @@ class Gamepage extends React.Component {
             onClick={ this.handleClick }
             data-testid="correct-answer"
             type="button"
+            id="correct"
             disabled={ buttonBorder }
           >
-            {questionAtual && questionAtual.correct_answer}
+            { questionAtual && questionAtual.correct_answer }
           </button>
-          {this.showNextButton()}
+          { this.showNextButton() }
         </div>
       </div>
     );
@@ -182,16 +206,18 @@ class Gamepage extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  email: state.login.email,
-  username: state.login.username,
   questions: state.question.questions,
+  score: state.score.score,
 });
 
-export default connect(mapStateToProps)(Gamepage);
+const mapDispatchToProps = (dispatch) => ({
+  scoreAction: (score) => dispatch(updateScore(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Gamepage);
 
 Gamepage.propTypes = {
   questionAtual: PropTypes.arrayOf(Object).isRequired,
-  email: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
   questions: PropTypes.object.isRequired,
+  score: PropTypes.number.isRequired,
 }.isRequired;

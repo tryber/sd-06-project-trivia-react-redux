@@ -2,6 +2,7 @@ import questionsAPI from '../services/questionAPI';
 
 export const LOGIN = 'LOGIN';
 export const QUESTION = 'QUESTION';
+export const SCORE = 'SCORE';
 
 export const loginAction = (email, username) => ({
   type: LOGIN,
@@ -14,9 +15,24 @@ export const questionsAction = (questions) => ({
   questions,
 });
 
+export const scoreAction = (score) => ({
+  type: SCORE,
+  score,
+});
+
 export const questionsThunk = () => async (dispatch) => {
   const tokenLocal = localStorage.getItem('token');
   const questionsReturn = await questionsAPI(tokenLocal);
-  // console.log(questionsReturn);
   dispatch(questionsAction(questionsReturn));
 };
+
+export function updateScore(score) {
+  return (dispatch, getState) => {
+    const { name, email } = getState().login;
+    dispatch(scoreAction(score));
+    const StoragedPlayer = { player:
+      { name, gravatarEmail: email, score, assertions: 0 },
+    };
+    localStorage.setItem('state', JSON.stringify(StoragedPlayer));
+  };
+}
