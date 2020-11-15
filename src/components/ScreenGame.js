@@ -71,22 +71,23 @@ class ScreenGame extends React.Component {
 
   render() {
     const { questions } = this.props;
+    console.log(questions.results[0].question);
     // answered
     const Cinco = 5;
     const { index, counter } = this.state;
     // isDisable, timer
     if (counter > Cinco) return <Redirect to="/feedback" />;
     return (
-      Object.values({ questions }).length > 0 ? (
+      Object.values(questions).length > 0 ? (
         <div className="game-container">
           <div className="header">
             <FeedbackHeader />
           </div>
           <div data-testid="question-category">
-            {questions[index].category}
+            {questions.results[index].category}
           </div>
           <div data-testid="question-text">
-            {questions[index].question}
+            {questions.results[index].question}
           </div>
         </div>) : (<div><h1>Loading...</h1></div>)
     );
