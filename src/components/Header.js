@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import CryptoJs from 'crypto-js';
 import PropTypes from 'prop-types';
 
-class FeedbackHeader extends Component {
+class Header extends Component {
   render() {
-    const { name, email } = this.props;
+    const { name, email, score } = this.props;
     const hash = CryptoJs.MD5(email).toString();
-    const score = 0;
     return (
       <div>
         <img
@@ -25,13 +24,13 @@ class FeedbackHeader extends Component {
 const mapStateToProps = (state) => ({
   name: state.userReducer.name,
   email: state.userReducer.email,
-  // score: state.user.player.score,
+  score: state.userReducer.player.score,
 });
 
-FeedbackHeader.propTypes = {
+Header.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  // score: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps)(FeedbackHeader);
+export default connect(mapStateToProps)(Header);

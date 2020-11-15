@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import propType from 'prop-types';
 import {
-  fetchApiQuestions,
-  requestQuestionsSuccess,
   nextQuestion,
   answerQuestion,
 } from '../actions';
-import FeedbackHeader from './FeedbackHeader';
+import Header from './Header';
 import '../App.css';
+import AnswerCard from './AnswerCard';
 
 class ScreenGame extends React.Component {
   constructor() {
@@ -24,9 +23,6 @@ class ScreenGame extends React.Component {
   }
 
   componentDidMount() {
-    const { getTriviaQuestions, getQuestions } = this.props;
-    getTriviaQuestions();
-    getQuestions();
     this.startTimer();
   }
 
@@ -70,50 +66,67 @@ class ScreenGame extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
-    console.log(questions.results[0].question);
-    // answered
+    const { question, answered } = this.props;
     const Cinco = 5;
-    const { index, counter } = this.state;
-    // isDisable, timer
+    const { index, counter, timer } = this.state;
+    // console.log(question[index].correct_answer);
     if (counter > Cinco) return <Redirect to="/feedback" />;
     return (
-      Object.values(questions).length > 0 ? (
+      Object.values(question).length > 0 ? (
         <div className="game-container">
           <div className="header">
-            <FeedbackHeader />
+            <Header />
           </div>
           <div data-testid="question-category">
-            {questions.results[index].category}
+            {question[index].category}
           </div>
           <div data-testid="question-text">
-            {questions.results[index].question}
+            {question[index].question}
           </div>
-        </div>) : (<div><h1>Loading...</h1></div>)
-    );
+          <AnswerCard
+            difficulty={ question[index].difficulty }
+            timer={ timer }
+            incorrect={ question[index].incorrect_answers }
+            correct={ question[index].correct_answer }
+          />
+          { answered ? (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.nextQuestion() }
+            >
+              Próxima
+            </button>
+          ) : (
+            <div>
+              { timer }
+            </div>
+          )}
+        </div>
+      ) : (
+        <div>
+          <h1>Loading...</h1>
+        </div>
+      ));
   }
 }
 
 const mapStateToProps = (state) => ({
-  questions: state.tokenReducer.questions,
+  question: state.tokenReducer.questions.results,
   token: state.tokenReducer.token,
   answered: state.userReducer.answered,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
-  getQuestions: (data) => dispatch(requestQuestionsSuccess(data)),
   next: () => dispatch(nextQuestion()),
   answer: () => dispatch(answerQuestion()),
 });
 
 ScreenGame.propTypes = {
-  questions: propType.arrayOf(Object).isRequired,
+  question: propType.arrayOf(Object).isRequired,
   next: propType.func.isRequired,
   answered: propType.bool.isRequired,
   answer: propType.func.isRequired,
-  getTriviaQuestions: propType.func.isRequired,
-  getQuestions: propType.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenGame);

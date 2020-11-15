@@ -6,6 +6,7 @@ export const RECEIVE_HASH = 'RECEIVE_HASH';
 export const PLAYER_NAME = 'PLAYER_NAME';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const GIVE_ANSWER = 'GIVE_ANSWER';
+export const GIVE_SCORE = 'GIVE_SCORE';
 const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 export function request() {
@@ -59,6 +60,13 @@ export function nextQuestion() {
 export function answerQuestion() {
   return {
     type: GIVE_ANSWER,
+  };
+}
+
+export function giveScore(value) {
+  return {
+    type: GIVE_SCORE,
+    value,
   };
 }
 

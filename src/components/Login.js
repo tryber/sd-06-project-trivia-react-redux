@@ -2,7 +2,7 @@ import React from 'react';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { fetchApiQuestions, fetchApiToken, playerName } from '../actions';
+import { fetchApiToken, playerName } from '../actions';
 import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
@@ -79,21 +79,14 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.tokenReducer.token,
-});
-
 const mapsDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchApiToken()),
-  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
   infoUser: (name, email) => dispatch(playerName(name, email)),
 });
 
 Login.propTypes = {
   getToken: propType.func.isRequired,
   infoUser: propType.func.isRequired,
-  token: propType.string.isRequired,
-  getTriviaQuestions: propType.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapsDispatchToProps)(Login);
+export default connect(null, mapsDispatchToProps)(Login);
