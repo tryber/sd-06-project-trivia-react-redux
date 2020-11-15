@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import questionsAPI from '../services/questionAPI';
-import { updateScore } from '../actions';
+import { ScoreAndAssertionsFuncion } from '../actions';
 import Header from '../components/Header';
 
 class Gamepage extends React.Component {
@@ -27,12 +27,11 @@ class Gamepage extends React.Component {
   }
 
   async componentDidMount() {
-    const { scoreAction } = this.props;
+    const { pointing } = this.props;
     const tokenLocal = localStorage.getItem('token');
     await this.questionsGet(tokenLocal);
     this.timer();
-    scoreAction(0);
-    // const { name, gravatarEmail } = this.props;
+    pointing(0, 0);
   }
 
   componentWillUnmount() {
@@ -69,7 +68,6 @@ class Gamepage extends React.Component {
     console.log('o que é level point', levelPoint);
     console.log('o que é timer', timer30);
     const answerPoint = (ten + (timer30 * levelPoint));
-    console.log(answerPoint);
     return answerPoint;
   }
 
@@ -77,14 +75,16 @@ class Gamepage extends React.Component {
   handleUniqueAnswer(event) {
     const valueTextButton = event.target.innerHTML;
     const { questionIndex } = this.state;
-    const { questions, scoreAction, score } = this.props;
+    const { questions, pointing, score, assertions } = this.props;
     const correctAnswer = questions[questionIndex].correct_answer;
     console.log('o que é class name', valueTextButton);
     console.log('qual resposta é a certa', correctAnswer);
     const atualPoints = (valueTextButton === correctAnswer) ? this.scorePoint() : 0;
+    const currentAssertions = (valueTextButton === correctAnswer)
+      ? assertions + 1 : assertions + 0;
     console.log('soma atual de pontos', atualPoints);
     const currentScore = score + atualPoints;
-    scoreAction(currentScore);
+    pointing(currentScore, currentAssertions);
   }
 
   changeQuestion() {
@@ -208,10 +208,11 @@ class Gamepage extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.question.questions,
   score: state.score.score,
+  assertions: state.assertions.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  scoreAction: (score) => dispatch(updateScore(score)),
+  pointing: (score, assertions) => dispatch(ScoreAndAssertionsFuncion(score, assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gamepage);
@@ -220,4 +221,6 @@ Gamepage.propTypes = {
   questionAtual: PropTypes.arrayOf(Object).isRequired,
   questions: PropTypes.object.isRequired,
   score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  pointing: PropTypes.func.isRequired,
 }.isRequired;
