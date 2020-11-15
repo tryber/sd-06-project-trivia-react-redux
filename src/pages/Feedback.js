@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 
 import Header from '../components/Header';
@@ -14,70 +13,68 @@ class Feedback extends React.Component {
   }
 
   feedbackMessage() {
-    const { score } = this.props;
-    const badPerformance = <h1 data-testid="feedback-text">Podia ser melhor...</h1>;
-    const goodPerformance = <h1 data-testid="feedback-text">Mandou bem!</h1>;
+    const { assertions } = this.props;
+    const badPerformance = <p data-testid="feedback-text">Podia ser melhor...</p>;
+    const goodPerformance = <p data-testid="feedback-text">Mandou bem!</p>;
     const expectHits = 3;
-    if (score > expectHits) {
+    if (assertions >= expectHits) {
       return goodPerformance;
     }
     return badPerformance;
   }
 
   render() {
-    // const { email, username, score, feedbackMessage } = this.props;
-    // const hash = md5(email);
+    const { score, assertions } = this.props;
     return (
       <div className="feedback-container">
         <Header />
-        {/* <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${hash}` }
-            alt="gravatar"
-            data-testid="header-profile-picture"
-            className="img-logo"
-          />
-          <p data-testid="header-player-name">
-            {username}
+        {this.feedbackMessage()}
+        <div>
+          <p>
+            Você acertou
+            {' '}
+            <span data-testid="feedback-total-question">{assertions}</span>
+            {' '}
+            de um total de 5 questões!
+            <br />
+            Vocês somou
+            {' '}
+            <span data-testid="feedback-total-score">{score}</span>
+            {' '}
+            pontos!
           </p>
-          <span data-testid="header-score">
-            {`Placar:${score}`}
-          </span>
-        </header> */}
-        <p data-testid="feedback-text">
-          {this.feedbackMessage()}
-        </p>
-        <Link to="/ranking">
-          <button
-            data-testid="btn-ranking"
-            type="button"
-          >
+        </div>
+        <div>
+          <Link to="/ranking">
+            <button
+              data-testid="btn-ranking"
+              type="button"
+            >
               Ver Ranking
-          </button>
-        </Link>
-        <Link to="/">
-          <button
-            data-testid="btn-play-again"
-            type="button"
-          >
+            </button>
+          </Link>
+          <Link to="/">
+            <button
+              data-testid="btn-play-again"
+              type="button"
+            >
               Jogar Novamente!
-          </button>
-        </Link>
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  email: state.login.email,
-  username: state.login.username,
   score: state.score.score,
+  assertions: state.assertions.assertions,
 });
 
 Feedback.propTypes = {
-  email: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 }.isRequired;
 
 export default connect(mapStateToProps)(Feedback);

@@ -21,7 +21,7 @@ class Header extends React.Component {
             { username }
           </p>
           <span data-testId="header-score">
-            {`Placar:${score}`}
+            {`Placar: ${score}`}
           </span>
         </header>
       </div>
