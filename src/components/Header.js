@@ -20,9 +20,13 @@ class Header extends React.Component {
           <p data-testid="header-player-name">
             { username }
           </p>
-          <span data-testId="header-score">
-            {`Placar: ${score}`}
-          </span>
+          <p>
+            Placar:
+            {' '}
+            <span data-testId="header-score">
+              { score }
+            </span>
+          </p>
         </header>
       </div>
     );
