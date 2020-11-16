@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   isFetching: false,
   token: '',
   error: '',
-  questions: null,
+  questions: [],
 };
 
 function tokenReducer(state = INITIAL_STATE, action) {

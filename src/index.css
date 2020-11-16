@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.certa {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.err {
+  border: 3px solid rgb(255, 0, 0);
+}

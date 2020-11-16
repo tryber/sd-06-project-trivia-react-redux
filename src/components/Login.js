@@ -2,7 +2,7 @@ import React from 'react';
 import propType from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { fetchApiQuestions, fetchApiToken, playerName } from '../actions';
+import { fetchApiToken, playerName } from '../actions';
 import ButtonConfig from './ButtonConfig';
 
 class Login extends React.Component {
@@ -17,15 +17,18 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  async componentDidMount() {
+    const { getToken } = this.props;
+    await getToken();
+  }
+
   handleUserInfo() {
     const { name, email } = this.state;
     const { infoUser } = this.props;
     infoUser(name, email);
   }
 
-  handleClick() {
-    const { getToken } = this.props;
-    getToken();
+  async handleClick() {
     this.handleUserInfo();
     this.setState({
       redirect: true,
@@ -78,7 +81,6 @@ class Login extends React.Component {
 
 const mapsDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchApiToken()),
-  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
   infoUser: (name, email) => dispatch(playerName(name, email)),
 });
 
