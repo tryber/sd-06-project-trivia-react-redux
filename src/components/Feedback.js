@@ -6,28 +6,34 @@ import Header from './Header';
 
 class Feedback extends React.Component {
   componentDidMount() {
-    const { name, score, picture } = this.props;
+    const { name, score, gravatarEmail, assertions } = this.props;
     const state = JSON.parse(localStorage.getItem('ranking'));
-    const obj = {
-      name,
-      score,
-      picture,
+    const player = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
     };
-    if (state) return localStorage.setItem('ranking', JSON.stringify([...state, obj]));
-    return localStorage.setItem('ranking', JSON.stringify([obj]));
+    if (state) return localStorage.setItem('ranking', JSON.stringify([...state, player]));
+    return localStorage.setItem('ranking', JSON.stringify([player]));
   }
 
   render() {
-    const { assertions, score } = this.props;
+    const { name, assertions, score } = this.props;
     const three = 3;
     return (
       <div>
         <Header />
-        {assertions < three ? (
+        { assertions < three ? (
           <div data-testid="feedback-text">Podia ser melhor...</div>
         ) : (
           <div data-testid="feedback-text">Mandou bem!</div>
-        )}
+        ) }
+
+        <h3 data-testid="header-player-name">{ name }</h3>
+
         <div>
           Você acertou
           <span data-testid="feedback-total-question">
@@ -35,6 +41,7 @@ class Feedback extends React.Component {
           </span>
           questões
         </div>
+
         <div>
           Um total de
           <span data-testid="feedback-total-score">
@@ -42,16 +49,19 @@ class Feedback extends React.Component {
           </span>
           pontos
         </div>
+
         <Link to="/">
           <button type="button" data-testid="btn-play-again">
             Jogar Novamente
           </button>
         </Link>
+
         <Link to="/ranking">
           <button type="button" data-testid="btn-ranking">
             Ver Ranking
           </button>
         </Link>
+
       </div>
     );
   }
@@ -61,7 +71,7 @@ const mapStateToProps = (state) => ({
   assertions: state.userReducer.player.assertions,
   score: state.userReducer.player.score,
   name: state.userReducer.name,
-  picture: state.userReducer.email,
+  gravatarEmail: state.userReducer.email,
 });
 
 export default connect(mapStateToProps)(Feedback);
@@ -70,5 +80,5 @@ Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
 };
