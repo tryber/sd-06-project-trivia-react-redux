@@ -98,43 +98,6 @@ class ScreenGame extends React.Component {
         </div>
       )
     );
-
-    // return Object.values(questions).length > 0 ? (
-    //   <div className="game-container">
-    //     <div className="header">
-    //       <Header />
-    //     </div>
-    //     <div data-testid="question-category">
-    //       {question[index].category}
-    //     </div>
-    //     <div data-testid="question-text">
-    //       {question[index].question}
-    //     </div>
-    //     <AnswerCard
-    //       difficulty={ question[index].difficulty }
-    //       timer={ timer }
-    //       incorrect={ question[index].incorrect_answers }
-    //       correct={ question[index].correct_answer }
-    //     />
-    //     { answered ? (
-    //       <button
-    //         type="button"
-    //         data-testid="btn-next"
-    //         onClick={ () => this.nextQuestion() }
-    //       >
-    //         Próxima
-    //       </button>
-    //     ) : (
-    //       <div>
-    //         { timer }
-    //       </div>
-    //     )}
-    //   </div>
-    // ) : (
-    //   <div>
-    //     <h1>Loading...</h1>
-    //   </div>
-    // );
   }
 }
 

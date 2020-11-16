@@ -17,11 +17,15 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  async componentDidMount() {
+    await this.handleToken();
+  }
+
   async handleToken() {
     const { getToken } = this.props;
     const token = await getToken();
+    localStorage.setItem('token', token);
     console.log('token', token);
-    return token;
   }
 
   handleUserInfo() {
@@ -31,7 +35,6 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    await this.handleToken();
     this.handleUserInfo();
     this.setState({ redirect: true });
   }
