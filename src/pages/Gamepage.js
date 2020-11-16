@@ -54,19 +54,15 @@ class Gamepage extends React.Component {
 
   // testing score
   scorePoint() {
-    console.log('função placar');
     const { questionIndex, timer30 } = this.state;
     const { questions } = this.props;
     const difficultyLevel = questions[questionIndex].difficulty;
-    console.log(difficultyLevel);
     const three = 3;
     const ten = 10;
     let levelPoint = 1;
     if (difficultyLevel === 'easy') levelPoint = 1;
     if (difficultyLevel === 'medium') levelPoint = 2;
     if (difficultyLevel === 'hard') levelPoint = three;
-    console.log('o que é level point', levelPoint);
-    console.log('o que é timer', timer30);
     const answerPoint = (ten + (timer30 * levelPoint));
     return answerPoint;
   }
@@ -77,12 +73,9 @@ class Gamepage extends React.Component {
     const { questionIndex } = this.state;
     const { questions, pointing, score, assertions } = this.props;
     const correctAnswer = questions[questionIndex].correct_answer;
-    console.log('o que é class name', valueTextButton);
-    console.log('qual resposta é a certa', correctAnswer);
     const atualPoints = (valueTextButton === correctAnswer) ? this.scorePoint() : 0;
     const currentAssertions = (valueTextButton === correctAnswer)
       ? assertions + 1 : assertions + 0;
-    console.log('soma atual de pontos', atualPoints);
     const currentScore = score + atualPoints;
     pointing(currentScore, currentAssertions);
   }
