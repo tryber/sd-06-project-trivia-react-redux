@@ -26,6 +26,9 @@ class Gamepage extends React.Component {
     this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
   }
 
+  // Função responsável por, na montagem do componente: 1- pegar do localStorage
+  // o token, 2-chamar a função de requisição das questões com o token, 3- disparar
+  // o timer de cada questão, 4- iniciar o estado geral do score e do assertions.
   async componentDidMount() {
     const { pointing } = this.props;
     const tokenLocal = localStorage.getItem('token');
@@ -34,25 +37,30 @@ class Gamepage extends React.Component {
     pointing(0, 0);
   }
 
+  // Função responsável por, na desmontagem do componente, limpar/interromper o intervalo.
   componentWillUnmount() {
     clearInterval(this.aux);
   }
 
+  // Fazer a requisição da API de questões.
   async questionsGet(tokenLocal) {
     await questionsAPI(tokenLocal);
   }
 
+  // Chama a função countdown a cada 1s.
   timer() {
     const miliseconds = 1000;
     this.aux = setInterval(this.countdown, miliseconds);
   }
 
+  // Responsável por mudar pra paǵina de feedback ao final da última questão.
   changePage() {
     const { history } = this.props;
     history.push('/feedback');
   }
 
-  // testing score
+  // Função responsável por obter a pontuação de acordo com tempo de resposta e
+  // nível de dificuldade de cada questão (somada com 10 em função da vírgula).
   scorePoint() {
     const { questionIndex, timer30 } = this.state;
     const { questions } = this.props;
@@ -67,7 +75,9 @@ class Gamepage extends React.Component {
     return answerPoint;
   }
 
-  // testing score
+  // Função responsável por fazer um comparativo entre o que a pessoa clicou com
+  // a resposta certa. Verifica se está correta para contabilizar o placar e o número
+  // de acertos, e por fim chama a função que atualiza o placar e o número de acertos.
   handleUniqueAnswer(event) {
     const valueTextButton = event.target.innerHTML;
     const { questionIndex } = this.state;
@@ -80,6 +90,9 @@ class Gamepage extends React.Component {
     pointing(currentScore, currentAssertions);
   }
 
+  // Função responsável por verificar o índice da questão, por alterar a borda quando clicada,
+  // setar o timer, e caso tenha chego no índice 4 (correspondente a última questão),
+  // responsável por chamar a função de mudança de página.
   changeQuestion() {
     const { questions } = this.props;
     const { questionIndex } = this.state;
@@ -88,6 +101,7 @@ class Gamepage extends React.Component {
       this.changePage();
     }
     this.setState((state) => ({
+      // Lógica questionIndex retirada da aplicação de Pokedex.
       questionIndex: (state.questionIndex + 1) % questions.length,
       buttonBorder: false,
       timer30: 30,
@@ -95,6 +109,8 @@ class Gamepage extends React.Component {
     this.timer();
   }
 
+  // Função responsável pela lógica do timer, e caso ele chegue em 0,
+  // vai considerar a questão como errada e respondê-la (alterando a borda).
   countdown() {
     const { timer30 } = this.state;
     const { buttonBorder } = this.state;
@@ -110,6 +126,9 @@ class Gamepage extends React.Component {
     }
   }
 
+  // Função responsável por manipular cada clique nas questões, alterando
+  // a borda, voltando o tempo para o estado inicial e chamando a função
+  // responsável pela pontuação e o número de acertos.
   handleClick(event) {
     this.handleUniqueAnswer(event);
     const { buttonBorder } = this.state;
@@ -119,6 +138,8 @@ class Gamepage extends React.Component {
     clearInterval(this.aux);
   }
 
+  // Função responsável por deixar o botão de "próxima" inativo até que se
+  // clique em alguma das alternativas, e quando isso é feito ele aparece.
   showNextButton() {
     const { buttonBorder } = this.state;
     if (buttonBorder) {
@@ -167,6 +188,8 @@ class Gamepage extends React.Component {
           </div>
         </div>
         <div className="gamepage-answer">
+          {/* Função de map responsável por percorrer o array
+          de alternativas incorretas e exibi-las. */}
           { questionAtual && questionAtual.incorrect_answers
             .map((result, i) => (
               <div key={ result }>

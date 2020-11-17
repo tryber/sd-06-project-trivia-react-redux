@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Renderiza o componente de configurações (ainda não implementado).
 class Settings extends React.Component {
   render() {
     return (

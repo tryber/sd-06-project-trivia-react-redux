@@ -20,6 +20,8 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  // Função responsável por validar os campos de e-mail e username,
+  // habilitando o botão quando ambas são validadas.
   checkInputsValidity({ target }) {
     const { name, value } = target;
     this.setState({
@@ -33,6 +35,9 @@ class Login extends React.Component {
     });
   }
 
+  // Função responsável por fazer a requisição do token,
+  // e guardá-lo no localStorage. Além disso, ela chama as
+  // funções de dispatch login() e questions().
   async handleClick() {
     const { email, username } = this.state;
     const { login, questions } = this.props;

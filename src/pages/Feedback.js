@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import './Feedback.css';
 
+// Componente que renderiza a página de feedback.
 class Feedback extends React.Component {
   constructor() {
     super();
     this.feedbackMessage = this.feedbackMessage.bind(this);
   }
 
+  // Função responsável por captar as assertions e avaliar: se for menor que 3 retorna
+  // "Podia ser melhor", e se for maior ou igual que 3 retorna "Mandou bem!".
   feedbackMessage() {
     const { assertions } = this.props;
     const badPerformance = <p data-testid="feedback-text">Podia ser melhor...</p>;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Renderiza o componente de configurações (ainda não implementado).
 class Ranking extends React.Component {
   render() {
     return (

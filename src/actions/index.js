@@ -26,12 +26,14 @@ export const assertionsAction = (assertions) => ({
   assertions,
 });
 
+// Função que faz a requisição da API de questions com o thunk.
 export const questionsThunk = () => async (dispatch) => {
   const tokenLocal = localStorage.getItem('token');
   const questionsReturn = await questionsAPI(tokenLocal);
   dispatch(questionsAction(questionsReturn));
 };
 
+// Função que faz o dispatch das actions de score e assertions e atualiza o localStorage.
 export function ScoreAndAssertionsFuncion(score, assertions) {
   return (dispatch, getState) => {
     const { name, email } = getState().login;

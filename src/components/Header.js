@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
+// Renderiza o cabeçalho nas páginas de gamepage e feedback.
 class Header extends React.Component {
   render() {
     const { username, email, score } = this.props;
+    // Lib do gravatar que gera o hash.
     const hash = md5(email);
 
     return (
