@@ -19,7 +19,7 @@ const INITIAL_STATE = {
 function playerStorage(state, action) {
   return (
     localStorage.setItem(
-      'savedState',
+      'state',
       JSON.stringify({
         ...state,
         player: {
