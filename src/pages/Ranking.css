@@ -1,0 +1,29 @@
+.container-ranking {
+  margin: 25% auto;
+  width: 50%;
+  background: linear-gradient(rgb(80, 79, 79), #1b43bd);
+  color: #f8f8f8;
+  border-radius: 10px;
+  font-family: Helvetica, sans-serif;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5%;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-ranking{
+  margin-left: 20%;
+  border: 1px solid #29487d;
+  border-radius: 5px;
+  font-weight: bold;
+  line-height: 30px;
+  padding: 3px 8px;
+  color: white;
+}
+
