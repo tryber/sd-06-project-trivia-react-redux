@@ -34,9 +34,14 @@ class Login extends React.Component {
     infoUser(name, email);
   }
 
-  handleClick() {
+  async handleClick(name, gravatarEmail) {
     this.handleUserInfo();
     this.setState({ redirect: true });
+    localStorage.setItem(
+      'state', JSON.stringify(
+        { player: { name, assertions: 0, score: 0, gravatarEmail } },
+      ),
+    );
   }
 
   render() {
@@ -69,7 +74,7 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ !(name && email) }
-            onClick={ this.handleClick }
+            onClick={ () => this.handleClick(name, email) }
           >
             Jogar
           </button>

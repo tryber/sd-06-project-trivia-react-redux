@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 
 class Feedback extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.handleClick = this.handleClick.bind(this);
-  // }
-
   componentDidMount() {
     const { name, score, gravatarEmail, assertions } = this.props;
     const state = JSON.parse(localStorage.getItem('ranking'));
@@ -24,10 +19,6 @@ class Feedback extends React.Component {
     if (state) return localStorage.setItem('ranking', JSON.stringify([...state, player]));
     return localStorage.setItem('ranking', JSON.stringify([player]));
   }
-
-  // handleClick() {
-  //   localStorage.setItem('savedState', '');
-  // }
 
   render() {
     const { name, assertions, score } = this.props;

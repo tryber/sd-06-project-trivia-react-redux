@@ -22,6 +22,7 @@ class AnswerCard extends Component {
     if (reply) {
       const points = (basePoint + (timer * level[difficulty]));
       score(points);
+      console.log(points);
     }
     answer();
   }
@@ -58,6 +59,9 @@ class AnswerCard extends Component {
 
 const mapStateToProps = (state) => ({
   answered: state.userReducer.answered,
+  name: state.userReducer.name,
+  gravatarEmail: state.userReducer.email,
+  assertions: state.userReducer.player.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

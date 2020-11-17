@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CryptoJs from 'crypto-js';
 import PropTypes from 'prop-types';
-import { resetScore } from '../actions';
 
 class Header extends Component {
   // componentDidMount() {
@@ -19,10 +18,6 @@ class Header extends Component {
   //   if (state) return localStorage.setItem('ranking', JSON.stringify([...state, player]));
   //   return localStorage.setItem('ranking', JSON.stringify([player]));
   // }
-  componentDidMount() {
-    const { scoreReset } = this.props;
-    scoreReset();
-  }
 
   render() {
     const { name, gravatarEmail, score } = this.props;
@@ -52,16 +47,11 @@ const mapStateToProps = (state) => ({
   // assertions: state.userReducer.player.assertions,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  scoreReset: () => dispatch(resetScore()),
-});
-
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  scoreReset: PropTypes.func.isRequired,
   // assertions: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);

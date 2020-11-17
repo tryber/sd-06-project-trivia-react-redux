@@ -6,6 +6,7 @@ import {
   nextQuestion,
   answerQuestion,
   fetchApiQuestions,
+  resetScore,
 } from '../actions';
 import Header from './Header';
 import AnswerCard from './AnswerCard';
@@ -22,11 +23,12 @@ class ScreenGame extends React.Component {
   }
 
   componentDidMount() {
-    const { getQuestions, token } = this.props;
+    const { getQuestions, token, scoreReset } = this.props;
     if (token) {
       getQuestions(token);
     }
     this.startTimer();
+    scoreReset();
   }
 
   componentDidUpdate() {
@@ -111,6 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
   next: () => dispatch(nextQuestion()),
   answer: () => dispatch(answerQuestion()),
   getQuestions: (token) => dispatch(fetchApiQuestions(token)),
+  scoreReset: () => dispatch(resetScore()),
 });
 
 ScreenGame.propTypes = {
@@ -120,6 +123,7 @@ ScreenGame.propTypes = {
   answer: propType.func.isRequired,
   token: propType.string.isRequired,
   getQuestions: propType.func.isRequired,
+  scoreReset: propType.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenGame);
