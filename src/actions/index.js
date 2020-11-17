@@ -9,6 +9,7 @@ export const PLAYER_NAME = 'PLAYER_NAME';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const GIVE_ANSWER = 'GIVE_ANSWER';
 export const GIVE_SCORE = 'GIVE_SCORE';
+export const RESET_SCORE = 'RESET_SCORE';
 // const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 // Question Actions ------------------------------
@@ -64,6 +65,12 @@ export function giveScore(value) {
   return {
     type: GIVE_SCORE,
     value,
+  };
+}
+
+export function resetScore() {
+  return {
+    type: RESET_SCORE,
   };
 }
 

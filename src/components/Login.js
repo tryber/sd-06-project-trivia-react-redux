@@ -34,7 +34,7 @@ class Login extends React.Component {
     infoUser(name, email);
   }
 
-  async handleClick() {
+  handleClick() {
     this.handleUserInfo();
     this.setState({ redirect: true });
   }

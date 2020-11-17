@@ -1,4 +1,10 @@
-import { PLAYER_NAME, NEXT_QUESTION, GIVE_ANSWER, GIVE_SCORE } from '../actions';
+import {
+  PLAYER_NAME,
+  NEXT_QUESTION,
+  GIVE_ANSWER,
+  GIVE_SCORE,
+  RESET_SCORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -48,6 +54,14 @@ function userReducer(state = INITIAL_STATE, action) {
       player: {
         assertions: state.player.assertions + 1,
         score: state.player.score + action.value,
+      },
+    };
+  case RESET_SCORE:
+    return {
+      ...state,
+      player: {
+        assertions: 0,
+        score: 0,
       },
     };
   default:
