@@ -10,7 +10,6 @@ export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const GIVE_ANSWER = 'GIVE_ANSWER';
 export const GIVE_SCORE = 'GIVE_SCORE';
 export const RESET_SCORE = 'RESET_SCORE';
-// const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 // Question Actions ------------------------------
 export function request() {
@@ -32,13 +31,6 @@ export function requestQuestionsSuccess(questions) {
     questions,
   };
 }
-
-// export function requestFailure(error) {
-//   return {
-//     type: FAILURE,
-//     error,
-//   };
-// }
 
 // User actions -------------------------------------
 export function playerName(name, email) {
@@ -91,33 +83,3 @@ export function fetchApiQuestions(token) {
       .then((data) => dispatch(requestQuestionsSuccess(data)));
   };
 }
-
-// export function fetchApiQuestions(token) {
-//   const Cinco = 5;
-//   const endpoint = `https://opentdb.com/api.php?amount=${Cinco}&token=${token}`;
-//   return (dispatch) => {
-//     dispatch(request());
-//     return fetch(endpoint)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         console.log(data);
-//         return dispatch(requestQuestionsSuccess(data));
-//       },
-//       (error) => dispatch(requestFailure(error.message)));
-//   };
-// }
-
-// export function fetchApiToken() {
-//   return (dispatch) => {
-//     dispatch(request());
-//     return fetch(apiToken)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         console.log(data);
-//         dispatch(requestSuccess(data));
-//         dispatch(fetchApiQuestions(data.token));
-//         localStorage.setItem('token', data.token);
-//       },
-//       (error) => dispatch(requestFailure(error.message)));
-//   };
-// }

@@ -1,4 +1,3 @@
-// import reducers from ".";
 import { REQUEST, DATA_TOKEN, DATA_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
