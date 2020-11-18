@@ -53,3 +53,16 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+article {
+  border: 3px solid orange;
+  margin: 10px 0;
+}
+
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrect-answer {
+  border: 3px solid rgb(255, 0, 0);
+}

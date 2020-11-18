@@ -1,0 +1,13 @@
+.timer {
+  color: rgb(40,44,52);
+  padding: 1px;
+}
+
+.timer h2 {
+  border: solid 2px teal;
+  border-radius: 15px;
+  color: rgb(40,44,52);
+  margin: 5px 0px;
+  padding: 5px 10px;
+  width: 35%;
+}
