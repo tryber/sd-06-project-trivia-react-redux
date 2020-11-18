@@ -12,6 +12,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
@@ -49,7 +50,8 @@
     "mocha": "^7.2.0",
     "mochawesome": "^6.1.1",
     "mochawesome-merge": "^4.0.3",
-    "mochawesome-report-generator": "^5.1.0"
+    "mochawesome-report-generator": "^5.1.0",
+    "node-sass": "^4.14.1"
   },
   "jest": {
     "coveragePathIgnorePatterns": [

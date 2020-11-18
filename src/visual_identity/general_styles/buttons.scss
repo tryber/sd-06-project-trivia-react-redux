@@ -1,0 +1,23 @@
+@import './color.scss';
+
+@mixin btnDarkBlue {
+  padding: 10px;
+  background-color: $darkBlue;
+  border-radius: 10px;
+  color: white;
+  font-weight: 900;
+  transition-duration: 0.8s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: $darkBlue;
+  }
+
+  &:disabled {
+    color: rgba(16, 16, 16, 0.3);
+    background-color: rgba(239, 239, 239, 0.3);
+    border-color: rgba(118, 118, 118, 0.3);
+    cursor: default;
+  }
+}

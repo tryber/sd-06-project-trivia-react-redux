@@ -1,0 +1,97 @@
+@import '../../visual_identity/general_styles/flex_boxes.scss';
+@import '../../visual_identity/general_styles/color.scss';
+@import '../../visual_identity/general_styles/buttons.scss';
+
+.game-page {
+  background: $lightGreen;
+  height: 80vh;
+
+  & header {
+    @include flexCenter(column);
+    justify-content: space-between;
+    width: 100vw;
+    height: 20vh;
+    background-color: $darkBlue;
+    position: fixed;
+    top: 0;
+    color: white;
+    
+    & .player-stats-container {
+      @include flexCenter(row);
+      width: 90%;
+      justify-content: flex-start;
+
+      & .player-stats {
+        @include flexCenter(column);
+        margin: 0;
+        margin-left: 2%;
+        height: 100%;
+        & p, h3 {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  & .game-board-container {
+    @include flexCenter(column);
+    margin-top: 20vh;
+    height: 80vh;
+    text-align: center;
+
+    & .game-board {
+      @include flexCenter(column);
+      width: 90vw;
+      
+      & .question-text {
+        background-color: rgba(19,23,50, 0.8);
+        padding: 5%;
+        color: white;
+      }
+      
+      & .game-board-inner-container-bottom {
+        @include flexCenter(column);
+        height: 35vh;
+
+        button {
+          @include btnDarkBlue();
+          transition: none;
+        }
+
+        .button-invisible {
+          display: none;
+        }
+        
+        .button-visible {
+          display: block;
+        }
+
+        & .game-answers {
+          @include flexCenter(row);
+          width: 90vw;
+
+          & button.wrong-answer {
+          border: 3px solid rgb(255, 0, 0);
+          transition: none;
+          }
+
+          & button.correct-answer {
+            border: 3px solid rgb(6, 240, 15);
+            transition: none;
+          }
+        }
+      }
+    }
+  }
+
+  & .timer {
+    border-radius: 100%;
+    background-color: $darkBlue;
+    color: white;
+    padding: 1.5vw;
+  }
+}
+
+
+
+

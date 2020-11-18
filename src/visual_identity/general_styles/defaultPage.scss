@@ -1,0 +1,58 @@
+@import './buttons.scss';
+@import './color.scss';
+@import './flex_boxes.scss';
+@import './fonts.scss';
+@import './inputs.scss';
+
+
+.default-page {
+  background: $lightGreen;
+  height: 80vh;
+  margin-top: 20vh;
+
+  .logo {
+    width: calc(50px + 3vw)
+  }
+
+  header {
+    @include flexCenter(column);
+    justify-content: space-between;
+    width: 100vw;
+    height: 20vh;
+    background-color: $darkBlue;
+    position: fixed;
+    top: 0;
+    color: white;
+      h1 {
+        font-size: calc(1rem + 0.6vw);
+      }
+  }
+
+  select {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px $darkBlue solid;
+    color: $darkBlue;
+    text-align: center;
+    width: 60%;
+
+    &:hover {
+      border-bottom: 3.5px $darkBlue solid;
+      font-weight: bold;
+
+      &::placeholder {
+        font-weight: bold;
+      }
+
+      &:-webkit-autofill  {
+        // should do
+        color: white;
+      }
+    }
+  }
+
+}
+
+.flex-center-column {
+  @include flexCenter(column)
+}
