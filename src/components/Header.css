@@ -1,0 +1,28 @@
+.app-header {
+  border-bottom: 3px solid rgb(206, 1, 206);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  /* background-color: rgb(235, 222, 247);
+  background: linear-gradient(45deg, purple, rgb(235, 222, 247)); */
+  background: linear-gradient(45deg, rgb(88, 0, 88), rgb(129, 0, 250));
+  background: linear-gradient(45deg, rgb(0, 23, 88), rgb(129, 0, 250));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+}
+
+.app-header img {
+border-radius: 100%;
+border: 3px solid white
+}
+
+.app-header span {
+font-size: 30px;
+font-weight: 600;
+color: white;
+}
+
+.header-score{
+  min-width: 80px;
+}

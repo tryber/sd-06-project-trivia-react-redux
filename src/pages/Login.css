@@ -1,0 +1,90 @@
+.form-wrap {
+  /* display: flex;
+  align-items: stretch;
+  justify-content: center; */
+  height: 100vh;
+  width: 100vw;
+}
+
+.login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  border: 3px solid rgba(255, 255, 255, 0.534);
+  border-radius: 10px;
+  margin: 50px;
+  padding: 50px;
+}
+
+.login-form h1,
+.login-form div,
+.login-form label {
+  margin-top: 5px;
+  text-align: center;
+  color: aliceblue;
+  width: 600px;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.wrap-600 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 600;
+}
+
+.login-form div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.login-form h1 {
+  font-size: 60px;
+  text-shadow: 10px 4px 3px rgba(0, 60, 255, 0.664);
+}
+
+.login-form label input {
+  border: 1px solid rgba(255, 0, 0, 0.767);
+  background: rgba(255, 255, 255, 0.925);
+  border-radius: 8px;
+  color: rgb(5, 31, 31);
+  padding: 20px 15px;
+  font-size: 20px;
+  width: 90%;
+  margin-top: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.bt_login,
+.bt_login a {
+  background-color: rgb(252, 25, 120);
+  border-radius: 8px;
+  border: none;
+  color: rgb(255, 214, 214);
+  margin-top: 30px;
+  width: 150px;
+  height: 70px;
+  outline: none;
+}
+
+.bt-jogar {
+  text-decoration: none;
+}
+
+.disabled, 
+button:disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.3;
+}
+
+.volume {
+  position: absolute;
+  top: 70px;
+}

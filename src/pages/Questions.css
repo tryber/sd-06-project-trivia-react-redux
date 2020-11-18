@@ -1,0 +1,29 @@
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+  background-color: rgb(6, 240, 15);
+  outline: none;
+}
+
+.incorrect {
+  border: 3px solid rgb(255, 0, 0);
+  background-color: rgb(255, 0, 0);
+  outline: none;
+}
+
+.answer {
+  border: 3px solid rgb(82, 82, 82);
+  outline: none;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(128, 128, 128, 0.342);
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  margin: 20px auto;
+  font-size: 30px;
+  font-weight: 600;
+}
