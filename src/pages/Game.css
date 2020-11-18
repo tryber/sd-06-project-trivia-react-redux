@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Goldman&display=swap');
+.container-header {
+  background-color: black;
+  color: rgb(159, 218, 252);
+  display: flex;
+  flex-direction: row;
+  font-size: 2em;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  font-family: 'Big Shoulders Stencil Text', cursive;
+}
+
+.container-game {
+  background-image: url('./trivia.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  -webkit-box-shadow: 0px 9px 5px 0px rgba(184,175,184,1);
+  -moz-box-shadow: 0px 9px 5px 0px rgba(184,175,184,1);
+  box-shadow: 10px 9px 5px 10px rgba(184,175,184,1);
+  font-family: 'Goldman', cursive;
+}
+
+.picture {
+  border-radius: 10px;
+  border: solid 2px rgb(14, 88, 131);
+  -webkit-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  -moz-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+}
+.right {
+  margin: 7px;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 500px;
+}
+
+button {
+  width: 300px;
+  -webkit-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  -moz-box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  box-shadow: 0px 3px 5px 0px rgba(184,175,184,1);
+  min-height: 70px;
+}
+
+.question {
+  font-size: 2em;
+  line-height: 40px;
+  text-shadow: 3px 3px black;
+}
+
+.timer {
+  font-size: 1.5em;
+  color: yellow;
+}
+
+.loading {
+  font-size: 3em;
+  height: 100px;
+}
+
+.scoreBoard {
+  line-height: 40px;
+  text-align: center;
+}

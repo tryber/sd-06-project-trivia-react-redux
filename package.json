@@ -5,14 +5,18 @@
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/user-event": "^7.1.2",
+    "bootstrap": "^4.5.3",
     "crypto-js": "^4.0.0",
     "react": "^16.12.0",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.1"
   },
   "scripts": {
     "cy": "cypress run",
