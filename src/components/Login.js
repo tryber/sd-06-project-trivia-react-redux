@@ -17,25 +17,37 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  async componentDidMount() {
+    await this.handleToken();
+  }
+
+  async handleToken() {
+    const { getToken } = this.props;
+    const token = await getToken();
+    localStorage.setItem('token', token);
+    console.log('token', token);
+  }
+
   handleUserInfo() {
     const { name, email } = this.state;
     const { infoUser } = this.props;
     infoUser(name, email);
   }
 
-  handleClick() {
-    const { getToken } = this.props;
-    getToken();
+  async handleClick(name, gravatarEmail) {
     this.handleUserInfo();
-    this.setState({
-      redirect: true,
-    });
+    this.setState({ redirect: true });
+    localStorage.setItem(
+      'state', JSON.stringify(
+        { player: { name, assertions: 0, score: 0, gravatarEmail } },
+      ),
+    );
   }
 
   render() {
     const { name, email, redirect } = this.state;
 
-    return (
+    return redirect ? <Redirect to="/game" /> : (
       <div className="container">
         <form className="formLogin">
           <label htmlFor="input-gravatar-email">
@@ -62,25 +74,23 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ !(name && email) }
-            onClick={ this.handleClick }
+            onClick={ () => this.handleClick(name, email) }
           >
             Jogar
           </button>
         </form>
 
         <ButtonConfig />
-
-        { redirect ? <Redirect to="/game" /> : null }
       </div>
     );
   }
 }
 
-const mapsDispatchToProps = (dispatch) => ({
-  getToken: () => dispatch(fetchApiToken()),
-  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
-  infoUser: (name, email) => dispatch(playerName(name, email)),
-});
+const mapsDispatchToProps = {
+  getToken: fetchApiToken,
+  getQuestions: fetchApiQuestions,
+  infoUser: playerName,
+};
 
 Login.propTypes = {
   getToken: propType.func.isRequired,

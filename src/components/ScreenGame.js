@@ -1,136 +1,104 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import propType from 'prop-types';
-import { fetchApiQuestions, requestQuestionsSuccess } from '../actions';
-import FeedbackHeader from './FeedbackHeader';
-import '../App.css';
+import {
+  nextQuestion,
+  answerQuestion,
+  fetchApiQuestions,
+  resetScore,
+} from '../actions';
+import Header from './Header';
+import AnswerCard from './AnswerCard';
 
 class ScreenGame extends React.Component {
   constructor() {
     super();
     this.state = {
-      answered: false,
-      btnNext: true,
-      limitTime: 8,
-      isDisable: false,
-      countDown: null,
+      index: 0,
+      timer: 30,
+      counter: 1,
     };
-    this.changeColor = this.changeColor.bind(this);
-    this.timer = this.timer.bind(this);
-    // this.regressTimer = this.regressTimer.bind(this);
-    this.updateCoutdownState = this.updateCoutdownState.bind(this);
-    this.handleDisable = this.handleDisable.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
-    const callInterval = 1000;
-    const countDown = setInterval(this.timer, callInterval);
-    this.updateCoutdownState(countDown);
-  }
-
-  updateCoutdownState() {
-    const { countDown } = this.state;
-    return this.setState({
-      countDown,
-    });
-  }
-
-  timer() {
-    const { limitTime, countDown } = this.state;
-
-    if (limitTime > 0) {
-      return this.setState((previous) => ({
-        ...previous,
-        limitTime: previous.limitTime - 1,
-      }));
+    const { getQuestions, token, scoreReset } = this.props;
+    if (token) {
+      getQuestions(token);
     }
-
-    clearInterval(countDown);
-    this.handleDisable(true);
+    this.startTimer();
+    scoreReset();
   }
 
-  handleDisable(truex) {
-    this.setState({ isDisable: truex });
+  componentDidUpdate() {
+    const { timer } = this.state;
+    const { answered, answer } = this.props;
+    if (timer === 0 || answered) {
+      clearInterval(this.myTimer);
+      answer();
+    }
   }
 
-  changeColor() {
-    this.setState({
-      answered: true,
-      btnNext: false,
-    });
+  startTimer() {
+    const Mil = 1000;
+    this.myTimer = setInterval(() => {
+      this.setState(({ timer }) => ({
+        timer: timer - 1,
+      }));
+    }, Mil);
+  }
+
+  nextQuestion() {
+    const { next } = this.props;
+    const Cinco = 5;
+    const { index, counter } = this.state;
+    next();
+    this.setState({ timer: 30, index: (index + 1) % Cinco, counter: counter + 1 });
+    this.startTimer();
   }
 
   render() {
-    const { questions } = this.props;
-    const { answered, btnNext, limitTime, isDisable } = this.state;
+    const { questions, answered } = this.props;
+    const Cinco = 5;
+    const { index, counter, timer } = this.state;
+    if (counter > Cinco) return <Redirect to="/feedback" />;
     return (
-      <div className="game-container">
-        <div className="header">
-          <FeedbackHeader />
-        </div>
-        <div className="category">
-          <span>{ limitTime }</span>
-          { questions && questions.results && questions.results.map((item) => (
-            <p
-              data-testid="question-category"
-              key={ item.category }
-            >
-              {item.category}
-            </p>
-          ))}
-        </div>
-        <div className="questions">
-          { questions && questions.results && questions.results.map((item) => (
-            <p
-              data-testid="question-text"
-              key={ item.category }
-            >
-              {item.question}
-            </p>
-          ))}
-        </div>
-        <div className="correctAnswer">
-          { questions && questions.results && questions.results.map((item) => (
+      !questions ? <div><h1>Loading...</h1></div> : (
+        // <div>
+        //   { console.log(Object.values(questions)) }
+        // </div>
+        <div className="game-container">
+          <div className="header">
+            <Header />
+          </div>
+          <div data-testid="question-category">
+            { questions.results[index].category }
+          </div>
+          <div data-testid="question-text">
+            {questions.results[index].question}
+          </div>
+          <AnswerCard
+            difficulty={ questions.results[index].difficulty }
+            timer={ timer }
+            incorrect={ questions.results[index].incorrect_answers }
+            correct={ questions.results[index].correct_answer }
+          />
+          { answered ? (
             <button
               type="button"
-              data-testid="correct-answer"
-              key={ item.category }
-              id="correct"
-              disabled={ isDisable }
-              onClick={ this.changeColor }
-              className={ answered ? 'green-border' : null }
+              data-testid="btn-next"
+              onClick={ () => this.nextQuestion() }
             >
-              {item.correct_answer}
+              Próxima
             </button>
-          ))}
+          ) : (
+            <div>
+              { timer }
+            </div>
+          )}
         </div>
-        <div className="incorrectAnswers">
-          {questions
-            && questions.results
-            && questions.results[0].incorrect_answers.map((item, index) => (
-              <button
-                type="button"
-                key={ item.question }
-                data-testid={ `wrong-answer-${index}` }
-                id="incorrect"
-                disabled={ isDisable }
-                onClick={ this.changeColor }
-                className={ answered ? 'red-border' : null }
-              >
-                {item}
-              </button>
-            ))}
-        </div>
-        <div className="btnNext">
-          <button
-            type="button"
-            data-testid="btn-next"
-            hidden={ btnNext }
-          >
-            Próxima
-          </button>
-        </div>
-      </div>
+      )
     );
   }
 }
@@ -138,15 +106,24 @@ class ScreenGame extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.tokenReducer.questions,
   token: state.tokenReducer.token,
+  answered: state.userReducer.answered,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getTriviaQuestions: (token) => dispatch(fetchApiQuestions(token)),
-  getQuestions: (data) => dispatch(requestQuestionsSuccess(data)),
+  next: () => dispatch(nextQuestion()),
+  answer: () => dispatch(answerQuestion()),
+  getQuestions: (token) => dispatch(fetchApiQuestions(token)),
+  scoreReset: () => dispatch(resetScore()),
 });
 
 ScreenGame.propTypes = {
   questions: propType.arrayOf(Object).isRequired,
+  next: propType.func.isRequired,
+  answered: propType.bool.isRequired,
+  answer: propType.func.isRequired,
+  token: propType.string.isRequired,
+  getQuestions: propType.func.isRequired,
+  scoreReset: propType.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenGame);

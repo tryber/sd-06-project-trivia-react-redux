@@ -1,19 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import './App.css';
+import { Route, Switch } from 'react-router-dom';
 import Login from './components/Login';
 import ScreenConfig from './components/ScreenConfig';
 import ScreenGame from './components/ScreenGame';
+import Ranking from './components/Ranking';
+import Feedback from './components/Feedback';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/config" component={ ScreenConfig } />
-        <Route path="/game" component={ ScreenGame } />
-        <Route path="/" component={ Login } />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/config" component={ ScreenConfig } />
+      <Route path="/ranking" component={ Ranking } />
+      <Route path="/game" component={ ScreenGame } />
+      <Route path="/feedback" component={ Feedback } />
+      <Route path="/" component={ Login } />
+    </Switch>
     // <div className="App">
     //   <Login />
     //   <header className="App-header">

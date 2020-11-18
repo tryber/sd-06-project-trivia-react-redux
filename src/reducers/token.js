@@ -1,11 +1,10 @@
 // import reducers from ".";
-import { REQUEST, DATA, DATA_QUESTIONS } from '../actions';
+import { REQUEST, DATA_TOKEN, DATA_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
   isFetching: false,
   token: '',
-  error: '',
-  questions: null,
+  questions: [],
 };
 
 function tokenReducer(state = INITIAL_STATE, action) {
@@ -15,10 +14,10 @@ function tokenReducer(state = INITIAL_STATE, action) {
       ...state,
       isFetching: true,
     };
-  case DATA:
+  case DATA_TOKEN:
     return {
       isFetching: false,
-      token: action.data,
+      token: action.token,
     };
   case DATA_QUESTIONS:
     return {
