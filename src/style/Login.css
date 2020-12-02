@@ -1,0 +1,93 @@
+.div-conf {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  padding: 50px;
+}
+
+.div-login {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  padding: 50px;
+}
+
+.img-conf {
+  width: 20px;
+}
+
+.nome-logo{
+  animation: anime-text 1.5s linear infinite;
+
+}
+
+@keyframes anime-text {
+  0% {
+    color: black;
+  }
+
+  25% {
+    color: rgb(251, 248, 70);
+  }
+
+  50% {
+    color: white;
+  }
+
+  75% {
+    color: rgb(255, 238, 0);
+  }
+
+  100% {
+    color: black;
+  }
+}
+
+.img-logo {
+  margin-bottom: 30px;
+  width: 200px;
+}
+
+.bttn-config {
+  background-color: #e9eaec;
+  border: none;
+  border-radius: 30px;
+  height: 40px;
+  margin-bottom: 10px;
+  width: 40px;
+  /* display: flex; */
+}
+
+.bttn-config:hover {
+  background-color: rgb(144, 133, 133);
+  cursor: pointer;
+}
+
+.input {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  font-family: 'PT Sans', sans-serif;
+  height: 30px;
+  margin-bottom: 5px;
+  text-align: center;
+  width: 300px;
+}
+
+.bttn-play {
+  background-color: #e4b61a;
+  border: none;
+  border-radius: 5px;
+  color: #2a2e34;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 5px;
+  width: 300px;
+}
+
+.bttn-play:hover {
+  background-color: rgb(212, 162, 23);
+  cursor: pointer;
+}
