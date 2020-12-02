@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+.div-login {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  height: 350px;
+  margin: auto;
+  padding: 50px;
+  width: 300px;
+}
+
+.img-conf {
+  width: 20px;
+}
+
+.bttn-config {
+  background-color: rgb(182, 175, 175);
+  border: none;
+  border-radius: 30px;
+  height: 40px;
+  margin-bottom: 15px;
+  margin-left: 250px;
+  width: 40px;
+}
+
+.bttn-config:hover {
+  background-color: rgb(144, 133, 133);
+  cursor: pointer;
+}
+
+.input {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  height: 30px;
+  margin-bottom: 5px;
+  text-align: center;
+  width: 300px;
+}
+
+.bttn-play {
+  background-color: rgb(65, 185, 65);
+  border: none;
+  border-radius: 5px;
+  color:white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-top: 5px;
+  width: 300px;
+}
+
+.bttn-play:hover {
+  background-color: rgb(59, 141, 59);
+  cursor: pointer;
+}
