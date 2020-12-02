@@ -15,14 +15,5 @@ export default function App() {
       <Route path="/feedback" component={ Feedback } />
       <Route path="/" component={ Login } />
     </Switch>
-    // <div className="App">
-    //   <Login />
-    //   <header className="App-header">
-    //     <img src={ logo } className="App-logo" alt="logo" />
-    //     <p>
-    //       SUA VEZ
-    //     </p>
-    //   </header>
-    // </div>
   );
 }

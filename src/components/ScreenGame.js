@@ -65,9 +65,6 @@ class ScreenGame extends React.Component {
     if (counter > Cinco) return <Redirect to="/feedback" />;
     return (
       !questions ? <div><h1>Loading...</h1></div> : (
-        // <div>
-        //   { console.log(Object.values(questions)) }
-        // </div>
         <div className="game-container">
           <div className="header">
             <Header />
