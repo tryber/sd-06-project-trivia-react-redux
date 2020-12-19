@@ -1,16 +1,22 @@
 import React from 'react';
-import logo from './trivia.png';
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
+import Login from './pages/Login';
+import Game from './pages/Game';
+import Settings from './pages/Settings';
+import Feedback from './pages/Feedback';
 
-export default function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/settings" component={ Settings } />
+        <Route exact path="/questions" component={ Game } />
+        <Route exact path="/feedback" component={ Feedback } />
+      </Switch>
+    );
+  }
 }
+
+export default App;

@@ -1,0 +1,37 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(0, 107, 107);
+  color: white;
+  height: 100px;
+  width: 100%;
+}
+
+.header-player {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 20px;
+}
+
+.header-player img {
+  border-radius: 50%;
+  width: 70px;
+}
+
+.header-player p {
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.header-score {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-right: 20px;
+}
+
+.header-score p {
+  font-size: 20px;
+}

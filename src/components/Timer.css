@@ -1,0 +1,25 @@
+.back-color {
+  background-color: rgb(0, 107, 107);
+  border-radius: 10px;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.counter {
+  align-self: center;
+  border-radius: 50%;
+  color: rgb(39, 37, 37);
+}
+
+.time-running {
+  background-color: white;
+  border: 5px solid rgb(0, 107, 107);
+  border-radius: 50%;
+  display: flex;
+  font-size: xx-large;
+  height: 70px;
+  justify-content: center;
+  margin: auto;
+  margin-top: 50px;
+  width: 20%;
+}
