@@ -1,0 +1,30 @@
+.father {
+  display: flex;
+}
+
+#order-1 {
+  order: 1;
+}
+
+#order-2 {
+  order: 2;
+}
+
+#order-3 {
+  order: 3;
+}
+
+#order-4 {
+  order: 4;
+}
+
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrect {
+  border: 3px solid rgb(255, 0, 0);
+}
+.btnDisplay {
+  display: none;
+}
