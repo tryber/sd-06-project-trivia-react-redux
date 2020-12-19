@@ -1,0 +1,58 @@
+.Ranking-board {
+  align-items: center;
+  background-color: rgb(200, 220, 210);
+  border-radius: 28px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  min-height: 80vh;
+  margin: 15px auto 40px;
+  padding: 0;
+  width: 50vw;
+}
+
+.Ranking-page {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.Ranking-title {
+  color: rgb(0, 83, 116);
+  text-align: center;
+  display: flex;
+}
+
+.Emoji-trophy {
+  margin: auto 5px;
+}
+
+.Profile-picture {
+  border-radius: 50%;
+  width: 50px;
+}
+
+.Player-record {
+  margin-bottom: 5px;
+  border-radius: 25px;
+  background: rgb(0,116,162);
+  background: linear-gradient(90deg, rgba(0,116,162,1) 0%, rgba(0,212,255,0) 87%);
+  width: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Player-name {
+  color: white;
+  text-shadow: 2px 2px 4px rgb(48, 48, 48);
+}
+
+.Player-score {
+  font-size: 1.3em;
+  color: rgb(0, 83, 116);
+}
+
+.Button-home {
+  margin-top: 15px;
+}
