@@ -1,0 +1,105 @@
+.feedback-container {
+  align-items: center;
+ display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.results-container {
+  align-items: center;
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 2vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  min-width: 40vw;
+}
+
+.results-container .results-header {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 2vw 2vw 0 0;
+  font-size: 20px;
+  margin-bottom: 3vh;
+  text-align: center;
+  width: 100%;
+}
+
+.results-container .results-score {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  margin: 2vh 0;
+}
+
+.results-container .results-score p {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 2vw 2vw 0 0;
+  margin: 0;
+  padding: 2vh 0;
+  width: 75%;
+}
+
+.results-container .results-score p.score {
+  background-color:rgb(255, 38, 116);
+  border: solid 2px rgb(255, 38, 116);
+  border-radius: 0 0 2vw 2vw;
+  color: white;
+  margin: 0;
+  padding: 1vh 0;
+  width: 75%;
+  font-size: 16px;
+}
+
+.results-container .replay-button-area {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 0 0 2vw 2vw;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5vh;
+  text-align: center;
+  width: 100%;
+}
+
+.results-container .replay-button-area .replay-button {
+  background-color:rgb(255, 38, 116);
+  border: none;
+  color: white;
+  height: 5vh;
+  margin: 1vh 2vw;
+  font-size: 20px;
+  width: 70%;
+}
+
+.results-container .replay-button:hover {
+  box-shadow: 5px 5px 4px white;
+  height: 6vh;
+  width: 75%;
+  -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.results-container .replay-button-area .ranking-button {
+  background-color: transparent;
+  border: solid 2px rgb(255, 38, 116);
+  color: white;
+  height: 5vh;
+  margin: 1vh 2vw;
+  font-size: 20px;
+  width: 70%;
+}
+
+.results-container .ranking-button:hover {
+  background-color:rgb(255, 38, 116);
+  border: none;
+  box-shadow: 5px 5px 4px white;
+  height: 6vh;
+  width: 75%;
+  -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}

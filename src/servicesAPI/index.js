@@ -1,5 +1,4 @@
 import gravatarAPI from './gravatarAPI';
-import { tokenAPI, questionsAPI } from './triviaAPI';
-import saveLocal from './localStorageAPI';
+import { tokenAPI, questionsAPI, getCategoriesAPI } from './triviaAPI';
 
-export { gravatarAPI, tokenAPI, questionsAPI, saveLocal };
+export { gravatarAPI, tokenAPI, questionsAPI, getCategoriesAPI };

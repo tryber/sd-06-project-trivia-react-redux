@@ -1,0 +1,120 @@
+@media only screen and (max-width: 992px) {
+  .settings-container {
+    align-items: center;
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    margin: 5vh 5vw;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .settings-container {
+    align-items: center;
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    margin: 2vh 20vw;
+  } 
+}
+
+.settings-container .settings-header {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 2vw 2vw 0 0;
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.settings-container .parameters-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 1vh 0;
+}
+
+.settings-container .parameters-container .parameter {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin: 1vh 0;
+}
+
+.settings-container .parameters-container .parameter .parameter-title {
+  background-color: rgb(255,38,116);
+  border: solid 2px rgb(255,38,116);
+  border-radius: 2vw;
+  color: white;
+  padding: 1.5vh 0;
+  text-align: center;
+  margin: 0;
+  width: 75%;
+}
+
+.settings-container .parameters-container .parameter .parameter-options {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 0 0 2vw 2vw;
+  text-align: center;
+  width: 45%;
+  padding: 1vh 0;
+}
+
+.settings-container .settings-button-area {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 0 0 2vw 2vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  margin-top: 1vh;
+  width: 100%;
+  padding: 1.5vh 0;
+}
+
+.settings-container .settings-button-area button {
+  background-color:rgb(255, 38, 116);
+  border: solid 2px rgb(255, 38, 116);
+  color: white;
+  height: 5vh;
+  margin: 1vh 2vw;
+  font-size: 20px;
+  width: 70%;
+}
+
+.settings-container .settings-button-area button:hover {
+  box-shadow: 5px 5px 4px white;
+  height: 6vh;
+  width: 75%;
+  -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.settings-container .settings-button-area button.second-button {
+  background-color:transparent;
+  border: solid 2px rgb(255, 38, 116);
+  color: white;
+  height: 5vh;
+  margin: 1vh 2vw;
+  font-size: 20px;
+  width: 70%;
+}
+
+.settings-container .settings-button-area button.second-button:hover {
+  background-color:rgb(255, 38, 116);
+  box-shadow: 5px 5px 4px white;
+  height: 6vh;
+  width: 75%;
+  -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}

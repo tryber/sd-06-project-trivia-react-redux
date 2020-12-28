@@ -1,0 +1,122 @@
+/* Small devices*/
+@media only screen and (max-width: 992px) {
+  .profile-bar {
+    align-items: center;
+    background-color: rgb(255,38,116);
+    color: white;
+    display: flex;
+    height: 5vh ;
+    justify-content: space-between;
+    padding: 0.5vh 2vw;
+  }
+
+  .profile-bar .user-infos {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+  }
+
+  .profile-bar .user-infos img {
+    height: 3vh;
+    border: solid 2px white;
+    border-radius: 100%;
+    margin-right: 1.5vw;
+  }
+
+  #toggle-profile-bar {
+    display: none;
+  }
+
+  .profile-bar .score {
+    background-color: white;
+    color: rgb(61, 61, 61);
+    border: solid 2px rgb(83,77,87);
+    border-radius: 15px;
+    /* color: white; */
+    padding: 5px 10px;
+  }
+
+  .profile-bar .score span {
+    margin-left: 15px;
+  }
+
+  /* Barra de perfil scrollada */
+  .profile-bar.open {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 90vh;
+  }
+
+  .profile-bar.open .user-infos {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    margin: 0;
+  }
+
+  .profile-bar.open .user-infos img {
+    height: 80%;
+    margin: 0;
+  }
+}
+
+/* Large devices*/
+@media only screen and (min-width: 992px) {
+  .profile-bar {
+    align-items: center;
+    background-color: rgb(255,38,116);
+    color: white;
+    display: flex;
+    height: 5vh ;
+    justify-content: space-between;
+    padding: 0.5vh 2vw;
+  }
+
+  .profile-bar .user-infos {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+  }
+
+  .profile-bar .user-infos img {
+    height: 3vh;
+    border: solid 2px white;
+    border-radius: 100%;
+    margin-right: 1.5vw;
+  }
+
+  #toggle-profile-bar {
+    display: none;
+  }
+
+  .profile-bar .score {
+    background-color: white;
+    color: rgb(61, 61, 61);
+    border: solid 2px rgb(83,77,87);
+    border-radius: 15px;
+    /* color: white; */
+    padding: 5px 10px;
+  }
+
+  .profile-bar .score span {
+    margin-left: 15px;
+  }
+
+  /* Barra de perfil scrollada */
+  .profile-bar.open {
+    height: 30vh;
+  }
+
+  .profile-bar.open .user-infos img {
+    height: 80%;
+  }
+}
+
+/* rgb(184, 182, 182); cinza claro icones*/
+/* rgb(83,77,87); escuro borda*/
+/* rgb(163, 162, 162); */
+/* rgb(255,38,116); rosa */

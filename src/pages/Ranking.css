@@ -1,0 +1,126 @@
+@media only screen and (max-width: 992px) {
+  .ranking-container {
+    align-items: center;
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    max-height: 75vh;
+    margin: 5vh 5vw;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .ranking-container {
+    align-items: center;
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    max-height: 75vh;
+    margin: 5vh 20vw;
+  } 
+}
+
+.ranking-container .ranking-header {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 2vw 2vw 0 0;
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.ranking-container .ranking-players {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.ranking-container .ranking-players .player-container {
+  align-items: center;
+  background-color: rgb(255,38,116);
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin: 0.5vh 0;
+  padding: 1vh 0;
+  width: 100%;
+}
+
+.ranking-container .ranking-players .player-container  .ranking-index-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+
+.ranking-container .ranking-players .player-container  .ranking-index-container p {
+  width: 20%;
+  font-size: 30px;
+}
+
+.ranking-container .ranking-players .player-container .user-infos {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  width: 60%;
+}
+
+.ranking-container .ranking-players .player-container .user-infos img {
+  height: 10vh;
+  border: solid 2px white;
+  border-radius: 100%;
+  margin-right: 1.5vw;
+}
+
+.ranking-container .ranking-players .player-container .score {
+  background-color: white;
+  color: rgb(61, 61, 61);
+  border: solid 2px rgb(83,77,87);
+  border-radius: 15px;
+  padding: 5px 10px;
+}
+
+.ranking-container .ranking-players .player-container .score span {
+  margin-left: 15px;
+}
+
+.ranking-container .ranking-button-area {
+  background-color: rgb(184, 182, 182);
+  border: solid 2px rgb(184, 182, 182);
+  border-radius: 0 0 2vw 2vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  padding: 3vh 0;
+}
+
+.ranking-container .ranking-button-area button {
+  background-color:rgb(255, 38, 116);
+  border:solid 2px rgb(255, 38, 116);
+  color: white;
+  height: 5vh;
+  margin: 1vh 2vw;
+  font-size: 20px;
+  width: 70%;
+}
+
+.ranking-container .ranking-button-area button.second-button {
+  background-color: transparent;
+}
+
+.ranking-container .ranking-button-area button:hover {
+  box-shadow: 5px 5px 4px white;
+  height: 6vh;
+  width: 75%;
+  -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}

@@ -43,15 +43,15 @@ class Timer extends Component {
       <div
         className="timer"
       >
-        <h2
+        <p
           style={ { background:
-            `linear-gradient(90deg, teal ${(seconds / magicThirty) * 100}%,
+            `linear-gradient(90deg, rgb(255,38,116) ${(seconds / magicThirty) * 100}%,
               white ${(seconds / magicThirty) * 100}%,
               white ${100 - (seconds * 100) / magicThirty}%,
               white ${100 - (seconds * 100) / magicThirty}%)` } }
         >
           { `Tempo restante: ${seconds}` }
-        </h2>
+        </p>
       </div>
     );
   }
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);
 
 Timer.propTypes = {
-  addTimer: PropTypes.string.isRequired,
+  addTimer: PropTypes.func.isRequired,
   stop: PropTypes.bool.isRequired,
   seconds: PropTypes.number.isRequired,
 };

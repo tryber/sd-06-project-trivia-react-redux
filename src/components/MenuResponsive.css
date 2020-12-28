@@ -1,0 +1,181 @@
+/* Small devices*/
+@media only screen and (max-width: 992px) {
+  /* Checkbox que fica escondido...
+  e é marcado por meio da label...
+  que é o icone hamburg */
+  #toggle {
+    display: none;
+  }
+
+  /* Quando clica no icone o conteudo...
+  do menu scrolla e preenche toda a tela */
+  #toggle:checked ~ .menu-content {
+    align-items: center;
+    background-color: rgb(255,38,116);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 10vh;
+  }
+
+  /* Menu antes do scroll */
+  .menu.closed {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    height: 10vh;
+    justify-content: space-between;
+    width: 100%;
+    background-color: rgb(163, 162, 162);
+  }
+
+  /* Menu depois do scroll */
+  .menu.open {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: rgb(163, 162, 162);
+  }
+
+  /* Container da logo é escondido quando o menu scrolla  */
+  .menu.open .logo-area {
+    display: none;
+  }
+
+  .menu .logo-area img {
+    height: 6vh;
+  }
+
+  .menu .logo-area {
+    margin: 0 2vw;
+  }
+
+  .menu .menu-toggle {
+    margin: 0 2vw;
+  }
+
+  .menu.open .menu-toggle {
+    align-items: center;
+    display: flex;
+    height: 10vh;
+  }
+
+  .menu.open .menu-toggle .menu-icon {
+    font-size: 30px;
+  }
+
+  .menu .menu-toggle .menu-icon {
+    font-size: 20px;
+    color: rgb(255,38,116);
+  }
+
+  .menu .menu-content {
+    display: none;
+  }
+
+  .menu-content .link {
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    margin: 0;
+    padding: 2.5vh 0;
+    font: 700 20px 'Oswald', sans-serif;
+    text-align: center;
+  }
+
+
+  .menu-content .link:hover {
+    background-color: #fff;
+    color: rgb(61, 61, 61);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+}
+
+  /* rgb(184, 182, 182); cinza claro icones*/
+  /* rgb(83,77,87); escuro borda*/
+  /* rgb(163, 162, 162); */
+  /* rgb(255,38,116); rosa */
+
+/* Small devices*/
+@media only screen and (min-width: 992px) {
+  /* Checkbox que fica escondido...
+  e é marcado por meio da label...
+  que é o icone hamburg */
+  #toggle {
+    display: none;
+  }
+
+  .menu {
+    align-items: center;
+    background-color: rgb(163, 162, 162);
+    display: flex;
+    flex-direction: row;
+    height: 10vh;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .menu .logo-area img {
+    height: 6vh;
+  }
+
+  .menu .logo-area {
+    margin: 0 2vw;
+  }
+
+  .menu .menu-toggle {
+    display: none;
+  }
+
+  .menu .menu-content {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    margin-right: 2vw;
+    height: 100%;
+  }
+
+  .menu-content .link {
+    background-color: transparent;
+    border: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    font: 700 20px 'Oswald', sans-serif;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1.5vw;
+    width: 100%;
+  }
+
+  .menu-content .link:hover {
+    background-color: #fff;
+    color:rgb(83,77,87);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .menu-content .link.selected {
+    background-color:rgb(255,38,116);
+    color: #fff;
+  }
+
+  .menu-content .link.selected:hover {
+    background-color:rgb(255,38,116);
+    color: #fff;
+  }
+
+  .menu-content .link:hover {
+    background-color: #fff;
+    color:rgb(83,77,87);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+
+}

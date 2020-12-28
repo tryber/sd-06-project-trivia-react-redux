@@ -2,22 +2,34 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { playerLoginAction, fetchTokenAction } from '../actions';
+import { FaEnvelope, FaUser, FaCheckCircle, FaTimesCircle, FaCog } from 'react-icons/fa';
+import { playerLoginAction, fetchTokenAction,
+  updateAuthenticationAction } from '../actions';
 import './Login.css';
+import logo from '../trivia.png';
 
 class Login extends Component {
   constructor() {
     super();
-
     this.state = {
       name: '',
       gravatarEmail: '',
       isDisabled: true,
+      emailValidation: '',
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.toggeButton = this.toggeButton.bind(this);
     this.clickButton = this.clickButton.bind(this);
+    this.logout = this.logout.bind(this);
+    this.handleState = this.handleState.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleState();
+  }
+
+  handleState() {
+    if (localStorage.getItem('authentified')) this.setState({ isDisabled: false });
   }
 
   handleChange({ target }) {
@@ -29,72 +41,153 @@ class Login extends Component {
 
   toggeButton() {
     const { gravatarEmail, name } = this.state;
-    const isDisabled = (gravatarEmail === '' || name === '');
-    this.setState({ isDisabled });
+    const reg = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    const emailValidation = reg.test(gravatarEmail);
+    const isDisabled = (!emailValidation || name === '');
+    this.setState((prevState) => {
+      const obj = prevState.gravatarEmail !== ''
+        ? ({ emailValidation, isDisabled })
+        : ({ emailValidation: '', isDisabled });
+      return obj;
+    });
   }
 
   clickButton() {
-    const { login, createToken } = this.props;
+    const { login, createToken, updateAuthentication } = this.props;
     const { name, gravatarEmail } = this.state;
     login({ name, gravatarEmail });
+    localStorage.setItem('authentified', true);
+    updateAuthentication(true);
     createToken();
   }
 
+  logout() {
+    const { history, updateAuthentication } = this.props;
+    updateAuthentication(false);
+    localStorage.setItem('authentified', false);
+    localStorage.clear('state');
+    history.push('/');
+  }
+
   render() {
-    const { name, gravatarEmail, isDisabled } = this.state;
+    const { name, gravatarEmail, emailValidation, isDisabled } = this.state;
+    const { authenticationStatus, player: { name: loggedPlayerName } } = this.props;
+    let validationClass = '';
+    if (emailValidation !== '') {
+      validationClass = emailValidation ? 'valid' : 'invalid';
+    }
+
     return (
-      <div className="container">
-        <div className="input-container">
-          <input
-            type="text"
-            onChange={ this.handleChange }
-            value={ name }
-            name="name"
-            placeholder="nome"
-            data-testid="input-player-name"
-          />
-          <input
-            type="email"
-            onChange={ this.handleChange }
-            value={ gravatarEmail }
-            name="gravatarEmail"
-            placeholder="email"
-            data-testid="input-gravatar-email"
-          />
+      <div className="main-container">
+        <div className="image-container">
+          <img src={ logo } alt="logo" />
         </div>
-        <div className="buttons-container">
-          <Link to="/game" className="buttons">
-            <button
-              type="submit"
-              disabled={ isDisabled }
-              data-testid="btn-play"
-              onClick={ this.clickButton }
+        <form className="form-container">
+          <fieldset className="header-area">
+            <Link to="/settings">
+              <FaCog
+                className="settings-button"
+                type="button"
+                data-testid="btn-settings"
+              />
+            </Link>
+          </fieldset>
+          <fieldset className="inputs-container">
+            <label
+              htmlFor="name-input"
+              className="input-label-container"
+              hidden={ authenticationStatus }
             >
-              Jogar
-            </button>
-          </Link>
-          <Link to="/settings" className="button">
-            <button
-              type="button"
-              data-testid="btn-settings"
+              Name
+              <div className="input-box">
+                <FaUser className="icone" />
+                <input
+                  type="text"
+                  id="name-input"
+                  onChange={ this.handleChange }
+                  value={ name }
+                  name="name"
+                  placeholder="Enter your name"
+                  data-testid="input-player-name"
+                />
+              </div>
+            </label>
+            <label
+              htmlFor="email-input"
+              className="input-label-container"
+              hidden={ authenticationStatus }
             >
-              Configurações
-            </button>
-          </Link>
-        </div>
+              Email
+              <div className={ `input-box ${validationClass}` }>
+                <FaEnvelope className={ `icone ${validationClass}` } />
+                <input
+                  id="email-input"
+                  type="email"
+                  onChange={ this.handleChange }
+                  value={ gravatarEmail }
+                  name="gravatarEmail"
+                  placeholder="Enter your email"
+                  data-testid="input-gravatar-email"
+                />
+                { emailValidation && <FaCheckCircle className="icone valid" /> }
+                { emailValidation === false
+                && <FaTimesCircle className="icone invalid" /> }
+              </div>
+              <p className={ `text-helper ${validationClass}` }>
+              Email should be like user@gmail.com
+              </p>
+            </label>
+            { authenticationStatus
+              && <p>{ `Already logged as ${loggedPlayerName}` }</p> }
+          </fieldset>
+          <fieldset className="buttons-area">
+            <Link to="/game">
+              <button
+                className={ (isDisabled) ? 'play-button-disabled' : 'play-button' }
+                type="submit"
+                disabled={ isDisabled }
+                data-testid="btn-play"
+                onClick={ this.clickButton }
+              >
+                Play Now
+              </button>
+            </Link>
+            { authenticationStatus
+              && (
+                <Link to="/">
+                  <button
+                    className="change-account-button"
+                    type="button"
+                    onClick={ this.logout }
+                  >
+                    Change account
+                  </button>
+                </Link>) }
+          </fieldset>
+        </form>
       </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  updateAuthentication: (e) => dispatch(updateAuthenticationAction(e)),
   login: (e) => dispatch(playerLoginAction(e)),
   createToken: () => dispatch(fetchTokenAction()),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  authenticationStatus: state.authenticationStatus,
+  player: state.player,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   createToken: PropTypes.func.isRequired,
+  updateAuthentication: PropTypes.func.isRequired,
+  authenticationStatus: PropTypes.bool.isRequired,
+  player: PropTypes.shape.isRequired,
+  history: PropTypes.shape.isRequired,
 };

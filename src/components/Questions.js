@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { questionsAPI } from '../servicesAPI';
 import { addStopAction, addTimerAction, playerAddScoreAction } from '../actions';
 import Timer from './Timer';
@@ -14,6 +15,7 @@ class Questions extends Component {
       questions: [],
       actualQuestionIndex: 0,
       selectedAnswer: '',
+      selected: '',
     };
     this.handleQuestion = this.handleQuestion.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -24,13 +26,11 @@ class Questions extends Component {
   }
 
   componentDidMount() {
-    const { tokenObj: { token }, name, gravatarEmail } = this.props;
-    const questionsQuantity = 5;
+    const { tokenObj: { token }, name, gravatarEmail, settings, seconds } = this.props;
     const gameState = { player: { name, assertions: 0, score: 0, gravatarEmail } };
     localStorage.setItem('state', JSON.stringify(gameState));
-    const { seconds } = this.props;
     if (seconds === 0) this.handleUniqueAnswer('incorrect');
-    questionsAPI(questionsQuantity, token)
+    questionsAPI({ ...settings, token })
       .then((r) => this.prepareQuestions(r))
       .catch((r) => this.setState({ questions: r }));
   }
@@ -43,8 +43,8 @@ class Questions extends Component {
 
   sortRandomAnswers(questionObj) {
     const incorrectAnswers = questionObj.incorrect_answers
-      .map((incorrect) => ({ ans: incorrect, type: 'incorrect' }));
-    const correctAnswer = { ans: questionObj.correct_answer, type: 'correct' };
+      .map((incorrect) => ({ ans: incorrect, answerType: 'incorrect' }));
+    const correctAnswer = { ans: questionObj.correct_answer, answerType: 'correct' };
     const allAnswers = [correctAnswer, ...incorrectAnswers];
     const numberOfAnswers = allAnswers.length;
     const allAnswersRandom = [];
@@ -62,23 +62,29 @@ class Questions extends Component {
     const { seconds } = this.props;
     const actualQuestion = questions[index];
     const buttonNext = (
-      <button
-        className="next-button"
-        data-testid="btn-next"
-        type="button"
-        onClick={ this.handleNext }
-      >
-        Próxima
-      </button>);
+      <div className="button-area">
+        <button
+          className="next-button"
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.handleNext }
+        >
+          Next
+        </button>
+      </div>);
     return (
       <article className="question-container">
-        <h2
-          className="category"
-          data-testid="question-category"
-        >
-          { actualQuestion.category }
-        </h2>
-        <h1 data-testid="question-text">{ actualQuestion.question }</h1>
+        <div className="category-container">
+          <p
+            className="category"
+            data-testid="question-category"
+          >
+            { actualQuestion.category }
+          </p>
+        </div>
+        <div className="question">
+          <p data-testid="question-text">{ actualQuestion.question }</p>
+        </div>
         <div className="answers">
           { this.handleAnswers(actualQuestion) }
         </div>
@@ -91,23 +97,31 @@ class Questions extends Component {
     const { randomAnswers } = question;
     let indexOfIncorrectAnswers = 0;
     return randomAnswers.map((answer, index) => {
-      const { ans, type } = answer;
-      const testId = (type === 'correct')
+      const { ans, answerType } = answer;
+      const testId = (answerType === 'correct')
         ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
-      indexOfIncorrectAnswers = (type === 'incorrect')
+      indexOfIncorrectAnswers = (answerType === 'incorrect')
         ? indexOfIncorrectAnswers + 1 : indexOfIncorrectAnswers;
-      const { selectedAnswer } = this.state;
+      const { selectedAnswer, selected } = this.state;
       const { seconds } = this.props;
+      const selectedClass = (index === selected) ? 'selected' : '';
+      const icon = (answerType === 'correct') ? <FaCheckCircle /> : <FaTimesCircle />;
       return (
         <button
           key={ index }
+          id={ index }
           type="button"
+          name={ answerType }
           data-testid={ testId }
-          className={ (selectedAnswer !== '' || seconds === 0) ? `${type}-answer` : '' }
-          onClick={ () => this.handleUniqueAnswer(type) }
+          className={ (selectedAnswer !== '' || seconds === 0)
+            ? `${answerType}-answer ${selectedClass}` : '' }
+          onClick={ () => this.handleUniqueAnswer({ answerType, index }) }
           disabled={ (selectedAnswer !== '' || seconds === 0) }
         >
-          { ans }
+          <p>{ ans }</p>
+          <div className="icon">
+            { (selectedAnswer !== '' || seconds === 0) ? icon : '' }
+          </div>
         </button>
       );
     });
@@ -123,11 +137,12 @@ class Questions extends Component {
     return score;
   }
 
-  handleUniqueAnswer(type) {
+  handleUniqueAnswer(obj) {
+    const { answerType, index } = obj;
     const { seconds, addStop, addScore, name, gravatarEmail,
       score, assertions } = this.props;
-    const scoreAdd = (type === 'correct') ? this.handleScore(seconds) : 0;
-    const assertion = (type === 'correct') ? 1 : 0;
+    const scoreAdd = (answerType === 'correct') ? this.handleScore(seconds) : 0;
+    const assertion = (answerType === 'correct') ? 1 : 0;
     const playerObj = { player: {
       name,
       gravatarEmail,
@@ -137,7 +152,7 @@ class Questions extends Component {
     localStorage.setItem('state', JSON.stringify(playerObj));
     addScore({ score: scoreAdd, assertions: assertion });
     addStop(true);
-    this.setState({ selectedAnswer: type });
+    this.setState({ selectedAnswer: answerType, selected: index });
   }
 
   handleNext() {
@@ -148,20 +163,25 @@ class Questions extends Component {
     this.setState((actualState) => ({
       actualQuestionIndex: actualState.actualQuestionIndex + 1,
       selectedAnswer: '',
+      selected: '',
     }));
   }
 
   render() {
-    const { questions, actualQuestionIndex } = this.state;
-    const maximumQuantity = 5;
+    const { questions, actualQuestionIndex, selected } = this.state;
+    const { seconds, settings } = this.props;
+    const { amount } = settings;
+    const maximumQuantity = amount;
     const aboutQuestions = () => {
       const loadingOrQuestion = (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
-        ? this.handleQuestion(actualQuestionIndex) : (<h1>Carregando...</h1>);
+        ? this.handleQuestion(actualQuestionIndex)
+        : (<div className="loader-container"><div className="loader" /></div>);
       return loadingOrQuestion;
     };
     return (
-      <div>
-        <Timer />
+      <div className="questions-timer-container">
+        { (questions !== 'ERROR_QUESTIONS' && ((seconds > 0 && selected === ''))
+          && questions.length > 0) && <Timer /> }
         { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < maximumQuantity)
           ? 'ERROR' : '' }
         { (actualQuestionIndex < maximumQuantity)
@@ -178,6 +198,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
+  settings: state.settings,
   tokenObj: state.tokenObj,
   seconds: state.timer.seconds,
   name: state.player.name,
@@ -189,13 +210,14 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
-  tokenObj: PropTypes.objectOf(PropTypes.string).isRequired,
+  tokenObj: PropTypes.shape.isRequired,
+  settings: PropTypes.shape.isRequired,
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
   seconds: PropTypes.number.isRequired,
-  addStop: PropTypes.string.isRequired,
-  addScore: PropTypes.string.isRequired,
-  addTimer: PropTypes.string.isRequired,
+  addStop: PropTypes.func.isRequired,
+  addScore: PropTypes.func.isRequired,
+  addTimer: PropTypes.func.isRequired,
 };

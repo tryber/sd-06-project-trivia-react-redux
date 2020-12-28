@@ -1,25 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
-import Game from './pages/Game';
-import Settings from './pages/Settings';
-import Feedback from './pages/Feedback';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
+const toDeploy = false;
+const toReturn = (toDeploy)
+  ? <HashRouter><App /></HashRouter>
+  : <BrowserRouter><App /></BrowserRouter>;
+
 ReactDOM.render(
   <Provider store={ store }>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={ App } />
-        <Route path="/game" component={ Game } />
-        <Route path="/settings" component={ Settings } />
-        <Route path="/feedback" component={ Feedback } />
-      </Switch>
-    </BrowserRouter>
+    { toReturn }
   </Provider>,
   document.getElementById('root'),
 );

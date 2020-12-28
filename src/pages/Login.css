@@ -1,40 +1,355 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
+.text-helper.valid {
+  color: rgb(15, 126, 15);
 }
 
-.input-container {
-  margin: 30px 0px;
+.text-helper.invalid {
+  color: rgb(202, 19, 19);
 }
 
-.input-container input {
-  border-radius: 15px;
-  margin: 5px;
-  padding: 5px;
-  width: 250px;
+.input-label-container .input-box.valid {
+  border-color: rgb(15, 126, 15);
 }
 
-.input-container input:focus {
-  background-color: teal;
-  color: white;
+.input-label-container .input-box.invalid {
+  border-color: rgb(202, 19, 19);
 }
 
-.buttons-container {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
+.input-label-container .input-box .icone.valid {
+  color: rgb(15, 126, 15);
 }
 
-.buttons-container button {
-  border-radius: 10px;
-  margin: 5px;
-  padding: 5px;
-  width: 40%;
+.input-label-container .input-box .icone.invalid {
+  color: rgb(202, 19, 19);
 }
 
-.buttons-container button:hover {
-  background-color: teal;
-  color: white;
+.header-area .settings-button:hover {
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+/* Small devices*/
+@media only screen and (max-width: 992px) {
+  .main-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    height: 100vh;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .image-container {
+    margin: 1vh 8vw;
+  }
+
+  .image-container img {
+    height: 15vh;
+  }
+
+  .form-container {
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 2vw;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    margin: 2vh 4vw;
+    padding: 0;
+  }
+
+  .inputs-container {
+    align-items: flex-start;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: center;
+    margin: 2vh 2vw;
+  }
+
+  .input-label-container {
+    align-items: flex-start;
+    text-decoration-color: rgb(83,77,87);
+    display: flex;
+    flex-direction: column;
+    line-height: 4.5vw;
+    margin: 2vh 1vw;
+  }
+
+  .input-label-container .input-box {
+    align-items: center;
+    display: flex;
+    background-color: white;
+    border: solid 2px rgb(83,77,87);
+    border-radius: 1vw;
+    height: 6vh;
+    justify-content: space-around;
+    margin: 0.5vh 0;
+    padding: 0.5vh;
+  }
+  
+  
+  .input-label-container .input-box  input {
+    border: none;
+    border-left: solid 0.5px rgb(83,77,87);
+    height: 100%;
+    padding: 0 1vw;
+    width: 80%;
+  }
+
+  .input-label-container .input-box .icone {
+    color: rgb(184, 182, 182);
+    width: 12%;
+  }
+
+  .text-helper {
+    color:  rgb(163, 162, 162);
+    font-size: calc(8 * 1.618px);
+    margin: 1px 0 0;
+  }
+
+  .buttons-area {
+    background-color:rgb(184, 182, 182);
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: vw vw 2vw 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 20%;
+    margin: 0;
+    padding: 3vh 0;
+  }
+
+  .buttons-area .play-button {
+    background-color:rgb(255,38,116);
+    border: solid 2px rgb(255,38,116);
+    color: white;
+    font-size: 15px;
+    height: 8vh;
+    width: 90%;
+  }
+
+  .buttons-area .change-account-button {
+    background-color: transparent;
+    border: solid 2px rgb(255,38,116);
+    color: white;
+    font-size: 15px;
+    height: 8vh;
+    width: 90%;
+    margin-top: 1vh;
+  }
+
+  .buttons-area .play-button-disabled {
+    background-color:rgba(255,38,116, 0.3);
+    border: solid 2px rgba(255,38,116, 0.3);
+    color: white;
+    font-size: 15px;
+    height: 8vh;
+    width: 90%;
+  }
+
+  .buttons-area .play-button:hover {
+    box-shadow: 5px 5px 4px white;
+    height: 9vh;
+    width: 96%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .buttons-area .change-account-button:hover {
+    box-shadow: 5px 5px 4px white;
+    height: 9vh;
+    width: 96%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .header-area {
+    align-items: flex-end;
+    background-color: rgb(184, 182, 182);
+    border: none;
+    border-bottom: solid 2px rgb(184, 182, 182);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 20%;
+    margin: 0;
+    padding: 0.8vh 3vw;
+  }
+
+  .header-area .settings-button {
+    color: rgb(255,38,116);
+    font-size: 4.5vh;
+    margin: 0.5vh;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .main-container {
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    height: 100vh;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .image-container {
+    width: 60%;
+  }
+
+  .image-container img {
+    width: 80%;
+  }
+
+  .form-container {
+    border: solid 2px rgb(184, 182, 182);
+    border-right: none;
+    height: 100vh;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .inputs-container {
+    align-items: center;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: center;
+    margin: 2vh 2vw;
+  }
+
+  .input-label-container {
+    align-items: flex-start;
+    text-decoration-color: rgb(83,77,87);
+    display: flex;
+    flex-direction: column;
+    line-height: 4.5vw;
+    margin: 2vh;
+    width: 100%;
+  }
+
+  .input-label-container .input-box {
+    align-items: center;
+    display: flex;
+    background-color: white;
+    border: solid 2px rgb(83,77,87);
+    border-radius: 1vw;
+    height: 6vh;
+    width: 100%;
+    justify-content: space-around;
+    margin: -1vh 0;
+    padding: 0.5vh;
+  }
+  
+  
+  .input-label-container .input-box  input {
+    border: none;
+    border-left: solid 0.5px rgb(83,77,87);
+    height: 100%;
+    padding: 0 1vw;
+    width: 80%;
+  }
+
+  .input-label-container .input-box .icone {
+    color: rgb(184, 182, 182);
+    width: 12%;
+  }
+
+  .text-helper {
+    color:  rgb(163, 162, 162);
+    font-size: calc(8 * 1.618px);
+    margin: -5px 0 0;
+  }
+
+  .buttons-area {
+    background-color:rgb(184, 182, 182);
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: vw vw 2vw 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 20%;
+    margin: 0;
+    padding: 3vh 0;
+  }
+
+  .buttons-area .play-button {
+    background-color:rgb(255,38,116);
+    border: solid 2px rgb(255,38,116);
+    color: white;
+    font-size: 20px;
+    height: 10vh;
+    width: 96%;
+  }
+
+  .buttons-area .change-account-button {
+    background-color:transparent;
+    border: solid 2px rgb(255,38,116);
+    color: white;
+    font-size: 20px;
+    height: 10vh;
+    width: 96%;
+    margin-top: 1vh;
+  }
+
+  .buttons-area .play-button-disabled {
+    background-color:rgba(255,38,116, 0.3);
+    border: solid 2px rgba(255,38,116, 0.3);
+    color: white;
+    font-size: 20px;
+    height: 10vh;
+    width: 96%;
+  }
+
+  .buttons-area .play-button:hover {
+    box-shadow: 5px 5px 4px white;
+    height: 12vh;
+    width: 100%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .buttons-area .change-account-button:hover {
+    box-shadow: 5px 5px 4px white;
+    height: 12vh;
+    width: 100%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .header-area {
+    align-items: flex-end;
+    background-color:rgb(184, 182, 182);
+    border: none;
+    border-bottom: solid 2px rgb(184, 182, 182);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 10%;
+    margin: 0;
+    padding: 0.8vh 3vw;
+  }
+
+  .header-area .settings-button {
+    color: rgb(255,38,116);
+    font-size: 6vh;
+    margin: 0.5vh;
+  }
 }
